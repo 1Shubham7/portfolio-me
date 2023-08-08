@@ -51,8 +51,8 @@ params:
     title: "Shubham Singh"
     subtitle: Hi there 👋! This is Shubham. I am First year undergrad (Computer Science Engineering), I am an open-source enthusiast. I am a web developer, Android developer, and right now I am learning DevOps. When not coding, you will find me reading books and listening podcasts around history, geopolitics, tech and entrepreneurship.
     imageUrl: "home/me.jpg"
-    imageWidth: 300
-    imageHeight: 300
+    imageWidth: 250
+    imageHeight: 250
     # buttons:
     #   - name: Resume
     #     url: ""
@@ -67,13 +67,13 @@ params:
 
   socialIcons:
     - name: "email"
-      url: "mailto:abdur.rahman.kalim@gmail.com"
+      url: "mailto:shubhammahar1306@gmail.com"
     - name: "linkedin"
-      url: "https://www.linkedin.com/in/abdurrahmankalim"
+      url: "https://www.linkedin.com/in/shubham-singh-5a002b20b/"
     - name: "github"
-      url: "https://github.com/arkalim"
-    - name: "youtube"
-      url: "https://www.youtube.com/c/AbdurRahmanKalim"
+      url: "https://github.com/1shubham7"
+    - name: "twitter"
+      url: "https://www.twitter.com/1shubham7"
     - name: "cv"
       url: "https://drive.google.com/file/d/1U6Gg2RnHSCthtWLbZJBlAEI3V1WGjZty/view"
 
