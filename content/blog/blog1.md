@@ -6,7 +6,7 @@ draft: false
 tags: ["AWS", "DVA", "Certification", "Developer", "Developer Associate"]
 weight: 101
 cover:
-    image: "/blog/aws-dva-certification/cover.jpg"
+    image: ""
 ---
 
 # Credentials
