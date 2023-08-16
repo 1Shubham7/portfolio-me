@@ -75,7 +75,7 @@ params:
     - name: "twitter"
       url: "https://www.twitter.com/1shubham7"
     - name: "cv"
-      url: "https://drive.google.com/file/d/1U6Gg2RnHSCthtWLbZJBlAEI3V1WGjZty/view"
+      url: "https://drive.google.com/file/d/1PJBOAeSZjNYeE1da-ICYh3Nll_l1Zaw0/view?usp=sharing"
 
   # text search
   fuseOpts:
