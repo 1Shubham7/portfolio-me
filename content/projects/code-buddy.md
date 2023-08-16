@@ -13,3 +13,9 @@ cover:
 
 ## Description
 
+Code Buddy is a place for coders to find their buddies - find a coding partner for hackathons, events and just chilling out. find programmers near you, Sort by location, technology, and shared interests.
+
+## Tech Stack used -
+
+- React
+- Golang
