@@ -3,7 +3,7 @@ title: "Hugo Expert - Hooman Digital"
 description: "Creating engaging and user-friendly designs for digital interfaces, as well as developing fully functional and responsive websites. working with technologies around web development, Artificial Intelligence, and web3."
 dateString: Aug 2023 - Ongoing
 draft: false
-tags: ["Hugo", "Frontend" ]
+tags: ["Hugo", "Frontend", "Open-source" ]
 showToc: false
 weight: 301
 --- 
@@ -18,7 +18,7 @@ We at Hooman Digital specialize in creating engaging and user-friendly designs f
 
 ## Learnings
 
-- Learned how to work in a remote startup.
+- Learned how to work in a remote start-up.
 - How to work under a team of developers with different tech stack.
 - Improved my understanding of Hugo and static site generation.
 - Learned how to understand and work with complex codebases.

@@ -3,7 +3,7 @@ title: "GirlScript Summer of Code top 100 contributors"
 description: "Girlscript Summer Of Code is a three-month-long Open-Source Program conducted every summer by the Girlscript Foundation. With constant efforts, participants contribute to numerous projects under the extreme guidance of skilled mentors over these months."
 dateString: May 2023 - Aug 2023
 draft: false
-tags: ["React", "Frontend", "Django" ]
+tags: ["React", "Frontend", "Django", "Open-source" ]
 showToc: false
 weight: 301
 --- 
