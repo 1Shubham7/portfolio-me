@@ -25,14 +25,6 @@ menu:
       name: Search
       url: /search
       weight: 50
-    # - identifier: tags
-    #   name: Tags
-    #   url: /tags
-    #   weight: 60
-    # - identifier: notes
-    #   name: Notes
-    #   url: https://notes.arkalim.org
-    #   weight: 70
 
 params:
   # theme
@@ -94,7 +86,7 @@ outputs:
     - RSS
     - JSON
 
-# allow HTML in MD
+# allow HTML in MarkDown
 markup:
   goldmark:
     renderer:
