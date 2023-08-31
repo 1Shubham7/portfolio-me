@@ -16,3 +16,6 @@ I contributed to CNCF ORAS
 ## Learnings
 
 - Worked and connected with highly skilled developers. 
+- Worked with the documentation part of the website.
+- Worked on the Golang part of the project and had 6 PRs merged into the project as of now (10th Aug 2023)
+- Learned about how to navigate a professional codebase and how to contribute to it.
