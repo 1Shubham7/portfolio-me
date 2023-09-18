@@ -1,7 +1,7 @@
 ---
 title: "Hugo Expert - Hooman Digital"
 description: "Creating engaging and user-friendly designs for digital interfaces, as well as developing fully functional and responsive websites. working with technologies around web development, Artificial Intelligence, and web3."
-dateString: Aug 2023 - Ongoing
+dateString: Aug 2023 - Sep 2023
 draft: false
 tags: ["Hugo", "Frontend", "Open-source" ]
 showToc: false

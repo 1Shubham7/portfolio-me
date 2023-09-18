@@ -3,7 +3,7 @@ title: "CNCF Zero to Merge"
 date: 2023-08-16T11:12:44+05:30
 draft: false
 tags: ["Golang", "DevOps", "Open-source", "React" ]
-dateString: Aug 2023 - Ongoing
+dateString: Aug 2023 - Sep 2023
 ---
 
 ## CNCF Zero to Merge Incubator

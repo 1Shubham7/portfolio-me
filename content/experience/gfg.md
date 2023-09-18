@@ -1,7 +1,7 @@
 ---
 title: "GeeksforGeeks Technical Writer"
 description: "GeeksforGeeks is a leading platform that provides computer science resources and coding challenges for programmers and technology enthusiasts, along with interview and exam preparations for upcoming aspirants. With a strong emphasis on enhancing coding skills and knowledge, it has become a trusted destination for over 12 million plus registered users worldwide. The platform offers a vast collection of tutorials, practice problems, interview tutorials, articles, and courses, covering various domains of computer science."
-dateString: May 2023 - Aug 2023
+dateString: Sep 2023 - Present
 draft: false
 tags: ["Technical Writing", "Kubernetes", "Django", "Web Design" ]
 showToc: false
