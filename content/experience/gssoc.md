@@ -16,4 +16,4 @@ Girlscript Summer of Code was my first exposure to larger code bases. I was rank
 
 - Learned how to contribute to larger code bases.
 - Contributed to more than x projects under the domain of Web Dev, AI and web3.
-- Merged x PR in projects ranging from Web development to Artificial Intillegence.
+- Merged x PR in projects ranging from Web development to Artificial Intelligence.

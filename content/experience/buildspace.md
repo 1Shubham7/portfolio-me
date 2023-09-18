@@ -9,3 +9,6 @@ dateString: Aug 2023 - Ongoing
 NightsandWeekends is a six-week school to build your ideas.
 
 As they have presented in their website - NightsandWeekends is where you will take any idea you’re excited about, figure out how to bring it to life, and turn it into something that people give a shit about — alongside thousands of others.
+
+Learnings:
+- Worked on my project using technologies like React, Golang, Docker, Kubernetes.
