@@ -41,7 +41,7 @@ params:
   profileMode:
     enabled: true
     title: "Shubham Singh"
-    subtitle: Hi there 👋! This is Shubham. I am First year undergrad (Computer Science Engineering), I am an open-source enthusiast. I am a web developer, Android developer, and right now I am learning DevOps. When not coding, you will find me reading books and listening podcasts around history, geopolitics, tech and entrepreneurship.
+    subtitle: Hi there 👋! This is Shubham from India. Second year undergrad (Computer Science Engineering), I am an open-source enthusiast. Currently working as a tech writing intern at GeeksforGeeks, Before this I have worked as a hugo expert intern in a startup called Hooman Digital, I am also a contributor at CNCF ORAS. When not coding, you will find me reading books and listening podcasts around history, geopolitics, tech and entrepreneurship.
     imageUrl: "home/me.jpg"
     imageWidth: 250
     imageHeight: 250
