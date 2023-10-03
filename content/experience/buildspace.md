@@ -13,3 +13,7 @@ As they have presented in their website - NightsandWeekends is where you will ta
 
 Learnings:
 - Worked on my project using technologies like React, Golang, Docker, Kubernetes.
+- Created a project using React for frontend and Golang for backend. Here are come details about the project:
+- Project: Code buddy
+- Website: codebuddy.netlify.app
+- technologies used:
