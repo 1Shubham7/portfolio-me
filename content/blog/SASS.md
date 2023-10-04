@@ -1,6 +1,6 @@
 ---
 title: "Difference between SASS and SCSS"
-description: "In this article we have discussed about what is SASS (Syntactically Awesome Style Sheets) and SCSS (Sassy CSS), and how they differ from each other and from CSS. "
+description: "SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two..."
 dateString: August 2023
 draft: false
 tags: ["SASS", "CSS", "SCSS", "Web Design"]

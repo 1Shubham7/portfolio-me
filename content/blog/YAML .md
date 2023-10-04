@@ -1,6 +1,6 @@
 ---
-title: "Open-Source 101: The basic must-know terms for an open-source beginner"
-description: "YAML is used for configuration files, exchanging data between programming languages and storing data. YAML files are extensively used in the DevOps field. YAML is considered better than its alternative because of its easy-to-read way."
+title: "YAML - from basics to advanced"
+description: "explaining YAML from basics to advanced · What is YAML? YAML (which stands for "YAML Ain't Markup Language") is a human-readable data serialization..."
 dateString: October 2023
 draft: false
 tags: ["YAML", "markdown", "DevOps", "Open-source", "GitHub"]
