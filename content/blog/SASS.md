@@ -1,5 +1,5 @@
 ---
-title: "Open-Source 101: The basic must-know terms for an open-source beginner"
+title: "Difference between SASS and SCSS"
 description: "In this article we have discussed about what is SASS (Syntactically Awesome Style Sheets) and SCSS (Sassy CSS), and how they differ from each other and from CSS. "
 dateString: August 2023
 draft: false
