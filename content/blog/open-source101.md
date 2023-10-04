@@ -1,6 +1,6 @@
 ---
 title: "Open-Source 101: The basic must-know terms for an open-source beginner"
-description: "The terms you should know before beginning your open-source journey"
+description: "The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We..."
 dateString: September 2023
 draft: false
 tags: ["CNCF", "Golang", "React", "Open-source", "GitHub"]

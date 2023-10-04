@@ -1,6 +1,6 @@
 ---
-title: "Open-Source 101: The basic must-know terms for an open-source beginner"
-description: "APIs define a standardized way for different software components to interact, providing a layer of abstraction that simplifies development and integration. They typically consist of a collection of pre-defined functions, classes, or endpoints that developers can use to request or exchange data, perform operations, or access specific functionalities of the underlying system."
+title: "Everything about API explained!!"
+description: "API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,..."
 dateString: October 2023
 draft: false
 tags: ["API", "DevOps", "Open-source", "Backend"]

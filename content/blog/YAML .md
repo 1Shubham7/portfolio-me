@@ -1,6 +1,6 @@
 ---
 title: "YAML - from basics to advanced"
-description: "explaining YAML from basics to advanced · What is YAML? YAML (which stands for "YAML Ain't Markup Language") is a human-readable data serialization..."
+description: "explaining YAML from basics to advanced · What is YAML? YAML (which stands for 'YAML Ain't Markup Language') is a human-readable data serialization..."
 dateString: October 2023
 draft: false
 tags: ["YAML", "markdown", "DevOps", "Open-source", "GitHub"]
