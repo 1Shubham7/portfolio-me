@@ -9,7 +9,6 @@ cover:
     image: "blog/open-source101.avif"
 ---
 
-
 Contributing to open-source projects as a beginner can be a little overwhelming. We come across many terms which might sound alien to us. I remember myself 3 months ago, trying to contribute to a beginner-friendly issue when the maintainer told me to "make a PR" and I didn't know that PR actually is the short form for Pull Request.
 
 To help you avoid the hurdles I faced and prevent time-consuming mistakes that I made while beginning my open-source contributions journey, I have curated a list of essential terms one must know, in order to begin his/her open-source contributions journey.
