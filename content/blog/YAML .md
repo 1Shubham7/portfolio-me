@@ -1,7 +1,7 @@
 ---
 title: "Open-Source 101: The basic must-know terms for an open-source beginner"
 description: "The terms you should know before beginning your open-source journey"
-dateString: September 2023
+dateString: October 2023
 draft: false
 tags: ["YAML", "markdown", "DevOps", "Open-source", "GitHub"]
 weight: 101
