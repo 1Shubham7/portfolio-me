@@ -21,7 +21,7 @@ An artifact repository is a tool used in software development that stores and ma
 
 Note : every artifact format (ZIP, JAR, etc) needs a different artifact repository.
 
-Now a project being built by large startups like RedHat, Civo, Zulip, or your next company will surely have files or artifacts written in multiple languages. Some in Java, some in Golang and some in Javascript. Therefore they will require different software for every Artifact repository will be really chaotic and complex for the Engineers. To solve this problem we have Artifact Repository Managers.
+Now a project being built by large start-ups like RedHat, Civo, Zulip, or your next company will surely have files or artifacts written in multiple languages. Some in Java, some in Golang and some in Javascript. Therefore they will require different software for every Artifact repository will be really chaotic and complex for the Engineers. To solve this problem we have Artifact Repository Managers.
 
 Artifact Repository Manager :
 An artifact repository manager is a tool used to manage and store artifacts produced during the software development lifecycle. It is a type of artifact repository but with additional features and functionalities aimed at managing the artifact repository effectively.
