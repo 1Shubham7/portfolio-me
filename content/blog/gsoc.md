@@ -59,8 +59,8 @@ I wish you all the luck with your GSoC. Thank you for reading.
 
 My Socials :
 
-Twitter: 1Shubham7
+Twitter: [1Shubham7](https://twitter.com/1shubham7)
 
-GitHub: 1Shubham7
+GitHub: [1Shubham7](https://github.com/1Shubham7)
 
-LinkedIn: Shubham Singh
+LinkedIn: [Shubham Singh](https://www.linkedin.com/in/1shubham7/)
