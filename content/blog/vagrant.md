@@ -11,8 +11,7 @@ cover:
 
 So recently, I was setting up locally an open-source software, so to contribute to it (BTW it is called Zulip, Please check it out - it's an amazing org). And its documentation said me to download Vagrant in order to run it locally on Windows. I researched about it and this is what I got to know -
 
-"Vagrant is a tool that helps developers to create and manage virtual machines (VMs) or lightweight, reproducible development environments."
-
+***"Vagrant is a tool that helps developers to create and manage virtual machines (VMs) or lightweight, reproducible development environments."***
 
 
 It is an open-source tool. It automates the process of creating and configuring virtual machines, making it easier for developers to work on multiple projects with different system requirements on a single machine.
