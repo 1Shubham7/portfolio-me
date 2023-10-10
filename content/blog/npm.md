@@ -3,7 +3,7 @@ title: "WTF is JSON"
 description: "JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of..."
 dateString: May 2023
 draft: false
-tags: ["NPM", "Package Managers", "React", "NodeJS]
+tags: ["NPM", "Package Managers", "React", "NodeJS"]
 weight: 101
 cover:
     image: "blog/npm.avif"

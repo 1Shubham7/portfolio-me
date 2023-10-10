@@ -20,15 +20,10 @@ JSON is very lightweight, easy to read and integrates smoothly with JavaScript. 
 
 ```
 {
-
 "name": "Shubham",
-
 "age": 19,
-
 "isMarried": false,
-
 "skills": ["web dev", "devops", "android dev"]
-
 }
 ```
 
