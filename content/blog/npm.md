@@ -13,8 +13,6 @@ You might remember using npm start in your React app or using pip in python. Bot
 
 ***"A package manager is a tool used in software development to manage the installation, updating, and removal of software packages or libraries."***
 
-
-
 Package managers automate the process of searching, installing, and maintaining these packages, which makes it easier for developers to include them in their projects. Instead of manually downloading and installing each package separately, developers can use the package manager to handle all the dependencies and ensure that the necessary versions are installed.
 
 There are two main types of package managers:

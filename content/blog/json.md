@@ -3,7 +3,7 @@ title: "WTF is JSON"
 description: "JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of..."
 dateString: May 2023
 draft: false
-tags: ["Hashnode", "Technical Writing", "Blogs"]
+tags: ["JSON", "JavaScript", "NodeJS"]
 weight: 101
 cover:
     image: "blog/json.jpg"
