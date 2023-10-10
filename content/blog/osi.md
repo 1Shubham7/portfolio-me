@@ -1,6 +1,6 @@
 ---
-title: "WTF is JSON"
-description: "JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of..."
+title: "OSI Model - the easy way"
+description: "OSI Model - Straight to the point. · OSI (Open Systems Interconnection) model describes seven layers through which computer systems communicate over a..."
 dateString: May 2023
 draft: false
 tags: ["Networking", "OSI Model"]
