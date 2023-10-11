@@ -13,15 +13,18 @@ Recently while randomly scrolling Twitter, I stumbled upon a great tool for Buil
 
 
 
-What is this Content Management System? I am a beginner explain me in simpler terms.
-Imagine you have a website where you want to create, organize, and update various types of content ( articles, images, videos, etc). A Content Management System (CMS) is like a toolbox or a platform that helps you manage all of this content easily.
+### What is this Content Management System?
+
+I am a beginner explain me in simpler terms. Imagine you have a website where you want to create, organize, and update various types of content ( articles, images, videos, etc). A Content Management System (CMS) is like a toolbox or a platform that helps you manage all of this content easily.
 
 Instead of manually writing code or editing HTML files every time you want to make a change, a CMS provides you with a user-friendly interface where you can create and edit your content using familiar tools, similar to using a word processor or a website builder. It allows you to focus on the content itself without worrying too much about the technical aspects.
 
 Storyblok is also a Content Management System, and in my view, It's quite powerful!
 
-Got it! but what is Storyblok and why Storyblok?
+## what is Storyblok and why Storyblok?
 Storyblok is a headless Content Management System (CMS) designed to help businesses create, manage, and deliver content across different digital platforms. It provides a user-friendly interface for content creators and developers to collaborate on building and maintaining websites, mobile apps, and other digital experiences. To answer why Storyblok, why not we just go and try it out.
+
+## Follow these steps:
 
 Step 1. Go to the Storyblok website
 
@@ -67,7 +70,8 @@ Active Community and Support: Storyblok has a vibrant community of developers, c
 
 I tried multiple such content management systems, I kind of liked Storyblok more. But that might not be the same for you. so try out, get your hands dirty, after all the best way to learn is "learning by doing" rather than just reading a shitty blog by some unknown guy.
 
-Conclusion
+## Conclusion
+
 In conclusion, Storyblok is a powerful and user-friendly Content Management System (CMS) that empowers businesses and developers to create and manage digital content across various platforms. Its headless architecture, visual editing, component-based content creation, multilingual and localization support, developer-friendly tools, and collaborative workflow features make it an excellent choice for building complex and dynamic digital experiences.
 
 The platform enables faster and more efficient content creation and delivery, while also providing scalability and performance for high traffic websites and applications. Its active community and support resources ensure that users have access to help and guidance throughout their experience.
