@@ -6,7 +6,7 @@ draft: false
 tags: ["CNCF", "DevOps", "Open-source", "CI/CD"]
 weight: 101
 cover:
-    image: "blog/database.png"
+    image: "blog/dbms.avif"
 ---
 
 ## What is DBMS?
