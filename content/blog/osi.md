@@ -6,7 +6,7 @@ draft: false
 tags: ["Networking", "OSI Model"]
 weight: 101
 cover:
-    image: "blog/npm.avif"
+    image: "blog/oci.jpeg"
 ---
 
 OSI (Open Systems Interconnection) model describes seven layers through which computer systems communicate over a network.
