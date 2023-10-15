@@ -3,7 +3,7 @@ title: "Datatypes in Python"
 description: "Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence..."
 dateString: October 2023
 draft: false
-tags: ["CNCF", "DevOps", "Open-source", "CI/CD"]
+tags: ["Python", "DevOps", "DSA", "Datatypes"]
 weight: 101
 cover:
     image: "blog/python.png"
