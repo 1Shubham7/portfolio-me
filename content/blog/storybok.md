@@ -13,7 +13,7 @@ Recently while randomly scrolling Twitter, I stumbled upon a great tool for Buil
 
 
 
-### What is this Content Management System?
+## What is this Content Management System?
 
 I am a beginner explain me in simpler terms. Imagine you have a website where you want to create, organize, and update various types of content ( articles, images, videos, etc). A Content Management System (CMS) is like a toolbox or a platform that helps you manage all of this content easily.
 
@@ -26,27 +26,27 @@ Storyblok is a headless Content Management System (CMS) designed to help busines
 
 ## Follow these steps:
 
-Step 1. Go to the Storyblok website
+***Step 1.*** Go to the Storyblok website
 
-Step 2. Sign in or Sign up accordingly. As of now (16th June 2023) Storyblok is providing a 14-day free trial, 14 days would be enough for you to understand CMS and figure out if you wish to pursue it ahead.
+***Step 2.*** Sign in or Sign up accordingly. As of now (16th June 2023) Storyblok is providing a 14-day free trial, 14 days would be enough for you to understand CMS and figure out if you wish to pursue it ahead.
 
-Step 3. Upon Signing into the website, you will be provided with a window of your spaces. Here is mine -
-
-
-
-Step 4. Now just follow the guide to get used-to to the multiple tools and features -
+***Step 3.*** Upon Signing into the website, you will be provided with a window of your spaces. Here is mine -
 
 
+
+***Step 4.*** Now just follow the guide to get used-to to the multiple tools and features -
 
 
 
 
 
-Step 5. Try and experiment around various tools and features, and once you are done with the design, publish it.
+
+
+***Step 5.*** Try and experiment around various tools and features, and once you are done with the design, publish it.
 
 
 
-Step 6. Hurray! your brand new website is created and published in minutes. If you would sit and code such a website, it would have taken you days or even weeks depending upon the quality of the website. Here is a website that I created and published in less than 5 minutes
+***Step 6.*** Hurray! your brand new website is created and published in minutes. If you would sit and code such a website, it would have taken you days or even weeks depending upon the quality of the website. Here is a website that I created and published in less than 5 minutes
 
 
 

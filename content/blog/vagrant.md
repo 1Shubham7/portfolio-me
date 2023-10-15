@@ -3,7 +3,7 @@ title: "WTF is Vagrant"
 description: "Vagrant explained for absolute beginner. · So recently, I was setting up locally an open-source software, so to contribute to it (BTW it is called Zulip,..."
 dateString: May 2023
 draft: false
-tags: ["YAML", "markdown", "DevOps", "Open-source", "GitHub"]
+tags: ["Vagrant", "DevOps", "Open-source"]
 weight: 101
 cover:
     image: "blog/vagrant.avif"

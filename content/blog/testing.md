@@ -4,7 +4,7 @@ description: "A beginners guide to writing unit tests in Golang · Let's first s
 dateString: October 2023
 draft: false
 tags: ["Golang", "Testing", "Unit-Testing", "Open-source"]
-weight: 102
+weight: 100
 cover:
     image: "blog/testing.avif"
 ---

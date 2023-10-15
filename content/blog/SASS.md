@@ -1,7 +1,7 @@
 ---
 title: "Difference between SASS and SCSS"
 description: "SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two..."
-dateString: August 2023
+dateString: July 2023
 draft: false
 tags: ["SASS", "CSS", "SCSS", "Web Design"]
 weight: 101
