@@ -6,22 +6,22 @@ draft: false
 tags: ["CNCF", "DevOps", "Open-source", "CI/CD"]
 weight: 101
 cover:
-    image: "blog/database.png"
+    image: "blog/python.png"
 ---
 
 Python includes 6 types of built-in datatypes -
 
-Numeric datatype
+- Numeric datatype
 
-Boolean datatype
+- Boolean datatype
 
-Sequence datatype
+- Sequence datatype
 
-Sets
+- Sets
 
-Dictionaries
+- Dictionaries
 
-None
+- None
 
 ## Numeric datatype
 
@@ -51,7 +51,9 @@ else :
 print("a is not true")
 ```
 
-Sequence : These include strings, lists, tuples, and byte sequences. Strings are used to represent textual data, while lists and tuples are used to store collections of items. Byte sequences are similar to strings but represent binary data.
+## Sequence
+
+These include strings, lists, tuples, and byte sequences. Strings are used to represent textual data, while lists and tuples are used to store collections of items. Byte sequences are similar to strings but represent binary data.
 
 ```
 my_tuple = ("a", "b","c","d",5,6,7,8)
