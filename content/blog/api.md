@@ -3,7 +3,7 @@ title: "Everything about API explained!!"
 description: "API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,..."
 dateString: October 2023
 draft: false
-tags: ["API", "DevOps", "Open-source", "Backend"]
+tags: ["API", "Backend", "Programming"]
 weight: 101
 cover:
     image: "blog/api.png"
@@ -36,15 +36,19 @@ Some more examples of why we need API are:
 ***Cloud Services:*** Cloud computing providers such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform offer APIs for various services like storage, computing, and database management. Developers can leverage these APIs to build scalable and flexible cloud-based applications.
 
 ## API Architectures
+
 There are several types of API architectures commonly used in web development. Here are three prominent ones:
 
-### REST (Representational State Transfer): 
+### REST (Representational State Transfer):
+
 REST is a widely adopted architectural style for designing networked applications. RESTful APIs utilize the principles of the HTTP protocol and leverage its methods (GET, POST, PUT, DELETE, etc.) to perform operations on resources. REST APIs typically use URLs (Uniform Resource Locators) to identify resources and employ different HTTP status codes to indicate the outcome of a request. They emphasize statelessness, scalability, and interoperability, making them popular for building web services.
 
 ### SOAP (Simple Object Access Protocol):
+
 SOAP is an XML-based protocol that enables communication between applications over a network. SOAP APIs define a strict structure for request and response messages using XML schemas. They rely on the XML format for data representation and typically use the POST method for communication. SOAP APIs often employ Web Services Description Language (WSDL) to describe the available operations, message formats, and service endpoints. SOAP APIs are known for their strong message-level security and support for advanced features such as transactions and reliability.
 
 ### GraphQL:
+
 GraphQL is an open-source query language and runtime for APIs developed by Facebook. It allows clients to request precisely the data they need, eliminating over-fetching or under-fetching of data common in traditional REST APIs. With GraphQL, clients can send queries specifying the desired data structure, and the server responds with a JSON payload containing only the requested data. This flexible and efficient approach to data fetching makes GraphQL popular for applications with complex data requirements and enables clients to aggregate data from multiple sources in a single request.
 
 These are just a few examples of API architectures, and there are other variations and hybrid approaches as well. The choice of API architecture depends on factors such as the project requirements, scalability needs, interoperability considerations, and the preferences of the development team.

@@ -10,13 +10,14 @@ cover:
 ---
 
 ## What is YAML?
+
 YAML (which stands for "YAML Ain't Markup Language") is a human-readable data serialization language. We will talk later about what a serialization language is.
 
 YAML is used for configuration files, exchanging data between programming languages and storing data. YAML files are extensively used in the DevOps field. YAML is considered better than its alternative because of its easy-to-read way.
 
 It is often used for configuration files, data exchange between programming languages, and storing data in a structured and easy-to-read way.
 
-YAML files are denoted by ".YML" OR ".YAML".
+YAML files are denoted by **".YML"** OR **".YAML"**.
 
 Initially, YAML was called "Yet Another Markup Language". but the name was changed to simply "YAML Ain't Markup Language" (or just YAML) in order to emphasize that YAML is not just another markup language like XML or HTML, but rather a data serialization language that is more human-readable and easier to work with.
 
@@ -102,6 +103,7 @@ person2:
 
 
 ## Data serialization:
+
 Data serialization is the process of converting data from one format to another. When data is serialized, it is transformed into a format that can be easily stored or transmitted across different applications or systems.
 
 The reverse process of converting the serialized data back to its original format is called deserialization.
@@ -109,6 +111,7 @@ The reverse process of converting the serialized data back to its original forma
 For Data serialization, we use the data serialization formats like JSON, YAML and XML. YAML is one of the more popular options out of these. JSON and YAML are more human-readable than XML.
 
 ## Advantages of YAML:
+
 Here are some benefits of YAML:
 
 ***Human-readable:*** One of the biggest benefits of YAML is that it is easy for humans to read and write. Unlike JSON or XML, YAML documents use simple indentation and whitespace to structure data, making them easier to understand and modify.
