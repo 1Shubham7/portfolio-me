@@ -11,7 +11,7 @@ cover:
 
 Recently while randomly scrolling Twitter, I stumbled upon a great tool for Building websites and applications. Not just this, this tool is used by professionals for Multilingual content management, Content localization and Managing content across multiple channels. I tried it and here is my experience of using Storyblok for the first time.
 
-
+![StoryBlock Logo](../../../static/img/storyblok-logo.avif)
 
 ## What is this Content Management System?
 
@@ -22,6 +22,7 @@ Instead of manually writing code or editing HTML files every time you want to ma
 Storyblok is also a Content Management System, and in my view, It's quite powerful!
 
 ## what is Storyblok and why Storyblok?
+
 Storyblok is a headless Content Management System (CMS) designed to help businesses create, manage, and deliver content across different digital platforms. It provides a user-friendly interface for content creators and developers to collaborate on building and maintaining websites, mobile apps, and other digital experiences. To answer why Storyblok, why not we just go and try it out.
 
 ## Follow these steps:
