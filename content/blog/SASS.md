@@ -19,57 +19,37 @@ Sass works by providing a set of extensions to CSS, which are then compiled to s
 
 ```
 $primary-color: #ff0000;
-
 $secondary-color: #00ff00;
 
 @mixin center-element {
-
 display: flex;
-
 justify-content: center;
-
 align-items: center;
-
 }
 
 .header {
-
 background-color: $primary-color;
-
 color: #ffffff;
-
 padding: 10px;
 
 h1 {
-
 font-size: 24px;
-
 margin-bottom: 10px;
-
 }
 
 &.large {
-
 font-size: 32px;
-
 }
 
 &.small {
-
 font-size: 18px;
-
 }
-
 }
 
 .container {
-
 @include center-element;
-
 background-color: $secondary-color;
-
 height: 200px; width: 200px;
-
 }
 ```
 
@@ -83,87 +63,55 @@ SCSS can help to shorten your CSS code, make it more maintainable, and easier to
 
 ```
 $primary-color: #007bff;
-
 $secondary-color: #6c757d;
-
 @mixin center-element {
-
 display: flex;
-
 align-items: center;
-
 justify-content: center;
-
 }
 
 .container {
-
 width: 100%;
+    .header {
+        background-color: $primary-color;
+        color: white;
+        padding: 20px;
 
-.header {
-
-background-color: $primary-color;
-
-color: white;
-
-padding: 20px;
-
-h1 {
-
-font-size: 24px;
-
+    h1 {
+        font-size: 24px;
+    }
 }
 
+    .main {
+        background-color: white;
+        padding: 20px;
+        .content {
+        margin-bottom: 20px;
+
+        p {
+            color: $secondary-color;
+        }
+    }
 }
 
-.main {
+    .footer {
+        background-color: $secondary-color;
+        color: white; padding: 20px;
+        }
+    }
 
-background-color: white;
-
-padding: 20px;
-
-.content {
-
-margin-bottom: 20px;
-
-p {
-
-color: $secondary-color;
-
-}
-
-}
-
-}
-
-.footer {
-
-background-color: $secondary-color;
-
-color: white; padding: 20px;
-
-}
-
-}
-
-.centered-box {
-
-@include center-element;
-
-width: 200px;
-
-height: 200px;
-
-background-color: $primary-color;
-
-color: white;
-
-}
+    .centered-box {
+        @include center-element;
+        width: 200px;
+        height: 200px;
+        background-color: $primary-color;
+        color: white;
+    }
 ```
 
-
 ## Difference between SCSS and SASS:
-### ***SCSS:***
+
+### SCSS
 SCSS is a superset of CSS, which means that any valid CSS code is also valid SCSS code.
 
 - SCSS uses the same syntax as CSS, with curly braces {} and semicolons ;.
@@ -172,15 +120,12 @@ SCSS is a superset of CSS, which means that any valid CSS code is also valid SCS
 
 - SCSS files have the .scss file extension.
 
-### ***Sass:***
+### SASS
 Sass has its own syntax, which is more concise and indentation-based.
 
 - It doesn't use curly braces {} or semicolons ;. Instead, indentation is used to indicate nesting and separate properties.
-
 - It doesn't require the use of brackets or semicolons, which can make the code look cleaner and more readable.
-
 - Sass supports all the features of SCSS, including nested selectors, variables, mixins, and more.
-
 - Sass files have the .sass file extension.
 
 ## Conclusion :
