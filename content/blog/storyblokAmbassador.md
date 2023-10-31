@@ -1,12 +1,12 @@
 ---
 title: "All about the Storyblok Ambassadors Program"
-description: "Explaining Storyblok in simple and powerful terms. · Recently while randomly scrolling Twitter, I stumbled upon a great tool for Building websites and..."
-dateString: October 2023
+description: "Hey there! So, remember when I mentioned Storyblok in my previous blog? Well, guess what? I discovered something super cool called the Storyblok..."
+dateString: September 2023
 draft: false
-tags: ["Storyblok", "CMS", Open-source", "GitHub"]
+tags: ["Storyblok", "CMS", Open-source", "GitHub", "Storyblok Ambassadorship"]
 weight: 101
 cover:
-    image: "blog/storyblok.avif"
+    image: "blog/storyblok-amb.avif"
 ---
 
 Hey there! So, remember when I mentioned Storyblok in my previous blog? Well, guess what? I discovered something super cool called the Storyblok Ambassadors Program! I was so intrigued that I decided to sign up myself. And let me tell you, it involved a bit of research, but it was totally worth it!
