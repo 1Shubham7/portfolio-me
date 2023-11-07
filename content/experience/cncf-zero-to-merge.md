@@ -11,7 +11,7 @@ cover:
 
 ## CNCF Zero to Merge Incubator
 
-CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.
+CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them. I was the part of the first cohort of CNCF Zero to merge where I learned about how to get started with contributing to CNCF projects. It was a one month long program where we started with introduction to CNCF and gradually progressed towards how to make contributions to various CNCF projects.
 
 Learning: 
 
