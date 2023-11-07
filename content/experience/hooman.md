@@ -6,6 +6,8 @@ draft: false
 tags: ["Hugo", "Frontend", "Open-source" ]
 showToc: false
 weight: 301
+cover:
+    image: "experience/hooman.jpeg"
 --- 
 
 ## Hooman Digital
