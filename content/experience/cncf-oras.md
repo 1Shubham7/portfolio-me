@@ -11,9 +11,11 @@ cover:
 
 ## CNCF ORAS
 
-CNCF is the open source, vendor-neutral hub of cloud native computing, hosting projects like Kubernetes and Prometheus to make cloud native universal and sustainable.
+CNCF is the open source, vendor-neutral hub of cloud native computing, hosting projects like Kubernetes and Prometheus to make cloud native universal and sustainable. ORAS is a sandbox project under CNCF.
 
-I contributed to 2 repositories of CNCF ORAS: oras and oras-www.
+ORAS is the de facto tool for working with OCI Artifacts. It treats media types as a critical piece of the puzzle. Container images are never assumed to be the artifact in question. ORAS provides CLI and client libraries to distribute artifacts across OCI-compliant registries.
+
+I contributed to 2 repositories of CNCF ORAS: `oras` and `oras-www`.
 
 ## Learnings
 
