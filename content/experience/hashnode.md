@@ -5,6 +5,8 @@ draft: false
 tags: ["Golang", "React", "JavaScript", "Open-source" ]
 dateString: Aug 2023 - Present
 description: "Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community."
+cover:
+    image: "experience/hashnode.avif"
 ---
 
 ## Tech Blogs on Hashnode
