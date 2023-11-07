@@ -12,7 +12,7 @@ cover:
 
 ## Hooman Digital
 
-We at Hooman Digital specialize in creating engaging and user-friendly designs for digital interfaces, as well as developing fully functional and responsive websites. Hooman Digital works with technologies around web development, Artificial Intelligence, and web3. Visit the Hooman Digital official website at hooman digital to know more.
+We at **Hooman Digital** specialize in creating engaging and user-friendly designs for digital interfaces, as well as developing fully functional and responsive websites. Hooman Digital works with technologies around web development, Artificial Intelligence, and web3. Visit the Hooman Digital official website at hooman digital to know more.
 
 - Worked as a Hugo expert with Hooman Digital. Worked with a team of developers to create static websites, transition Hugo + SCSS website to Tailwind and enhance functionality of multiple websites.
 

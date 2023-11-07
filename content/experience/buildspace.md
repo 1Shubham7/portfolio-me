@@ -9,7 +9,7 @@ cover:
     image: "experience/buildspace.webp"
 ---
 
-NightsandWeekends is a six-week school to build your ideas.
+**NightsandWeekends** is a six-week school to build your ideas.
 
 As they have presented in their website - NightsandWeekends is where you will take any idea you’re excited about, figure out how to bring it to life, and turn it into something that people give a shit about — alongside thousands of others.
 
