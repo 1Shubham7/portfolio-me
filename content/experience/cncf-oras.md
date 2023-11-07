@@ -13,11 +13,11 @@ cover:
 
 CNCF is the open source, vendor-neutral hub of cloud native computing, hosting projects like Kubernetes and Prometheus to make cloud native universal and sustainable.
 
-I contributed to CNCF ORAS 
+I contributed to 2 repositories of CNCF ORAS: oras and oras-www.
 
 ## Learnings
 
-- Worked and connected with highly skilled developers. 
+- Worked and connected with highly skilled developers.
 - Worked with the documentation part of the website.
 - Worked on the Golang part of the project and had 6 PRs merged into the project as of now (10th Aug 2023)
 - Learned about how to navigate a professional codebase and how to contribute to it.
