@@ -1,5 +1,5 @@
 ---
-title: "Hugo Expert - Hooman Digital"
+title: "Hugo Expert Intern"
 description: "Creating engaging and user-friendly designs for digital interfaces, as well as developing fully functional and responsive websites. working with technologies around web development, Artificial Intelligence, and web3."
 dateString: Aug 2023 - Sep 2023
 draft: false
@@ -7,7 +7,7 @@ tags: ["Hugo", "Frontend", "Open-source" ]
 showToc: false
 weight: 301
 cover:
-    image: "experience/hooman.jpeg"
+    image: "experience/hooman.jpg"
 --- 
 
 ## Hooman Digital

@@ -5,6 +5,8 @@ draft: false
 tags: ["Golang", "DevOps", "Open-source", "React" ]
 dateString: Aug 2023 - Sep 2023
 description: "CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them."
+cover:
+    image: "experience/cncf.png"
 ---
 
 ## CNCF Zero to Merge Incubator
