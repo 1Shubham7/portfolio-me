@@ -17,14 +17,18 @@ menu:
       name: Blog
       url: /blog
       weight: 30
+    - identifier: learn-devops
+      name: Learn DevOps
+      url: /learn-devops
+      weight: 40
     - identifier: projects
       name: Projects
       url: /projects
-      weight: 40
+      weight: 50
     - identifier: search
       name: Search
       url: /search
-      weight: 50
+      weight: 60
 
 params:
   # theme
