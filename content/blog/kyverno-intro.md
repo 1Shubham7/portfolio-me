@@ -9,7 +9,13 @@ cover:
     image: "blog/kyverno.png"
 ---
 
-## Introduction to Kyverno
+Kyverno is admission controller that can be used to govern and enforce how a Kubernetes cluster is used.
+
+## Admission Controllers
+
+Let's first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate.
+
+Admission control phas
 
 Kyverno is an admission controller for a Kubernetes cluster. But it is more than a admission controller. Kyverno comes from the Greek word meaning "to govern".
 
