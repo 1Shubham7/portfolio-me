@@ -174,8 +174,17 @@ Why do we need Kyverno, one good example would be this scary piece of code in Ku
 kubectl run r00t --restart=Never -ti --rm --image lol --overrides '{"spec":{"hostPID": true, "containers":[{"name":"1","image":"public.ecr.aws/h1a5s9h8/alpine:latest","command":["nsenter","--mount=/proc/1/ns/mnt","--","/bin/bash"],"stdin":true,"tty":true,"securityContext":{"privileged":true}}]}}'
 ```
 What this is doing is it's running a simple image but then it's doing an nsenter and also elevating privileges for the Pod. So if we run this, the interesting thing that happens if we have no policies or no guardrails in place it that all we need is permissions to run a container in any namespace and we will have access to bash shell. With that we can look at all the containers running.
+
+
 `cd var/log/containers`
 
 `ls`
 
 `exit`
+
+
+# Tutorial
+
+`minikube start
+
+`kubectl create -f https://github.com/kyverno/kyverno/releases/download/v1.11.1/install.yaml`
