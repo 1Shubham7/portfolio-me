@@ -15,9 +15,7 @@ Kyverno is a dynamic admission controller that can be used to govern and enforce
 
 Let's first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.
 
-Admission control phas
-
-Kyverno is an admission controller for a Kubernetes cluster. But it is more than a admission controller. Kyverno comes from the Greek word meaning "to govern".
+Admission control phases
 
 The primary job of a admission controller is to validate the resources. If a resource is passed to an admission controller it will tell if it is allowed or not. And that is all what an admission controller does. But as we said Kyverno is more than just an admission controller. Kyverno acts as a admission controller and validates the resources but it also can change the resources transparently.
 
