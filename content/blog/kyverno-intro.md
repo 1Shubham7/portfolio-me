@@ -1,5 +1,5 @@
 ---
-title: "Introduction to Kyverno"
+title: "Introduction to Kubernetes Native Policy Management with Kyverno"
 description: ""
 dateString: December 2023
 draft: false
