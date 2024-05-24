@@ -17,10 +17,6 @@ menu:
       name: Blog
       url: /blog
       weight: 30
-    - identifier: learn-devops
-      name: Learn DevOps
-      url: /learn-devops
-      weight: 40
     - identifier: projects
       name: Projects
       url: /projects
