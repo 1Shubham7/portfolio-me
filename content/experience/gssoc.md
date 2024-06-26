@@ -5,7 +5,7 @@ dateString: May 2023 - Aug 2023
 draft: false
 tags: ["React", "Frontend", "Django", "Open-source" ]
 showToc: false
-weight: 301
+weight: 15
 cover:
     image: "experience/gssoc.png"
 --- 

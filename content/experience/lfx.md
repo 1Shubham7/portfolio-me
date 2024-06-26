@@ -5,7 +5,7 @@ dateString: June 2024 - Aug 2024
 draft: false
 tags: ["Golang", "Kubernetes", "KubeEdge", "Tests", "Ginkgo", "Gomega", "Testify" ]
 showToc: false
-weight: 302
+weight: 10
 cover:
     image: "experience/lfx.webp"
 ---

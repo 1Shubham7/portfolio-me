@@ -5,6 +5,7 @@ description: "ORAS is the de facto tool for working with OCI Artifacts. It treat
 draft: false
 tags: ["Golang", "DevOps", "Open-source" ]
 dateString: July 2023 - Ongoing
+weight: 12
 cover:
     image: "experience/cncf.png"
 ---
