@@ -13,7 +13,7 @@ Contributing to open source, specially to the Cloud Native Community Foundation 
 
 ## My first contribution to CNCF
 
-
+I got know about CNCF through YouTube, I heard many engineers in cloud native space talk about CNCF and I went to the CNCF home page but I couldn't understand anything, I think the reasons was that I had never anything similar to that. Is this a company, or is to a project? or is it like a facebook group? But as I leaned more about cloud native technologies like Docker, Kubernetes I understood what CNCF is and what it stands for, by this time I also started searching of some CNCF projects to contribute and one such project was CNCF ORAS (OCI Registries As Service), basically it is a tool for pushing and downloading OCI Artifacts from the OCI Registries. Special thanks to I made my first CNCF contribution in CNCF ORAS 
 
 ## Applying for LFX for the first time
 
