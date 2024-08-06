@@ -94,7 +94,9 @@ Tip - Kyverno is also a great project if you are decent at go + Kubernetes since
 
 Even I did the same, I also went through some CNCF talks about Kyverno, completed the certification and then started contributing. I started with some code contributions and then also created a section in their documentation about admission controllers which may go live after some time with changes form the maintainers.
 
-I contributed to Kyverno for a few months while also managing my internship and college classes and finally the time came when projects for LFX term 2 2024 were released.
+I contributed to Kyverno for a few months while also managing my internship and college classes and finally the time came when projects for LFX term 2 2024 were released. I saw the list of CNCF projects that had applied for term 2, 2024 and Kyverno was not there and once again I had to change my project in the last minute. I was going through all the projects that were coming in LFX, I saw KubeEdge there, I had some idea about what KubeEdge is and I found the projects that KubeEdge had for LFX term 2 are doable for me. My focus was on two projects, one was about documentation improvement and the other one was about tests enhancement. While I was more interested in code contributions but I had a background of working as a technical writer for 8 months and I also had good contributions in Kyverno documentation so I decided to focus more on the documentation enhancement project and alddo give time to the tests enhancement project.
+
+
 
 <center>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -126,9 +128,7 @@ I contributed to Kyverno for a few months while also managing my internship and 
 <path d="M0 0 C3.0625 0.375 3.0625 0.375 5 2.125 C6.0625 4.375 6.0625 4.375 5.875 6.5 C5.0625 8.375 5.0625 8.375 3.0625 10.375 C0.0625 10.625 0.0625 10.625 -2.9375 10.375 C-4.9375 8.375 -4.9375 8.375 -5.1875 5.375 C-4.8467171 1.28560516 -4.06103243 0.51842967 0 0 Z " fill="#FDF9F7" transform="translate(66.9375,105.625)"/>
 <path d="M0 0 C0.625 2.8125 0.625 2.8125 1 6 C0.01 7.485 0.01 7.485 -1 9 C-4.5 9.375 -4.5 9.375 -8 9 C-10 6 -10 6 -9.75 2.875 C-9.37875 1.451875 -9.37875 1.451875 -9 0 C-5.93109813 -1.53445094 -3.29905734 -0.54984289 0 0 Z " fill="#FEFAF8" transform="translate(18,107)"/>
 </svg>
-<center>
-
-
+</center>
 
 
 
