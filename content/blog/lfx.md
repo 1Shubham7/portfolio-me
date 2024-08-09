@@ -42,6 +42,10 @@ Since I was assuming that I would be seleceted into the documentation improvemen
 
 ![Kyverno Logo](/blog/LFXblog/kyverno-img.png)
 
+![ORAS Logo](/blog/LFXblog/oras.png)
+
+![KubeEdge Logo](/blog/LFXblog/kubeedge.png)
+
 
 ## Applying for LFX for the third time
 
