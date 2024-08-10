@@ -9,11 +9,11 @@ cover:
     image: "experience/lfx.webp"
 ---
 
-Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and directly work unedr the guidance of highly talented engineers in the cloud native development space. It's been an year for me as a contributor in the CNCF ecosystem and now as I wrap up my LFX (Linux Foundation Mentorship) program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.
+Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and working with experienced engineers on large scale projects. It's been an year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.
 
 ## My first contribution to CNCF
 
-I got know about CNCF through YouTube, I heard many engineers in cloud native space talk about CNCF and I went to the CNCF home page but I couldn't understand anything, I think the reasons was that I had never anything similar to that. Is this a company, or is to a project? or is it like a facebook group? But as I leaned more about cloud native technologies like Docker, Kubernetes I understood what CNCF is and what it stands for, by this time I also started searching of some CNCF projects to contribute and one such project was CNCF ORAS (OCI Registries As Service), basically it is a tool for pushing and downloading OCI Artifacts from the OCI Registries. Special thanks to I made my first CNCF contribution in CNCF ORAS .
+I got know about CNCF through YouTube, I heard some YouTubers in cloud native space talk about CNCF and I went to the CNCF home page but I couldn't understand anything, I think the reasons was that I had never anything similar to that. Is this a company, or is to a project? or is it like a Facebook group? But as I leaned more about cloud native technologies like Docker, Kubernetes I understood what CNCF is and what it stands for, by this time I also started searching of some CNCF projects to contribute and one such project was CNCF ORAS (OCI Registries As Service), basically it is a tool for pushing and downloading OCI Artifacts from the OCI Registries. Special thanks to I made my first CNCF contribution in CNCF ORAS .
 
 
 ## Applying for LFX for the first time
@@ -46,7 +46,6 @@ Since I was assuming that I would be seleceted into the documentation improvemen
 
 ![KubeEdge Logo](/blog/LFXblog/kubeedge.png)
 
-
 ## Applying for LFX for the third time
 
 ## An finally I got in!
@@ -55,6 +54,12 @@ Since I was assuming that I would be seleceted into the documentation improvemen
 
 ## Final thoughts
 
+The 2.5 months of LFX mentorship was the best learning experience I had in tech. In these 2.5 months, I explored how to use KubeEdge ,worked with my mentors to improve test coverage of the project as well as contribute to the documentation. I am really greateful that I got to work on an emerging CNCF project with such experienced engineers as my mentors.  Working closing with such great engineers have taught me a lot about cloud native application development, testing and a lot more stuff. I am thankful to the Linux Foundation for conducting such an amazing open source program and doing it consistently over the years.
+
 ## A small thank you note to Linux Foundation and CNCF
 
+I also want to thank Sriji amarthan, sadfa, asd and everybody in the Linux Foundation team. During this LFX period I also went through a cyber fraud and the people their were kind to let me refill my stipend report and patiently waited for the whole thing to fix. Thank you guys, you guys are awesome :)
+
 ## A small thank you note to my mentors - Fiexer Xu and Bao Yue
+
+I would also like to thank my mentors Feixer Xu and Bao Yue for being so helpful and so supportive throughout the mentorship. I am thankful that you gave me some time from your busy days and helped me out wherever I got stuck.
