@@ -34,10 +34,7 @@ After this the tasks I had to complete in order to complete my LFX application w
 
 With the past experience I had as an technical writer, and contributions I had to the KubeEdge documentation I thought I had more chances of getting in to the "documentation improvement" projects. While I would have loved to work under any of the two proejcts and I just wanted to get in into LFX, on the result date I was surprised for good that I have been selected to the "tests enhancement" project. I was super excited to work under my mentors and I just got started by revising some stuff related to unit testing and E2E testing, and then just direclty jumped into writing tests.
 
-For the first few weeks I worked on writing Unit tests for modules where I didn't see much tests, I was that at most of the places the project used standard libraries for testing while an assertion library like testify/assert could be a better choice. So I started with discussing this with my mentor, I discussed about the advantages of using an third party assertion library and my mentor agreed and hence for couple of weeks I wrote a lot of unit tests for a lot of modules and for the modules where already tests were written, I migrated those from using standard library to testify/assert.
-
-Since I was assuming that I would be seleceted into the documentation improvement project, before LFX when I could have learned more about writing tests, I was busy contributing to documentation, learning more about the project and watching tutorials on how to write better documentation. Because of this my early weeks at LFX were qiute hectic, I was not only writing tests but also learning how to write E2E tests, figuring out how to use ginkgo and gomega and looking around if there were better alternatives for E2E testing than ginkgo and gomega. Since all I had to do was writing tests, my LFX mentorship went quite smooth (work wise), I wrote unit tests till the end of the mentorship because the project had very less test coverage (about 40%) and the goal of the community was to bring it to 80%, while the mentors did not burden me with this goal. They told me to improve the coverage as much as I could.
-
+<!-- Keep it wiht the selection section -->
 ![LFX Acceptance Mail](/blog/LFXblog/lfx-mail.png)
 
 ![Kyverno Logo](/blog/LFXblog/kyverno-img.png)
@@ -46,11 +43,13 @@ Since I was assuming that I would be seleceted into the documentation improvemen
 
 ![KubeEdge Logo](/blog/LFXblog/kubeedge.png)
 
-## Applying for LFX for the third time
-
-## An finally I got in!
+## And finally I got in!
 
 ## My LFX mentorship Experience
+
+For the first few weeks I worked on writing Unit tests for modules where I didn't see much tests, I was that at most of the places the project used standard libraries for testing while an assertion library like testify/assert could be a better choice. So I started with discussing this with my mentor, I discussed about the advantages of using an third party assertion library and my mentor agreed and hence for couple of weeks I wrote a lot of unit tests for a lot of modules and for the modules where already tests were written, I migrated those from using standard library to testify/assert.
+
+Since I was assuming that I would be seleceted into the documentation improvement project, before LFX when I could have learned more about writing tests, I was busy contributing to documentation, learning more about the project and watching tutorials on how to write better documentation. Because of this my early weeks at LFX were qiute hectic, I was not only writing tests but also learning how to write E2E tests, figuring out how to use ginkgo and gomega and looking around if there were better alternatives for E2E testing than ginkgo and gomega. Since all I had to do was writing tests, my LFX mentorship went quite smooth (work wise), I wrote unit tests till the end of the mentorship because the project had very less test coverage (about 40%) and the goal of the community was to bring it to 80%, while the mentors did not burden me with this goal. They told me to improve the coverage as much as I could.
 
 ## Final thoughts
 
