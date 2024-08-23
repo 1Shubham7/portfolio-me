@@ -15,6 +15,7 @@ Contributing to open source, specially to the Cloud Native Community Foundation 
 
 Let's start it from my introduction to CNCF, I got know about CNCF through YouTube videos, I saw some YouTubers in cloud native space talk about CNCF and I went to the CNCF home page but I couldn't understand anything, I think the reasons was that I had never anything similar to that. I was confused whether CNCF a company where I can get placed? or is it a project? or is it like a community? But as I leaned more about cloud native technologies like Docker, Kubernetes I understood what CNCF is and what it stands for, by this time I also started searching of some CNCF projects to contribute to and one such project was CNCF ORAS (OCI Registries As Service), basically it is a tool for pushing and downloading OCI Artifacts from the OCI Registries. I contributed to ORAS for a month where I learned the how to contribute to a CNCF project. I think the best way is first, understand what the project is by reading docs and try using it, then using docs set it up locally and then look up for issues labelled "good first" or "help wanted" on their GitHub repo and start by solving those issues. I made my first CNCF contribution in CNCF ORAS. 
 
+![ORAS Logo](/blog/LFXblog/oras.png)
 
 ## Applying for LFX for the first time
 
@@ -39,7 +40,7 @@ With the past experience I had as an technical writer, and contributions I had t
 
 ![Kyverno Logo](/blog/LFXblog/kyverno-img.png)
 
-![ORAS Logo](/blog/LFXblog/oras.png)
+
 
 ![KubeEdge Logo](/blog/LFXblog/kubeedge.png)
 
