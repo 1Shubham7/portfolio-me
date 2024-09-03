@@ -37,26 +37,17 @@ Even I did the same, I also went through some CNCF talks about Kyverno, complete
 
 ![KubeEdge Logo](/blog/LFXblog/kubeedge.png)
 
-I contributed to Kyverno for a few months while also managing my internship and college classes and finally the time came when projects for LFX term 2 2024 were announced. I saw the list and Kyverno was not there and once again I had to change my project just before a month from LFX. I was going through all the projects that were coming in LFX, I saw KubeEdge there, I had some idea about what KubeEdge is and I found the projects really interesting so I decided to apply for LFX under KubeEdge. I applied for two projects, one was about writing new documentation and the other one was about test enhancement. While I was more interested in code contributions but I had a background of working as a technical writer for 8 months and I also had good contributions in Kyverno documentation so I decided to focus more on the documentation enhancement project and also give time to learn things for the tests enhancement project.
+I contributed to Kyverno for a few months while also managing my internship and college classes and finally the time came when projects for LFX term 2 2024 were announced. I saw the list and Kyverno was not there and once again I had to change my project just before a month from LFX. I was going through all the projects that were coming in LFX, I saw [KubeEdge](https://kubeedge.io/) there, KubeEdge is a Kubernetes native edge computing framework. I had some idea about what KubeEdge is and I found the projects really interesting so I decided to apply for LFX under KubeEdge. I applied for two projects, one was about writing new documentation and the other one was about test enhancement. While I was more interested in code contributions but I had a background of working as a technical writer for 8 months and I also had good contributions in Kyverno documentation so I decided to focus more on the documentation enhancement project and also give time to learn things for the tests enhancement project.
 
 For the documentation improvement project, I went through all the tutorials present online for KubeEdge, I went through the entire documentation and I tried improving the documentation by bringing in changes in sentence refactoring, rephrasing docs and some other improvements. majorly, I wrote some blogs for different KubeEdge releases from v1.10 to v1.17, for this I used the changelogs of these releases as reference. While for the tests enhancement project, I started learning about writing unit tests, E2E tests using ginkgo and gomega, TDD (Test driven development) and tinkering with some libraries I could use for testing in golang. I had about a month to contribute to KubeEdge, understand the project and prepare two cover letter for the two projects. By the time LFX registrations started, I had good number of Pull Requests merged in KubeEdge (11) and some were being reviewed.
 
-After this the tasks I had to complete in order to complete my LFX application were - submit a resume, and submit a cover letter (which is the case for most of the projects, some projects can also ask for another task testing your knowledge about the tool). I already had a good resume prepared so I made minor changes in it, I started preparing my cover letter for both the projects, in the cover letter I mentioned my past contributions to the CNCF community as well as to Kyverno, other than that I answered honestly all the standard questions that LFX asks and presented how I would go about working on the project for three months.
+After this, the tasks I had to complete in order to complete my LFX application were - submit a resume, and submit a cover letter (which is the case for most of the projects, some projects can also ask for another task testing your knowledge about the tool). I already had a good resume prepared so I made minor changes in it, I started preparing my cover letter for both the projects, in the cover letter I mentioned my past contributions to the CNCF community as well as to Kyverno, other than that I answered honestly all the standard questions that are asked, other that this I also mentioned how I would go about working on the project for the three months.
 
 ## And I finally got in!
 
-With the past experience I had as an technical writer, and contributions I had to the KubeEdge documentation I thought I had more chances of getting in to the "documentation improvement" projects. While I would have loved to work under any of the two proejcts and I just wanted to get in into LFX, on the result date I was surprised for good that I have been selected to the "tests enhancement" project. I was super excited to work under my mentors and I just got started by revising some stuff related to unit testing and E2E testing, and then just direclty jumped into writing tests.
+With my past experience as a technical writer, and the contributions I made to the KubeEdge documentation as well as Kyverno documentation I thought I had more chances of getting in to the documentation project, on the result date I was surprised for good that I have been selected to the "tests enhancement" project, this was even better because now I would get to make code contributions. I was super excited to work under my mentors. I just got started by revising some stuff related to unit testing and E2E testing, and then jumped into writing tests.
 
-<!-- Keep it wiht the selection section -->
 ![LFX Acceptance Mail](/blog/LFXblog/lfx-mail.png)
-
-
-
-
-
-
-
-## And finally I got in!
 
 ## My LFX mentorship Experience
 
