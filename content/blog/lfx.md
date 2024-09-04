@@ -69,14 +69,16 @@ By the time my LFX mentorship period ended, I had improved test coverage of out 
 
 ![LFX Mid term evaluations](/blog/LFXblog/two-half.png)
 
+![LFX completion letter](/blog/LFXblog/result.png)
+
 ## Final thoughts
 
 The 3 months of LFX mentorship was one of the best learning experience I ever had in tech. In these 3 months, I explored how to use KubeEdge, worked with my mentors to improve test coverage of the project as well as contribute to the documentation. I am really grateful that I got to work on an emerging CNCF project with such experienced engineers as my mentors. Working closing with such great engineers have taught me a lot about cloud native application development, testing and a lot more stuff. I am thankful to the Linux Foundation for conducting such an amazing open source program and doing it consistently over the years and I highly recommend it to everyone that at least applying for LFX if you are a student or somebody interested in FOSS, even the application process and contributions will teach you a lot about FOSS development
 
-## A small thank you note to Linux Foundation
+### A small thank you note to Linux Foundation
 
 I want to thank the entire Linux Foundation team, specially Nate Waddington and Sriji Ammanath. During this LFX period I also suffered  a cyber fraud and the LF team specially Nate and Sriji were kind enough to pause my payments and patiently waited for the whole thing to be fixed. Thank you guys :)
 
-## A small thank you note to my mentors
+### A small thank you note to my mentors
 
 I would also like to thank my mentors Fisher Xu and Shelley Bao Yue for being so helpful and so supportive throughout the mentorship. I am thankful that you gave me some time from your busy days and helped me out wherever I got stuck. Thank you mentors, you guys are awesome :)
