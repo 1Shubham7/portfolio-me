@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>CNCF on Shubham Singh</title>
+    <link>http://localhost:1313/tags/cncf/</link>
+    <description>Recent content in CNCF on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/cncf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Databases - the easy way</title>
+      <link>http://localhost:1313/blog/database/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/database/</guid>
+      <description>Databases in the simplest yet most powerful way ever. Keeping in mind placements and development. · Databases: just a digital tool that stores and...</description>
+    </item>
+    
+    <item>
+      <title>DBMS - the easy way</title>
+      <link>http://localhost:1313/blog/dbms/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/dbms/</guid>
+      <description>Database Management System in the simplest but most powerful way. · What is DBMS? if you have created or are going to create a database, obviously, you...</description>
+    </item>
+    
+    <item>
+      <title>Everything about Artifacts for DevOps</title>
+      <link>http://localhost:1313/blog/artifacts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/artifacts/</guid>
+      <description>Artifacts - from beginner to advanced. · What are artifacts? In the broadest sense, artifacts are objects or items created or modified by humans that...</description>
+    </item>
+    
+    <item>
+      <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
+      <link>http://localhost:1313/blog/open-source101/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/open-source101/</guid>
+      <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
+    </item>
+    
+    <item>
+      <title>Some DevOps terms a beginner should know about</title>
+      <link>http://localhost:1313/blog/devops/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/devops/</guid>
+      <description>Start your DevOps journey with these terms. · DevOps can be a bit confusing for beginners, that is because of its complex terminologies. Here are some...</description>
+    </item>
+    
+  </channel>
+</rss>

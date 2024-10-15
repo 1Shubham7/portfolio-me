@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>YAML - from basics to advanced | Shubham Singh</title>
+<meta name="keywords" content="YAML, markdown, DevOps, Open-source, GitHub">
+<meta name="description" content="explaining YAML from basics to advanced · What is YAML? YAML (which stands for &#39;YAML Ain&#39;t Markup Language&#39;) is a human-readable data serialization...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/yaml/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/yaml/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="YAML - from basics to advanced" />
+<meta property="og:description" content="explaining YAML from basics to advanced · What is YAML? YAML (which stands for &#39;YAML Ain&#39;t Markup Language&#39;) is a human-readable data serialization..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/yaml/" />
+<meta property="og:image" content="http://localhost:1313/blog/yaml.avif" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/yaml.avif" />
+<meta name="twitter:title" content="YAML - from basics to advanced"/>
+<meta name="twitter:description" content="explaining YAML from basics to advanced · What is YAML? YAML (which stands for &#39;YAML Ain&#39;t Markup Language&#39;) is a human-readable data serialization..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "YAML - from basics to advanced",
+      "item": "http://localhost:1313/blog/yaml/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "YAML - from basics to advanced",
+  "name": "YAML - from basics to advanced",
+  "description": "explaining YAML from basics to advanced · What is YAML? YAML (which stands for 'YAML Ain't Markup Language') is a human-readable data serialization...",
+  "keywords": [
+    "YAML", "markdown", "DevOps", "Open-source", "GitHub"
+  ],
+  "articleBody": "What is YAML? YAML (which stands for “YAML Ain’t Markup Language”) is a human-readable data serialization language. We will talk later about what a serialization language is.\nYAML is used for configuration files, exchanging data between programming languages and storing data. YAML files are extensively used in the DevOps field. YAML is considered better than its alternative because of its easy-to-read way.\nIt is often used for configuration files, data exchange between programming languages, and storing data in a structured and easy-to-read way.\nYAML files are denoted by \".YML\" OR \".YAML\".\nInitially, YAML was called “Yet Another Markup Language”. but the name was changed to simply “YAML Ain’t Markup Language” (or just YAML) in order to emphasize that YAML is not just another markup language like XML or HTML, but rather a data serialization language that is more human-readable and easier to work with.\nExample of YAML file: This file includes almost all important YAML concepts. It’s a bit lengthy but very important to understand the concepts of YAML. Do check it out.\n\"name\": \"Shubham\"\r# key value pairs\r---\r# lists\r\"list\":\r- \"apple\"\r- \"mango\"\r- \"three\"\r- four\r---\r# documents are seperated by ---\r# \"...\" denotes that documents has ended\r# String variables -\u003e\ra: \"string\"\rb: string\rc: 'string'\rfloat: 10.12\rint: 23\rboolean: No #n , N, false, False, FALSE\rbooleanTwo: Yes #y, Y, True, true, TRUE\rnulltext: Null #null NULL\r---\rd: |\rThis is how we write multi line data\re: \u003e\rThis is how we write\rone line data in multiple lines\r# specify the type:\rzero: !!int 0\rcommaValue: !!int +100_000 #equivalent to 100,000\rbooleanThree: !!bool Yes\rstringtwo: !!str \"Shubham\"\rfloatTwo: !!float 12.12\rnulltext: !!null Null #null NULL\r# maps: key value pairs\rmap example:\rname: Shubham\rage: 19\rcountry: India\r# another way of representing a map\rmap example two: {name: Shubham, age: 19, country: India}\r# sets are used to store items\rexpertise: !!set\r? Web dev\r? Android dev\r? DevOps\r# Dictionary or !!omap\rstudents: !!omap\r- Shubham:\rage: 19\r- Ram:\rage: 23\r- Shayam:\rage: 24\r# Using anchors\rage_and_gender: \u002619_and_male\rgender: male\rage: 19\rperson1:\rname: Shubham\r\u003c\u003c: *19_and_male\rperson2:\rname: Ram\r\u003c\u003c: *19_and_male Data serialization: Data serialization is the process of converting data from one format to another. When data is serialized, it is transformed into a format that can be easily stored or transmitted across different applications or systems.\nThe reverse process of converting the serialized data back to its original format is called deserialization.\nFor Data serialization, we use the data serialization formats like JSON, YAML and XML. YAML is one of the more popular options out of these. JSON and YAML are more human-readable than XML.\nAdvantages of YAML: Here are some benefits of YAML:\nHuman-readable: One of the biggest benefits of YAML is that it is easy for humans to read and write. Unlike JSON or XML, YAML documents use simple indentation and whitespace to structure data, making them easier to understand and modify.\nSupports complex data structures: YAML supports a wide range of data structures, including lists, dictionaries, and nested structures, making it ideal for working with complex data.\nLanguage agnostic: YAML is language agnostic, meaning that it can be used with any programming language without requiring any special libraries or tools.\nLess verbose: YAML generally requires less syntax compared to other data serialization formats like JSON or XML, making it cleaner and more concise.\nSupports comments: YAML supports comments, which allow developers to add notes and explanations within the document.\nGreat for configuration files: YAML is commonly used for configuration files, such as those used in Docker or Kubernetes, because of its simplicity and readability.\nThese benefits make YAML a popular choice for developers looking for a data serialization format that is easy to work with and supports a wide range of data structures.\nConclusion: In conclusion, YAML is a simple, human-readable data serialization format that allows developers to easily exchange and store data across different programming languages and systems. Its support for complex data structures, language agnosticism, and support for comments, make it an ideal choice for developers working in the DevOps field or those dealing with configuration files. With its intuitive syntax and streamlining of complex data structures, YAML is becoming a popular choice for developers looking to improve readability and maintainability of their code.\n",
+  "wordCount" : "732",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/yaml.avif","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/yaml/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      YAML - from basics to advanced
+    </h1>
+    <div class="post-description">
+      explaining YAML from basics to advanced · What is YAML? YAML (which stands for &#39;YAML Ain&#39;t Markup Language&#39;) is a human-readable data serialization...
+    </div>
+    <div class="post-meta">
+
+
+October 2023
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/yaml.avif" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#what-is-yaml" aria-label="What is YAML?">What is YAML?</a></li>
+                <li>
+                    <a href="#example-of-yaml-file" aria-label="Example of YAML file:">Example of YAML file:</a></li>
+                <li>
+                    <a href="#data-serialization" aria-label="Data serialization:">Data serialization:</a></li>
+                <li>
+                    <a href="#advantages-of-yaml" aria-label="Advantages of YAML:">Advantages of YAML:</a></li>
+                <li>
+                    <a href="#conclusion" aria-label="Conclusion:">Conclusion:</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="what-is-yaml">What is YAML?<a hidden class="anchor" aria-hidden="true" href="#what-is-yaml">#</a></h2>
+<p>YAML (which stands for &ldquo;YAML Ain&rsquo;t Markup Language&rdquo;) is a human-readable data serialization language. We will talk later about what a serialization language is.</p>
+<p>YAML is used for configuration files, exchanging data between programming languages and storing data. YAML files are extensively used in the DevOps field. YAML is considered better than its alternative because of its easy-to-read way.</p>
+<p>It is often used for configuration files, data exchange between programming languages, and storing data in a structured and easy-to-read way.</p>
+<p>YAML files are denoted by <strong>&quot;.YML&quot;</strong> OR <strong>&quot;.YAML&quot;</strong>.</p>
+<p>Initially, YAML was called &ldquo;Yet Another Markup Language&rdquo;. but the name was changed to simply &ldquo;YAML Ain&rsquo;t Markup Language&rdquo; (or just YAML) in order to emphasize that YAML is not just another markup language like XML or HTML, but rather a data serialization language that is more human-readable and easier to work with.</p>
+<h2 id="example-of-yaml-file">Example of YAML file:<a hidden class="anchor" aria-hidden="true" href="#example-of-yaml-file">#</a></h2>
+<p>This file includes almost all important YAML concepts. It&rsquo;s a bit lengthy but very important to understand the concepts of YAML. Do check it out.</p>
+<pre tabindex="0"><code>&#34;name&#34;: &#34;Shubham&#34;
+# key value pairs
+---
+# lists
+&#34;list&#34;:
+  - &#34;apple&#34;
+  - &#34;mango&#34;
+  - &#34;three&#34;
+  - four
+---
+# documents are seperated by ---
+# &#34;...&#34; denotes that documents has ended
+
+# String variables -&gt;
+a: &#34;string&#34;
+b: string
+c: &#39;string&#39;
+float: 10.12
+int: 23
+boolean: No #n , N, false, False, FALSE
+booleanTwo: Yes #y, Y, True, true, TRUE
+nulltext: Null #null NULL
+---
+d: |
+  This is how 
+  we write multi line data
+
+e: &gt;
+  This is how we write
+  one line data in multiple lines
+
+# specify the type:
+zero: !!int 0
+commaValue: !!int +100_000 #equivalent to 100,000
+booleanThree: !!bool Yes
+stringtwo: !!str &#34;Shubham&#34;
+floatTwo: !!float 12.12
+nulltext: !!null Null #null NULL
+
+# maps: key value pairs
+map example:
+  name: Shubham
+  age: 19
+  country: India
+# another way of representing a map
+map example two: {name: Shubham, age: 19, country: India}
+
+# sets are used to store items
+expertise: !!set
+  ? Web dev
+  ? Android dev
+  ? DevOps
+
+# Dictionary or !!omap
+students: !!omap
+  - Shubham:
+    age: 19
+  - Ram:
+    age: 23
+  - Shayam:
+    age: 24
+
+# Using anchors
+age_and_gender: &amp;19_and_male
+  gender: male
+  age: 19
+
+person1:
+  name: Shubham
+  &lt;&lt;: *19_and_male
+person2:
+  name: Ram
+  &lt;&lt;: *19_and_male
+</code></pre><h2 id="data-serialization">Data serialization:<a hidden class="anchor" aria-hidden="true" href="#data-serialization">#</a></h2>
+<p>Data serialization is the process of converting data from one format to another. When data is serialized, it is transformed into a format that can be easily stored or transmitted across different applications or systems.</p>
+<p>The reverse process of converting the serialized data back to its original format is called deserialization.</p>
+<p>For Data serialization, we use the data serialization formats like JSON, YAML and XML. YAML is one of the more popular options out of these. JSON and YAML are more human-readable than XML.</p>
+<h2 id="advantages-of-yaml">Advantages of YAML:<a hidden class="anchor" aria-hidden="true" href="#advantages-of-yaml">#</a></h2>
+<p>Here are some benefits of YAML:</p>
+<p><em><strong>Human-readable:</strong></em> One of the biggest benefits of YAML is that it is easy for humans to read and write. Unlike JSON or XML, YAML documents use simple indentation and whitespace to structure data, making them easier to understand and modify.</p>
+<p><em><strong>Supports complex data structures:</strong></em> YAML supports a wide range of data structures, including lists, dictionaries, and nested structures, making it ideal for working with complex data.</p>
+<p><em><strong>Language agnostic:</strong></em> YAML is language agnostic, meaning that it can be used with any programming language without requiring any special libraries or tools.</p>
+<p><em><strong>Less verbose:</strong></em> YAML generally requires less syntax compared to other data serialization formats like JSON or XML, making it cleaner and more concise.</p>
+<p><em><strong>Supports comments:</strong></em> YAML supports comments, which allow developers to add notes and explanations within the document.</p>
+<p><em><strong>Great for configuration files:</strong></em> YAML is commonly used for configuration files, such as those used in Docker or Kubernetes, because of its simplicity and readability.</p>
+<p>These benefits make YAML a popular choice for developers looking for a data serialization format that is easy to work with and supports a wide range of data structures.</p>
+<h2 id="conclusion">Conclusion:<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>In conclusion, YAML is a simple, human-readable data serialization format that allows developers to easily exchange and store data across different programming languages and systems. Its support for complex data structures, language agnosticism, and support for comments, make it an ideal choice for developers working in the DevOps field or those dealing with configuration files. With its intuitive syntax and streamlining of complex data structures, YAML is becoming a popular choice for developers looking to improve readability and maintainability of their code.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/yaml/">YAML</a></li>
+      <li><a href="http://localhost:1313/tags/markdown/">Markdown</a></li>
+      <li><a href="http://localhost:1313/tags/devops/">DevOps</a></li>
+      <li><a href="http://localhost:1313/tags/open-source/">Open-Source</a></li>
+      <li><a href="http://localhost:1313/tags/github/">GitHub</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

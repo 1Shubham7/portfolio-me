@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Storyblok Ambassadorship on Shubham Singh</title>
+    <link>http://localhost:1313/tags/storyblok-ambassadorship/</link>
+    <description>Recent content in Storyblok Ambassadorship on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/storyblok-ambassadorship/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>All about the Storyblok Ambassadors Program</title>
+      <link>http://localhost:1313/blog/storyblokambassador/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/storyblokambassador/</guid>
+      <description>Hey there! So, remember when I mentioned Storyblok in my previous blog? Well, guess what? I discovered something super cool called the Storyblok...</description>
+    </item>
+    
+  </channel>
+</rss>

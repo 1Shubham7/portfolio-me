@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Unit testing using Golang - a beginner&#39;s guide | Shubham Singh</title>
+<meta name="keywords" content="Golang, Testing, Unit-Testing, Open-source">
+<meta name="description" content="A beginners guide to writing unit tests in Golang · Let&#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/testing/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/testing/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Unit testing using Golang - a beginner&#39;s guide" />
+<meta property="og:description" content="A beginners guide to writing unit tests in Golang · Let&#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/testing/" />
+<meta property="og:image" content="http://localhost:1313/blog/testing.avif" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/testing.avif" />
+<meta name="twitter:title" content="Unit testing using Golang - a beginner&#39;s guide"/>
+<meta name="twitter:description" content="A beginners guide to writing unit tests in Golang · Let&#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Unit testing using Golang - a beginner's guide",
+      "item": "http://localhost:1313/blog/testing/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Unit testing using Golang - a beginner's guide",
+  "name": "Unit testing using Golang - a beginner\u0027s guide",
+  "description": "A beginners guide to writing unit tests in Golang · Let's first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...",
+  "keywords": [
+    "Golang", "Testing", "Unit-Testing", "Open-source"
+  ],
+  "articleBody": "Unit testing using Golang Let’s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a unit of software is tested to determine if it works properly and exhibits the expected behavior. But why do we need unit testing? There are multiple reasons for that. See, how can we ensure that even if we change code, the code still works and there are no new bugs introduced, it’s better to detect them early than to wait and run the entire application in order to check a small code. In this way, unit tests help ensure quality code, help in catching bugs early, and provide a safety net if the code changes in the future.\nWhat is unit testing? As per IEEE (Institute for Electrical and Electronics Engineers), unit testing is the “testing of individual hardware or software units or groups of related units”. Unit testing is a software testing technique where individual components or units of a software application are tested in isolation.\nBy unit, we mean the smallest testable part of a code. mostly, it is a single function in Golang. The goal of unit testing is to ensure that each of these units functions correctly (produces expected results).\nThe term “unit” in unit testing refers to the smallest testable part of a software program, typically a single function, method, or class. The primary goal of unit testing is to ensure that each of these individual units of code functions correctly and produces the expected results.\nWhy Unit tests in Go? • Helps in verifying small changes (refactoring, debugging) quickly • Measures the quality of the code\n• Helps in understanding the complex logics\n• Helps in understanding the cause of failure quickly\n• Helps the reviewer to understand the fixes/changes\n• Great way to learn about a language as well as the project.\nLet’s create a basic unit test: Step 1. Start with initializing a go package\ngo mod init github.com/1shubham7/basic-unit-test\nStep 2. Download a unit testing package called go-money\ngo get github.com/Rhymond/go-money\nStep 3. Create this file structure:\nCreate a internal folder, inside that create a order folder, and inside the order folder, create a order.go file.\nStep 4. Start coding in the order.go file\npackage order\rimport (\r\"github.com/Rhymond/go-money\"\r\"fmt\"\r)\rtype Order struct {\rID string\rCurrencyAlphaCode string\rItems []Item\r}\rtype Item struct {\rID string\rQuantity uint\rUnitPrice *money.Money\r}\rfunc (o Order) ComputeTotal() (*money.Money, error) {\ramount := money.New(0, o.CurrencyAlphaCode)\rfor _, item := range o.Items {\rvar err error\ramount, err = amount.Add(item.UnitPrice)\rif err!= nil {\rreturn nil, fmt.Errorf(\"not adding item elements, error: %w\", err)\r}\r}\rreturn amount, nil\r} Step 5. Enter the following command to download testify\n/go get github.com/stretchr/testify\nStep 6. Create a order_test.go file and enter the following code inside it:\npackage order\rimport (\r\"testing\"\r\"github.com/Rhymond/go-money\"\r\"github.com/stretchr/testify/assert\"\r)\rfunc TestOrder(t *testing.T) {\ro := Order{\rID: \"100\",\rCurrencyAlphaCode: \"INR\",\rItems: []Item{\r{\rID: \"500\",\rQuantity: 2,\rUnitPrice: money.New(100, \"INR\"),\r},\r},\r}\rtotal, err := o.ComputeTotal()\rassert.NoError(t, err)\rassert.Equal(t, 200, total.Amount())\rassert.Equal(t, \"INR\", total.Currency())\r} Step 7. Now this command is used to run all the unit test in that perticular directory, enter the following command:\ngo test ./...\nit will give you the result:\n--- FAIL: TestOrder (0.00s) order_test.go:25: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:25\rError: Not equal: expected: int(200) actual : int64(100) Test: TestOrder order_test.go:26: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:26\rError: Not equal: expected: string(\"INR\") actual : *money.Currency(\u0026money.Currency{Code:\"INR\", NumericCode:\"356\", Fraction:2, Grapheme:\"₹\", Template:\"$1\", Decimal:\".\", Thousand:\",\"}) Test: TestOrder FAIL FAIL github.com/1shubham7/basic-unit-test/internal/order 1.001s FAIL Step 8. to fix this up, we have to make some changes in the code:\nMake these changes to the code:\norder.go:\npackage order\nimport (\r\"github.com/Rhymond/go-money\"\r\"fmt\"\r)\rtype Order struct {\rID string\rCurrencyAlphaCode string\rItems []Item\r}\rtype Item struct {\rID string\rQuantity uint\rUnitPrice *money.Money\r}\rfunc (o Order) ComputeTotal() (*money.Money, error) {\ramount := money.New(0, o.CurrencyAlphaCode)\rfor _, item := range o.Items {\rvar err error\ramount, err = amount.Add(item.UnitPrice.Multiply(int64(item.Quantity)))\rif err!= nil {\rreturn nil, fmt.Errorf(\"not adding item elements, error: %w\", err)\r}\r}\rreturn amount, nil\r} order_test.go:\npackage order\rimport (\r\"testing\"\r\"github.com/Rhymond/go-money\"\r\"github.com/stretchr/testify/assert\"\r)\rfunc TestOrder(t *testing.T) {\ro := Order{\rID: \"100\",\rCurrencyAlphaCode: \"INR\",\rItems: []Item{\r{\rID: \"500\",\rQuantity: 2,\rUnitPrice: money.New(100, \"INR\"),\r},\r},\r}\rtotal, err := o.ComputeTotal()\rassert.NoError(t, err)\rassert.Equal(t, int64(200), total.Amount())\rassert.Equal(t, \"INR\", total.Currency().Code)\r} Now if you enter the same command:\ngo test ./...\nIt works perfectly fine: And that’s how we create a unit test. See you in some next tutorial. Thanks for reading.\n",
+  "wordCount" : "768",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/testing.avif","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/testing/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Unit testing using Golang - a beginner&#39;s guide
+    </h1>
+    <div class="post-description">
+      A beginners guide to writing unit tests in Golang · Let&#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...
+    </div>
+    <div class="post-meta">
+
+
+October 2023
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/testing.avif" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#unit-testing-using-golang" aria-label="Unit testing using Golang">Unit testing using Golang</a><ul>
+                        
+                <li>
+                    <a href="#what-is-unit-testing" aria-label="What is unit testing?">What is unit testing?</a></li>
+                <li>
+                    <a href="#why-unit-tests-in-go" aria-label="Why Unit tests in Go?">Why Unit tests in Go?</a></li>
+                <li>
+                    <a href="#lets-create-a-basic-unit-test" aria-label="Let&rsquo;s create a basic unit test:">Let&rsquo;s create a basic unit test:</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="unit-testing-using-golang">Unit testing using Golang<a hidden class="anchor" aria-hidden="true" href="#unit-testing-using-golang">#</a></h1>
+<p>Let&rsquo;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a unit of software is tested to determine if it works properly and exhibits the expected behavior. But why do we need unit testing? There are multiple reasons for that. See, how can we ensure that even if we change code, the code still works and there are no new bugs introduced, it&rsquo;s better to detect them early than to wait and run the entire application in order to check a small code. In this way, unit tests help ensure quality code, help in catching bugs early, and provide a safety net if the code changes in the future.</p>
+<h2 id="what-is-unit-testing">What is unit testing?<a hidden class="anchor" aria-hidden="true" href="#what-is-unit-testing">#</a></h2>
+<p>As per IEEE (Institute for Electrical and Electronics Engineers), unit testing is the “testing of individual hardware or software units or groups of related units”. Unit testing is a software testing technique where individual components or units of a software application are tested in isolation.</p>
+<p>By unit, we mean the smallest testable part of a code. mostly, it is a single function in Golang. The goal of unit testing is to ensure that each of these units functions correctly (produces expected results).</p>
+<p>The term &ldquo;unit&rdquo; in unit testing refers to the smallest testable part of a software program, typically a single function, method, or class. The primary goal of unit testing is to ensure that each of these individual units of code functions correctly and produces the expected results.</p>
+<h2 id="why-unit-tests-in-go">Why Unit tests in Go?<a hidden class="anchor" aria-hidden="true" href="#why-unit-tests-in-go">#</a></h2>
+<p>• Helps in verifying small changes (refactoring, debugging) quickly • Measures the quality of the code</p>
+<p>• Helps in understanding the complex logics</p>
+<p>• Helps in understanding the cause of failure quickly</p>
+<p>• Helps the reviewer to understand the fixes/changes</p>
+<p>• Great way to learn about a language as well as the project.</p>
+<h2 id="lets-create-a-basic-unit-test">Let&rsquo;s create a basic unit test:<a hidden class="anchor" aria-hidden="true" href="#lets-create-a-basic-unit-test">#</a></h2>
+<p><strong>Step 1.</strong> Start with initializing a go package</p>
+<p><code>go mod init github.com/1shubham7/basic-unit-test</code></p>
+<p><strong>Step 2.</strong> Download a unit testing package called go-money</p>
+<p><code>go get github.com/Rhymond/go-money</code></p>
+<p><strong>Step 3.</strong> Create this file structure:</p>
+<p><img loading="lazy" src="https://github.com/1Shubham7/project-currency/assets/116020663/6bac4247-0a73-4d3d-a61d-1f087c952d49" alt="a23644aa-ded1-4755-8ef1-79c75cd5b136"  />
+</p>
+<p>Create a internal folder, inside that create a order folder, and inside the order folder, create a order.go file.</p>
+<p><strong>Step 4.</strong> Start coding in the order.go file</p>
+<pre tabindex="0"><code>package order
+
+import (
+	&#34;github.com/Rhymond/go-money&#34;
+	&#34;fmt&#34;
+)
+
+type Order struct {
+	ID                string
+	CurrencyAlphaCode string
+	Items             []Item
+}
+
+type Item struct {
+	ID        string
+	Quantity  uint
+	UnitPrice *money.Money
+}
+
+func (o Order) ComputeTotal() (*money.Money, error) {
+	amount := money.New(0, o.CurrencyAlphaCode)
+	for _, item := range o.Items {
+		var err error
+		amount, err = amount.Add(item.UnitPrice)
+		if err!= nil {
+			return nil, fmt.Errorf(&#34;not adding item elements, error: %w&#34;, err)
+		}
+	}
+
+	return amount, nil
+}
+</code></pre><p><strong>Step 5.</strong> Enter the following command to download testify</p>
+<p><code>/go get github.com/stretchr/testify</code></p>
+<p><strong>Step 6.</strong> Create a order_test.go file and enter the following code inside it:</p>
+<pre tabindex="0"><code>package order
+
+import (
+	&#34;testing&#34;
+
+	&#34;github.com/Rhymond/go-money&#34;
+
+	&#34;github.com/stretchr/testify/assert&#34;
+)
+
+func TestOrder(t *testing.T) {
+	o := Order{
+		ID: &#34;100&#34;,
+		CurrencyAlphaCode: &#34;INR&#34;,
+		Items: []Item{
+			{
+			ID: &#34;500&#34;,
+			Quantity: 2,
+			UnitPrice: money.New(100, &#34;INR&#34;),
+		},
+	},
+}
+	total, err := o.ComputeTotal()
+	assert.NoError(t, err)
+	assert.Equal(t, 200, total.Amount())
+	assert.Equal(t, &#34;INR&#34;, total.Currency())
+}
+</code></pre><p><strong>Step 7.</strong> Now this command is used to run all the unit test in that perticular directory, enter the following command:</p>
+<p><code>go test ./...</code></p>
+<p>it will give you the result:</p>
+<pre tabindex="0"><code>--- FAIL: TestOrder (0.00s) order_test.go:25: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:25
+Error: Not equal: expected: int(200) actual : int64(100) Test: TestOrder order_test.go:26: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:26
+Error: Not equal: expected: string(&#34;INR&#34;) actual : *money.Currency(&amp;money.Currency{Code:&#34;INR&#34;, NumericCode:&#34;356&#34;, Fraction:2, Grapheme:&#34;₹&#34;, Template:&#34;$1&#34;, Decimal:&#34;.&#34;, Thousand:&#34;,&#34;}) Test: TestOrder FAIL FAIL github.com/1shubham7/basic-unit-test/internal/order 1.001s FAIL
+</code></pre><p><strong>Step 8.</strong> to fix this up, we have to make some changes in the code:</p>
+<p>Make these changes to the code:</p>
+<p><em><strong>order.go:</strong></em></p>
+<p>package order</p>
+<pre tabindex="0"><code>import (
+	&#34;github.com/Rhymond/go-money&#34;
+	&#34;fmt&#34;
+)
+
+type Order struct {
+	ID                string
+	CurrencyAlphaCode string
+	Items             []Item
+}
+
+type Item struct {
+	ID        string
+	Quantity  uint
+	UnitPrice *money.Money
+}
+
+func (o Order) ComputeTotal() (*money.Money, error) {
+	amount := money.New(0, o.CurrencyAlphaCode)
+	for _, item := range o.Items {
+		var err error
+		amount, err = amount.Add(item.UnitPrice.Multiply(int64(item.Quantity)))
+		if err!= nil {
+			return nil, fmt.Errorf(&#34;not adding item elements, error: %w&#34;, err)
+		}
+	}
+
+	return amount, nil
+}
+</code></pre><p><em><strong>order_test.go:</strong></em></p>
+<pre tabindex="0"><code>package order
+
+import (
+	&#34;testing&#34;
+
+	&#34;github.com/Rhymond/go-money&#34;
+
+	&#34;github.com/stretchr/testify/assert&#34;
+)
+
+func TestOrder(t *testing.T) {
+	o := Order{
+		ID: &#34;100&#34;,
+		CurrencyAlphaCode: &#34;INR&#34;,
+		Items: []Item{
+			{
+			ID: &#34;500&#34;,
+			Quantity: 2,
+			UnitPrice: money.New(100, &#34;INR&#34;),
+		},
+	},
+}
+	total, err := o.ComputeTotal()
+	assert.NoError(t, err)
+	assert.Equal(t, int64(200), total.Amount())
+	assert.Equal(t, &#34;INR&#34;, total.Currency().Code)
+}
+</code></pre><p>Now if you enter the same command:</p>
+<p><code>go test ./...</code></p>
+<p>It works perfectly fine:
+<img loading="lazy" src="https://github.com/1Shubham7/project-currency/assets/116020663/b2c0cf06-6d50-4de9-b3fd-576643e739cc" alt="image"  />
+</p>
+<p>And that&rsquo;s how we create a unit test. See you in some next tutorial.
+Thanks for reading.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/golang/">Golang</a></li>
+      <li><a href="http://localhost:1313/tags/testing/">Testing</a></li>
+      <li><a href="http://localhost:1313/tags/unit-testing/">Unit-Testing</a></li>
+      <li><a href="http://localhost:1313/tags/open-source/">Open-Source</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

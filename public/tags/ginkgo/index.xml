@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Ginkgo on Shubham Singh</title>
+    <link>http://localhost:1313/tags/ginkgo/</link>
+    <description>Recent content in Ginkgo on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/ginkgo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LFX Mentee - CNCF KubeEdge</title>
+      <link>http://localhost:1313/experience/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/lfx/</guid>
+      <description>The Linux Foundation Mentorship Program (LFX Mentorship) is 3 months paid internship/mentorship program where people contribute to open source projects. The program aims to foster innovation and talent in the open source community, and to help developers get job and internship opportunities after graduating. The program offers part-time and full-time mentor positions, and mentorships for projects such as CNCF, GraphQL, Hyperledger, LF Networking, Linux Kernel, OpenHPC, Open Mainframe Project, and RISC-V...</description>
+    </item>
+    
+    <item>
+      <title>My journey from a CNCF contributor to LFX mentee</title>
+      <link>http://localhost:1313/blog/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/lfx/</guid>
+      <description>&lt;p&gt;Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

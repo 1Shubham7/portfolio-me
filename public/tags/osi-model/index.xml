@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>OSI Model on Shubham Singh</title>
+    <link>http://localhost:1313/tags/osi-model/</link>
+    <description>Recent content in OSI Model on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/osi-model/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OSI Model - the easy way</title>
+      <link>http://localhost:1313/blog/osi/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/osi/</guid>
+      <description>OSI Model - Straight to the point. · OSI (Open Systems Interconnection) model describes seven layers through which computer systems communicate over a...</description>
+    </item>
+    
+  </channel>
+</rss>

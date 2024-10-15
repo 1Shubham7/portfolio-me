@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>JSON on Shubham Singh</title>
+    <link>http://localhost:1313/tags/json/</link>
+    <description>Recent content in JSON on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/json/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>WTF is JSON</title>
+      <link>http://localhost:1313/blog/json/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/json/</guid>
+      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
+    </item>
+    
+  </channel>
+</rss>

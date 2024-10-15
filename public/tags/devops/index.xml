@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>DevOps on Shubham Singh</title>
+    <link>http://localhost:1313/tags/devops/</link>
+    <description>Recent content in DevOps on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Aug 2023 11:12:44 +0530</lastBuildDate><atom:link href="http://localhost:1313/tags/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CNCF ORAS Contributor</title>
+      <link>http://localhost:1313/experience/cncf-oras/</link>
+      <pubDate>Wed, 16 Aug 2023 11:11:19 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/cncf-oras/</guid>
+      <description>ORAS is the de facto tool for working with OCI Artifacts. It treats media types as a critical piece of the puzzle. Container images are never assumed to be the artifact in question. ORAS provides CLI and client libraries to distribute artifacts across OCI-compliant registries.</description>
+    </item>
+    
+    <item>
+      <title>CNCF Zero to Merge</title>
+      <link>http://localhost:1313/experience/cncf-zero-to-merge/</link>
+      <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/cncf-zero-to-merge/</guid>
+      <description>CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.</description>
+    </item>
+    
+    <item>
+      <title>Databases - the easy way</title>
+      <link>http://localhost:1313/blog/database/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/database/</guid>
+      <description>Databases in the simplest yet most powerful way ever. Keeping in mind placements and development. · Databases: just a digital tool that stores and...</description>
+    </item>
+    
+    <item>
+      <title>Datatypes in Python</title>
+      <link>http://localhost:1313/blog/datainpython/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/datainpython/</guid>
+      <description>Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence...</description>
+    </item>
+    
+    <item>
+      <title>DBMS - the easy way</title>
+      <link>http://localhost:1313/blog/dbms/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/dbms/</guid>
+      <description>Database Management System in the simplest but most powerful way. · What is DBMS? if you have created or are going to create a database, obviously, you...</description>
+    </item>
+    
+    <item>
+      <title>Everything about Artifacts for DevOps</title>
+      <link>http://localhost:1313/blog/artifacts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/artifacts/</guid>
+      <description>Artifacts - from beginner to advanced. · What are artifacts? In the broadest sense, artifacts are objects or items created or modified by humans that...</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Deployment Strategies</title>
+      <link>http://localhost:1313/blog/k8s-depl-stratigies/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/k8s-depl-stratigies/</guid>
+      <description>Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...</description>
+    </item>
+    
+    <item>
+      <title>Some DevOps terms a beginner should know about</title>
+      <link>http://localhost:1313/blog/devops/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/devops/</guid>
+      <description>Start your DevOps journey with these terms. · DevOps can be a bit confusing for beginners, that is because of its complex terminologies. Here are some...</description>
+    </item>
+    
+    <item>
+      <title>WTF is Vagrant</title>
+      <link>http://localhost:1313/blog/vagrant/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/vagrant/</guid>
+      <description>Vagrant explained for absolute beginner. · So recently, I was setting up locally an open-source software, so to contribute to it (BTW it is called Zulip,...</description>
+    </item>
+    
+    <item>
+      <title>YAML - from basics to advanced</title>
+      <link>http://localhost:1313/blog/yaml/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/yaml/</guid>
+      <description>explaining YAML from basics to advanced · What is YAML? YAML (which stands for &amp;#39;YAML Ain&amp;#39;t Markup Language&amp;#39;) is a human-readable data serialization...</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Everything about API explained!! | Shubham Singh</title>
+<meta name="keywords" content="API, Backend, Programming">
+<meta name="description" content="API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/api/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/api/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Everything about API explained!!" />
+<meta property="og:description" content="API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/api/" />
+<meta property="og:image" content="http://localhost:1313/blog/api.png" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/api.png" />
+<meta name="twitter:title" content="Everything about API explained!!"/>
+<meta name="twitter:description" content="API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Everything about API explained!!",
+      "item": "http://localhost:1313/blog/api/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Everything about API explained!!",
+  "name": "Everything about API explained!!",
+  "description": "API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...",
+  "keywords": [
+    "API", "Backend", "Programming"
+  ],
+  "articleBody": "During our Web development journey will all get to hear the term - “API”. Some of us must have used some APIs, but not many know about what API actually is and how to play around with API. Join me in this article where we dive deep into the world of API and understand the concepts of API from beginner to advanced.\nWhat is API? The full form of API is Application Programming Interface. In simplest terms, API is a contract that allows code to talk to some other code. It serves as a bridge that enables a seamless exchange of data and functionality between various systems, enabling developers to access and utilize the features of another application or service without having to understand its internal workings.\nAPIs define a standardized way for different software components to interact, providing a layer of abstraction that simplifies development and integration. They typically consist of a collection of pre-defined functions, classes, or endpoints that developers can use to request or exchange data, perform operations, or access specific functionalities of the underlying system.\nWhy do we need API? It’s very basic, for making a weather app - would you launch satellites or just use a weather API?\nSome more examples of why we need API are:\nSocial Media Integration: Social media platforms like Facebook, Twitter, and Instagram provide APIs that allow developers to integrate their applications with these platforms. This integration enables users to log in using their social media accounts, share content, and access social features within the application.\nPayment Gateways: APIs offered by payment gateway providers such as PayPal, Stripe, and Braintree allow developers to incorporate secure payment processing functionality into their applications. This enables users to make online payments using different payment methods.\nMapping and Geolocation Services: APIs provided by mapping and geolocation services like Google Maps and Mapbox enable developers to embed maps, geocoding, and routing functionality into their applications. These APIs provide features such as displaying locations, calculating distances, and finding directions.\nWeather Data: Weather APIs, such as those offered by OpenWeatherMap and Weather Underground, provide access to real-time and forecast weather data. Developers can utilize these APIs to display weather information within their applications, enabling users to check current weather conditions or plan for future events.\nE-commerce Platforms: APIs offered by e-commerce platforms like Shopify and WooCommerce allow developers to create online stores, manage inventory, process orders, and retrieve product information. These APIs enable seamless integration between e-commerce platforms and custom applications.\nEmail Services: Email service providers like SendGrid and Mailchimp offer APIs that allow developers to send and manage emails programmatically. This enables applications to send transactional emails, newsletters, and marketing campaigns.\nCloud Services: Cloud computing providers such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform offer APIs for various services like storage, computing, and database management. Developers can leverage these APIs to build scalable and flexible cloud-based applications.\nAPI Architectures There are several types of API architectures commonly used in web development. Here are three prominent ones:\nREST (Representational State Transfer) REST is a widely adopted architectural style for designing networked applications. RESTful APIs utilize the principles of the HTTP protocol and leverage its methods (GET, POST, PUT, DELETE, etc.) to perform operations on resources. REST APIs typically use URLs (Uniform Resource Locators) to identify resources and employ different HTTP status codes to indicate the outcome of a request. They emphasize statelessness, scalability, and interoperability, making them popular for building web services.\nSOAP (Simple Object Access Protocol) SOAP is an XML-based protocol that enables communication between applications over a network. SOAP APIs define a strict structure for request and response messages using XML schemas. They rely on the XML format for data representation and typically use the POST method for communication. SOAP APIs often employ Web Services Description Language (WSDL) to describe the available operations, message formats, and service endpoints. SOAP APIs are known for their strong message-level security and support for advanced features such as transactions and reliability.\nGraphQL GraphQL is an open-source query language and runtime for APIs developed by Facebook. It allows clients to request precisely the data they need, eliminating over-fetching or under-fetching of data common in traditional REST APIs. With GraphQL, clients can send queries specifying the desired data structure, and the server responds with a JSON payload containing only the requested data. This flexible and efficient approach to data fetching makes GraphQL popular for applications with complex data requirements and enables clients to aggregate data from multiple sources in a single request.\nThese are just a few examples of API architectures, and there are other variations and hybrid approaches as well. The choice of API architecture depends on factors such as the project requirements, scalability needs, interoperability considerations, and the preferences of the development team.\nConclusion In conclusion, APIs are the lifeblood of modern web development, enabling seamless communication and integration between different applications and services. They provide a standardized way for software components to interact, allowing developers to leverage the functionality of external systems without needing to understand their internal complexities.\nThroughout this article, we’ve explored the world of APIs from beginner to advanced levels. We’ve learned that APIs serve as the bridge that connects applications, enabling us to incorporate social media integration, payment gateways, mapping services, weather data, e-commerce functionalities, email services, and cloud computing capabilities into our own projects with ease.\nWe’ve also touched upon different API architectures, such as REST, SOAP, and GraphQL, each with its own strengths and areas of application. Understanding these architectures empowers us to make informed decisions when designing and implementing APIs in our projects.\nHope you gained some valuable insights. Do follow me for more such articles.\nThank you for your time.\n",
+  "wordCount" : "954",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/api.png","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/api/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Everything about API explained!!
+    </h1>
+    <div class="post-description">
+      API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...
+    </div>
+    <div class="post-meta">
+
+
+October 2023
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/api.png" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#what-is-api" aria-label="What is API?">What is API?</a></li>
+                <li>
+                    <a href="#why-do-we-need-api" aria-label="Why do we need API?">Why do we need API?</a></li>
+                <li>
+                    <a href="#api-architectures" aria-label="API Architectures">API Architectures</a><ul>
+                        
+                <li>
+                    <a href="#rest-representational-state-transfer" aria-label="REST (Representational State Transfer)">REST (Representational State Transfer)</a></li>
+                <li>
+                    <a href="#soap-simple-object-access-protocol" aria-label="SOAP (Simple Object Access Protocol)">SOAP (Simple Object Access Protocol)</a></li>
+                <li>
+                    <a href="#graphql" aria-label="GraphQL">GraphQL</a></li></ul>
+                </li>
+                <li>
+                    <a href="#conclusion" aria-label="Conclusion">Conclusion</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>During our Web development journey will all get to hear the term - &ldquo;API&rdquo;. Some of us must have used some APIs, but not many know about what API actually is and how to play around with API. Join me in this article where we dive deep into the world of API and understand the concepts of API from beginner to advanced.</p>
+<h2 id="what-is-api">What is API?<a hidden class="anchor" aria-hidden="true" href="#what-is-api">#</a></h2>
+<p>The full form of API is Application Programming Interface. In simplest terms, API is a contract that allows code to talk to some other code. It serves as a bridge that enables a seamless exchange of data and functionality between various systems, enabling developers to access and utilize the features of another application or service without having to understand its internal workings.</p>
+<blockquote>
+<p>APIs define a standardized way for different software components to interact, providing a layer of abstraction that simplifies development and integration. They typically consist of a collection of pre-defined functions, classes, or endpoints that developers can use to request or exchange data, perform operations, or access specific functionalities of the underlying system.</p>
+</blockquote>
+<h2 id="why-do-we-need-api">Why do we need API?<a hidden class="anchor" aria-hidden="true" href="#why-do-we-need-api">#</a></h2>
+<p>It&rsquo;s very basic, for making a weather app - would you launch satellites or just use a weather API?</p>
+<p>Some more examples of why we need API are:</p>
+<p><em><strong>Social Media Integration:</strong></em> Social media platforms like Facebook, Twitter, and Instagram provide APIs that allow developers to integrate their applications with these platforms. This integration enables users to log in using their social media accounts, share content, and access social features within the application.</p>
+<p><em><strong>Payment Gateways:</strong></em> APIs offered by payment gateway providers such as PayPal, Stripe, and Braintree allow developers to incorporate secure payment processing functionality into their applications. This enables users to make online payments using different payment methods.</p>
+<p><em><strong>Mapping and Geolocation Services:</strong></em> APIs provided by mapping and geolocation services like Google Maps and Mapbox enable developers to embed maps, geocoding, and routing functionality into their applications. These APIs provide features such as displaying locations, calculating distances, and finding directions.</p>
+<p><em><strong>Weather Data:</strong></em> Weather APIs, such as those offered by OpenWeatherMap and Weather Underground, provide access to real-time and forecast weather data. Developers can utilize these APIs to display weather information within their applications, enabling users to check current weather conditions or plan for future events.</p>
+<p><em><strong>E-commerce Platforms:</strong></em> APIs offered by e-commerce platforms like Shopify and WooCommerce allow developers to create online stores, manage inventory, process orders, and retrieve product information. These APIs enable seamless integration between e-commerce platforms and custom applications.</p>
+<p><em><strong>Email Services:</strong></em> Email service providers like SendGrid and Mailchimp offer APIs that allow developers to send and manage emails programmatically. This enables applications to send transactional emails, newsletters, and marketing campaigns.</p>
+<p><em><strong>Cloud Services:</strong></em> Cloud computing providers such as Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform offer APIs for various services like storage, computing, and database management. Developers can leverage these APIs to build scalable and flexible cloud-based applications.</p>
+<h2 id="api-architectures">API Architectures<a hidden class="anchor" aria-hidden="true" href="#api-architectures">#</a></h2>
+<p>There are several types of API architectures commonly used in web development. Here are three prominent ones:</p>
+<h3 id="rest-representational-state-transfer">REST (Representational State Transfer)<a hidden class="anchor" aria-hidden="true" href="#rest-representational-state-transfer">#</a></h3>
+<p>REST is a widely adopted architectural style for designing networked applications. RESTful APIs utilize the principles of the HTTP protocol and leverage its methods (GET, POST, PUT, DELETE, etc.) to perform operations on resources. REST APIs typically use URLs (Uniform Resource Locators) to identify resources and employ different HTTP status codes to indicate the outcome of a request. They emphasize statelessness, scalability, and interoperability, making them popular for building web services.</p>
+<h3 id="soap-simple-object-access-protocol">SOAP (Simple Object Access Protocol)<a hidden class="anchor" aria-hidden="true" href="#soap-simple-object-access-protocol">#</a></h3>
+<p>SOAP is an XML-based protocol that enables communication between applications over a network. SOAP APIs define a strict structure for request and response messages using XML schemas. They rely on the XML format for data representation and typically use the POST method for communication. SOAP APIs often employ Web Services Description Language (WSDL) to describe the available operations, message formats, and service endpoints. SOAP APIs are known for their strong message-level security and support for advanced features such as transactions and reliability.</p>
+<h3 id="graphql">GraphQL<a hidden class="anchor" aria-hidden="true" href="#graphql">#</a></h3>
+<p>GraphQL is an open-source query language and runtime for APIs developed by Facebook. It allows clients to request precisely the data they need, eliminating over-fetching or under-fetching of data common in traditional REST APIs. With GraphQL, clients can send queries specifying the desired data structure, and the server responds with a JSON payload containing only the requested data. This flexible and efficient approach to data fetching makes GraphQL popular for applications with complex data requirements and enables clients to aggregate data from multiple sources in a single request.</p>
+<p>These are just a few examples of API architectures, and there are other variations and hybrid approaches as well. The choice of API architecture depends on factors such as the project requirements, scalability needs, interoperability considerations, and the preferences of the development team.</p>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>In conclusion, APIs are the lifeblood of modern web development, enabling seamless communication and integration between different applications and services. They provide a standardized way for software components to interact, allowing developers to leverage the functionality of external systems without needing to understand their internal complexities.</p>
+<p>Throughout this article, we&rsquo;ve explored the world of APIs from beginner to advanced levels. We&rsquo;ve learned that APIs serve as the bridge that connects applications, enabling us to incorporate social media integration, payment gateways, mapping services, weather data, e-commerce functionalities, email services, and cloud computing capabilities into our own projects with ease.</p>
+<p>We&rsquo;ve also touched upon different API architectures, such as REST, SOAP, and GraphQL, each with its own strengths and areas of application. Understanding these architectures empowers us to make informed decisions when designing and implementing APIs in our projects.</p>
+<p>Hope you gained some valuable insights. Do follow me for more such articles.</p>
+<p>Thank you for your time.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/api/">API</a></li>
+      <li><a href="http://localhost:1313/tags/backend/">Backend</a></li>
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

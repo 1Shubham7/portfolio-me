@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Datatypes in Python | Shubham Singh</title>
+<meta name="keywords" content="Python, DevOps, DSA, Datatypes">
+<meta name="description" content="Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/datainpython/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/datainpython/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Datatypes in Python" />
+<meta property="og:description" content="Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/datainpython/" />
+<meta property="og:image" content="http://localhost:1313/blog/python.png" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/python.png" />
+<meta name="twitter:title" content="Datatypes in Python"/>
+<meta name="twitter:description" content="Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Datatypes in Python",
+      "item": "http://localhost:1313/blog/datainpython/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Datatypes in Python",
+  "name": "Datatypes in Python",
+  "description": "Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence...",
+  "keywords": [
+    "Python", "DevOps", "DSA", "Datatypes"
+  ],
+  "articleBody": "Python includes 6 types of built-in datatypes -\nNumeric datatype\nBoolean datatype\nSequence datatype\nSets\nDictionaries\nNone\nNumeric datatype this datatype includes integer, float, and complex numbers. Unlike other languages, python allows you to reassign float value to a variable with integer or vice versa.\na = 10\ra = 10.5\rprint(a) #this will output 10.5 Boolean datatype This is a special data type that represents one of two possible values: True or False. Boolean values are often used in conditional statements and loops. Remember the first letter in “True” and “False” must be capitalized.\na = True\rif (a==True):\rprint(\"a is true\")\relse :\rprint(\"a is not true\") Sequence These include strings, lists, tuples, and byte sequences. Strings are used to represent textual data, while lists and tuples are used to store collections of items. Byte sequences are similar to strings but represent binary data.\nmy_tuple = (\"a\", \"b\",\"c\",\"d\",5,6,7,8)\rprint(my_tuple) Sets These are unordered collections of unique items. Python also has a frozenset type that is similar to sets, but is immutable.\nmy_set = {1,2,3,4}\rprint(my_set) Dictionaries These are unordered collections of key-value pairs. They are used to store and retrieve data based on a unique value.\nmy_dict = {\"name\":\"Shubham\" , \"age\":19}\rprint(my_dict['name'])\rprint(my_dict) None This is a special data type that represents the absence of a value. In other languages like Java, C++, c, Javascript, etc null is used rather than None.\na = null1\nPlease Follow my coming blogs on related topics.\nThank you for your time.\n",
+  "wordCount" : "250",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/python.png","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/datainpython/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Datatypes in Python
+    </h1>
+    <div class="post-description">
+      Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence...
+    </div>
+    <div class="post-meta">
+
+
+October 2023
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/python.png" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#numeric-datatype" aria-label="Numeric datatype">Numeric datatype</a></li>
+                <li>
+                    <a href="#boolean-datatype" aria-label="Boolean datatype">Boolean datatype</a></li>
+                <li>
+                    <a href="#sequence" aria-label="Sequence">Sequence</a></li>
+                <li>
+                    <a href="#sets" aria-label="Sets">Sets</a></li>
+                <li>
+                    <a href="#dictionaries" aria-label="Dictionaries">Dictionaries</a></li>
+                <li>
+                    <a href="#none" aria-label="None">None</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Python includes 6 types of built-in datatypes -</p>
+<ul>
+<li>
+<p>Numeric datatype</p>
+</li>
+<li>
+<p>Boolean datatype</p>
+</li>
+<li>
+<p>Sequence datatype</p>
+</li>
+<li>
+<p>Sets</p>
+</li>
+<li>
+<p>Dictionaries</p>
+</li>
+<li>
+<p>None</p>
+</li>
+</ul>
+<h2 id="numeric-datatype">Numeric datatype<a hidden class="anchor" aria-hidden="true" href="#numeric-datatype">#</a></h2>
+<p>this datatype includes integer, float, and complex numbers. Unlike other languages, python allows you to reassign float value to a variable with integer or vice versa.</p>
+<pre tabindex="0"><code>a = 10
+
+a = 10.5
+
+print(a) #this will output 10.5
+</code></pre><h2 id="boolean-datatype">Boolean datatype<a hidden class="anchor" aria-hidden="true" href="#boolean-datatype">#</a></h2>
+<p>This is a special data type that represents one of two possible values: True or False. Boolean values are often used in conditional statements and loops. Remember the first letter in &ldquo;True&rdquo; and &ldquo;False&rdquo; must be capitalized.</p>
+<pre tabindex="0"><code>a = True
+
+if (a==True):
+
+print(&#34;a is true&#34;)
+
+else :
+
+print(&#34;a is not true&#34;)
+</code></pre><h2 id="sequence">Sequence<a hidden class="anchor" aria-hidden="true" href="#sequence">#</a></h2>
+<p>These include strings, lists, tuples, and byte sequences. Strings are used to represent textual data, while lists and tuples are used to store collections of items. Byte sequences are similar to strings but represent binary data.</p>
+<pre tabindex="0"><code>my_tuple = (&#34;a&#34;, &#34;b&#34;,&#34;c&#34;,&#34;d&#34;,5,6,7,8)
+
+print(my_tuple)
+</code></pre><h2 id="sets">Sets<a hidden class="anchor" aria-hidden="true" href="#sets">#</a></h2>
+<p>These are unordered collections of unique items. Python also has a frozenset type that is similar to sets, but is immutable.</p>
+<pre tabindex="0"><code>my_set = {1,2,3,4}
+
+print(my_set)
+</code></pre><h2 id="dictionaries">Dictionaries<a hidden class="anchor" aria-hidden="true" href="#dictionaries">#</a></h2>
+<p>These are unordered collections of key-value pairs. They are used to store and retrieve data based on a unique value.</p>
+<pre tabindex="0"><code>my_dict = {&#34;name&#34;:&#34;Shubham&#34; , &#34;age&#34;:19}
+
+print(my_dict[&#39;name&#39;])
+
+print(my_dict)
+</code></pre><h2 id="none">None<a hidden class="anchor" aria-hidden="true" href="#none">#</a></h2>
+<p>This is a special data type that represents the absence of a value. In other languages like Java, C++, c, Javascript, etc null is used rather than None.</p>
+<p><code>a = null1</code></p>
+<p>Please Follow my coming blogs on related topics.</p>
+<p>Thank you for your time.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/python/">Python</a></li>
+      <li><a href="http://localhost:1313/tags/devops/">DevOps</a></li>
+      <li><a href="http://localhost:1313/tags/dsa/">DSA</a></li>
+      <li><a href="http://localhost:1313/tags/datatypes/">Datatypes</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

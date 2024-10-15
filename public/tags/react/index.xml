@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>React on Shubham Singh</title>
+    <link>http://localhost:1313/tags/react/</link>
+    <description>Recent content in React on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="http://localhost:1313/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CNCF Zero to Merge</title>
+      <link>http://localhost:1313/experience/cncf-zero-to-merge/</link>
+      <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/cncf-zero-to-merge/</guid>
+      <description>CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.</description>
+    </item>
+    
+    <item>
+      <title>GirlScript Summer of Code top 100 contributors</title>
+      <link>http://localhost:1313/experience/gssoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/gssoc/</guid>
+      <description>Girlscript Summer Of Code is a three-month-long Open-Source Program conducted every summer by the Girlscript Foundation. With constant efforts, participants contribute to numerous projects under the extreme guidance of skilled mentors over these months.</description>
+    </item>
+    
+    <item>
+      <title>Technical Blogs on Hashnode</title>
+      <link>http://localhost:1313/experience/hashnode/</link>
+      <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/hashnode/</guid>
+      <description>Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community.</description>
+    </item>
+    
+    <item>
+      <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
+      <link>http://localhost:1313/blog/open-source101/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/open-source101/</guid>
+      <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
+    </item>
+    
+    <item>
+      <title>WTF is JSON</title>
+      <link>http://localhost:1313/blog/npm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/npm/</guid>
+      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
+    </item>
+    
+    <item>
+      <title>Code Buddy</title>
+      <link>http://localhost:1313/projects/code-buddy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/projects/code-buddy/</guid>
+      <description>a place for coders to find their buddies - find a coding partner for hackathons, events and just chilling out. find programmers near you, Sort by location, technology, and shared interests.</description>
+    </item>
+    
+  </channel>
+</rss>

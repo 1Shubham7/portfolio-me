@@ -1,5 +1,5 @@
 ---
-title: "Everything about API explained!!"
+title: "Building a Golang backend system with JWT authentication"
 description: "API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,..."
 dateString: October 2023
 draft: false
@@ -45,9 +45,10 @@ Here is the structure of the project. Make sure to create a similar folder struc
 4. middleware
 5. models
 6. routes
+
 and create the respective files inside these folders.
 
-proj-struct [IMAGE]
+![Project Structure](/blog/jwt/one.webp)
 
 ### Prerequisites
 
@@ -940,3 +941,22 @@ go mod tidy
 Screenshot-2023-11-16-091632
 
 
+Output
+With that our JWT authentication project is ready, to finally run the application enter the following command in the terminal:
+
+go run main.go
+
+You will get a similar output:
+
+
+
+
+Screenshot-2023-11-16-093330
+
+This will get the server up and running, and you can use curl or Postman API for sending request and receiving response. Or you can simply integrate this API with an frontend framework. And with that, our authentication API is ready, pat yourself on the back! 
+
+## Conclusion
+
+In this article we discussed one of the fastest ways to create JWT authentication, we used Gin-Gonic framework for our project. This is not your "just another authentication API". Gin is 300% faster than NodeJS, that makes this authentication API really fast and efficient. The project structure we are using is also an industry level project structure. You can make further changes like storing the SECRET_KEY in the .env file and a lot more to make this API better. You can also find the source code for this project here - [**1Shubham7/go-jwt-token**](https://github.com/1Shubham7/go-jwt-token).
+
+Make sure to follow all the steps in order to create the project and add some more functionality and just play with the code to understand it better. The best way to learn authentication is to create your own projects.

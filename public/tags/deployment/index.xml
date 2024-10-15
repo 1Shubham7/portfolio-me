@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Deployment on Shubham Singh</title>
+    <link>http://localhost:1313/tags/deployment/</link>
+    <description>Recent content in Deployment on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/deployment/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes Deployment Strategies</title>
+      <link>http://localhost:1313/blog/k8s-depl-stratigies/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/k8s-depl-stratigies/</guid>
+      <description>Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...</description>
+    </item>
+    
+  </channel>
+</rss>

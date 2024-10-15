@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Building a Golang backend system with JWT authentication | Shubham Singh</title>
+<meta name="keywords" content="API, Backend, Programming">
+<meta name="description" content="API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/jwt/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/jwt/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Building a Golang backend system with JWT authentication" />
+<meta property="og:description" content="API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/jwt/" />
+<meta property="og:image" content="http://localhost:1313/blog/api.png" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/api.png" />
+<meta name="twitter:title" content="Building a Golang backend system with JWT authentication"/>
+<meta name="twitter:description" content="API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Building a Golang backend system with JWT authentication",
+      "item": "http://localhost:1313/blog/jwt/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Building a Golang backend system with JWT authentication",
+  "name": "Building a Golang backend system with JWT authentication",
+  "description": "API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...",
+  "keywords": [
+    "API", "Backend", "Programming"
+  ],
+  "articleBody": "When creating a website’s backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely. In this article, we will discuss JWT authentication and most importantly we will create an entire project for Fast and Efficient JWT authentication using Gin-Gonic, this will be a step-by-step project tutorial that will help you create a very fast and industry-level authentication API for your website or application’s backend.\nTable of Content:\nWhat is JWT authentication? Project Structure Prerequisites Step by Step Tutorial Final Results Output Conclusion What is JWT authentication? JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely.\nLet’s try to understand that by the help of an example. Consider a situation when we show up at a hotel and we walk up to the front desk and the receptionist says “hey, what can I do for you?”. I would say “Hi, my name is Shubham, I’m here for a conference, the sponsors are paying for my hotel”. The receptionist says “okay great! well I’m going to need to see a couple things”. Usually they’ll need to see my identification so to prove who I am and once that they have verified that I am the right person, they will issue me a key. And authentication works in a very similar way to this example.\nWith JWT authentication, we are making a request out to a server saying “Hey! here’s my username and password or sign-in token is this” and the website says “okay, let me check.” If my username and password is correct then that would give me a token. Now on subsequent requests of the server I don’t have to any longer include my username and password. I would just carry my token and check into the hotel (website), access to the Gym (data), I would have access to the pool(information) and only to my hotel room (account), I don’t have access to any other hotel rooms (other user’s account). This token is only authorized during the duration of my state so from check-in time to the checkout time. After that it is of no use. Now the hotel will also allow people without any verification to at least see the hotel, to roam in the public area around the hotel until you are coming inside the hotel, Similarly being an anonomous user you can interact with the website’s home page, landing page, etc.\nHere’s an example of a JWT :\neyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ .SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c Project Structure Here is the structure of the project. Make sure to create a similar folder structure in your workspace as well. In this structure we have 6 folders:\ncontrollers database helpers middleware models routes and create the respective files inside these folders.\nPrerequisites Go - Version 1.18+ Mongo DB Step by Step Tutorial Step 1. Let’s start the project by creating a module, the name of my module is “jwt” and my username is “1shubham7”, therefore I will initial my module by entering:\ngo mod init github.com/1shubham7/jwt This will create a go.mod file.\nStep 2. Create a main.go file and let’s create a web server in main.go. For that, add the following code in the file:\npackage main import( “github.com/gin-gonic/gin” “os” routes “github.com/1shubham7/jwt/routes” “github.com/joho/godotenv” “log” ) func main() { err := godotenv.Load(\".env\") if err != nil { log.Fatal(“Error locading the .env file”) } port := os.Getenv(“PORT”) if port == \"\" { port = “1111” } router := gin.New() router.Use(gin.Logger()) routes.AuthRoutes(router) routes.UserRoutes(router) // creating two APIs router.GET(\"/api-1\", func(c *gin.Context){ c.JSON(200, gin.H{“success”:“Access granted for api-1”}) }) router.GET(“api-2”, func(c *gin.Context){ c.JSON(200, gin.H{“success”:“Access granted for api-2”}) }) router.Run(\":\" + port) }\n‘os’ package to retrieve environment variables. we are using gin-gonic package to create a web server. Later we will create a routes package. AuthRoutes(), UserRoutes() are functions inside a file from routes package, we will create it later on. Step 3. Download the gin-gonic package:\ngo get github.com/gin-gonic/gin\nStep 4. Create a models folder and inside it create a userModel.go file. Enter the following code inside the userModel.go:\npackage models import ( “go.mongodb.org/mongo-driver/bson/primitive” “time” ) type User struct { ID primitive.ObjectID bson:\"id\" First_name *string json:\"first_name\" validate:\"required, min=2, max=100\" Last_name *string json:\"last_name\" validate:\"required, min=2, max=100\" Password *string json:\"password\" validate:\"required, min=6\" Email *string json:\"email\" validate:\"email, required\" //validate email means it should have an @ Phone *string json:\"phone\" validate:\"required\" Token *string json:\"token\" User_type *string json:\"user_type\" validate:\"required, eq=ADMIN|eq=USER\" Refresh_token *string json:\"refresh_token\" Created_at time.Time json:\"created_at\" Updated_at time.Time json:\"updated_at\" User_id string json:\"user_id\" }\nWe have created a struct called User and have added necessary fields to the struct.\njson:\"first_name\" validate:\"required, min=2, max=100\" this are called field tags, these are used during decoding and encoding of go code to JSON and JSON to go. Here validate:“required, min=2, max=100” this is used for validate that the particular field must have minimum 2 characters and maximum 100 characters. Step 5. Create a database folder and inside it create a databaseConnection.go file, enter the following code inside it:\npackage database import ( “fmt” “log” “os” “time” “context” “github.com/joho/godotenv” “go.mongodb.org/mongo-driver/mongo” “go/mongodb.org/mongo-driver/mongo/options” ) func DBinstance() mongo.Client{ err := godotenv.Load(\".env\") if err != nil { log.Fatal(“Error locading the .env file”) } MongoDb := os.Getenv(“THE_MONGODB_URL”) client, err := mongo.NewClient(options.Client().ApplyURI(MongoDb)) if err != nil { log.Fatal(err) } ctx, cancel := context.WithTimeout(context.Background(), 10time.Second) defer cancel() err = client.Connect(ctx) if err!=nil{ log.Fatal(err) } fmt.Println(“Connected to MongoDB!!”) return client } var Client *mongo.Client = DBinstance() func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection { var collection *mongo.Collection = client.Database(“cluster0”).Collection(collectionName) return collection }\nalso make sure to download the ‘mongo’ package:\ngo get go.mongodb.org/mongo-driver/mongo\nHere we are connecting your mongo database with the application.\nwe are using ‘godotenv’ for loading environment variables that we will set in the .env file in main directory. The DBinstance Function, we take the value of “THE_MONGODB_URL” from the .env file (we will create that in the coming steps) and create a new mongoDB client using the value. ‘context’ is used to have a timeout of 10 seconds. OpenCollection Function() takes client and collectionName as input and creates a collection for it. Step 6. For the routes, we will create two different files, authRouter and userRouter. authRouter includes ‘/signup’ and ‘/login’ . These will public to everyone so that they can authorize themselves. userRouter will not be public to everyone. It will include ‘/users’ and ‘/users/:user_id’.\nCreate a folder called routes and add two files into it:\nuserRouter.go authRouter.go enter the following code into userRouter.go:\npackage routes import ( “github.com/gin-gonic/gin” controllers “github.com/1shubham7/jwt/controllers” middleware “github.com/1shubham7/jwt/middleware” ) // user should not be able to use userRoute without the token func UserRoutes (incomingRoutes *gin.Engine) { incomingRoutes.Use(middleware.Authenticate()) // user routes are public routes but these must be authenticated, that // is why we have Authenticate() before these incomingRoutes.GET(\"/users\", controllers.GetUsers()) incomingRoutes.GET(“users/:user_id”, controllers.GetUserById()) }\nStep 7. enter the following code into the authRouter.go:\npackage routes import ( “github.com/gin-gonic/gin” controllers “github.com/1shubham7/jwt/controllers” ) // this is when the user has not signed up. userRouter is when the user has logged in // and has the token. func AuthRoutes(incomingRoutes *gin.Engine) { incomingRoutes.POST(“users/signup”, controllers.SignUp()) incomingRoutes.POST(“user/login”, controllers.Login()) }\nStep 8. create a folder called controllers and add a file called ‘userController.go’ to it. enter the following code inside it.\npackage controllers import ( “context” “fmt” “log” “net/http” “strconv” “time” database “github.com/1shubham7/jwt/database” helper “github.com/1shubham7/jwt/helpers” models “github.com/1shubham7/jwt/models” “github.com/gin-gonic/gin” “github.com/go-playground/validator/v10” “golang.org/x/crypto/bcrypt” ) var userCollection *mongo.Collection = database.OpenCollection(database.Client, “user”) func Hashpassword() func VerifyPassword() func SignUp() func Login() func GetUsers() func GetUserById()\nThe packages used are straight forward. database, helper and models are our own packages. ‘fmt’ package is used for string formatting. ’time’ package is used for time representation ’net/http’ package is used for dealing with requests ‘strconv’ package is used to convert string to int and vice versa. Then we have just created the outline function, we will complete those functions in the coming steps. Step 9. To keep environment variables in a separate file, we will create a .env file inside the main folder (root folder) and add the following code into it:\nPORT=1111 THE_MONGODB_URL=mongodb://localhost:27017/go-auth\nThese two variables have already been used in our previous code.\nStep 10. Let’s create the GetUserById() function first. Enter the following code in GetUserById() function:\nfunc GetUserById() gin.HandlerFunc{ return func(c *gin.Context){ userId := c.Param(“user_id”) // we are taking the user_id given by the user in json // with the help of gin.context we can access the json data send by postman or curl or user\nif err := helper.MatchUserTypeToUserId(c, userId); err != nil{\r//checking if the user in admin or not.\r// we will create that func in helper package.\rc.JSON(http.StatusBadRequest, gin.H{\"error\": err.Error()})\rreturn }\rvar ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)\rvar user models.User\rerr := userCollection.FindOne(ctx, bson.M{\"user_id\": userId}).Decode(\u0026user)\rdefer cancel()\rif err != nil {\rc.JSON(http.StatusInternalServerError, gin.H{\"error\": err.Error()})\rreturn\r}\r// if everything goes ok, pass the data of the user (UserModel.go)\rc.JSON(http.StatusOK, user)\r}\r}\nStep 11. Let’s create a folder called helpers and add a file called authHelper.go into it. Enter the following code into the authHelper.go :\npackage helpers import ( “errors” “github.com/gin-gonic/gin” ) func CheckUserType(c *gin.Context, userOrAdmin string) (err error) { userType := c.GetString(“user_type”) err = nil if userType != userOrAdmin { err = errors.New(“Not authorized to access the resource”) return err } return err } func MatchUserTypeToUserId(c *gin.Context, userId string) (err error) { // This is the match user function userType := c.GetString(“user_type”) uid := c.GetString(“uid”) err = nil // this means that user is USER not ADMIN and uid is not of the user. Because user can only access his id, // admin can access anyone’s id if userId == “USER” \u0026\u0026 uid != userId { err = errors.New(“You are not authorized to access this user”) } err = CheckUserType(c, userType) return err }\nThe MatchUserTypeToUserId() function just matches if the user is a Admin or just a user. We are using CheckUserType() function inside MatchUserTypeToUserId(), this is just checking if everything is fine (if the user_type we get from user is same as the userType variable. Step 12. We can now work on the SignUp() function of userController.go:\nfunc SignUp()gin.HandlerFunc{ return func(c gin.Context){ var ctx, cancel = context.WithTimeout(context.Background(), 100time.Second) var user models.User if err := c.BindJSON(\u0026user); err!=nil{ c.JSON(http.StatusBadRequest, gin.H{“error”: err.Error()}) return } validationErr := validate.Struct(user) // this is used to validate, but what? see the User struct, and see those validate struct fields if validationErr != nil { c.JSON(http.StatusBadRequest, gin.H{“error”: validationErr.Error()}) return } // we are using count to help us validate. if you find documents with the user email already // then count would be more than 0, and we can then handle that err count, err := userCollection.CountDocuments(ctx, bson.M{“email”:user.Email}) defer cancel() if err != nil { log.Panic(err) c.JSON(http.StatusInternalServerError, gin.H{“error”:“error occured while checking for the email”}) } password := HashPassword(*user.Password) user.Password = \u0026password count, err = userCollection.CountDocuments(ctx, bson.M{“phone”:user.Phone}) defer cancel() if err != nil { log.Panic(err) c.JSON(http.StatusInternalServerError, gin.H{“error”:“error occured while checking for the phone number”}) } if count \u003e 0 { c.JSON(http.StatusInternalServerError, gin.H{“error”:“this email or phone number already exists”}) } // by “c.BindJSON(\u0026user)” user already have the information from the website user user.Created_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339)) user.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339)) user.ID = primitive.NewObjectID() user.User_id = user.ID.Hex() token, refreshToken, _ := helper.GenerateAllTokens(*user.Email, *user.First_name, *user.Last_name, *user.User_type, *\u0026user.User_id)\n// giving value that we generated to user\ruser.Token = \u0026token\ruser.Refresh_token = \u0026refreshToken\r// now let's insert it to the database\rresultInsertionNumber, insertErr := userCollection.InsertOne(ctx, user)\rif insertErr != nil {\rmsg := fmt.Sprintf(\"User item was not created\")\rc.JSON(http.StatusInternalServerError, gin.H{\"error\": msg})\rreturn\r}\rdefer cancel()\rc.JSON(http.StatusOK, resultInsertionNumber)\r}\r}\nWe created a variable user of type User. validationErr is used to validate the struct tags, we already discussed this. We are also using count variable to validate. As in if we find documents with the user email already then the count would be more than 0, and we can then handle that error (err) Then we are using ’time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))’ to set the time for Created_at, Updated_at struct fields. When the user tries to sign up, the function SignUp() will run and that particular time will be stored in Created_at, Updated_at struct fields. Then we are creating tokens using GenerateAllTokens() function that we will create in tokenHelper.go file in the same package in the next step. We also have a HashPassword() function that is doing nothing but hashing the user.password and replacing the user.password with the hashed password. We will also create that thing later. And then we are just inserting the data and the tokens etc. to the userCollection If everything goes right, we will give StatusOK back. Step 13. create a file in helpers folder called ’tokenHelper.go’ and enter the following code inside it.\npackage helpers import ( “context” “fmt” “log” “os” “time” “github.com/1shubham7/jwt/database” jwt “github.com/dgrijalva/jwt-go” // golang driver for jwt “go.mongodb.org/mongo-driver/bson” “go.mongodb.org/mongo-driver/bson/primitive” “go.mongodb.org/mongo-driver/mongo” “go.mongodb.org/mongo-driver/mongo/options” ) type SignedDetails struct { Email string First_name string Last_name string Uid string User_type string jwt.StandardClaims } var userCollection *mongo.Collection = database.OpenCollection(database.Client, “user”) // btw we sould have our secret key in .env for production var SECRET_KEY string = os.Getenv(“SECRET_KEY”) func GenerateAllTokens(email string, firstName string, lastName string, userType string, uid string) (signedToken string, signedRefreshToken string, err error){ claims := \u0026SignedDetails{ Email : email, First_name: firstName, Last_name: lastName, Uid : uid, User_type: userType, StandardClaims: jwt.StandardClaims{ // setting the expiry time ExpiresAt: time.Now().Local().Add(time.Hour *time.Duration(120)).Unix(), }, } // refreshClaims is used to get a new token if th eprevious once is expired.\nrefreshClaims := \u0026SignedDetails{\rStandardClaims: jwt.StandardClaims{\rExpiresAt: time.Now().Local().Add(time.Hour *time.Duration(172)).Unix(),\r},\r}\rtoken ,err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(SECRET_KEY))\rrefreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString([]byte(SECRET_KEY))\rif err!= nil{\rlog.Panic(err)\rreturn\r}\rreturn token, refreshToken, err\r}\nAlso make sure to download the github.com/dgrijalva/jwt-go package:\ngo get github.com/dgrijalva/jwt-go\nHere we are using github.com/dgrijalva/jwt-go for generating tokens. We are creating a struct called SignedDetails with field names required for generating tokens. we are using NewWithClaims to generate new tokens and are giving the value to the claims and refreshClaims structs. claims has token for the first time users and refreshClaims has it when the user has to refresh the token. that is, they previously had a token which is now expired. time.Now().Local().Add(time.Hour *time.Duration(120)).Unix() is being used for setting the expiry of the token. we are then simply returning three things - token, refreshToken and err which we are using in the SignUp() function. Step 14. In the same file as SignUp() function, let’s create the HashPassword() function we talked about in step 9.\nfunc HashPassword(password string) string { hashed, err:=bcrypt.GenerateFromPassword([]byte(password), 14) if err!=nil{ log.Panic(err) } return string(hashed) }\nWe are simply using the GenerateFromPassword() method from bcrypt package which is used to generate hashed passwords from the actual password. This is important because we would not want and hacker to hack into our systems and steal all the passwords, also for the users privacy. []byte (array of bytes) is simply string. Step 15. Let’s create the Login() function in ‘userController.go’ and in later steps we can create the functions that Login() uses:\nfunc Login() gin.HandlerFunc{ return func(c gin.Context) { var ctx, cancel = context.WithTimeout(context.Background(), 100time.Second) var user models.User var foundUser models.User // giving the user data to user variable if err := c.BindJSON(\u0026user); err != nil { c.JSON(http.StatusBadRequest, gin.H{“error”: err.Error()}) return } // finding the user through email and if found, storing it in foundUser variable err := userCollection.FindOne(ctx, bson.M{“email”: user.Email}).Decode(\u0026foundUser) defer cancel() if err!=nil{ c.JSON(http.StatusInternalServerError, gin.H{“error”: “email or password is incorrect”}) return } // we need pointer to acess the origina user and foundUser, // if we only pass user and foundUser, it will create a new instance of user and foundUser isPasswordValid, msg := VerifyPassword(*user.Password, *foundUser.Password) defer cancel() if isPasswordValid != true{ c.JSON(http.StatusInternalServerError, gin.H{“error”: msg}) return } if foundUser.Email == nil { c.JSON(http.StatusInternalServerError, gin.H{“error”: “user not found”}) } token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, foundUser.User_id) helper.UpdateAllTokens(token, refreshToken, foundUser.User_id) err = userCollection.FindOne(ctx, bson.M{“user_id”:foundUser.User_id}).Decode(\u0026foundUser) if err != nil { c.JSON(http.StatusInternalServerError, gin.H{“error”: err.Error()}) return } c.JSON(http.StatusOK, foundUser) } }\nWe are creating two variables of type User, these are user and Founduser. and giving the data from request to user. By the help of ‘userCollection.FindOne(ctx, bson.M{“email”: user.Email}).Decode(\u0026foundUser)’ we are finding the user through his/her email and if found, storing it in foundUser variable. Then we are using VerifyPassword() function to verify the password and store it, remember that we are taking pointers as parameters in VerifyPassword(), if not, it would create a new instance of those in parameters rather than actually changing them. We will create VerifyPassword() in the next step. Then we are simply using GenerateAllTokens() and UpdateAllTokens() to generate and update the token and refreshToken (which are basically tokens). And every step, we are all handling the errors. Step 16. Let’s create the VerifyPassword() function in the same file as Login() function:\nfunc VerifyPassword(userPassword, providedPassword string) (bool, string) {\nerr := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))\rcheck := true\rmsg := \"\"\rif err != nil {\rcheck = false\rmsg = fmt.Sprintf(\"email or password is incorrect.\")\r}\rreturn check, msg\r}\nWe are simply using the CompareHashAndPassword() method from bcrypt package which is used to compare hashed passwords. and returning a boolean value depening on the results. []byte (array of bytes) is simply string, but []byte helps in comparing. Step 17. Let’s create the UpdateAllTokens() function in the ’tokenHelper.go’ file:\nfunc UpdateAllTokens(signedToken string, signedRefreshToken string, userId string){ var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second) var updateObj primitive.D updateObj = append(updateObj, bson.E{“token”, signedToken}) updateObj = append(updateObj, bson.E{“refresh_token”, signedRefreshToken}) Updated_at, _ := time.Parse(time.RFC3339, time.Now().Format(time.RFC3339)) updateObj = append(updateObj, bson.E{“updated_at”, Updated_at}) upsert := true filter := bson.M{“user_id”:userId} opt := options.UpdateOptions{ Upsert: \u0026upsert, } _, err := userCollection.UpdateOne( ctx, filter, bson.D{ {\"$set\", updateObj}, }, \u0026opt, ) defer cancel() if err!=nil{ log.Panic(err) return } return }\nWe are creating a variable called updateObj which is of type primitive.D. primitive.D type in MongoDB’s Go driver is a representation of a BSON document. Append() is appending a key-value pair to updateObj each and every time its running. Then ’time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))’ is used to update the current time (time when the updation happens and the function runs) to Updated_at. Rest of the code block is performing update using the UpdateOne method of mongoDB collection. At the last step we are also handling the error in case any error occurs. Step 18. Before continuing ahead, let’s download the go.mongodb.org/mongo-driver package:\ngo get go.mongodb.org/mongo-driver\nStep 19. Let’s now work on GetUserById() function. Remember that GetUserById() is for the users to access there own information, Admins can access all the users data, users can only access theirs.\nfunc GetUserById() gin.HandlerFunc{ return func(c *gin.Context){ userId := c.Param(“user_id”) // we are taking the user_id given by the user in json // with the help of gin.context we can access the json data send by postman or curl or user\nif err := helper.MatchUserTypeToUserId(c, userId); err != nil{\r//checking if the user in admin or not.\r// we will create that func in helper package.\rc.JSON(http.StatusBadRequest, gin.H{\"error\": err.Error()})\rreturn }\rvar ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)\rvar user models.User\rerr := userCollection.FindOne(ctx, bson.M{\"user_id\": userId}).Decode(\u0026user)\rdefer cancel()\rif err != nil {\rc.JSON(http.StatusInternalServerError, gin.H{\"error\": err.Error()})\rreturn\r}\r// if everything goes ok, pass the data of the user (UserModel.go)\rc.JSON(http.StatusOK, user)\r}\r}\nTaking the user_id from the request and storing it in userId variable. creating a variable called user of type User. then simply searching the user in our database with the help of user_id, if the user_id matches, we will store that persons information in user variable. If everything goes fine, StatusOk we are also handling the errors at every step. Step 20. Let’s now work on GetUsers() function. Remember that only the admin can access the GetUsers() function because it would include the data of all the users. Create a GetUsers() function in the same file as GetUserById(), Login() and SignUp() function:\nfunc GetUsers() gin.HandlerFunc{ return func(c gin.Context){ if err := helper.CheckUserType(c, “ADMIN”); err != nil{ c.JSON(http.StatusBadRequest, gin.H{“error”:err.Error()}) return } var ctx, cancel = context.WithTimeout(context.Background(), 100time.Second) // setting how many records you want per page. // we are taking the recodePerPage from c and converting it to int recordPerPage, err := strconv.Atoi(c.Query(“recordPerPage”)) // if error or recordPerPage is less than 1, by default we will have 9 records per page if recordPerPage\u003c1||err != nil { recordPerPage = 9 } // this is just like page number page, err1 := strconv.Atoi(c.Query(“page”)) // we want to start with the page number 1 by default. if err1 !=nil || page \u003c 1{ page = 1 } startIndex := (page - 1) * recordPerPage startIndex, err = strconv.Atoi(c.Query(“startIndex”)) matchStage := bson.D{{\"$match\", bson.D{{}}, }} // group all the data based on id, and then count them using $sum. then // pushing all the data to the root. groupStage := bson.D{{\"$group\", bson.D{{\"_id\", bson.D{{\"_id\", “null”}}}, {“total_count”, bson.D{{\"$sum\", 1}}}, {“data”, bson.D{{\"$push\", “$$ROOT”}}}, }}} // in project stage we deside which data should go to the user and which not. projectStage := bson.D{ {\"$project\", bson.D{ {\"_id\", 0}, {“total_count”, 1}, {“user_items”, bson.D{{\"$slice\", []interface{}{\"$data\", startIndex, recordPerPage}}}}, }}, } result, err := userCollection.Aggregate(ctx, mongo.Pipeline{ matchStage, groupStage, projectStage}) defer cancel() if err != nil{ c.JSON(http.StatusInternalServerError, gin.H{“error”:“error occured while listing user items”}) } // creating a slice called allUser and giving the result value var allUsers []bson.M if err := result.All(ctx, \u0026allUsers); err != nil { log.Fatal(err) } c.JSON(http.StatusOK, allUsers[0]) } }\nFirstly, we will check if the request is coming from the admin or not, we do that by the help of CheckUserType() we created in previous steps. Then we are setting how many records you want per page. We can do that by taking the recodePerPage from the request and converting it to int, this is done by srtconv. If any error occurs in setting recordPerPage or recordPerPage is less than 1, by default we will have 9 records per page Similarly we are taking the page number in variable ‘page’. By default we will have page number as 1 and 9 recordPerPage. Then we created three stages (matchStage, groupStage, projectStage). Then we are setting these three stages in our Mongo pipeline using Aggregate() function Also we are handling errors are every step. Step 21. Our ‘userController.go’ is now ready, this is how the ‘userController.go’ file looks like after completion:\npackage controllers import ( “context” “fmt” “log” “net/http” “strconv” “time” database “github.com/1shubham7/jwt/database” helper “github.com/1shubham7/jwt/helpers” models “github.com/1shubham7/jwt/models” “github.com/gin-gonic/gin” “github.com/go-playground/validator/v10” “golang.org/x/crypto/bcrypt” “go.mongodb.org/mongo-driver/bson” “go.mongodb.org/mongo-driver/bson/primitive” “go.mongodb.org/mongo-driver/mongo” ) var userCollection *mongo.Collection = database.OpenCollection(database.Client, “user”) var validate = validator.New() func HashPassword(password string) string { hashed, err:=bcrypt.GenerateFromPassword([]byte(password), 14) if err!=nil{ log.Panic(err) } return string(hashed) } func VerifyPassword(userPassword, providedPassword string) (bool, string) {\nerr := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))\rcheck := true\rmsg := \"\"\rif err != nil {\rcheck = false\rmsg = fmt.Sprintf(\"email or password is incorrect.\")\r}\rreturn check, msg\r} func SignUp()gin.HandlerFunc{ return func(c gin.Context){ var ctx, cancel = context.WithTimeout(context.Background(), 100time.Second) var user models.User if err := c.BindJSON(\u0026user); err!=nil{ c.JSON(http.StatusBadRequest, gin.H{“error”: err.Error()}) return } validationErr := validate.Struct(user) // this is used to validate, but what? see the User struct, and see those validate struct fields if validationErr != nil { c.JSON(http.StatusBadRequest, gin.H{“error”: validationErr.Error()}) return } // we are using count to help us validate. if you find documents with the user email already // then count would be more than 0, and we can then handle that err count, err := userCollection.CountDocuments(ctx, bson.M{“email”:user.Email}) defer cancel() if err != nil { log.Panic(err) c.JSON(http.StatusInternalServerError, gin.H{“error”:“error occured while checking for the email”}) } password := HashPassword(*user.Password) user.Password = \u0026password count, err = userCollection.CountDocuments(ctx, bson.M{“phone”:user.Phone}) defer cancel() if err != nil { log.Panic(err) c.JSON(http.StatusInternalServerError, gin.H{“error”:“error occured while checking for the phone number”}) } if count \u003e 0 { c.JSON(http.StatusInternalServerError, gin.H{“error”:“this email or phone number already exists”}) } // by “c.BindJSON(\u0026user)” user already have the information from the website user user.Created_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339)) user.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339)) user.ID = primitive.NewObjectID() user.User_id = user.ID.Hex() token, refreshToken, _ := helper.GenerateAllTokens(*user.Email, *user.First_name, *user.Last_name, *user.User_type, *\u0026user.User_id)\n// giving value that we generated to user\ruser.Token = \u0026token\ruser.Refresh_token = \u0026refreshToken\r// now let's insert it to the database\rresultInsertionNumber, insertErr := userCollection.InsertOne(ctx, user)\rif insertErr != nil {\rmsg := fmt.Sprintf(\"User item was not created\")\rc.JSON(http.StatusInternalServerError, gin.H{\"error\": msg})\rreturn\r}\rdefer cancel()\rc.JSON(http.StatusOK, resultInsertionNumber)\r}\r} func Login() gin.HandlerFunc{ return func(c gin.Context) { var ctx, cancel = context.WithTimeout(context.Background(), 100time.Second) var user models.User var foundUser models.User // giving the user data to user variable if err := c.BindJSON(\u0026user); err != nil { c.JSON(http.StatusBadRequest, gin.H{“error”: err.Error()}) return } // finding the user through email and if found, storing it in foundUser variable err := userCollection.FindOne(ctx, bson.M{“email”: user.Email}).Decode(\u0026foundUser) defer cancel() if err!=nil{ c.JSON(http.StatusInternalServerError, gin.H{“error”: “email or password is incorrect”}) return } // we need pointer to acess the origina user and foundUser, // if we only pass user and foundUser, it will create a new instance of user and foundUser isPasswordValid, msg := VerifyPassword(*user.Password, *foundUser.Password) defer cancel() if isPasswordValid != true{ c.JSON(http.StatusInternalServerError, gin.H{“error”: msg}) return } if foundUser.Email == nil { c.JSON(http.StatusInternalServerError, gin.H{“error”: “user not found”}) } token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, foundUser.User_id) helper.UpdateAllTokens(token, refreshToken, foundUser.User_id) err = userCollection.FindOne(ctx, bson.M{“user_id”:foundUser.User_id}).Decode(\u0026foundUser) if err != nil { c.JSON(http.StatusInternalServerError, gin.H{“error”: err.Error()}) return } c.JSON(http.StatusOK, foundUser) } } // GetUsers can only be accessed by the admin. func GetUsers() gin.HandlerFunc{ return func(c gin.Context){ if err := helper.CheckUserType(c, “ADMIN”); err != nil{ c.JSON(http.StatusBadRequest, gin.H{“error”:err.Error()}) return } var ctx, cancel = context.WithTimeout(context.Background(), 100time.Second) // setting how many records you want per page. // we are taking the recodePerPage from c and converting it to int recordPerPage, err := strconv.Atoi(c.Query(“recordPerPage”)) // if error or recordPerPage is less than 1, by default we will have 9 records per page if recordPerPage\u003c1||err != nil { recordPerPage = 9 } // this is just like page number page, err1 := strconv.Atoi(c.Query(“page”)) // we want to start with the page number 1 by default. if err1 !=nil || page \u003c 1{ page = 1 } startIndex := (page - 1) * recordPerPage startIndex, err = strconv.Atoi(c.Query(“startIndex”)) matchStage := bson.D{{\"$match\", bson.D{{}}, }} // group all the data based on id, and then count them using $sum. then // pushing all the data to the root. groupStage := bson.D{{\"$group\", bson.D{{\"_id\", bson.D{{\"_id\", “null”}}}, {“total_count”, bson.D{{\"$sum\", 1}}}, {“data”, bson.D{{\"$push\", “$$ROOT”}}}, }}} // in project stage we deside which data should go to the user and which not. projectStage := bson.D{ {\"$project\", bson.D{ {\"_id\", 0}, {“total_count”, 1}, {“user_items”, bson.D{{\"$slice\", []interface{}{\"$data\", startIndex, recordPerPage}}}}, }}, } result, err := userCollection.Aggregate(ctx, mongo.Pipeline{ matchStage, groupStage, projectStage}) defer cancel() if err != nil{ c.JSON(http.StatusInternalServerError, gin.H{“error”:“error occured while listing user items”}) } // creating a slice called allUser and giving the result value var allUsers []bson.M if err := result.All(ctx, \u0026allUsers); err != nil { log.Fatal(err) } c.JSON(http.StatusOK, allUsers[0]) } } func GetUserById() gin.HandlerFunc{ return func(c *gin.Context){ userId := c.Param(“user_id”) // we are taking the user_id given by the user in json // with the help of gin.context we can access the json data send by postman or curl or user\nif err := helper.MatchUserTypeToUserId(c, userId); err != nil{\r//checking if the user in admin or not.\r// we will create that func in helper package.\rc.JSON(http.StatusBadRequest, gin.H{\"error\": err.Error()})\rreturn }\rvar ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)\rvar user models.User\rerr := userCollection.FindOne(ctx, bson.M{\"user_id\": userId}).Decode(\u0026user)\rdefer cancel()\rif err != nil {\rc.JSON(http.StatusInternalServerError, gin.H{\"error\": err.Error()})\rreturn\r}\r// if everything goes ok, pass the data of the user (UserModel.go)\rc.JSON(http.StatusOK, user)\r}\r}\nStep 22. Now we can work on the authentication part. For that we will create a authenticate middleware. Create a folder called ‘middleware’ and create a file inside it called ‘authMiddleware.go’. Enter the following code in the file:\npackage middleware import ( “net/http” “github.com/gin-gonic/gin” “fmt” helpers “github.com/1shubham7/jwt/helpers” ) func Authenticate() gin.HandlerFunc{ return func(c *gin.Context) { clientToken := c.Request.Header.Get(“token”) if clientToken == \"\" { c.JSON(http.StatusInternalServerError, gin.H{“error”:fmt.Sprintf(“No Authorization header provided”)}) c.Abort() return } claims, err := helpers.ValidateToken(clientToken) if err !=\"\" { c.JSON(http.StatusInternalServerError, gin.H{“error”:err}) c.Abort() return } c.Set(“email”, claims.Email) c.Set(“first_name”, claims.First_name) c.Set(“last_name”, claims.Last_name) c.Set(“uid”, claims.Uid) c.Set(“user_type”, claims.User_type) c.Next() } }\nStep 23. Now let’s create ValidateToken() function, we will create this function in the ’tokenHelper.go’:\nfunc ValidateToken(signedToken string) (claims *SignedDetails, msg string) { // this function is basically returning the token token, err := jwt.ParseWithClaims( signedToken, \u0026SignedDetails{}, func(token *jwt.Token)(interface{}, error){ return []byte(SECRET_KEY), nil }, ) if err != nil { msg = err.Error() return } // checking if the token is correct or not claims, ok := token.Claims.(*SignedDetails) if !ok { msg = fmt.Sprintf(“the token is invalid”) msg = err.Error() return } // if the token is expired, give error message if claims.ExpiresAt \u003c time.Now().Local().Unix(){ msg = fmt.Sprintf(“token has been expired”) msg = err.Error() return } return claims, msg }\nValidateToken takes signedToken and returns SignedDetails of that along with an error message. \"\" if there is no error. ParseWithClaims() function is being used to get us the token and store it in a variable called token. Then we are checking if the token is correct or not using the Claims method on token. And we are storing the result in claims variable. Then we are checking if the token has expired using ExpiresAt() function, if current time is greater than the ExpiresAt time, it would have expired. And then simply return the claims variable as well as the message. Step 24. We are mostly done now, let’s do ‘go mod tidy’, this command checks in your go.mod file, it deletes all the packages/dependencies that we installed but are not using and downloads any dependencies that we are using but haven’t downloaded yet.\ngo mod tidy\nScreenshot-2023-11-16-091632\nOutput With that our JWT authentication project is ready, to finally run the application enter the following command in the terminal:\ngo run main.go\nYou will get a similar output:\nScreenshot-2023-11-16-093330\nThis will get the server up and running, and you can use curl or Postman API for sending request and receiving response. Or you can simply integrate this API with an frontend framework. And with that, our authentication API is ready, pat yourself on the back!\nConclusion In this article we discussed one of the fastest ways to create JWT authentication, we used Gin-Gonic framework for our project. This is not your “just another authentication API”. Gin is 300% faster than NodeJS, that makes this authentication API really fast and efficient. The project structure we are using is also an industry level project structure. You can make further changes like storing the SECRET_KEY in the .env file and a lot more to make this API better. You can also find the source code for this project here - 1Shubham7/go-jwt-token.\nMake sure to follow all the steps in order to create the project and add some more functionality and just play with the code to understand it better. The best way to learn authentication is to create your own projects.\n",
+  "wordCount" : "5115",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/api.png","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/jwt/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Building a Golang backend system with JWT authentication
+    </h1>
+    <div class="post-description">
+      API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...
+    </div>
+    <div class="post-meta">
+
+
+October 2023
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/api.png" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#what-is-jwt-authentication" aria-label="What is JWT authentication?">What is JWT authentication?</a></li>
+                <li>
+                    <a href="#project-structure" aria-label="Project Structure">Project Structure</a><ul>
+                        
+                <li>
+                    <a href="#prerequisites" aria-label="Prerequisites">Prerequisites</a></li></ul>
+                </li>
+                <li>
+                    <a href="#conclusion" aria-label="Conclusion">Conclusion</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>When creating a website&rsquo;s backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely. In this article, we will discuss JWT authentication and most importantly we will create an entire project for Fast and Efficient JWT authentication using Gin-Gonic, this will be a step-by-step project tutorial that will help you create a very fast and industry-level authentication API for your website or application&rsquo;s backend.</p>
+<p>Table of Content:</p>
+<ul>
+<li>What is JWT authentication?</li>
+<li>Project Structure</li>
+<li>Prerequisites</li>
+<li>Step by Step Tutorial</li>
+<li>Final Results</li>
+<li>Output</li>
+<li>Conclusion</li>
+</ul>
+<h2 id="what-is-jwt-authentication">What is JWT authentication?<a hidden class="anchor" aria-hidden="true" href="#what-is-jwt-authentication">#</a></h2>
+<p>JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely.</p>
+<p>Let&rsquo;s try to understand that by the help of an example. Consider a situation when we show up at a hotel and we walk up to the front desk and the receptionist says &ldquo;hey, what can I do for you?&rdquo;. I would say &ldquo;Hi, my name is Shubham, I&rsquo;m here for a conference, the sponsors are paying for my hotel&rdquo;. The receptionist says &ldquo;okay great! well I&rsquo;m going to need to see a couple things&rdquo;. Usually they&rsquo;ll need to see my identification so to prove who I am and once that they have verified that I am the right person, they will issue me a key. And authentication works in a very similar way to this example.</p>
+<p>With JWT authentication, we are making a request out to a server saying &ldquo;Hey! here&rsquo;s my username and password or sign-in token is this&rdquo; and the website says &ldquo;okay, let me check.&rdquo; If my username and password is correct then that would give me a token. Now on subsequent requests of the server I don&rsquo;t have to any longer include my username and password. I would just carry my token and check into the hotel (website), access to the Gym (data), I would have access to the pool(information) and only to my hotel room (account), I don&rsquo;t have access to any other hotel rooms (other user&rsquo;s account). This token is only authorized during the duration of my state so from check-in time to the checkout time. After that it is of no use. Now the hotel will also allow people without any verification to at least see the hotel, to roam in the public area around the hotel until you are coming inside the hotel, Similarly being an anonomous user you can interact with the website&rsquo;s home page, landing page, etc.</p>
+<p><strong>Here&rsquo;s an example of a JWT :</strong></p>
+<pre tabindex="0"><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ 
+.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+</code></pre><h2 id="project-structure">Project Structure<a hidden class="anchor" aria-hidden="true" href="#project-structure">#</a></h2>
+<p>Here is the structure of the project. Make sure to create a similar folder structure in your workspace as well. In this structure we have 6 folders:</p>
+<ol>
+<li>controllers</li>
+<li>database</li>
+<li>helpers</li>
+<li>middleware</li>
+<li>models</li>
+<li>routes</li>
+</ol>
+<p>and create the respective files inside these folders.</p>
+<p><img loading="lazy" src="/blog/jwt/one.webp" alt="Project Structure"  />
+</p>
+<h3 id="prerequisites">Prerequisites<a hidden class="anchor" aria-hidden="true" href="#prerequisites">#</a></h3>
+<ol>
+<li>Go - Version 1.18+</li>
+<li>Mongo DB</li>
+<li>Step by Step Tutorial</li>
+</ol>
+<p><strong>Step 1.</strong> Let&rsquo;s start the project by creating a module, the name of my module is &ldquo;jwt&rdquo; and my username is &ldquo;1shubham7&rdquo;, therefore I will initial my module by entering:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>go mod init github.com/1shubham7/jwt
+</span></span></code></pre></div><p>This will create a go.mod file.</p>
+<p>Step 2. Create a main.go file and let&rsquo;s create a web server in main.go. For that, add the following code in the file:</p>
+<p>package main
+import(
+&ldquo;github.com/gin-gonic/gin&rdquo;
+&ldquo;os&rdquo;
+routes &ldquo;github.com/1shubham7/jwt/routes&rdquo;
+&ldquo;github.com/joho/godotenv&rdquo;
+&ldquo;log&rdquo;
+)
+func main() {
+err := godotenv.Load(&quot;.env&quot;)
+if err != nil {
+log.Fatal(&ldquo;Error locading the .env file&rdquo;)
+}
+port := os.Getenv(&ldquo;PORT&rdquo;)
+if port == &quot;&quot; {
+port = &ldquo;1111&rdquo;
+}
+router := gin.New()
+router.Use(gin.Logger())
+routes.AuthRoutes(router)
+routes.UserRoutes(router)
+// creating two APIs
+router.GET(&quot;/api-1&quot;, func(c *gin.Context){
+c.JSON(200, gin.H{&ldquo;success&rdquo;:&ldquo;Access granted for api-1&rdquo;})
+})
+router.GET(&ldquo;api-2&rdquo;, func(c *gin.Context){
+c.JSON(200, gin.H{&ldquo;success&rdquo;:&ldquo;Access granted for api-2&rdquo;})
+})
+router.Run(&quot;:&quot; + port)
+}</p>
+<p>&lsquo;os&rsquo; package to retrieve environment variables.
+we are using gin-gonic package to create a web server.
+Later we will create a routes package.
+AuthRoutes(), UserRoutes() are functions inside a file from routes package, we will create it later on.
+Step 3. Download the gin-gonic package:</p>
+<p>go get github.com/gin-gonic/gin</p>
+<p>Step 4. Create a models folder and inside it create a userModel.go file. Enter the following code inside the userModel.go:</p>
+<p>package models
+import (
+&ldquo;go.mongodb.org/mongo-driver/bson/primitive&rdquo;
+&ldquo;time&rdquo;
+)
+type User struct {
+ID            primitive.ObjectID <code>bson:&quot;id&quot;</code>
+First_name    *string            <code>json:&quot;first_name&quot; validate:&quot;required, min=2, max=100&quot;</code>
+Last_name     *string            <code>json:&quot;last_name&quot; validate:&quot;required, min=2, max=100&quot;</code>
+Password      *string            <code>json:&quot;password&quot; validate:&quot;required, min=6&quot;</code>
+Email         *string            <code>json:&quot;email&quot; validate:&quot;email, required&quot;</code> //validate email means it should have an @
+Phone         *string            <code>json:&quot;phone&quot; validate:&quot;required&quot;</code>
+Token         *string            <code>json:&quot;token&quot;</code>
+User_type     *string            <code>json:&quot;user_type&quot; validate:&quot;required, eq=ADMIN|eq=USER&quot;</code>
+Refresh_token *string            <code>json:&quot;refresh_token&quot;</code>
+Created_at    time.Time          <code>json:&quot;created_at&quot;</code>
+Updated_at    time.Time          <code>json:&quot;updated_at&quot;</code>
+User_id       string             <code>json:&quot;user_id&quot;</code>
+}</p>
+<p>We have created a struct called User and have added necessary fields to the struct.</p>
+<p><code>json:&quot;first_name&quot; validate:&quot;required, min=2, max=100&quot;</code> this are called field tags, these are used during decoding and encoding of go code to JSON and JSON to go.
+Here validate:&ldquo;required, min=2, max=100&rdquo; this is used for validate that the particular field must have minimum 2 characters and maximum 100 characters.
+Step 5. Create a database folder and inside it create a databaseConnection.go file, enter the following code inside it:</p>
+<p>package database
+import (
+&ldquo;fmt&rdquo;
+&ldquo;log&rdquo;
+&ldquo;os&rdquo;
+&ldquo;time&rdquo;
+&ldquo;context&rdquo;
+&ldquo;github.com/joho/godotenv&rdquo;
+&ldquo;go.mongodb.org/mongo-driver/mongo&rdquo;
+&ldquo;go/mongodb.org/mongo-driver/mongo/options&rdquo;
+)
+func DBinstance() <em>mongo.Client{
+err := godotenv.Load(&quot;.env&quot;)
+if err != nil {
+log.Fatal(&ldquo;Error locading the .env file&rdquo;)
+}
+MongoDb := os.Getenv(&ldquo;THE_MONGODB_URL&rdquo;)
+client, err := mongo.NewClient(options.Client().ApplyURI(MongoDb))
+if err != nil {
+log.Fatal(err)
+}
+ctx, cancel := context.WithTimeout(context.Background(), 10</em>time.Second)
+defer cancel()
+err = client.Connect(ctx)
+if err!=nil{
+log.Fatal(err)
+}
+fmt.Println(&ldquo;Connected to MongoDB!!&rdquo;)
+return client
+}
+var Client *mongo.Client = DBinstance()
+func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+var collection *mongo.Collection = client.Database(&ldquo;cluster0&rdquo;).Collection(collectionName)
+return collection
+}</p>
+<p>also make sure to download the &lsquo;mongo&rsquo; package:</p>
+<p>go get go.mongodb.org/mongo-driver/mongo</p>
+<p>Here we are connecting your mongo database with the application.</p>
+<p>we are using &lsquo;godotenv&rsquo; for loading environment variables that we will set in the .env file in main directory.
+The DBinstance Function, we take the value of &ldquo;THE_MONGODB_URL&rdquo; from the .env file (we will create that in the coming steps) and create a new mongoDB client using the value.
+&lsquo;context&rsquo; is used to have a timeout of 10 seconds.
+OpenCollection Function() takes client and collectionName as input and creates a collection for it.
+Step 6. For the routes, we will create two different files, authRouter and userRouter. authRouter includes &lsquo;/signup&rsquo; and &lsquo;/login&rsquo; . These will public to everyone so that they can authorize themselves. userRouter will not be public to everyone. It will include &lsquo;/users&rsquo; and &lsquo;/users/:user_id&rsquo;.</p>
+<p>Create a folder called routes and add two files into it:</p>
+<p>userRouter.go
+authRouter.go
+enter the following code into userRouter.go:</p>
+<p>package routes
+import (
+&ldquo;github.com/gin-gonic/gin&rdquo;
+controllers &ldquo;github.com/1shubham7/jwt/controllers&rdquo;
+middleware &ldquo;github.com/1shubham7/jwt/middleware&rdquo;
+)
+// user should not be able to use userRoute without the token
+func UserRoutes (incomingRoutes *gin.Engine) {
+incomingRoutes.Use(middleware.Authenticate())
+// user routes are public routes but these must be authenticated, that
+// is why we have Authenticate() before these
+incomingRoutes.GET(&quot;/users&quot;, controllers.GetUsers())
+incomingRoutes.GET(&ldquo;users/:user_id&rdquo;, controllers.GetUserById())
+}</p>
+<p>Step 7. enter the following code into the authRouter.go:</p>
+<p>package routes
+import (
+&ldquo;github.com/gin-gonic/gin&rdquo;
+controllers &ldquo;github.com/1shubham7/jwt/controllers&rdquo;
+)
+// this is when the user has not signed up. userRouter is when the user has logged in
+// and has the token.
+func AuthRoutes(incomingRoutes *gin.Engine) {
+incomingRoutes.POST(&ldquo;users/signup&rdquo;, controllers.SignUp())
+incomingRoutes.POST(&ldquo;user/login&rdquo;, controllers.Login())
+}</p>
+<p>Step 8. create a folder called controllers and add a file called &lsquo;userController.go&rsquo; to it. enter the following code inside it.</p>
+<p>package controllers
+import (
+&ldquo;context&rdquo;
+&ldquo;fmt&rdquo;
+&ldquo;log&rdquo;
+&ldquo;net/http&rdquo;
+&ldquo;strconv&rdquo;
+&ldquo;time&rdquo;
+database &ldquo;github.com/1shubham7/jwt/database&rdquo;
+helper &ldquo;github.com/1shubham7/jwt/helpers&rdquo;
+models &ldquo;github.com/1shubham7/jwt/models&rdquo;
+&ldquo;github.com/gin-gonic/gin&rdquo;
+&ldquo;github.com/go-playground/validator/v10&rdquo;
+&ldquo;golang.org/x/crypto/bcrypt&rdquo;
+)
+var userCollection *mongo.Collection = database.OpenCollection(database.Client, &ldquo;user&rdquo;)
+func Hashpassword()
+func VerifyPassword()
+func SignUp()
+func Login()
+func GetUsers()
+func GetUserById()</p>
+<p>The packages used are straight forward. database, helper and models are our own packages.
+&lsquo;fmt&rsquo; package is used for string formatting.
+&rsquo;time&rsquo; package is used for time representation
+&rsquo;net/http&rsquo; package is used for dealing with requests
+&lsquo;strconv&rsquo; package is used to convert string to int and vice versa.
+Then we have just created the outline function, we will complete those functions in the coming steps.
+Step 9. To keep environment variables in a separate file, we will create a .env file inside the main folder (root folder) and add the following code into it:</p>
+<p>PORT=1111
+THE_MONGODB_URL=mongodb://localhost:27017/go-auth</p>
+<p>These two variables have already been used in our previous code.</p>
+<p>Step 10. Let&rsquo;s create the GetUserById() function first. Enter the following code in GetUserById() function:</p>
+<p>func GetUserById() gin.HandlerFunc{
+return func(c *gin.Context){
+userId := c.Param(&ldquo;user_id&rdquo;) // we are taking the user_id given by the user in json
+// with the help of gin.context we can access the json data send by postman or curl or user</p>
+<pre><code>	if err := helper.MatchUserTypeToUserId(c, userId); err != nil{
+		//checking if the user in admin or not.
+		// we will create that func in helper package.
+			c.JSON(http.StatusBadRequest, gin.H{&quot;error&quot;: err.Error()})
+			return 
+		}
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	var user models.User
+	
+	err := userCollection.FindOne(ctx, bson.M{&quot;user_id&quot;: userId}).Decode(&amp;user)
+	defer cancel()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{&quot;error&quot;: err.Error()})
+		return
+	}
+	// if everything goes ok, pass the data of the user (UserModel.go)
+	c.JSON(http.StatusOK, user)
+}
+</code></pre>
+<p>}</p>
+<p>Step 11. Let&rsquo;s create a folder called helpers and add a file called authHelper.go into it. Enter the following code into the authHelper.go :</p>
+<p>package helpers
+import (
+&ldquo;errors&rdquo;
+&ldquo;github.com/gin-gonic/gin&rdquo;
+)
+func CheckUserType(c *gin.Context, userOrAdmin string) (err error) {
+userType := c.GetString(&ldquo;user_type&rdquo;)
+err = nil
+if userType != userOrAdmin {
+err = errors.New(&ldquo;Not authorized to access the resource&rdquo;)
+return err
+}
+return err
+}
+func MatchUserTypeToUserId(c *gin.Context, userId string) (err error) {
+//  This is the match user function
+userType := c.GetString(&ldquo;user_type&rdquo;)
+uid := c.GetString(&ldquo;uid&rdquo;)
+err = nil
+// this means that user is USER not ADMIN and uid is not of the user. Because user can only access his id,
+// admin can access anyone&rsquo;s id
+if userId == &ldquo;USER&rdquo; &amp;&amp; uid != userId {
+err = errors.New(&ldquo;You are not authorized to access this user&rdquo;)
+}
+err = CheckUserType(c, userType)
+return err
+}</p>
+<p>The MatchUserTypeToUserId() function just matches if the user is a Admin or just a user.
+We are using CheckUserType() function inside MatchUserTypeToUserId(), this is just checking if everything is fine (if the user_type we get from user is same as the userType variable.
+Step 12. We can now work on the SignUp() function of userController.go:</p>
+<p>func SignUp()gin.HandlerFunc{
+return func(c <em>gin.Context){
+var ctx, cancel = context.WithTimeout(context.Background(), 100</em>time.Second)
+var user models.User
+if err := c.BindJSON(&amp;user); err!=nil{
+c.JSON(http.StatusBadRequest, gin.H{&ldquo;error&rdquo;: err.Error()})
+return
+}
+validationErr := validate.Struct(user)
+// this is used to validate, but what? see the User struct, and see those validate struct fields
+if validationErr != nil {
+c.JSON(http.StatusBadRequest, gin.H{&ldquo;error&rdquo;: validationErr.Error()})
+return
+}
+// we are using count to help us validate. if you find documents with the user email already
+// then count would be more than 0, and we can then handle that err
+count, err := userCollection.CountDocuments(ctx, bson.M{&ldquo;email&rdquo;:user.Email})
+defer cancel()
+if err != nil {
+log.Panic(err)
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:&ldquo;error occured while checking for the email&rdquo;})
+}
+password := HashPassword(*user.Password)
+user.Password = &amp;password
+count, err = userCollection.CountDocuments(ctx, bson.M{&ldquo;phone&rdquo;:user.Phone})
+defer cancel()
+if err != nil {
+log.Panic(err)
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:&ldquo;error occured while checking for the phone number&rdquo;})
+}
+if count &gt; 0 {
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:&ldquo;this email or phone number already exists&rdquo;})
+}
+// by &ldquo;c.BindJSON(&amp;user)&rdquo; user already have the information from the website user
+user.Created_at, _  = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+user.Updated_at, _  = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+user.ID = primitive.NewObjectID()
+user.User_id = user.ID.Hex()
+token, refreshToken, _ := helper.GenerateAllTokens(*user.Email, *user.First_name, *user.Last_name, *user.User_type, *&amp;user.User_id)</p>
+<pre><code>	// giving value that we generated to user
+	user.Token = &amp;token
+	user.Refresh_token = &amp;refreshToken
+	// now let's insert it to the database
+	resultInsertionNumber, insertErr :=  userCollection.InsertOne(ctx, user)
+	if insertErr != nil {
+		msg := fmt.Sprintf(&quot;User item was not created&quot;)
+		c.JSON(http.StatusInternalServerError, gin.H{&quot;error&quot;: msg})
+		return
+	}
+	defer cancel()
+	c.JSON(http.StatusOK, resultInsertionNumber)
+}
+</code></pre>
+<p>}</p>
+<p>We created a variable user of type User.
+validationErr is used to validate the struct tags, we already discussed this.
+We are also using count variable to validate. As in if we find documents with the user email already then the count would be more than 0, and we can then handle that error (err)
+Then we are using &rsquo;time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))&rsquo; to set the time for Created_at, Updated_at struct fields. When the user tries to sign up, the function SignUp() will run and that particular time will be stored in  Created_at, Updated_at struct fields.
+Then we are creating tokens using GenerateAllTokens() function that we will create in tokenHelper.go file in the same package in the next step.
+We also have a HashPassword() function that is doing nothing but hashing the user.password and replacing the user.password with the hashed password. We will also create that thing later.
+And then we are just inserting the data and the tokens etc. to the userCollection
+If everything goes right, we will give StatusOK back.
+Step 13. create a file in helpers folder called &rsquo;tokenHelper.go&rsquo; and enter the following code inside it.</p>
+<p>package helpers
+import (
+&ldquo;context&rdquo;
+&ldquo;fmt&rdquo;
+&ldquo;log&rdquo;
+&ldquo;os&rdquo;
+&ldquo;time&rdquo;
+&ldquo;github.com/1shubham7/jwt/database&rdquo;
+jwt &ldquo;github.com/dgrijalva/jwt-go&rdquo; // golang driver for jwt
+&ldquo;go.mongodb.org/mongo-driver/bson&rdquo;
+&ldquo;go.mongodb.org/mongo-driver/bson/primitive&rdquo;
+&ldquo;go.mongodb.org/mongo-driver/mongo&rdquo;
+&ldquo;go.mongodb.org/mongo-driver/mongo/options&rdquo;
+)
+type SignedDetails struct {
+Email string
+First_name string
+Last_name string
+Uid string
+User_type string
+jwt.StandardClaims
+}
+var userCollection *mongo.Collection = database.OpenCollection(database.Client, &ldquo;user&rdquo;)
+// btw we sould have our secret key in .env for production
+var SECRET_KEY string = os.Getenv(&ldquo;SECRET_KEY&rdquo;)
+func GenerateAllTokens(email string, firstName string, lastName string, userType string, uid string) (signedToken string, signedRefreshToken string, err error){
+claims := &amp;SignedDetails{
+Email : email,
+First_name: firstName,
+Last_name: lastName,
+Uid : uid,
+User_type: userType,
+StandardClaims: jwt.StandardClaims{
+// setting the expiry time
+ExpiresAt: time.Now().Local().Add(time.Hour *time.Duration(120)).Unix(),
+},
+}
+// refreshClaims is used to get a new token if th eprevious once is expired.</p>
+<pre><code>	refreshClaims := &amp;SignedDetails{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Local().Add(time.Hour *time.Duration(172)).Unix(),
+	},
+}
+token ,err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(SECRET_KEY))
+refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString([]byte(SECRET_KEY))
+if err!= nil{
+	log.Panic(err)
+	return
+}
+return token, refreshToken, err
+</code></pre>
+<p>}</p>
+<p>Also make sure to download the github.com/dgrijalva/jwt-go package:</p>
+<p>go get github.com/dgrijalva/jwt-go</p>
+<p>Here we are using github.com/dgrijalva/jwt-go for generating tokens.
+We are creating a struct called SignedDetails with field names required for generating tokens.
+we are using NewWithClaims to generate new tokens and are giving the value to the claims and refreshClaims structs. claims has token for the first time users and refreshClaims has it when the user has to refresh the token. that is, they previously had a token which is now expired.
+time.Now().Local().Add(time.Hour *time.Duration(120)).Unix() is being used for setting the expiry of the token.
+we are then simply returning three things - token, refreshToken and err which we are using in the SignUp() function.
+Step 14. In the same file as SignUp() function, let&rsquo;s create the HashPassword() function we talked about in step 9.</p>
+<p>func HashPassword(password string) string {
+hashed, err:=bcrypt.GenerateFromPassword([]byte(password), 14)
+if err!=nil{
+log.Panic(err)
+}
+return string(hashed)
+}</p>
+<p>We are simply using the GenerateFromPassword() method from bcrypt package which is used to generate hashed passwords from the actual password.
+This is important because we would not want and hacker to hack into our systems and steal all the passwords, also for the users privacy.
+[]byte (array of bytes) is simply string.
+Step 15. Let&rsquo;s create the Login() function in &lsquo;userController.go&rsquo; and in later steps we can create the functions that Login() uses:</p>
+<p>func Login() gin.HandlerFunc{
+return func(c <em>gin.Context) {
+var ctx, cancel = context.WithTimeout(context.Background(), 100</em>time.Second)
+var user models.User
+var foundUser models.User
+// giving the user data to user variable
+if err := c.BindJSON(&amp;user); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{&ldquo;error&rdquo;: err.Error()})
+return
+}
+// finding the user through email and if found, storing it in foundUser variable
+err := userCollection.FindOne(ctx, bson.M{&ldquo;email&rdquo;: user.Email}).Decode(&amp;foundUser)
+defer cancel()
+if err!=nil{
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;: &ldquo;email or password is incorrect&rdquo;})
+return
+}
+// we need pointer to acess the origina user and foundUser,
+// if we only pass user and foundUser, it will create a new instance of user and foundUser
+isPasswordValid, msg := VerifyPassword(*user.Password, *foundUser.Password)
+defer cancel()
+if isPasswordValid != true{
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;: msg})
+return
+}
+if foundUser.Email == nil {
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;: &ldquo;user not found&rdquo;})
+}
+token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, foundUser.User_id)
+helper.UpdateAllTokens(token, refreshToken, foundUser.User_id)
+err = userCollection.FindOne(ctx, bson.M{&ldquo;user_id&rdquo;:foundUser.User_id}).Decode(&amp;foundUser)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;: err.Error()})
+return
+}
+c.JSON(http.StatusOK, foundUser)
+}
+}</p>
+<p>We are creating two variables of type User, these are user and Founduser. and giving the data from request to user.
+By the help of &lsquo;userCollection.FindOne(ctx, bson.M{&ldquo;email&rdquo;: user.Email}).Decode(&amp;foundUser)&rsquo; we are finding the user through his/her email and if found, storing it in foundUser variable.
+Then we are using VerifyPassword() function to verify the password and store it, remember that we are taking pointers as parameters in VerifyPassword(), if not, it would create a new instance of those in parameters rather than actually changing them.
+We will create VerifyPassword() in the next step.
+Then we are simply using GenerateAllTokens() and UpdateAllTokens() to generate and update the token and refreshToken (which are basically tokens).
+And every step, we are all handling the errors.
+Step 16. Let&rsquo;s create the VerifyPassword() function in the same file as Login() function:</p>
+<p>func VerifyPassword(userPassword, providedPassword string) (bool, string) {</p>
+<pre><code>err := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))
+check := true
+msg := &quot;&quot;
+if err != nil {
+	check = false
+	msg = fmt.Sprintf(&quot;email or password is incorrect.&quot;)
+}
+return check, msg
+</code></pre>
+<p>}</p>
+<p>We are simply using the CompareHashAndPassword() method from bcrypt package which is used to compare hashed passwords. and returning a boolean value depening on the results.
+[]byte (array of bytes) is simply string, but []byte helps in comparing.
+Step 17. Let&rsquo;s create the UpdateAllTokens() function in the &rsquo;tokenHelper.go&rsquo; file:</p>
+<p>func UpdateAllTokens(signedToken string, signedRefreshToken string, userId string){
+var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+var updateObj primitive.D
+updateObj = append(updateObj, bson.E{&ldquo;token&rdquo;, signedToken})
+updateObj = append(updateObj, bson.E{&ldquo;refresh_token&rdquo;, signedRefreshToken})
+Updated_at, _ := time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+updateObj = append(updateObj, bson.E{&ldquo;updated_at&rdquo;, Updated_at})
+upsert := true
+filter := bson.M{&ldquo;user_id&rdquo;:userId}
+opt := options.UpdateOptions{
+Upsert: &amp;upsert,
+}
+_, err := userCollection.UpdateOne(
+ctx,
+filter,
+bson.D{
+{&quot;$set&quot;, updateObj},
+},
+&amp;opt,
+)
+defer cancel()
+if err!=nil{
+log.Panic(err)
+return
+}
+return
+}</p>
+<p>We are creating a variable called updateObj which is of type primitive.D. primitive.D type in MongoDB&rsquo;s Go driver is a representation of a BSON document.
+Append() is appending a key-value pair to updateObj each and every time its running.
+Then &rsquo;time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))&rsquo; is used to update the current time (time when the updation happens and the function runs) to Updated_at.
+Rest of the code block is performing update using the UpdateOne method of mongoDB collection.
+At the last step we are also handling the error in case any error occurs.
+Step 18. Before continuing ahead, let&rsquo;s download the go.mongodb.org/mongo-driver package:</p>
+<p>go get go.mongodb.org/mongo-driver</p>
+<p>Step 19. Let&rsquo;s now work on GetUserById() function. Remember that GetUserById() is for the users to access there own information, Admins can access all the users data, users can only access theirs.</p>
+<p>func GetUserById() gin.HandlerFunc{
+return func(c *gin.Context){
+userId := c.Param(&ldquo;user_id&rdquo;) // we are taking the user_id given by the user in json
+// with the help of gin.context we can access the json data send by postman or curl or user</p>
+<pre><code>	if err := helper.MatchUserTypeToUserId(c, userId); err != nil{
+		//checking if the user in admin or not.
+		// we will create that func in helper package.
+			c.JSON(http.StatusBadRequest, gin.H{&quot;error&quot;: err.Error()})
+			return 
+		}
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	var user models.User
+	
+	err := userCollection.FindOne(ctx, bson.M{&quot;user_id&quot;: userId}).Decode(&amp;user)
+	defer cancel()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{&quot;error&quot;: err.Error()})
+		return
+	}
+	// if everything goes ok, pass the data of the user (UserModel.go)
+	c.JSON(http.StatusOK, user)
+}
+</code></pre>
+<p>}</p>
+<p>Taking the user_id from the request and storing it in userId variable.
+creating a variable called user of type User.
+then simply searching the user in our database with the help of user_id, if the user_id matches, we will store that persons information in user variable.
+If everything goes fine, StatusOk
+we are also handling the errors at every step.
+Step 20.  Let&rsquo;s now work on GetUsers() function. Remember that only the admin can access the GetUsers() function because it would include the data of all the users. Create a GetUsers() function in the same file as GetUserById(), Login() and SignUp() function:</p>
+<p>func GetUsers() gin.HandlerFunc{
+return func(c <em>gin.Context){
+if err := helper.CheckUserType(c, &ldquo;ADMIN&rdquo;); err != nil{
+c.JSON(http.StatusBadRequest, gin.H{&ldquo;error&rdquo;:err.Error()})
+return
+}
+var ctx, cancel = context.WithTimeout(context.Background(), 100</em>time.Second)
+//  setting how many records you want per page.
+// we are taking the recodePerPage from c and converting it to int
+recordPerPage, err := strconv.Atoi(c.Query(&ldquo;recordPerPage&rdquo;))
+// if error or recordPerPage is less than 1, by default we will have 9 records per page
+if recordPerPage&lt;1||err != nil {
+recordPerPage = 9
+}
+// this is just like page number
+page, err1 := strconv.Atoi(c.Query(&ldquo;page&rdquo;))
+// we want to start with the page number 1 by default.
+if err1 !=nil || page &lt; 1{
+page = 1
+}
+startIndex := (page - 1) * recordPerPage
+startIndex, err = strconv.Atoi(c.Query(&ldquo;startIndex&rdquo;))
+matchStage := bson.D{{&quot;$match&quot;, bson.D{{}},
+}}
+// group all the data based on id, and then count them using $sum. then
+// pushing all the data to the root.
+groupStage := bson.D{{&quot;$group&quot;, bson.D{{&quot;_id&quot;, bson.D{{&quot;_id&quot;, &ldquo;null&rdquo;}}},
+{&ldquo;total_count&rdquo;, bson.D{{&quot;$sum&quot;, 1}}},
+{&ldquo;data&rdquo;, bson.D{{&quot;$push&quot;, &ldquo;$$ROOT&rdquo;}}},
+}}}
+// in project stage we deside which data should go to the user and which not.
+projectStage := bson.D{
+{&quot;$project&quot;, bson.D{
+{&quot;_id&quot;, 0},
+{&ldquo;total_count&rdquo;, 1},
+{&ldquo;user_items&rdquo;, bson.D{{&quot;$slice&quot;, []interface{}{&quot;$data&quot;, startIndex, recordPerPage}}}},
+}},
+}
+result, err := userCollection.Aggregate(ctx, mongo.Pipeline{
+matchStage, groupStage, projectStage})
+defer cancel()
+if err != nil{
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:&ldquo;error occured while listing user items&rdquo;})
+}
+// creating a slice called allUser and giving the result value
+var allUsers []bson.M
+if err := result.All(ctx, &amp;allUsers); err != nil {
+log.Fatal(err)
+}
+c.JSON(http.StatusOK, allUsers[0])
+}
+}</p>
+<p>Firstly, we will check if the request is coming from the admin or not, we do that by the help of CheckUserType() we created in previous steps.
+Then we are setting how many records you want per page.
+We can do that by taking the recodePerPage from the request and converting it to int, this is done by srtconv.
+If any error occurs in setting recordPerPage or recordPerPage is less than 1, by default we will have 9 records per page
+Similarly we are taking the page number in variable &lsquo;page&rsquo;.
+By default we will have page number as 1 and 9 recordPerPage.
+Then we created three stages (matchStage, groupStage, projectStage).
+Then we are setting these three stages in our Mongo pipeline using Aggregate() function
+Also we are handling errors are every step.
+Step 21. Our &lsquo;userController.go&rsquo; is now ready, this is how the &lsquo;userController.go&rsquo; file looks like after completion:</p>
+<p>package controllers
+import (
+&ldquo;context&rdquo;
+&ldquo;fmt&rdquo;
+&ldquo;log&rdquo;
+&ldquo;net/http&rdquo;
+&ldquo;strconv&rdquo;
+&ldquo;time&rdquo;
+database &ldquo;github.com/1shubham7/jwt/database&rdquo;
+helper &ldquo;github.com/1shubham7/jwt/helpers&rdquo;
+models &ldquo;github.com/1shubham7/jwt/models&rdquo;
+&ldquo;github.com/gin-gonic/gin&rdquo;
+&ldquo;github.com/go-playground/validator/v10&rdquo;
+&ldquo;golang.org/x/crypto/bcrypt&rdquo;
+&ldquo;go.mongodb.org/mongo-driver/bson&rdquo;
+&ldquo;go.mongodb.org/mongo-driver/bson/primitive&rdquo;
+&ldquo;go.mongodb.org/mongo-driver/mongo&rdquo;
+)
+var userCollection *mongo.Collection = database.OpenCollection(database.Client, &ldquo;user&rdquo;)
+var validate = validator.New()
+func HashPassword(password string) string {
+hashed, err:=bcrypt.GenerateFromPassword([]byte(password), 14)
+if err!=nil{
+log.Panic(err)
+}
+return string(hashed)
+}
+func VerifyPassword(userPassword, providedPassword string) (bool, string) {</p>
+<pre><code>err := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))
+check := true
+msg := &quot;&quot;
+if err != nil {
+	check = false
+	msg = fmt.Sprintf(&quot;email or password is incorrect.&quot;)
+}
+return check, msg
+</code></pre>
+<p>}
+func SignUp()gin.HandlerFunc{
+return func(c <em>gin.Context){
+var ctx, cancel = context.WithTimeout(context.Background(), 100</em>time.Second)
+var user models.User
+if err := c.BindJSON(&amp;user); err!=nil{
+c.JSON(http.StatusBadRequest, gin.H{&ldquo;error&rdquo;: err.Error()})
+return
+}
+validationErr := validate.Struct(user)
+// this is used to validate, but what? see the User struct, and see those validate struct fields
+if validationErr != nil {
+c.JSON(http.StatusBadRequest, gin.H{&ldquo;error&rdquo;: validationErr.Error()})
+return
+}
+// we are using count to help us validate. if you find documents with the user email already
+// then count would be more than 0, and we can then handle that err
+count, err := userCollection.CountDocuments(ctx, bson.M{&ldquo;email&rdquo;:user.Email})
+defer cancel()
+if err != nil {
+log.Panic(err)
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:&ldquo;error occured while checking for the email&rdquo;})
+}
+password := HashPassword(*user.Password)
+user.Password = &amp;password
+count, err = userCollection.CountDocuments(ctx, bson.M{&ldquo;phone&rdquo;:user.Phone})
+defer cancel()
+if err != nil {
+log.Panic(err)
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:&ldquo;error occured while checking for the phone number&rdquo;})
+}
+if count &gt; 0 {
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:&ldquo;this email or phone number already exists&rdquo;})
+}
+// by &ldquo;c.BindJSON(&amp;user)&rdquo; user already have the information from the website user
+user.Created_at, _  = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+user.Updated_at, _  = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+user.ID = primitive.NewObjectID()
+user.User_id = user.ID.Hex()
+token, refreshToken, _ := helper.GenerateAllTokens(*user.Email, *user.First_name, *user.Last_name, *user.User_type, *&amp;user.User_id)</p>
+<pre><code>	// giving value that we generated to user
+	user.Token = &amp;token
+	user.Refresh_token = &amp;refreshToken
+	// now let's insert it to the database
+	resultInsertionNumber, insertErr :=  userCollection.InsertOne(ctx, user)
+	if insertErr != nil {
+		msg := fmt.Sprintf(&quot;User item was not created&quot;)
+		c.JSON(http.StatusInternalServerError, gin.H{&quot;error&quot;: msg})
+		return
+	}
+	defer cancel()
+	c.JSON(http.StatusOK, resultInsertionNumber)
+}
+</code></pre>
+<p>}
+func Login() gin.HandlerFunc{
+return func(c <em>gin.Context) {
+var ctx, cancel = context.WithTimeout(context.Background(), 100</em>time.Second)
+var user models.User
+var foundUser models.User
+// giving the user data to user variable
+if err := c.BindJSON(&amp;user); err != nil {
+c.JSON(http.StatusBadRequest, gin.H{&ldquo;error&rdquo;: err.Error()})
+return
+}
+// finding the user through email and if found, storing it in foundUser variable
+err := userCollection.FindOne(ctx, bson.M{&ldquo;email&rdquo;: user.Email}).Decode(&amp;foundUser)
+defer cancel()
+if err!=nil{
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;: &ldquo;email or password is incorrect&rdquo;})
+return
+}
+// we need pointer to acess the origina user and foundUser,
+// if we only pass user and foundUser, it will create a new instance of user and foundUser
+isPasswordValid, msg := VerifyPassword(*user.Password, *foundUser.Password)
+defer cancel()
+if isPasswordValid != true{
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;: msg})
+return
+}
+if foundUser.Email == nil {
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;: &ldquo;user not found&rdquo;})
+}
+token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, foundUser.User_id)
+helper.UpdateAllTokens(token, refreshToken, foundUser.User_id)
+err = userCollection.FindOne(ctx, bson.M{&ldquo;user_id&rdquo;:foundUser.User_id}).Decode(&amp;foundUser)
+if err != nil {
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;: err.Error()})
+return
+}
+c.JSON(http.StatusOK, foundUser)
+}
+}
+// GetUsers can only be accessed by the admin.
+func GetUsers() gin.HandlerFunc{
+return func(c <em>gin.Context){
+if err := helper.CheckUserType(c, &ldquo;ADMIN&rdquo;); err != nil{
+c.JSON(http.StatusBadRequest, gin.H{&ldquo;error&rdquo;:err.Error()})
+return
+}
+var ctx, cancel = context.WithTimeout(context.Background(), 100</em>time.Second)
+//  setting how many records you want per page.
+// we are taking the recodePerPage from c and converting it to int
+recordPerPage, err := strconv.Atoi(c.Query(&ldquo;recordPerPage&rdquo;))
+// if error or recordPerPage is less than 1, by default we will have 9 records per page
+if recordPerPage&lt;1||err != nil {
+recordPerPage = 9
+}
+// this is just like page number
+page, err1 := strconv.Atoi(c.Query(&ldquo;page&rdquo;))
+// we want to start with the page number 1 by default.
+if err1 !=nil || page &lt; 1{
+page = 1
+}
+startIndex := (page - 1) * recordPerPage
+startIndex, err = strconv.Atoi(c.Query(&ldquo;startIndex&rdquo;))
+matchStage := bson.D{{&quot;$match&quot;, bson.D{{}},
+}}
+// group all the data based on id, and then count them using $sum. then
+// pushing all the data to the root.
+groupStage := bson.D{{&quot;$group&quot;, bson.D{{&quot;_id&quot;, bson.D{{&quot;_id&quot;, &ldquo;null&rdquo;}}},
+{&ldquo;total_count&rdquo;, bson.D{{&quot;$sum&quot;, 1}}},
+{&ldquo;data&rdquo;, bson.D{{&quot;$push&quot;, &ldquo;$$ROOT&rdquo;}}},
+}}}
+// in project stage we deside which data should go to the user and which not.
+projectStage := bson.D{
+{&quot;$project&quot;, bson.D{
+{&quot;_id&quot;, 0},
+{&ldquo;total_count&rdquo;, 1},
+{&ldquo;user_items&rdquo;, bson.D{{&quot;$slice&quot;, []interface{}{&quot;$data&quot;, startIndex, recordPerPage}}}},
+}},
+}
+result, err := userCollection.Aggregate(ctx, mongo.Pipeline{
+matchStage, groupStage, projectStage})
+defer cancel()
+if err != nil{
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:&ldquo;error occured while listing user items&rdquo;})
+}
+// creating a slice called allUser and giving the result value
+var allUsers []bson.M
+if err := result.All(ctx, &amp;allUsers); err != nil {
+log.Fatal(err)
+}
+c.JSON(http.StatusOK, allUsers[0])
+}
+}
+func GetUserById() gin.HandlerFunc{
+return func(c *gin.Context){
+userId := c.Param(&ldquo;user_id&rdquo;) // we are taking the user_id given by the user in json
+// with the help of gin.context we can access the json data send by postman or curl or user</p>
+<pre><code>	if err := helper.MatchUserTypeToUserId(c, userId); err != nil{
+		//checking if the user in admin or not.
+		// we will create that func in helper package.
+			c.JSON(http.StatusBadRequest, gin.H{&quot;error&quot;: err.Error()})
+			return 
+		}
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	var user models.User
+	
+	err := userCollection.FindOne(ctx, bson.M{&quot;user_id&quot;: userId}).Decode(&amp;user)
+	defer cancel()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{&quot;error&quot;: err.Error()})
+		return
+	}
+	// if everything goes ok, pass the data of the user (UserModel.go)
+	c.JSON(http.StatusOK, user)
+}
+</code></pre>
+<p>}</p>
+<p>Step 22. Now we can work on the authentication part. For that we will create a authenticate middleware. Create a folder called &lsquo;middleware&rsquo; and create a file inside it called &lsquo;authMiddleware.go&rsquo;. Enter the following code in the file:</p>
+<p>package middleware
+import (
+&ldquo;net/http&rdquo;
+&ldquo;github.com/gin-gonic/gin&rdquo;
+&ldquo;fmt&rdquo;
+helpers &ldquo;github.com/1shubham7/jwt/helpers&rdquo;
+)
+func Authenticate() gin.HandlerFunc{
+return func(c *gin.Context) {
+clientToken := c.Request.Header.Get(&ldquo;token&rdquo;)
+if clientToken == &quot;&quot; {
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:fmt.Sprintf(&ldquo;No Authorization header provided&rdquo;)})
+c.Abort()
+return
+}
+claims, err := helpers.ValidateToken(clientToken)
+if err !=&quot;&quot; {
+c.JSON(http.StatusInternalServerError, gin.H{&ldquo;error&rdquo;:err})
+c.Abort()
+return
+}
+c.Set(&ldquo;email&rdquo;, claims.Email)
+c.Set(&ldquo;first_name&rdquo;, claims.First_name)
+c.Set(&ldquo;last_name&rdquo;, claims.Last_name)
+c.Set(&ldquo;uid&rdquo;, claims.Uid)
+c.Set(&ldquo;user_type&rdquo;, claims.User_type)
+c.Next()
+}
+}</p>
+<p>Step 23. Now let&rsquo;s create ValidateToken() function, we will create this function in the &rsquo;tokenHelper.go&rsquo;:</p>
+<p>func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
+// this function is basically returning the token
+token, err := jwt.ParseWithClaims(
+signedToken,
+&amp;SignedDetails{},
+func(token *jwt.Token)(interface{}, error){
+return []byte(SECRET_KEY), nil
+},
+)
+if err != nil {
+msg = err.Error()
+return
+}
+// checking if the token is correct or not
+claims, ok := token.Claims.(*SignedDetails)
+if !ok {
+msg = fmt.Sprintf(&ldquo;the token is invalid&rdquo;)
+msg = err.Error()
+return
+}
+// if the token is expired, give error message
+if claims.ExpiresAt &lt; time.Now().Local().Unix(){
+msg = fmt.Sprintf(&ldquo;token has been expired&rdquo;)
+msg = err.Error()
+return
+}
+return claims, msg
+}</p>
+<p>ValidateToken takes signedToken and returns SignedDetails of that along with an error message. &quot;&quot; if there is no error.
+ParseWithClaims() function is being used to get us the token and store it in a variable called token.
+Then we are checking if the token is correct or not using the Claims method on token. And we are storing the result in claims variable.
+Then we are checking if the token has expired using ExpiresAt() function, if current time is greater than the ExpiresAt time, it would have expired.
+And then simply return the claims variable as well as the message.
+Step 24.  We are mostly done now, let&rsquo;s do &lsquo;go mod tidy&rsquo;, this command checks in your go.mod file, it deletes all the packages/dependencies that we installed but are not using and downloads any dependencies that we are using but haven&rsquo;t downloaded yet.</p>
+<p>go mod tidy</p>
+<p>Screenshot-2023-11-16-091632</p>
+<p>Output
+With that our JWT authentication project is ready, to finally run the application enter the following command in the terminal:</p>
+<p>go run main.go</p>
+<p>You will get a similar output:</p>
+<p>Screenshot-2023-11-16-093330</p>
+<p>This will get the server up and running, and you can use curl or Postman API for sending request and receiving response. Or you can simply integrate this API with an frontend framework. And with that, our authentication API is ready, pat yourself on the back!</p>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>In this article we discussed one of the fastest ways to create JWT authentication, we used Gin-Gonic framework for our project. This is not your &ldquo;just another authentication API&rdquo;. Gin is 300% faster than NodeJS, that makes this authentication API really fast and efficient. The project structure we are using is also an industry level project structure. You can make further changes like storing the SECRET_KEY in the .env file and a lot more to make this API better. You can also find the source code for this project here - <a href="https://github.com/1Shubham7/go-jwt-token"><strong>1Shubham7/go-jwt-token</strong></a>.</p>
+<p>Make sure to follow all the steps in order to create the project and add some more functionality and just play with the code to understand it better. The best way to learn authentication is to create your own projects.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/api/">API</a></li>
+      <li><a href="http://localhost:1313/tags/backend/">Backend</a></li>
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

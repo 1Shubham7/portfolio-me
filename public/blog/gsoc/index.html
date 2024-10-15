@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience | Shubham Singh</title>
+<meta name="keywords" content="Open-source Programs, GSOC, Open-source, GitHub">
+<meta name="description" content="Avoid these 5 mistakes to get selected in GSoC. · Let&#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/gsoc/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/gsoc/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience" />
+<meta property="og:description" content="Avoid these 5 mistakes to get selected in GSoC. · Let&#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/gsoc/" />
+<meta property="og:image" content="http://localhost:1313/blog/gsoc.avif" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/gsoc.avif" />
+<meta name="twitter:title" content="5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience"/>
+<meta name="twitter:description" content="Avoid these 5 mistakes to get selected in GSoC. · Let&#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC'23 Experience",
+      "item": "http://localhost:1313/blog/gsoc/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC'23 Experience",
+  "name": "5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC\u002723 Experience",
+  "description": "Avoid these 5 mistakes to get selected in GSoC. · Let's first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual...",
+  "keywords": [
+    "Open-source Programs", "GSOC", "Open-source", "GitHub"
+  ],
+  "articleBody": "Let’s first start with a quick intro about what GSoC is :\nSo, GSoC (Google Summer of Code) is an annual program launched by Google that offers university students from around the world the opportunity to work on open source software projects during the summer break. The program aims to bring together talented students, open source organizations, and mentors to contribute to open source software development and expand access to key technology initiatives.\nThere were about 43,000 applicants and about 7,700 proposals were submitted. Out of which 960 proposals were accepted. So, every 1 in 8 proposals was submitted, making GSoC at least lesser competitive than the IIT-JEE exam.\nMy Proposal I got to know about GSoC very early but due to my college exams and also me focusing more on my skills rather than open source I messed up this great opportunity. my semester exams ended on 1 April 2023 and the last date for proposal submission was 4th April 2023. I completed my proposal just 15 min before the deadline.\nHere is the link to my LinkedIn and Twitter where I have uploaded my proposal since I could not find any options in Hashnode to upload a PDF.\nLinkedIn : GSOC/1shubham7\nMistakes I made Mistake 1. Thinking I have to be perfect in order to contribute to open source. I thought that I must at least know 90% of the technology in order to contribute to such complex code bases while the truth is open source has something for everybody. You can start your contribution journey by solving the “Good First Issues”. Here is a link to a great website that finds you good first issues for the technology you are decent at:\ngoodfirstissue.dev\nJust go and try contributing, learn how to set up the project locally and contribute with whatever little knowledge you have, Of course, it’s even better you if have good knowledge of the technology.\nMistake 2. To select the wrong project. Go to the GSoC website and have a look at the organizations coming there, there are some organizations that are not able to complete their projects. Make sure to see the project history of the organizations. Make sure that the organization is consistently participating in GSoC every year and getting the projects done. For me, I choose a good organization but the project I was trying to contribute to was not very active, there was very less activity in the GitHub repo of that project.\nMistake 3. Choose a project with active mentors Learn from the mistakes I made, do check out the GitHub repo of the project before selecting it, and make sure that the project members and the mentors are active and helping newcomers with their queries. It is very rare that an inactive project gets completed.\nMistake 4. Start contributing early The earlier you start, the better it is. Make sure you start contributing to the project specifically at least 3-4 months and start contributing to any projects from now so to have a stronger GitHub profile.\nMistake 5. (You can ignore this one depending on your situation) I did not study much for college exams but I have now realized that I could have even studied lesser, I was easily fooled by my teachers since it was my first semester, now that I am in my second sem, I study lesser and focus more on open-source. You can ignore this advice depending on your situation. Since I come from a tier-3 college, I know we don’t have good placements so I am not even considering college placements, I am prepping for off-campus placements. If you are from a decent college, do focus a little bit more on your college exams.\nConclusion : In conclusion, as someone who missed out on GSoC 2023 due to mistakes made during the application process, I hope that my experience and advice can help future applicants avoid similar mistakes. I learned that open source has something for everyone, and that contributing to projects with active mentors and established project histories can increase one’s chances of being accepted into GSoC. I also realized that starting early and consistently contributing to open source projects can help build a strong GitHub profile, which can benefit not only GSoC applications but also future career opportunities. I encourage all students to consider applying for GSoC and not be discouraged by any initial challenges. The program provides a valuable learning opportunity and a chance to contribute to the open source community.\nThese were the mistakes I made. Hope you learn from my mistakes and have a beautiful GSoC journey. Hope this article will help you, if you are reading this and in the future you get selected, do tag me on Twitter: 1Shubham7. I will also be applying for GSoC2024, in the second year of my college.\nI wish you all the luck with your GSoC. Thank you for reading.\nMy Socials Twitter: 1Shubham7\nGitHub: 1Shubham7\nLinkedIn: Shubham Singh\n",
+  "wordCount" : "829",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/gsoc.avif","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/gsoc/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience
+    </h1>
+    <div class="post-description">
+      Avoid these 5 mistakes to get selected in GSoC. · Let&#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual...
+    </div>
+    <div class="post-meta">
+
+
+September 2023
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/gsoc.avif" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#my-proposal" aria-label="My Proposal">My Proposal</a></li>
+                <li>
+                    <a href="#mistakes-i-made" aria-label="Mistakes I made">Mistakes I made</a><ul>
+                        
+                <li>
+                    <a href="#mistake-1-thinking-i-have-to-be-perfect-in-order-to-contribute-to-open-source" aria-label="Mistake 1. Thinking I have to be perfect in order to contribute to open source.">Mistake 1. Thinking I have to be perfect in order to contribute to open source.</a></li>
+                <li>
+                    <a href="#mistake-2-to-select-the-wrong-project" aria-label="Mistake 2. To select the wrong project.">Mistake 2. To select the wrong project.</a></li>
+                <li>
+                    <a href="#mistake-3-choose-a-project-with-active-mentors" aria-label="Mistake 3. Choose a project with active mentors">Mistake 3. Choose a project with active mentors</a></li>
+                <li>
+                    <a href="#mistake-4-start-contributing-early" aria-label="Mistake 4. Start contributing early">Mistake 4. Start contributing early</a></li>
+                <li>
+                    <a href="#mistake-5-you-can-ignore-this-one-depending-on-your-situation" aria-label="Mistake 5. (You can ignore this one depending on your situation)">Mistake 5. (You can ignore this one depending on your situation)</a></li></ul>
+                </li>
+                <li>
+                    <a href="#conclusion-" aria-label="Conclusion :">Conclusion :</a></li>
+                <li>
+                    <a href="#my-socials" aria-label="My Socials">My Socials</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Let&rsquo;s first start with a quick intro about what GSoC is :</p>
+<p>So, GSoC (Google Summer of Code) is an annual program launched by Google that offers university students from around the world the opportunity to work on open source software projects during the summer break. The program aims to bring together talented students, open source organizations, and mentors to contribute to open source software development and expand access to key technology initiatives.</p>
+<p>There were about 43,000 applicants and about 7,700 proposals were submitted. Out of which 960 proposals were accepted. So, every 1 in 8 proposals was submitted, making GSoC at least lesser competitive than the IIT-JEE exam.</p>
+<h2 id="my-proposal">My Proposal<a hidden class="anchor" aria-hidden="true" href="#my-proposal">#</a></h2>
+<p>I got to know about GSoC very early but due to my college exams and also me focusing more on my skills rather than open source I messed up this great opportunity. my semester exams ended on 1 April 2023 and the last date for proposal submission was 4th April 2023. I completed my proposal just 15 min before the deadline.</p>
+<p><img loading="lazy" src="/blog/gsoc2.avif" alt="GSOC"  />
+</p>
+<p>Here is the link to my LinkedIn and Twitter where I have uploaded my proposal since I could not find any options in Hashnode to upload a PDF.</p>
+<p>LinkedIn : <a href="https://www.linkedin.com/posts/shubham-singh-maha-5a002b20b_gsoc23-proposal-activity-7062463478577381376-HW4U?utm_source=share&amp;utm_medium=member_desktop">GSOC/1shubham7</a></p>
+<h2 id="mistakes-i-made">Mistakes I made<a hidden class="anchor" aria-hidden="true" href="#mistakes-i-made">#</a></h2>
+<h3 id="mistake-1-thinking-i-have-to-be-perfect-in-order-to-contribute-to-open-source">Mistake 1. Thinking I have to be perfect in order to contribute to open source.<a hidden class="anchor" aria-hidden="true" href="#mistake-1-thinking-i-have-to-be-perfect-in-order-to-contribute-to-open-source">#</a></h3>
+<p>I thought that I must at least know 90% of the technology in order to contribute to such complex code bases while the truth is open source has something for everybody. You can start your contribution journey by solving the &ldquo;Good First Issues&rdquo;. Here is a link to a great website that finds you good first issues for the technology you are decent at:</p>
+<p>goodfirstissue.dev</p>
+<p>Just go and try contributing, learn how to set up the project locally and contribute with whatever little knowledge you have, Of course, it&rsquo;s even better you if have good knowledge of the technology.</p>
+<h3 id="mistake-2-to-select-the-wrong-project">Mistake 2. To select the wrong project.<a hidden class="anchor" aria-hidden="true" href="#mistake-2-to-select-the-wrong-project">#</a></h3>
+<p>Go to the GSoC website and have a look at the organizations coming there, there are some organizations that are not able to complete their projects. Make sure to see the project history of the organizations. Make sure that the organization is consistently participating in GSoC every year and getting the projects done. For me, I choose a good organization but the project I was trying to contribute to was not very active, there was very less activity in the GitHub repo of that project.</p>
+<h3 id="mistake-3-choose-a-project-with-active-mentors">Mistake 3. Choose a project with active mentors<a hidden class="anchor" aria-hidden="true" href="#mistake-3-choose-a-project-with-active-mentors">#</a></h3>
+<p>Learn from the mistakes I made, do check out the GitHub repo of the project before selecting it, and make sure that the project members and the mentors are active and helping newcomers with their queries. It is very rare that an inactive project gets completed.</p>
+<h3 id="mistake-4-start-contributing-early">Mistake 4. Start contributing early<a hidden class="anchor" aria-hidden="true" href="#mistake-4-start-contributing-early">#</a></h3>
+<p>The earlier you start, the better it is. Make sure you start contributing to the project specifically at least 3-4 months and start contributing to any projects from now so to have a stronger GitHub profile.</p>
+<h3 id="mistake-5-you-can-ignore-this-one-depending-on-your-situation">Mistake 5. (You can ignore this one depending on your situation)<a hidden class="anchor" aria-hidden="true" href="#mistake-5-you-can-ignore-this-one-depending-on-your-situation">#</a></h3>
+<p>I did not study much for college exams but I have now realized that I could have even studied lesser, I was easily fooled by my teachers since it was my first semester, now that I am in my second sem, I study lesser and focus more on open-source. You can ignore this advice depending on your situation. Since I come from a tier-3 college, I know we don&rsquo;t have good placements so I am not even considering college placements, I am prepping for off-campus placements. If you are from a decent college, do focus a little bit more on your college exams.</p>
+<h2 id="conclusion-">Conclusion :<a hidden class="anchor" aria-hidden="true" href="#conclusion-">#</a></h2>
+<p>In conclusion, as someone who missed out on GSoC 2023 due to mistakes made during the application process, I hope that my experience and advice can help future applicants avoid similar mistakes. I learned that open source has something for everyone, and that contributing to projects with active mentors and established project histories can increase one&rsquo;s chances of being accepted into GSoC. I also realized that starting early and consistently contributing to open source projects can help build a strong GitHub profile, which can benefit not only GSoC applications but also future career opportunities. I encourage all students to consider applying for GSoC and not be discouraged by any initial challenges. The program provides a valuable learning opportunity and a chance to contribute to the open source community.</p>
+<p>These were the mistakes I made. Hope you learn from my mistakes and have a beautiful GSoC journey. Hope this article will help you, if you are reading this and in the future you get selected, do tag me on Twitter: 1Shubham7. I will also be applying for GSoC2024, in the second year of my college.</p>
+<p>I wish you all the luck with your GSoC. Thank you for reading.</p>
+<h2 id="my-socials">My Socials<a hidden class="anchor" aria-hidden="true" href="#my-socials">#</a></h2>
+<p>Twitter: <a href="https://twitter.com/1shubham7">1Shubham7</a></p>
+<p>GitHub: <a href="https://github.com/1Shubham7">1Shubham7</a></p>
+<p>LinkedIn: <a href="https://www.linkedin.com/in/1shubham7/">Shubham Singh</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/open-source-programs/">Open-Source Programs</a></li>
+      <li><a href="http://localhost:1313/tags/gsoc/">GSOC</a></li>
+      <li><a href="http://localhost:1313/tags/open-source/">Open-Source</a></li>
+      <li><a href="http://localhost:1313/tags/github/">GitHub</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

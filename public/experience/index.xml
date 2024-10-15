@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Experiences on Shubham Singh</title>
+    <link>http://localhost:1313/experience/</link>
+    <description>Recent content in Experiences on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="http://localhost:1313/experience/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LFX Mentee - CNCF KubeEdge</title>
+      <link>http://localhost:1313/experience/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/lfx/</guid>
+      <description>The Linux Foundation Mentorship Program (LFX Mentorship) is 3 months paid internship/mentorship program where people contribute to open source projects. The program aims to foster innovation and talent in the open source community, and to help developers get job and internship opportunities after graduating. The program offers part-time and full-time mentor positions, and mentorships for projects such as CNCF, GraphQL, Hyperledger, LF Networking, Linux Kernel, OpenHPC, Open Mainframe Project, and RISC-V...</description>
+    </item>
+    
+    <item>
+      <title>GeeksforGeeks Technical Writer</title>
+      <link>http://localhost:1313/experience/gfg/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/gfg/</guid>
+      <description>GeeksforGeeks is a leading platform that provides computer science resources and coding challenges for programmers and technology enthusiasts, along with interview and exam preparations for upcoming aspirants. With a strong emphasis on enhancing coding skills and knowledge, it has become a trusted destination for over 12 million plus registered users worldwide. The platform offers a vast collection of tutorials, practice problems, interview tutorials, articles, and courses, covering various domains of computer science.</description>
+    </item>
+    
+    <item>
+      <title>CNCF ORAS Contributor</title>
+      <link>http://localhost:1313/experience/cncf-oras/</link>
+      <pubDate>Wed, 16 Aug 2023 11:11:19 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/cncf-oras/</guid>
+      <description>ORAS is the de facto tool for working with OCI Artifacts. It treats media types as a critical piece of the puzzle. Container images are never assumed to be the artifact in question. ORAS provides CLI and client libraries to distribute artifacts across OCI-compliant registries.</description>
+    </item>
+    
+    <item>
+      <title>CNCF Zero to Merge</title>
+      <link>http://localhost:1313/experience/cncf-zero-to-merge/</link>
+      <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/cncf-zero-to-merge/</guid>
+      <description>CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.</description>
+    </item>
+    
+    <item>
+      <title>Hugo Expert Intern</title>
+      <link>http://localhost:1313/experience/hooman/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/hooman/</guid>
+      <description>Creating engaging and user-friendly designs for digital interfaces, as well as developing fully functional and responsive websites. working with technologies around web development, Artificial Intelligence, and web3.</description>
+    </item>
+    
+    <item>
+      <title>GirlScript Summer of Code top 100 contributors</title>
+      <link>http://localhost:1313/experience/gssoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/gssoc/</guid>
+      <description>Girlscript Summer Of Code is a three-month-long Open-Source Program conducted every summer by the Girlscript Foundation. With constant efforts, participants contribute to numerous projects under the extreme guidance of skilled mentors over these months.</description>
+    </item>
+    
+    <item>
+      <title>Technical Blogs on Hashnode</title>
+      <link>http://localhost:1313/experience/hashnode/</link>
+      <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/hashnode/</guid>
+      <description>Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community.</description>
+    </item>
+    
+  </channel>
+</rss>

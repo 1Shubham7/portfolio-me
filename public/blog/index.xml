@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Blogs on Shubham Singh</title>
+    <link>http://localhost:1313/blog/</link>
+    <description>Recent content in Blogs on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My journey from a CNCF contributor to LFX mentee</title>
+      <link>http://localhost:1313/blog/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/lfx/</guid>
+      <description>&lt;p&gt;Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Kubernetes Native Policy Management with Kyverno</title>
+      <link>http://localhost:1313/blog/kyverno-intro/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/kyverno-intro/</guid>
+      <description>&lt;p&gt;Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.&lt;/p&gt;
+&lt;h2 id=&#34;admission-controllers&#34;&gt;Admission Controllers&lt;/h2&gt;
+&lt;p&gt;Let&amp;rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Unit testing using Golang - a beginner&#39;s guide</title>
+      <link>http://localhost:1313/blog/testing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/testing/</guid>
+      <description>A beginners guide to writing unit tests in Golang · Let&amp;#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...</description>
+    </item>
+    
+    <item>
+      <title>5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience</title>
+      <link>http://localhost:1313/blog/gsoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/gsoc/</guid>
+      <description>Avoid these 5 mistakes to get selected in GSoC. · Let&amp;#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual...</description>
+    </item>
+    
+    <item>
+      <title>All about the Storyblok Ambassadors Program</title>
+      <link>http://localhost:1313/blog/storyblokambassador/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/storyblokambassador/</guid>
+      <description>Hey there! So, remember when I mentioned Storyblok in my previous blog? Well, guess what? I discovered something super cool called the Storyblok...</description>
+    </item>
+    
+    <item>
+      <title>Building a Golang backend system with JWT authentication</title>
+      <link>http://localhost:1313/blog/jwt/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/jwt/</guid>
+      <description>API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...</description>
+    </item>
+    
+    <item>
+      <title>Databases - the easy way</title>
+      <link>http://localhost:1313/blog/database/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/database/</guid>
+      <description>Databases in the simplest yet most powerful way ever. Keeping in mind placements and development. · Databases: just a digital tool that stores and...</description>
+    </item>
+    
+    <item>
+      <title>Datatypes in Python</title>
+      <link>http://localhost:1313/blog/datainpython/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/datainpython/</guid>
+      <description>Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence...</description>
+    </item>
+    
+    <item>
+      <title>DBMS - the easy way</title>
+      <link>http://localhost:1313/blog/dbms/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/dbms/</guid>
+      <description>Database Management System in the simplest but most powerful way. · What is DBMS? if you have created or are going to create a database, obviously, you...</description>
+    </item>
+    
+    <item>
+      <title>Difference between SASS and SCSS</title>
+      <link>http://localhost:1313/blog/sass/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/sass/</guid>
+      <description>SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two...</description>
+    </item>
+    
+    <item>
+      <title>Everything about API explained!!</title>
+      <link>http://localhost:1313/blog/api/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/api/</guid>
+      <description>API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...</description>
+    </item>
+    
+    <item>
+      <title>Everything about Artifacts for DevOps</title>
+      <link>http://localhost:1313/blog/artifacts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/artifacts/</guid>
+      <description>Artifacts - from beginner to advanced. · What are artifacts? In the broadest sense, artifacts are objects or items created or modified by humans that...</description>
+    </item>
+    
+    <item>
+      <title>Hashnode Pro: A worth-it Investment?</title>
+      <link>http://localhost:1313/blog/hashnode/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/hashnode/</guid>
+      <description>My experience of exploring Hashnode Pro · As someone who got to know the importance of developing a personal brand and learning in public, I restarted my...</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Storyblok: Transforming the Way You Create and Manage Content</title>
+      <link>http://localhost:1313/blog/storybok/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/storybok/</guid>
+      <description>Explaining Storyblok in simple and powerful terms. · Recently while randomly scrolling Twitter, I stumbled upon a great tool for Building websites and...</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Deployment Strategies</title>
+      <link>http://localhost:1313/blog/k8s-depl-stratigies/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/k8s-depl-stratigies/</guid>
+      <description>Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...</description>
+    </item>
+    
+    <item>
+      <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
+      <link>http://localhost:1313/blog/open-source101/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/open-source101/</guid>
+      <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
+    </item>
+    
+    <item>
+      <title>OSI Model - the easy way</title>
+      <link>http://localhost:1313/blog/osi/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/osi/</guid>
+      <description>OSI Model - Straight to the point. · OSI (Open Systems Interconnection) model describes seven layers through which computer systems communicate over a...</description>
+    </item>
+    
+    <item>
+      <title>Some DevOps terms a beginner should know about</title>
+      <link>http://localhost:1313/blog/devops/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/devops/</guid>
+      <description>Start your DevOps journey with these terms. · DevOps can be a bit confusing for beginners, that is because of its complex terminologies. Here are some...</description>
+    </item>
+    
+    <item>
+      <title>WTF is JSON</title>
+      <link>http://localhost:1313/blog/json/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/json/</guid>
+      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
+    </item>
+    
+    <item>
+      <title>WTF is JSON</title>
+      <link>http://localhost:1313/blog/npm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/npm/</guid>
+      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
+    </item>
+    
+    <item>
+      <title>WTF is Vagrant</title>
+      <link>http://localhost:1313/blog/vagrant/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/vagrant/</guid>
+      <description>Vagrant explained for absolute beginner. · So recently, I was setting up locally an open-source software, so to contribute to it (BTW it is called Zulip,...</description>
+    </item>
+    
+    <item>
+      <title>YAML - from basics to advanced</title>
+      <link>http://localhost:1313/blog/yaml/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/yaml/</guid>
+      <description>explaining YAML from basics to advanced · What is YAML? YAML (which stands for &amp;#39;YAML Ain&amp;#39;t Markup Language&amp;#39;) is a human-readable data serialization...</description>
+    </item>
+    
+  </channel>
+</rss>

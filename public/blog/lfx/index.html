@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>My journey from a CNCF contributor to LFX mentee | Shubham Singh</title>
+<meta name="keywords" content="Kubernetes, KubeEdge, Golang, E2E Testing, Ginkgo, Gomega, Testify, Behavior Driven Development (BDD), Test Driven Development (TDD)">
+<meta name="description" content="Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/lfx/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/lfx/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="My journey from a CNCF contributor to LFX mentee" />
+<meta property="og:description" content="Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/lfx/" />
+<meta property="og:image" content="http://localhost:1313/experience/lfx.webp" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/experience/lfx.webp" />
+<meta name="twitter:title" content="My journey from a CNCF contributor to LFX mentee"/>
+<meta name="twitter:description" content="Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "My journey from a CNCF contributor to LFX mentee",
+      "item": "http://localhost:1313/blog/lfx/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "My journey from a CNCF contributor to LFX mentee",
+  "name": "My journey from a CNCF contributor to LFX mentee",
+  "description": "Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It\u0026rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.\n",
+  "keywords": [
+    "Kubernetes", "KubeEdge", "Golang", "E2E Testing", "Ginkgo", "Gomega", "Testify", "Behavior Driven Development (BDD)", "Test Driven Development (TDD)"
+  ],
+  "articleBody": "Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It’s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.\nMy first contribution to CNCF Let’s start it from how I got introduced to CNCF, I got know about CNCF through YouTube videos, I saw some YouTubers in cloud native space talk about CNCF and I went to the CNCF home page but I couldn’t understand anything, I think the reason was that I had never anything similar to CNCF. I was confused whether CNCF is a company where I can get placed? or is it a project? or is it like a community? But as I leaned more about cloud native technologies like Docker, Kubernetes I understood what CNCF is and what it stands for, by this time I also started searching of some CNCF projects to contribute to and one such project was CNCF ORAS (OCI Registries As Service), basically it is a tool for pushing and downloading OCI Artifacts from the OCI Registries. I contributed to ORAS for a month where I learned the how to contribute to a CNCF project. And with my ORAS experience I can suggest a newbie in open source that the best way to make your first contribution is to first, understand what the project is by reading docs and try using it, then using docs set it up locally and then look up for issues labelled “good first” or “help wanted” on their GitHub repo and start by solving those issues.\nThe first contribution I made to ORAS was some basic changes in the readme file, and then I tried understanding the project, watching tutorials on the CNCF YouTube channel, going through docs and trying to set it up locally. I then started contributing to the docs and then made my first code contribution in ORAS.\nApplying for LFX for the first time I contributed to ORAS for a month and I wanted to apply for LFX with them (this is during LFX 2023 term 3) but they did not have a proposal for that term so I had to pick up a different project. Later I realized I need to improve my skills before applying to LFX so I skipped that term and rather I went forward with an internship offer I had from a startup.\nContributing to CNCF Kyverno For next few months along with my internship I was focusing was on building projects, learning go and Kubernetes, and leaning about another CNCF project called CNCF Kyverno, it is a Kubernetes native policy engine. If we go back a little bit, when ORAS did not come for LFX, I started searching for other CNCF projects I that is when I saw KubeEdge, the project I am currently working under and Kyverno where I became an official contributor later. I started learning about Kyverno, one of my friends recommended me to contribute to Kyverno and I would also recommend any newbie who wants to start contributing to open source that you should choose an active project (where maintainers are active and regularly help contributors). I can recommend Kyverno to any beginner because it has a really good documentation and maintainers a very supportive. Luckily all three projects I have contributed to till now have been amazing. Also I would suggest that at KubeEdge, we are continuously trying to improve our documentation so if you think you would want to help us, please join the community and contribute.\nTip - If you want to start contributing to Kyverno my recommendation would be to start by watching some CNCF talks about what Kyverno is and what it does, then complete the free certification from the Nirmata website and then pick up any good first issue from the project (they are very active and frequently post up good first issues to solve).\nEven I did the same, I also went through some CNCF talks about Kyverno, completed the certification and then started contributing. I started with some code contributions and then also created a section in their documentation about admission controllers.\nApplying for LFX again I contributed to Kyverno for a few months while also managing my internship and college classes and finally the time came when projects for LFX term 2 2024 were announced. I saw the list and Kyverno was not there and once again I had to change my project just before a month from LFX. I was going through all the projects that were coming in LFX, I saw KubeEdge there, KubeEdge is a Kubernetes native edge computing framework. I had some idea about what KubeEdge is and I found the projects really interesting so I decided to apply for LFX under KubeEdge. I applied for two projects, one was about writing new documentation and the other one was about test enhancement. While I was more interested in code contributions but I had a background of working as a technical writer for 8 months and I also had good contributions in Kyverno documentation so I decided to focus more on the documentation enhancement project and also give time to learn things for the tests enhancement project.\nFor the documentation improvement project, I went through all the tutorials present online for KubeEdge, I went through the entire documentation and I tried improving the documentation by bringing in changes in sentence refactoring, rephrasing docs and some other improvements. majorly, I wrote some blogs for different KubeEdge releases from v1.10 to v1.17, for this I used the changelogs of these releases as reference. While for the tests enhancement project, I started learning about writing unit tests, E2E tests using ginkgo and gomega, TDD (Test driven development) and tinkering with some libraries I could use for testing in golang. I had about a month to contribute to KubeEdge, understand the project and prepare two cover letter for the two projects. By the time LFX registrations started, I had good number of Pull Requests merged in KubeEdge (11) and some were being reviewed.\nAfter this, the tasks I had to complete in order to complete my LFX application were - submit a resume, and submit a cover letter (which is the case for most of the projects, some projects can also ask for another task testing your knowledge about the tool). I already had a good resume prepared so I made minor changes in it, I started preparing my cover letter for both the projects, in the cover letter I mentioned my past contributions to the CNCF community as well as to Kyverno, other than that I answered honestly all the standard questions that are asked, other that this I also mentioned how I would go about working on the project for the three months.\nAnd I finally got in! With my past experience as a technical writer, and the contributions I made to the KubeEdge documentation as well as Kyverno documentation I thought I had more chances of getting in to the documentation project, on the result date I was surprised for good that I have been selected to the “tests enhancement” project, this was even better because now I would get to make code contributions. I was super excited to work under my mentors. I just got started by revising some stuff related to unit testing and E2E testing, and then jumped into writing tests.\nMy LFX mentorship Experience The first half of LFX mentorship After I received the acceptance mail, I was really excited to get started with my mentorship, I communicated with my mentors and they told me to start by writing unit tests for simple files since those are more straight forward. This was the first time I was writing unit tests so I started by watching tutorials and deciding which library to use for testing. In KubeEdge we were using the standard testing library for unit tests and if else statements for assertion. I researched a bit and saw that using an assertion library like testify/assert would make more sense as it removes much boilerplate from the tests, and improves speed and quality of understanding and modifying the tests. And that there are negligible downsides to using this library. I talked with my mentor regarding this and we decided to go forward with testify/assert.\nFor these 3 months I was writing unit tests continuously but also working on other tests side by side, in the first week other than writing tests and researching I also wrote a release blog for KubeEdge v1.10. For the next few weeks I was only writing unit tests. I started with simpler and more straight-forward tests and then moved to tests that require mocking and tests that would test the integration (calling) of multiple functions.\nI had never written E2E tests before this so I also had to watch tutorials and read documentation for E2E. Our project was using Ginkgo and Gomega for E2E so I learned about them, went through the official documentation for Ginkgo and wrote some E2E tests for dummy projects for practicing. Before the first evaluation (which happens after 1.5 months) I had improved the test coverage of the project by about 5%, written E2E tests for adding the liveness probe configurations in deployment and checking if it works in the edge, and written a few blogs for some KubeEdge releases (v1.10 ~ v1.17). And when I got my mid term evaluations, I had successfully passed them.\nThe second half of LFX mentorship In the second half of my LFX mentorship, I continued writing unit tests, the only difference being they were getting more complex now and I regularly had to visit Kubernetes docs or https://pkg.go.dev/ for reference. During this time, I wrote E2E tests for verifying that the applications configured with probe works fine on the edge. Other than that since many tests in the project were simply using standard testing library without any assertion library, I migrated those tests to standard library + testify/assert.\nBy the time my LFX mentorship period ended, I had improved test coverage of out project by 10%, written about 20k lines of tests, migrated tests from standard testing library to a new assertion library and written blogs of 7 KubeEdge releases (v1.10 ~ v1.17). I also had my end semester exams during the second half of the mentorship so for a few days became very hectic but overall the mentorship went quite smooth and I got to learned a lot of things. Whenever I needed any help I communicated with my mentors and they were very supportive and helped me wherever I needed them. And with this on 29th August 2024 I received my final evaluations and I had successfully completed my LFX mentorship.\nFinal thoughts The 3 months of LFX mentorship was one of the best learning experience I ever had in tech. In these 3 months, I explored how to use KubeEdge, worked with my mentors to improve test coverage of the project as well as contribute to the documentation. I am really grateful that I got to work on an emerging CNCF project with such experienced engineers as my mentors. Working closing with such great engineers have taught me a lot about cloud native application development, testing and a lot more stuff. I am thankful to the Linux Foundation for conducting such an amazing open source program and doing it consistently over the years and I highly recommend it to everyone that at least applying for LFX if you are a student or somebody interested in FOSS, even the application process and contributions will teach you a lot about FOSS development\nA small thank you note to Linux Foundation I want to thank the entire Linux Foundation team, specially Nate Waddington and Sriji Ammanath. During this LFX period I also suffered a cyber fraud and the LF team specially Nate and Sriji were kind enough to pause my payments and patiently waited for the whole thing to be fixed. Thank you guys :)\nA small thank you note to my mentors I would also like to thank my mentors Fisher Xu and Shelley Bao Yue for being so helpful and so supportive throughout the mentorship. I am thankful that you gave me some time from your busy days and helped me out wherever I got stuck. Thank you mentors, you guys are awesome :)\n",
+  "wordCount" : "2138",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/experience/lfx.webp","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/lfx/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      My journey from a CNCF contributor to LFX mentee
+    </h1>
+    <div class="post-meta">
+
+
+August 2024
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/experience/lfx.webp" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#my-first-contribution-to-cncf" aria-label="My first contribution to CNCF">My first contribution to CNCF</a></li>
+                <li>
+                    <a href="#applying-for-lfx-for-the-first-time" aria-label="Applying for LFX for the first time">Applying for LFX for the first time</a></li>
+                <li>
+                    <a href="#contributing-to-cncf-kyverno" aria-label="Contributing to CNCF Kyverno">Contributing to CNCF Kyverno</a></li>
+                <li>
+                    <a href="#applying-for-lfx-again" aria-label="Applying for LFX again">Applying for LFX again</a></li>
+                <li>
+                    <a href="#and-i-finally-got-in" aria-label="And I finally got in!">And I finally got in!</a></li>
+                <li>
+                    <a href="#my-lfx-mentorship-experience" aria-label="My LFX mentorship Experience">My LFX mentorship Experience</a><ul>
+                        
+                <li>
+                    <a href="#the-first-half-of-lfx-mentorship" aria-label="The first half of LFX mentorship">The first half of LFX mentorship</a></li>
+                <li>
+                    <a href="#the-second-half-of-lfx-mentorship" aria-label="The second half of LFX mentorship">The second half of LFX mentorship</a></li></ul>
+                </li>
+                <li>
+                    <a href="#final-thoughts" aria-label="Final thoughts">Final thoughts</a><ul>
+                        
+                <li>
+                    <a href="#a-small-thank-you-note-to-linux-foundation" aria-label="A small thank you note to Linux Foundation">A small thank you note to Linux Foundation</a></li>
+                <li>
+                    <a href="#a-small-thank-you-note-to-my-mentors" aria-label="A small thank you note to my mentors">A small thank you note to my mentors</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.</p>
+<h2 id="my-first-contribution-to-cncf">My first contribution to CNCF<a hidden class="anchor" aria-hidden="true" href="#my-first-contribution-to-cncf">#</a></h2>
+<p><img loading="lazy" src="/blog/LFXblog/oras.png" alt="ORAS Logo"  />
+</p>
+<p>Let&rsquo;s start it from how I got introduced to CNCF, I got know about CNCF through YouTube videos, I saw some YouTubers in cloud native space talk about CNCF and I went to the CNCF home page but I couldn&rsquo;t understand anything, I think the reason was that I had never anything similar to CNCF. I was confused whether CNCF is a company where I can get placed? or is it a project? or is it like a community? But as I leaned more about cloud native technologies like Docker, Kubernetes I understood what CNCF is and what it stands for, by this time I also started searching of some CNCF projects to contribute to and one such project was <a href="https://oras.land/">CNCF ORAS</a> (OCI Registries As Service), basically it is a tool for pushing and downloading OCI Artifacts from the OCI Registries. I contributed to ORAS for a month where I learned the how to contribute to a CNCF project. And with my ORAS experience I can suggest a newbie in open source that the best way to make your first contribution is to first, understand what the project is by reading docs and try using it, then using docs set it up locally and then look up for issues labelled &ldquo;good first&rdquo; or &ldquo;help wanted&rdquo; on their GitHub repo and start by solving those issues.</p>
+<p>The first contribution I made to ORAS was some basic changes in the readme file, and then I tried understanding the project, watching tutorials on the <a href="https://www.youtube.com/@cncf">CNCF YouTube channel</a>, going through docs and trying to set it up locally. I then started contributing to the docs and then made my first code contribution in ORAS.</p>
+<h2 id="applying-for-lfx-for-the-first-time">Applying for LFX for the first time<a hidden class="anchor" aria-hidden="true" href="#applying-for-lfx-for-the-first-time">#</a></h2>
+<p>I contributed to ORAS for a month and I wanted to apply for LFX with them (this is during LFX 2023 term 3) but they did not have a proposal for that term so I had to pick up a different project. Later I realized I need to improve my skills before applying to LFX so I skipped that term and rather I went forward with an internship offer I had from a startup.</p>
+<h2 id="contributing-to-cncf-kyverno">Contributing to CNCF Kyverno<a hidden class="anchor" aria-hidden="true" href="#contributing-to-cncf-kyverno">#</a></h2>
+<p><img loading="lazy" src="/blog/LFXblog/kyverno-img.png" alt="Kyverno Logo"  />
+</p>
+<p>For next few months along with my internship I was focusing was on building projects, learning go and Kubernetes, and leaning about another CNCF project called <a href="https://kyverno.io/">CNCF Kyverno</a>, it is a Kubernetes native policy engine. If we go back a little bit, when ORAS did not come for LFX, I started searching for other CNCF projects I that is when I saw KubeEdge, the project I am currently working under and Kyverno where I became an official contributor later. I started learning about Kyverno, one of my friends recommended me to contribute to Kyverno and I would also recommend any newbie who wants to start contributing to open source that you should choose an active project (where maintainers are active and regularly help contributors). I can recommend Kyverno to any beginner because it has a really good documentation and maintainers a very supportive. Luckily all three projects I have contributed to till now have been amazing. Also I would suggest that at KubeEdge, we are continuously trying to improve our documentation so if you think you would want to help us, please join the community and contribute.</p>
+<p><strong>Tip</strong> - If you want to start contributing to Kyverno my recommendation would be to start by watching some CNCF talks about what Kyverno is and what it does, then complete the free certification from the <a href="https://learn.nirmata.com/">Nirmata website</a> and then pick up any good first issue from the project (they are very active and frequently post up good first issues to solve).</p>
+<p>Even I did the same, I also went through some CNCF talks about Kyverno, completed the certification and then started contributing. I started with some code contributions and then also created a section in their documentation about admission controllers.</p>
+<h2 id="applying-for-lfx-again">Applying for LFX again<a hidden class="anchor" aria-hidden="true" href="#applying-for-lfx-again">#</a></h2>
+<p><img loading="lazy" src="/blog/LFXblog/kubeedge.png" alt="KubeEdge Logo"  />
+</p>
+<p>I contributed to Kyverno for a few months while also managing my internship and college classes and finally the time came when projects for LFX term 2 2024 were announced. I saw the list and Kyverno was not there and once again I had to change my project just before a month from LFX. I was going through all the projects that were coming in LFX, I saw <a href="https://kubeedge.io/">KubeEdge</a> there, KubeEdge is a Kubernetes native edge computing framework. I had some idea about what KubeEdge is and I found the projects really interesting so I decided to apply for LFX under KubeEdge. I applied for two projects, one was about writing new documentation and the other one was about test enhancement. While I was more interested in code contributions but I had a background of working as a technical writer for 8 months and I also had good contributions in Kyverno documentation so I decided to focus more on the documentation enhancement project and also give time to learn things for the tests enhancement project.</p>
+<p>For the documentation improvement project, I went through all the tutorials present online for KubeEdge, I went through the entire documentation and I tried improving the documentation by bringing in changes in sentence refactoring, rephrasing docs and some other improvements. majorly, I wrote some blogs for different KubeEdge releases from v1.10 to v1.17, for this I used the changelogs of these releases as reference. While for the tests enhancement project, I started learning about writing unit tests, E2E tests using ginkgo and gomega, TDD (Test driven development) and tinkering with some libraries I could use for testing in golang. I had about a month to contribute to KubeEdge, understand the project and prepare two cover letter for the two projects. By the time LFX registrations started, I had good number of Pull Requests merged in KubeEdge (11) and some were being reviewed.</p>
+<p>After this, the tasks I had to complete in order to complete my LFX application were - submit a resume, and submit a cover letter (which is the case for most of the projects, some projects can also ask for another task testing your knowledge about the tool). I already had a good resume prepared so I made minor changes in it, I started preparing my cover letter for both the projects, in the cover letter I mentioned my past contributions to the CNCF community as well as to Kyverno, other than that I answered honestly all the standard questions that are asked, other that this I also mentioned how I would go about working on the project for the three months.</p>
+<h2 id="and-i-finally-got-in">And I finally got in!<a hidden class="anchor" aria-hidden="true" href="#and-i-finally-got-in">#</a></h2>
+<p><img loading="lazy" src="/blog/LFXblog/lfx-mail.png" alt="LFX Acceptance Mail"  />
+</p>
+<p>With my past experience as a technical writer, and the contributions I made to the KubeEdge documentation as well as Kyverno documentation I thought I had more chances of getting in to the documentation project, on the result date I was surprised for good that I have been selected to the &ldquo;tests enhancement&rdquo; project, this was even better because now I would get to make code contributions. I was super excited to work under my mentors. I just got started by revising some stuff related to unit testing and E2E testing, and then jumped into writing tests.</p>
+<h2 id="my-lfx-mentorship-experience">My LFX mentorship Experience<a hidden class="anchor" aria-hidden="true" href="#my-lfx-mentorship-experience">#</a></h2>
+<h3 id="the-first-half-of-lfx-mentorship">The first half of LFX mentorship<a hidden class="anchor" aria-hidden="true" href="#the-first-half-of-lfx-mentorship">#</a></h3>
+<p>After I received the acceptance mail, I was really excited to get started with my mentorship, I communicated with my mentors and they told me to start by writing unit tests for simple files since those are more straight forward. This was the first time I was writing unit tests so I started by watching tutorials and deciding which library to use for testing. In KubeEdge we were using the standard testing library for unit tests and if else statements for assertion. I researched a bit and saw that using an assertion library like <code>testify/assert</code> would make more sense as it removes much boilerplate from the tests, and improves speed and quality of understanding and modifying the tests. And that there are negligible downsides to using this library. I talked with my mentor regarding this and we decided to go forward with <code>testify/assert</code>.</p>
+<p>For these 3 months I was writing unit tests continuously but also working on other tests side by side, in the first week other than writing tests and researching I also wrote a release blog for KubeEdge v1.10. For the next few weeks I was only writing unit tests. I started with simpler and more straight-forward tests and then moved to tests that require mocking and tests that would test the integration (calling) of multiple functions.</p>
+<p>I had never written E2E tests before this so I also had to watch tutorials and read documentation for E2E. Our project was using <code>Ginkgo</code> and <code>Gomega</code> for E2E so I learned about them, went through the official documentation for <code>Ginkgo</code> and wrote some E2E tests for dummy projects for practicing. Before the first evaluation (which happens after 1.5 months) I had improved the test coverage of the project by about 5%, written E2E tests for adding the liveness probe configurations in deployment and checking if it works in the edge, and written a few blogs for some KubeEdge releases (v1.10 ~ v1.17). And when I got my mid term evaluations, I had successfully passed them.</p>
+<p><img loading="lazy" src="/blog/LFXblog/one-half.png" alt="LFX Mid term evaluations"  />
+</p>
+<h3 id="the-second-half-of-lfx-mentorship">The second half of LFX mentorship<a hidden class="anchor" aria-hidden="true" href="#the-second-half-of-lfx-mentorship">#</a></h3>
+<p>In the second half of my LFX mentorship, I continued writing unit tests, the only difference being they were getting more complex now and I regularly had to visit Kubernetes docs or <a href="https://pkg.go.dev/">https://pkg.go.dev/</a> for reference. During this time, I wrote E2E tests for verifying that the applications configured with probe works fine on the edge. Other than that since many tests in the project were simply using standard testing library without any assertion library, I migrated those tests to standard library + <code>testify/assert</code>.</p>
+<p>By the time my LFX mentorship period ended, I had improved test coverage of out project by 10%, written about 20k lines of tests, migrated tests from standard testing library to a new assertion library and written blogs of 7 KubeEdge releases (v1.10 ~ v1.17). I also had my end semester exams during the second half of the mentorship so for a few days became very hectic but overall the mentorship went quite smooth and I got to learned a lot of things. Whenever I needed any help I communicated with my mentors and they were very supportive and helped me wherever I needed them. And with this on 29th August 2024 I received my final evaluations and I had successfully completed my LFX mentorship.</p>
+<p><img loading="lazy" src="/blog/LFXblog/two-half.png" alt="LFX Mid term evaluations"  />
+</p>
+<p><img loading="lazy" src="/blog/LFXblog/result.png" alt="LFX completion letter"  />
+</p>
+<h2 id="final-thoughts">Final thoughts<a hidden class="anchor" aria-hidden="true" href="#final-thoughts">#</a></h2>
+<p>The 3 months of LFX mentorship was one of the best learning experience I ever had in tech. In these 3 months, I explored how to use KubeEdge, worked with my mentors to improve test coverage of the project as well as contribute to the documentation. I am really grateful that I got to work on an emerging CNCF project with such experienced engineers as my mentors. Working closing with such great engineers have taught me a lot about cloud native application development, testing and a lot more stuff. I am thankful to the Linux Foundation for conducting such an amazing open source program and doing it consistently over the years and I highly recommend it to everyone that at least applying for LFX if you are a student or somebody interested in FOSS, even the application process and contributions will teach you a lot about FOSS development</p>
+<h3 id="a-small-thank-you-note-to-linux-foundation">A small thank you note to Linux Foundation<a hidden class="anchor" aria-hidden="true" href="#a-small-thank-you-note-to-linux-foundation">#</a></h3>
+<p>I want to thank the entire Linux Foundation team, specially Nate Waddington and Sriji Ammanath. During this LFX period I also suffered  a cyber fraud and the LF team specially Nate and Sriji were kind enough to pause my payments and patiently waited for the whole thing to be fixed. Thank you guys :)</p>
+<h3 id="a-small-thank-you-note-to-my-mentors">A small thank you note to my mentors<a hidden class="anchor" aria-hidden="true" href="#a-small-thank-you-note-to-my-mentors">#</a></h3>
+<p>I would also like to thank my mentors Fisher Xu and Shelley Bao Yue for being so helpful and so supportive throughout the mentorship. I am thankful that you gave me some time from your busy days and helped me out wherever I got stuck. Thank you mentors, you guys are awesome :)</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/kubernetes/">Kubernetes</a></li>
+      <li><a href="http://localhost:1313/tags/kubeedge/">KubeEdge</a></li>
+      <li><a href="http://localhost:1313/tags/golang/">Golang</a></li>
+      <li><a href="http://localhost:1313/tags/e2e-testing/">E2E Testing</a></li>
+      <li><a href="http://localhost:1313/tags/ginkgo/">Ginkgo</a></li>
+      <li><a href="http://localhost:1313/tags/gomega/">Gomega</a></li>
+      <li><a href="http://localhost:1313/tags/testify/">Testify</a></li>
+      <li><a href="http://localhost:1313/tags/behavior-driven-development-bdd/">Behavior Driven Development (BDD)</a></li>
+      <li><a href="http://localhost:1313/tags/test-driven-development-tdd/">Test Driven Development (TDD)</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

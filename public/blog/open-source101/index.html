@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Open-Source 101: The basic must-know terms for an open-source beginner | Shubham Singh</title>
+<meta name="keywords" content="CNCF, Golang, React, Open-source, GitHub">
+<meta name="description" content="The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/open-source101/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/open-source101/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Open-Source 101: The basic must-know terms for an open-source beginner" />
+<meta property="og:description" content="The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/open-source101/" />
+<meta property="og:image" content="http://localhost:1313/blog/open-source101.avif" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/open-source101.avif" />
+<meta name="twitter:title" content="Open-Source 101: The basic must-know terms for an open-source beginner"/>
+<meta name="twitter:description" content="The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Open-Source 101: The basic must-know terms for an open-source beginner",
+      "item": "http://localhost:1313/blog/open-source101/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Open-Source 101: The basic must-know terms for an open-source beginner",
+  "name": "Open-Source 101: The basic must-know terms for an open-source beginner",
+  "description": "The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...",
+  "keywords": [
+    "CNCF", "Golang", "React", "Open-source", "GitHub"
+  ],
+  "articleBody": "Contributing to open-source projects as a beginner can be a little overwhelming. We come across many terms which might sound alien to us. I remember myself 3 months ago, trying to contribute to a beginner-friendly issue when the maintainer told me to “make a PR” and I didn’t know that PR actually is the short form for Pull Request.\nTo help you avoid the hurdles I faced and prevent time-consuming mistakes that I made while beginning my open-source contributions journey, I have curated a list of essential terms one must know, in order to begin his/her open-source contributions journey.\nBefore that one very important tip - Open-source is not about spoon-feeding, so you will have to learn things by yourself, by making mistakes and learning from them. Therefore is completely fine that you don’t understand what to do. how to raise an issue? how to merge a PR? Open-source is a community of the most supportive people in the world and everyone would love to help you once you get stuck at some place. So try out, fail and iterate, don’t expect people won’t answer you or think you are dumb. Don’t hesitate asking, but neither should you expect spoon-feeding.\nStarting from the very basics Git Git is a distributed version control system that helps developers manage and track changes in their code projects. It allows you to create a history of changes, switch between versions, and collaborate with others. Git stores code in repositories and track each change made, enabling easy branching, merging, and resolving conflicts. You can work offline and sync changes later. Git’s decentralized nature ensures multiple developers can work simultaneously without conflicts. It provides a reliable and efficient way to organize, share, and safeguard code, making it an essential tool for collaborative software development.\nGitHub GitHub is a web-based platform that hosts and manages Git repositories. GitHub will be the place where you will contribute to various open-source projects. It provides a centralized space for developers to collaborate on code projects. GitHub allows you to store your code, track changes, and work with others in a streamlined manner. It offers features like issue tracking, pull requests, and code review, facilitating collaboration and efficient development workflows. With GitHub, you can easily share your code, contribute to open-source projects, and showcase your work. It serves as a social platform for developers, fostering community engagement and making it a hub for version control and collaborative coding.\n",
+  "wordCount" : "407",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/open-source101.avif","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/open-source101/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Open-Source 101: The basic must-know terms for an open-source beginner
+    </h1>
+    <div class="post-description">
+      The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...
+    </div>
+    <div class="post-meta">
+
+
+September 2023
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/open-source101.avif" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#starting-from-the-very-basics" aria-label="Starting from the very basics">Starting from the very basics</a><ul>
+                        
+                <li>
+                    <a href="#git" aria-label="Git">Git</a></li>
+                <li>
+                    <a href="#github" aria-label="GitHub">GitHub</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Contributing to open-source projects as a beginner can be a little overwhelming. We come across many terms which might sound alien to us. I remember myself 3 months ago, trying to contribute to a beginner-friendly issue when the maintainer told me to &ldquo;make a PR&rdquo; and I didn&rsquo;t know that PR actually is the short form for Pull Request.</p>
+<p>To help you avoid the hurdles I faced and prevent time-consuming mistakes that I made while beginning my open-source contributions journey, I have curated a list of essential terms one must know, in order to begin his/her open-source contributions journey.</p>
+<p>Before that one very important tip - Open-source is not about spoon-feeding, so you will have to learn things by yourself, by making mistakes and learning from them. Therefore is completely fine that you don&rsquo;t understand what to do. how to raise an issue? how to merge a PR? Open-source is a community of the most supportive people in the world and everyone would love to help you once you get stuck at some place. So try out, fail and iterate, don&rsquo;t expect people won&rsquo;t answer you or think you are dumb. Don&rsquo;t hesitate asking, but neither should you expect spoon-feeding.</p>
+<h2 id="starting-from-the-very-basics">Starting from the very basics<a hidden class="anchor" aria-hidden="true" href="#starting-from-the-very-basics">#</a></h2>
+<h3 id="git">Git<a hidden class="anchor" aria-hidden="true" href="#git">#</a></h3>
+<p>Git is a distributed version control system that helps developers manage and track changes in their code projects. It allows you to create a history of changes, switch between versions, and collaborate with others. Git stores code in repositories and track each change made, enabling easy branching, merging, and resolving conflicts. You can work offline and sync changes later. Git&rsquo;s decentralized nature ensures multiple developers can work simultaneously without conflicts. It provides a reliable and efficient way to organize, share, and safeguard code, making it an essential tool for collaborative software development.</p>
+<h3 id="github">GitHub<a hidden class="anchor" aria-hidden="true" href="#github">#</a></h3>
+<p>GitHub is a web-based platform that hosts and manages Git repositories. GitHub will be the place where you will contribute to various open-source projects. It provides a centralized space for developers to collaborate on code projects. GitHub allows you to store your code, track changes, and work with others in a streamlined manner. It offers features like issue tracking, pull requests, and code review, facilitating collaboration and efficient development workflows. With GitHub, you can easily share your code, contribute to open-source projects, and showcase your work. It serves as a social platform for developers, fostering community engagement and making it a hub for version control and collaborative coding.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/cncf/">CNCF</a></li>
+      <li><a href="http://localhost:1313/tags/golang/">Golang</a></li>
+      <li><a href="http://localhost:1313/tags/react/">React</a></li>
+      <li><a href="http://localhost:1313/tags/open-source/">Open-Source</a></li>
+      <li><a href="http://localhost:1313/tags/github/">GitHub</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

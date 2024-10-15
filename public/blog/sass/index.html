@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Difference between SASS and SCSS | Shubham Singh</title>
+<meta name="keywords" content="SASS, CSS, SCSS, Web Design">
+<meta name="description" content="SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/sass/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/sass/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Difference between SASS and SCSS" />
+<meta property="og:description" content="SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/sass/" />
+<meta property="og:image" content="http://localhost:1313/blog/sass.png" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/sass.png" />
+<meta name="twitter:title" content="Difference between SASS and SCSS"/>
+<meta name="twitter:description" content="SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Difference between SASS and SCSS",
+      "item": "http://localhost:1313/blog/sass/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Difference between SASS and SCSS",
+  "name": "Difference between SASS and SCSS",
+  "description": "SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two...",
+  "keywords": [
+    "SASS", "CSS", "SCSS", "Web Design"
+  ],
+  "articleBody": "You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two terms are ? and what are the differences between them? join me in my exploration of these two CSS Pre-processors.\nWhat is SASS ? SASS (Syntactically Awesome Style Sheets) is a CSS pre-processor that allows you to write more maintainable and flexible code for your stylesheets.\nSass works by providing a set of extensions to CSS, which are then compiled to standard CSS syntax, so they can be used in your web project. Here is an example of how a file with SASS looks like.\n$primary-color: #ff0000;\r$secondary-color: #00ff00;\r@mixin center-element {\rdisplay: flex;\rjustify-content: center;\ralign-items: center;\r}\r.header {\rbackground-color: $primary-color;\rcolor: #ffffff;\rpadding: 10px;\rh1 {\rfont-size: 24px;\rmargin-bottom: 10px;\r}\r\u0026.large {\rfont-size: 32px; }\r\u0026.small {\rfont-size: 18px;\r}\r}\r.container {\r@include center-element;\rbackground-color: $secondary-color;\rheight: 200px; width: 200px;\r} What is SCSS ? SCSS stands for Sassy CSS. It is also a CSS preprocessor. SCSS is a superset of CSS, which means that any valid CSS code is also valid SCSS code. SCSS syntax is similar to CSS syntax with some additional features and enhancements, such as variables, nesting, mixins, inheritance, and more.\nSCSS can help to shorten your CSS code, make it more maintainable, and easier to read. For example, you can define variables in SCSS, which allows you to use them throughout your CSS code.\nExample of SCSS code: $primary-color: #007bff;\r$secondary-color: #6c757d;\r@mixin center-element {\rdisplay: flex;\ralign-items: center;\rjustify-content: center;\r}\r.container {\rwidth: 100%;\r.header {\rbackground-color: $primary-color;\rcolor: white;\rpadding: 20px;\rh1 {\rfont-size: 24px;\r}\r}\r.main {\rbackground-color: white;\rpadding: 20px;\r.content {\rmargin-bottom: 20px;\rp {\rcolor: $secondary-color;\r}\r}\r}\r.footer {\rbackground-color: $secondary-color;\rcolor: white; padding: 20px;\r}\r}\r.centered-box {\r@include center-element;\rwidth: 200px;\rheight: 200px;\rbackground-color: $primary-color;\rcolor: white;\r} Difference between SCSS and SASS: SCSS SCSS is a superset of CSS, which means that any valid CSS code is also valid SCSS code.\nSCSS uses the same syntax as CSS, with curly braces {} and semicolons ;. It supports all the features of CSS, including nested selectors, variables, mixins, and more. SCSS files have the .scss file extension. SASS Sass has its own syntax, which is more concise and indentation-based.\nIt doesn’t use curly braces {} or semicolons ;. Instead, indentation is used to indicate nesting and separate properties. It doesn’t require the use of brackets or semicolons, which can make the code look cleaner and more readable. Sass supports all the features of SCSS, including nested selectors, variables, mixins, and more. Sass files have the .sass file extension. Conclusion In conclusion, SCSS and SASS are both CSS pre-processors that allow developers to write more maintainable, flexible, and organized code by extending the capabilities of standard CSS syntax. SCSS is a superset of CSS and uses the same syntax as CSS, while SASS has its own syntax that is more concise and uses indentation instead of curly braces and semicolons. Both of these preprocessors provide features such as variables, nesting, mixins, inheritance, and more, which can help to make code more readable and maintainable. It’s up to personal preference which pre-processor to use, and both have their pros and cons.\nThank you for reading.\nFollow me for more such blogs.\n",
+  "wordCount" : "564",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/sass.png","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/sass/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Difference between SASS and SCSS
+    </h1>
+    <div class="post-description">
+      SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two...
+    </div>
+    <div class="post-meta">
+
+
+July 2023
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/sass.png" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#what-is-sass-" aria-label="What is SASS ?">What is SASS ?</a></li>
+                <li>
+                    <a href="#what-is-scss-" aria-label="What is SCSS ?">What is SCSS ?</a></li>
+                <li>
+                    <a href="#example-of-scss-code" aria-label="Example of SCSS code:">Example of SCSS code:</a></li>
+                <li>
+                    <a href="#difference-between-scss-and-sass" aria-label="Difference between SCSS and SASS:">Difference between SCSS and SASS:</a><ul>
+                        
+                <li>
+                    <a href="#scss" aria-label="SCSS">SCSS</a></li>
+                <li>
+                    <a href="#sass" aria-label="SASS">SASS</a></li></ul>
+                </li>
+                <li>
+                    <a href="#conclusion" aria-label="Conclusion">Conclusion</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two terms are ? and what are the differences between them? join me in my exploration of these two CSS Pre-processors.</p>
+<h2 id="what-is-sass-">What is SASS ?<a hidden class="anchor" aria-hidden="true" href="#what-is-sass-">#</a></h2>
+<p>SASS (Syntactically Awesome Style Sheets) is a CSS pre-processor that allows you to write more maintainable and flexible code for your stylesheets.</p>
+<p>Sass works by providing a set of extensions to CSS, which are then compiled to standard CSS syntax, so they can be used in your web project. Here is an example of how a file with SASS looks like.</p>
+<pre tabindex="0"><code>$primary-color: #ff0000;
+$secondary-color: #00ff00;
+
+@mixin center-element {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    background-color: $primary-color;
+    color: #ffffff;
+    padding: 10px;
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+&amp;.large {
+    font-size: 32px;    
+}
+
+&amp;.small {
+    font-size: 18px;
+    }
+}
+
+.container {
+    @include center-element;
+    background-color: $secondary-color;
+    height: 200px; width: 200px;
+}
+</code></pre><h2 id="what-is-scss-">What is SCSS ?<a hidden class="anchor" aria-hidden="true" href="#what-is-scss-">#</a></h2>
+<p>SCSS stands for Sassy CSS. It is also a CSS preprocessor. SCSS is a superset of CSS, which means that any valid CSS code is also valid SCSS code. SCSS syntax is similar to CSS syntax with some additional features and enhancements, such as variables, nesting, mixins, inheritance, and more.</p>
+<p>SCSS can help to shorten your CSS code, make it more maintainable, and easier to read. For example, you can define variables in SCSS, which allows you to use them throughout your CSS code.</p>
+<h2 id="example-of-scss-code">Example of SCSS code:<a hidden class="anchor" aria-hidden="true" href="#example-of-scss-code">#</a></h2>
+<pre tabindex="0"><code>$primary-color: #007bff;
+$secondary-color: #6c757d;
+@mixin center-element {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.container {
+width: 100%;
+    .header {
+        background-color: $primary-color;
+        color: white;
+        padding: 20px;
+
+    h1 {
+        font-size: 24px;
+    }
+}
+
+    .main {
+        background-color: white;
+        padding: 20px;
+        .content {
+        margin-bottom: 20px;
+
+        p {
+            color: $secondary-color;
+        }
+    }
+}
+
+    .footer {
+        background-color: $secondary-color;
+        color: white; padding: 20px;
+        }
+    }
+
+    .centered-box {
+        @include center-element;
+        width: 200px;
+        height: 200px;
+        background-color: $primary-color;
+        color: white;
+    }
+</code></pre><h2 id="difference-between-scss-and-sass">Difference between SCSS and SASS:<a hidden class="anchor" aria-hidden="true" href="#difference-between-scss-and-sass">#</a></h2>
+<h3 id="scss">SCSS<a hidden class="anchor" aria-hidden="true" href="#scss">#</a></h3>
+<p>SCSS is a superset of CSS, which means that any valid CSS code is also valid SCSS code.</p>
+<ul>
+<li>SCSS uses the same syntax as CSS, with curly braces {} and semicolons ;.</li>
+<li>It supports all the features of CSS, including nested selectors, variables, mixins, and more.</li>
+<li>SCSS files have the <code>.scss</code> file extension.</li>
+</ul>
+<h3 id="sass">SASS<a hidden class="anchor" aria-hidden="true" href="#sass">#</a></h3>
+<p>Sass has its own syntax, which is more concise and indentation-based.</p>
+<ul>
+<li>It doesn&rsquo;t use curly braces {} or semicolons ;. Instead, indentation is used to indicate nesting and separate properties.</li>
+<li>It doesn&rsquo;t require the use of brackets or semicolons, which can make the code look cleaner and more readable.</li>
+<li>Sass supports all the features of SCSS, including nested selectors, variables, mixins, and more.</li>
+<li>Sass files have the .sass file extension.</li>
+</ul>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>In conclusion, SCSS and SASS are both CSS pre-processors that allow developers to write more maintainable, flexible, and organized code by extending the capabilities of standard CSS syntax. SCSS is a superset of CSS and uses the same syntax as CSS, while SASS has its own syntax that is more concise and uses indentation instead of curly braces and semicolons. Both of these preprocessors provide features such as variables, nesting, mixins, inheritance, and more, which can help to make code more readable and maintainable. It&rsquo;s up to personal preference which pre-processor to use, and both have their pros and cons.</p>
+<p>Thank you for reading.</p>
+<p>Follow me for more such blogs.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/sass/">SASS</a></li>
+      <li><a href="http://localhost:1313/tags/css/">CSS</a></li>
+      <li><a href="http://localhost:1313/tags/scss/">SCSS</a></li>
+      <li><a href="http://localhost:1313/tags/web-design/">Web Design</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

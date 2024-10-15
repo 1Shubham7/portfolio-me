@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Open-Source&#34; on Shubham Singh</title>
+    <link>http://localhost:1313/tags/open-source/</link>
+    <description>Recent content in Open-Source&#34; on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>All about the Storyblok Ambassadors Program</title>
+      <link>http://localhost:1313/blog/storyblokambassador/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/storyblokambassador/</guid>
+      <description>Hey there! So, remember when I mentioned Storyblok in my previous blog? Well, guess what? I discovered something super cool called the Storyblok...</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Storyblok: Transforming the Way You Create and Manage Content</title>
+      <link>http://localhost:1313/blog/storybok/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/storybok/</guid>
+      <description>Explaining Storyblok in simple and powerful terms. · Recently while randomly scrolling Twitter, I stumbled upon a great tool for Building websites and...</description>
+    </item>
+    
+  </channel>
+</rss>
+, understand large and complex codebases and contribute to them.</description>
+    </item>
+    
+    <item>
+      <title>Hugo Expert Intern</title>
+      <link>http://localhost:1313/experience/hooman/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/hooman/</guid>
+      <description>Creating engaging and user-friendly designs for digital interfaces, as well as developing fully functional and responsive websites. working with technologies around web development, Artificial Intelligence, and web3.</description>
+    </item>
+    
+    <item>
+      <title>GirlScript Summer of Code top 100 contributors</title>
+      <link>http://localhost:1313/experience/gssoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/gssoc/</guid>
+      <description>Girlscript Summer Of Code is a three-month-long Open-Source Program conducted every summer by the Girlscript Foundation. With constant efforts, participants contribute to numerous projects under the extreme guidance of skilled mentors over these months.</description>
+    </item>
+    
+    <item>
+      <title>Technical Blogs on Hashnode</title>
+      <link>http://localhost:1313/experience/hashnode/</link>
+      <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/hashnode/</guid>
+      <description>Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community.</description>
+    </item>
+    
+    <item>
+      <title>Unit testing using Golang - a beginner&#39;s guide</title>
+      <link>http://localhost:1313/blog/testing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/testing/</guid>
+      <description>A beginners guide to writing unit tests in Golang · Let&amp;#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...</description>
+    </item>
+    
+    <item>
+      <title>5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience</title>
+      <link>http://localhost:1313/blog/gsoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/gsoc/</guid>
+      <description>Avoid these 5 mistakes to get selected in GSoC. · Let&amp;#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual...</description>
+    </item>
+    
+    <item>
+      <title>Databases - the easy way</title>
+      <link>http://localhost:1313/blog/database/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/database/</guid>
+      <description>Databases in the simplest yet most powerful way ever. Keeping in mind placements and development. · Databases: just a digital tool that stores and...</description>
+    </item>
+    
+    <item>
+      <title>DBMS - the easy way</title>
+      <link>http://localhost:1313/blog/dbms/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/dbms/</guid>
+      <description>Database Management System in the simplest but most powerful way. · What is DBMS? if you have created or are going to create a database, obviously, you...</description>
+    </item>
+    
+    <item>
+      <title>Everything about Artifacts for DevOps</title>
+      <link>http://localhost:1313/blog/artifacts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/artifacts/</guid>
+      <description>Artifacts - from beginner to advanced. · What are artifacts? In the broadest sense, artifacts are objects or items created or modified by humans that...</description>
+    </item>
+    
+    <item>
+      <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
+      <link>http://localhost:1313/blog/open-source101/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/open-source101/</guid>
+      <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
+    </item>
+    
+    <item>
+      <title>Some DevOps terms a beginner should know about</title>
+      <link>http://localhost:1313/blog/devops/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/devops/</guid>
+      <description>Start your DevOps journey with these terms. · DevOps can be a bit confusing for beginners, that is because of its complex terminologies. Here are some...</description>
+    </item>
+    
+    <item>
+      <title>WTF is Vagrant</title>
+      <link>http://localhost:1313/blog/vagrant/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/vagrant/</guid>
+      <description>Vagrant explained for absolute beginner. · So recently, I was setting up locally an open-source software, so to contribute to it (BTW it is called Zulip,...</description>
+    </item>
+    
+    <item>
+      <title>YAML - from basics to advanced</title>
+      <link>http://localhost:1313/blog/yaml/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/yaml/</guid>
+      <description>explaining YAML from basics to advanced · What is YAML? YAML (which stands for &amp;#39;YAML Ain&amp;#39;t Markup Language&amp;#39;) is a human-readable data serialization...</description>
+    </item>
+    
+  </channel>
+</rss>

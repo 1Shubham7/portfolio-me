@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>JavaScript on Shubham Singh</title>
+    <link>http://localhost:1313/tags/javascript/</link>
+    <description>Recent content in JavaScript on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="http://localhost:1313/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Technical Blogs on Hashnode</title>
+      <link>http://localhost:1313/experience/hashnode/</link>
+      <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
+      
+      <guid>http://localhost:1313/experience/hashnode/</guid>
+      <description>Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community.</description>
+    </item>
+    
+    <item>
+      <title>WTF is JSON</title>
+      <link>http://localhost:1313/blog/json/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/json/</guid>
+      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
+    </item>
+    
+  </channel>
+</rss>

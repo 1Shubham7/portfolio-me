@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Kubernetes Deployment Strategies | Shubham Singh</title>
+<meta name="keywords" content="Kubernetes, Deployment, DevOps">
+<meta name="description" content="Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/k8s-depl-stratigies/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/k8s-depl-stratigies/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Kubernetes Deployment Strategies" />
+<meta property="og:description" content="Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015..." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/k8s-depl-stratigies/" />
+<meta property="og:image" content="http://localhost:1313/blog/k8s-logo.webp" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/blog/k8s-logo.webp" />
+<meta name="twitter:title" content="Kubernetes Deployment Strategies"/>
+<meta name="twitter:description" content="Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015..."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Kubernetes Deployment Strategies",
+      "item": "http://localhost:1313/blog/k8s-depl-stratigies/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kubernetes Deployment Strategies",
+  "name": "Kubernetes Deployment Strategies",
+  "description": "Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...",
+  "keywords": [
+    "Kubernetes", "Deployment", "DevOps"
+  ],
+  "articleBody": "Kubernetes Deployment Strategies Kubernetes or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015. One of Kubernetes’ key strengths is its ability to handle application deployments seamlessly while ensuring minimal application downtime. This article discusses different Kubernetes deployment strategies for deploying new versions of your application.\nKubernetes Deployment Strategies 1. Blue/Green Deployment The blue/green deployment strategy is a powerful technique where developers use Kubernetes’s ability to run multiple identical environments concurrently. In this approach, you maintain two separate production environments: the “blue” environment and the “green” environment. At any given time, one environment (e.g., blue) serves the live traffic, while the other (e.g., green) is used to make changes for future updates.\nWhen deploying a new version of your application, you create and configure the new green environment with the updated code and resources. Once the green environment is fully operational and validated, you switch the traffic routing from the blue environment to the green environment. This can be done seamlessly, and the traffic effectively cuts over to the new version. The blue/green deployment strategy ensures zero downtime during deployments and provides a straightforward rollback mechanism if issues arise with the new version. Simply reroute traffic back to the blue environment, and then investigate and address any problems with the green environment without impacting live users.\n2. Canary Deployment The canary deployment strategy is a more gradual and controlled approach compared to the blue/green deployment strategy. Instead of switching all traffic to the new version at once, you introduce the new version to a subset of your users. This subset acts as a “canary” so you can monitor the new version’s performance and behavior closely before rolling it out to all users.\nIn the canary deployment strategy, start by routing a small percentage of traffic (e.g., 5-10%) to the new version, and gradually increase the traffic share as you gain more confidence in the new version’s stability and functionality. This strategy is particularly useful when deploying significant application changes or introducing new features. The canary deployment strategy enables you to catch and mitigate potential issues affecting only part of your users, so they don’t impact your entire user base. If any problems are detected during the canary deployment, you can quickly roll back the new version and minimize the impact on your users.\n3. Rolling Update The rolling update strategy is the default deployment strategy in Kubernetes and is popular among small startups and companies. In the rolling update strategy, you gradually replace the old Pods with new ones, ensuring that a certain number of Pods (specified by the ‘maxUnavailable’ and ‘maxSurge’ parameters) are available during the update process. This strategy minimizes application downtime and ensures a smooth transition between new and old versions.\nHow the rolling update process works: Kubernetes creates a new ReplicaSet with the desired number of replicas for the new version of the application. It gradually scales down the old ReplicaSet and scales up the new one, maintaining the desired number of available Pods. This process continues until all old Pods are replaced with new ones. 4. Recreate The recreate strategy is a straightforward approach where Kubernetes will terminate all existing Pods before creating new ones with the updated configuration (new version). Use this strategy for applications where you are ready to see some downtime during deployments or for applications that require a complete restart to apply configuration changes.\nHow the Recreate strategy works: Kubernetes scales down the old ReplicaSet to zero replicas (terminating all existing Pods). Once all old Pods are terminated, Kubernetes creates a new ReplicaSet with the desired number of replicas for the new version of the application. Note: The recreate strategy is simple and efficient but will lead to downtime during the update process, which may not be acceptable for many types of applications.\n5. A/B Testing The A/B testing deployment strategy involves testing new features or configurations with a small percentage of users. Run two versions of your application simultaneously, routing a portion of the traffic to each version based on predefined rules or conditions.\nThis strategy allows you to gather user feedback on the new version’s performance or behavior and make changes accordingly before rolling it out to all users. Based on the data from A/B testing, decide whether to proceed with the new version, make changes, or roll back to the previous version.\n6. Ramped Deployment The ramped deployment strategy is similar to the rolling update strategy with a small variation. Instead of replacing Pods one by one, it introduces a new ReplicaSet with the updated version of your application and gradually increases the number of replicas until the desired state is reached.\nHow the Ramped Deployment strategy works: Start by creating a new ReplicaSet with a small number of replicas (e.g., 1 or 2) for the new version. As the new Pods become ready, Kubernetes will gradually scale up the new ReplicaSet and scale down the old ReplicaSet until the old ones become zero and new ones take their place. 7. Traffic Splitting The traffic splitting deployment strategy involves routing incoming traffic to different versions of your application based on predetermined rules or conditions. Often used with other deployment strategies (e.g., blue/green or canary deployments), traffic splitting helps control the distribution of traffic between different versions of your application.\nTraffic splitting can be achieved using Kubernetes Services and Ingress resources. Configure them to route traffic based on factors such as:\nHTTP headers Cookies Source IP addresses Custom rules Conclusion Kubernetes is a powerful container orchestration platform that simplifies the deployment and management of containerized applications at scale. One of its key strengths is handling rolling updates and deployments seamlessly. In this article, we explored various Kubernetes deployment strategies, including blue/green, canary, rolling update, recreate, A/B testing, ramped deployment, and traffic splitting. Each strategy caters to different requirements and scenarios, providing you with the flexibility to choose the approach that best suits your application’s needs. By following the best practices outlined in this article, you can ensure a smooth and successful deployment process while minimizing downtime and potential issues. Make sure to follow other articles on GeeksforGeeks to learn more about Kubernetes and its advanced features.\nFAQs about Kubernetes Deployment Strategies Q. What is a rolling update deployment?\nA rolling update deployment is a deployment technique in Kubernetes where we gradually replace the old Pods with new ones, ensuring that a certain number of Pods (specified by the ‘maxUnavailable’ and ‘maxSurge’ parameters) are available during the update process. Q. What happens in blue/green deployment?\nIn the blue/green deployment strategy, you maintain two separate production environments: the “blue” environment and the “green” environment. At any given time, one environment (e.g., blue) serves the live traffic, while the other (e.g., green) is used to make changes for future updates. Q. What is the difference between blue/green and canary deployments?\nIn blue/green deployment, we switch all traffic from one environment to the other environment altogether. In canary deployment, we introduce the new version to only a part of our users or traffic and gradually increase this percentage. Q. How can I implement A/B testing in Kubernetes?\nTo implement A/B testing, run two versions of your application together. Route a certain percentage of your users to each version using Kubernetes Services and Ingress resources. Q. Why should one use the traffic splitting deployment strategy?\nThe traffic splitting deployment strategy can be used with other deployment strategies, such as blue/green or canary deployments, to control the distribution of traffic between different versions of your application. ",
+  "wordCount" : "1284",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/blog/k8s-logo.webp","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/k8s-depl-stratigies/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Kubernetes Deployment Strategies
+    </h1>
+    <div class="post-description">
+      Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...
+    </div>
+    <div class="post-meta">
+
+
+June 2024
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/k8s-logo.webp" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#kubernetes-deployment-strategies" aria-label="Kubernetes Deployment Strategies">Kubernetes Deployment Strategies</a><ul>
+                        
+                <li>
+                    <a href="#kubernetes-deployment-strategies-1" aria-label="Kubernetes Deployment Strategies">Kubernetes Deployment Strategies</a><ul>
+                        
+                <li>
+                    <a href="#1-bluegreen-deployment" aria-label="1. Blue/Green Deployment">1. Blue/Green Deployment</a></li>
+                <li>
+                    <a href="#2-canary-deployment" aria-label="2. Canary Deployment">2. Canary Deployment</a></li>
+                <li>
+                    <a href="#3-rolling-update" aria-label="3. Rolling Update">3. Rolling Update</a><ul>
+                        
+                <li>
+                    <a href="#how-the-rolling-update-process-works" aria-label="How the rolling update process works:">How the rolling update process works:</a></li></ul>
+                </li>
+                <li>
+                    <a href="#4-recreate" aria-label="4. Recreate">4. Recreate</a><ul>
+                        
+                <li>
+                    <a href="#how-the-recreate-strategy-works" aria-label="How the Recreate strategy works:">How the Recreate strategy works:</a></li></ul>
+                </li>
+                <li>
+                    <a href="#5-ab-testing" aria-label="5. A/B Testing">5. A/B Testing</a></li>
+                <li>
+                    <a href="#6-ramped-deployment" aria-label="6. Ramped Deployment">6. Ramped Deployment</a><ul>
+                        
+                <li>
+                    <a href="#how-the-ramped-deployment-strategy-works" aria-label="How the Ramped Deployment strategy works:">How the Ramped Deployment strategy works:</a></li></ul>
+                </li>
+                <li>
+                    <a href="#7-traffic-splitting" aria-label="7. Traffic Splitting">7. Traffic Splitting</a></li></ul>
+                </li>
+                <li>
+                    <a href="#conclusion" aria-label="Conclusion">Conclusion</a></li>
+                <li>
+                    <a href="#faqs-about-kubernetes-deployment-strategies" aria-label="FAQs about Kubernetes Deployment Strategies">FAQs about Kubernetes Deployment Strategies</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="kubernetes-deployment-strategies">Kubernetes Deployment Strategies<a hidden class="anchor" aria-hidden="true" href="#kubernetes-deployment-strategies">#</a></h1>
+<p>Kubernetes or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015. One of Kubernetes&rsquo; key strengths is its ability to handle application deployments seamlessly while ensuring minimal application downtime. This article discusses different Kubernetes deployment strategies for deploying new versions of your application.</p>
+<h2 id="kubernetes-deployment-strategies-1">Kubernetes Deployment Strategies<a hidden class="anchor" aria-hidden="true" href="#kubernetes-deployment-strategies-1">#</a></h2>
+<h3 id="1-bluegreen-deployment">1. Blue/Green Deployment<a hidden class="anchor" aria-hidden="true" href="#1-bluegreen-deployment">#</a></h3>
+<p>The blue/green deployment strategy is a powerful technique where developers use Kubernetes&rsquo;s ability to run multiple identical environments concurrently. In this approach, you maintain two separate production environments: the &ldquo;blue&rdquo; environment and the &ldquo;green&rdquo; environment. At any given time, one environment (e.g., blue) serves the live traffic, while the other (e.g., green) is used to make changes for future updates.</p>
+<p>When deploying a new version of your application, you create and configure the new green environment with the updated code and resources. Once the green environment is fully operational and validated, you switch the traffic routing from the blue environment to the green environment. This can be done seamlessly, and the traffic effectively cuts over to the new version. The blue/green deployment strategy ensures zero downtime during deployments and provides a straightforward rollback mechanism if issues arise with the new version. Simply reroute traffic back to the blue environment, and then investigate and address any problems with the green environment without impacting live users.</p>
+<h3 id="2-canary-deployment">2. Canary Deployment<a hidden class="anchor" aria-hidden="true" href="#2-canary-deployment">#</a></h3>
+<p>The canary deployment strategy is a more gradual and controlled approach compared to the blue/green deployment strategy. Instead of switching all traffic to the new version at once, you introduce the new version to a subset of your users. This subset acts as a &ldquo;canary&rdquo; so you can monitor the new version&rsquo;s performance and behavior closely before rolling it out to all users.</p>
+<p>In the canary deployment strategy, start by routing a small percentage of traffic (e.g., 5-10%) to the new version, and gradually increase the traffic share as you gain more confidence in the new version&rsquo;s stability and functionality. This strategy is particularly useful when deploying significant application changes or introducing new features. The canary deployment strategy enables you to catch and mitigate potential issues affecting only part of your users, so they don&rsquo;t impact your entire user base. If any problems are detected during the canary deployment, you can quickly roll back the new version and minimize the impact on your users.</p>
+<h3 id="3-rolling-update">3. Rolling Update<a hidden class="anchor" aria-hidden="true" href="#3-rolling-update">#</a></h3>
+<p>The rolling update strategy is the default deployment strategy in Kubernetes and is popular among small startups and companies. In the rolling update strategy, you gradually replace the old Pods with new ones, ensuring that a certain number of Pods (specified by the &lsquo;maxUnavailable&rsquo; and &lsquo;maxSurge&rsquo; parameters) are available during the update process. This strategy minimizes application downtime and ensures a smooth transition between new and old versions.</p>
+<h4 id="how-the-rolling-update-process-works">How the rolling update process works:<a hidden class="anchor" aria-hidden="true" href="#how-the-rolling-update-process-works">#</a></h4>
+<ul>
+<li>Kubernetes creates a new ReplicaSet with the desired number of replicas for the new version of the application.</li>
+<li>It gradually scales down the old ReplicaSet and scales up the new one, maintaining the desired number of available Pods.</li>
+<li>This process continues until all old Pods are replaced with new ones.</li>
+</ul>
+<h3 id="4-recreate">4. Recreate<a hidden class="anchor" aria-hidden="true" href="#4-recreate">#</a></h3>
+<p>The recreate strategy is a straightforward approach where Kubernetes will terminate all existing Pods before creating new ones with the updated configuration (new version). Use this strategy for applications where you are ready to see some downtime during deployments or for applications that require a complete restart to apply configuration changes.</p>
+<h4 id="how-the-recreate-strategy-works">How the Recreate strategy works:<a hidden class="anchor" aria-hidden="true" href="#how-the-recreate-strategy-works">#</a></h4>
+<ul>
+<li>Kubernetes scales down the old ReplicaSet to zero replicas (terminating all existing Pods).</li>
+<li>Once all old Pods are terminated, Kubernetes creates a new ReplicaSet with the desired number of replicas for the new version of the application.</li>
+</ul>
+<blockquote>
+<p>Note: The recreate strategy is simple and efficient but will lead to downtime during the update process, which may not be acceptable for many types of applications.</p>
+</blockquote>
+<h3 id="5-ab-testing">5. A/B Testing<a hidden class="anchor" aria-hidden="true" href="#5-ab-testing">#</a></h3>
+<p>The A/B testing deployment strategy involves testing new features or configurations with a small percentage of users. Run two versions of your application simultaneously, routing a portion of the traffic to each version based on predefined rules or conditions.</p>
+<p>This strategy allows you to gather user feedback on the new version&rsquo;s performance or behavior and make changes accordingly before rolling it out to all users. Based on the data from A/B testing, decide whether to proceed with the new version, make changes, or roll back to the previous version.</p>
+<h3 id="6-ramped-deployment">6. Ramped Deployment<a hidden class="anchor" aria-hidden="true" href="#6-ramped-deployment">#</a></h3>
+<p>The ramped deployment strategy is similar to the rolling update strategy with a small variation. Instead of replacing Pods one by one, it introduces a new ReplicaSet with the updated version of your application and gradually increases the number of replicas until the desired state is reached.</p>
+<h4 id="how-the-ramped-deployment-strategy-works">How the Ramped Deployment strategy works:<a hidden class="anchor" aria-hidden="true" href="#how-the-ramped-deployment-strategy-works">#</a></h4>
+<ul>
+<li>Start by creating a new ReplicaSet with a small number of replicas (e.g., 1 or 2) for the new version.</li>
+<li>As the new Pods become ready, Kubernetes will gradually scale up the new ReplicaSet and scale down the old ReplicaSet until the old ones become zero and new ones take their place.</li>
+</ul>
+<h3 id="7-traffic-splitting">7. Traffic Splitting<a hidden class="anchor" aria-hidden="true" href="#7-traffic-splitting">#</a></h3>
+<p>The traffic splitting deployment strategy involves routing incoming traffic to different versions of your application based on predetermined rules or conditions. Often used with other deployment strategies (e.g., blue/green or canary deployments), traffic splitting helps control the distribution of traffic between different versions of your application.</p>
+<p>Traffic splitting can be achieved using Kubernetes Services and Ingress resources. Configure them to route traffic based on factors such as:</p>
+<ul>
+<li>HTTP headers</li>
+<li>Cookies</li>
+<li>Source IP addresses</li>
+<li>Custom rules</li>
+</ul>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>Kubernetes is a powerful container orchestration platform that simplifies the deployment and management of containerized applications at scale. One of its key strengths is handling rolling updates and deployments seamlessly. In this article, we explored various Kubernetes deployment strategies, including blue/green, canary, rolling update, recreate, A/B testing, ramped deployment, and traffic splitting. Each strategy caters to different requirements and scenarios, providing you with the flexibility to choose the approach that best suits your application&rsquo;s needs. By following the best practices outlined in this article, you can ensure a smooth and successful deployment process while minimizing downtime and potential issues. Make sure to follow other articles on GeeksforGeeks to learn more about Kubernetes and its advanced features.</p>
+<h2 id="faqs-about-kubernetes-deployment-strategies">FAQs about Kubernetes Deployment Strategies<a hidden class="anchor" aria-hidden="true" href="#faqs-about-kubernetes-deployment-strategies">#</a></h2>
+<p><strong>Q. What is a rolling update deployment?</strong></p>
+<ul>
+<li>A rolling update deployment is a deployment technique in Kubernetes where we gradually replace the old Pods with new ones, ensuring that a certain number of Pods (specified by the &lsquo;maxUnavailable&rsquo; and &lsquo;maxSurge&rsquo; parameters) are available during the update process.</li>
+</ul>
+<p><strong>Q. What happens in blue/green deployment?</strong></p>
+<ul>
+<li>In the blue/green deployment strategy, you maintain two separate production environments: the &ldquo;blue&rdquo; environment and the &ldquo;green&rdquo; environment. At any given time, one environment (e.g., blue) serves the live traffic, while the other (e.g., green) is used to make changes for future updates.</li>
+</ul>
+<p><strong>Q. What is the difference between blue/green and canary deployments?</strong></p>
+<ul>
+<li>In blue/green deployment, we switch all traffic from one environment to the other environment altogether. In canary deployment, we introduce the new version to only a part of our users or traffic and gradually increase this percentage.</li>
+</ul>
+<p><strong>Q. How can I implement A/B testing in Kubernetes?</strong></p>
+<ul>
+<li>To implement A/B testing, run two versions of your application together. Route a certain percentage of your users to each version using Kubernetes Services and Ingress resources.</li>
+</ul>
+<p><strong>Q. Why should one use the traffic splitting deployment strategy?</strong></p>
+<ul>
+<li>The traffic splitting deployment strategy can be used with other deployment strategies, such as blue/green or canary deployments, to control the distribution of traffic between different versions of your application.</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/kubernetes/">Kubernetes</a></li>
+      <li><a href="http://localhost:1313/tags/deployment/">Deployment</a></li>
+      <li><a href="http://localhost:1313/tags/devops/">DevOps</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

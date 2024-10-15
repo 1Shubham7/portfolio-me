@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Kubernetes on Shubham Singh</title>
+    <link>http://localhost:1313/tags/kubernetes/</link>
+    <description>Recent content in Kubernetes on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LFX Mentee - CNCF KubeEdge</title>
+      <link>http://localhost:1313/experience/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/lfx/</guid>
+      <description>The Linux Foundation Mentorship Program (LFX Mentorship) is 3 months paid internship/mentorship program where people contribute to open source projects. The program aims to foster innovation and talent in the open source community, and to help developers get job and internship opportunities after graduating. The program offers part-time and full-time mentor positions, and mentorships for projects such as CNCF, GraphQL, Hyperledger, LF Networking, Linux Kernel, OpenHPC, Open Mainframe Project, and RISC-V...</description>
+    </item>
+    
+    <item>
+      <title>GeeksforGeeks Technical Writer</title>
+      <link>http://localhost:1313/experience/gfg/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/experience/gfg/</guid>
+      <description>GeeksforGeeks is a leading platform that provides computer science resources and coding challenges for programmers and technology enthusiasts, along with interview and exam preparations for upcoming aspirants. With a strong emphasis on enhancing coding skills and knowledge, it has become a trusted destination for over 12 million plus registered users worldwide. The platform offers a vast collection of tutorials, practice problems, interview tutorials, articles, and courses, covering various domains of computer science.</description>
+    </item>
+    
+    <item>
+      <title>My journey from a CNCF contributor to LFX mentee</title>
+      <link>http://localhost:1313/blog/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/lfx/</guid>
+      <description>&lt;p&gt;Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Kubernetes Native Policy Management with Kyverno</title>
+      <link>http://localhost:1313/blog/kyverno-intro/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/kyverno-intro/</guid>
+      <description>&lt;p&gt;Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.&lt;/p&gt;
+&lt;h2 id=&#34;admission-controllers&#34;&gt;Admission Controllers&lt;/h2&gt;
+&lt;p&gt;Let&amp;rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Deployment Strategies</title>
+      <link>http://localhost:1313/blog/k8s-depl-stratigies/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/k8s-depl-stratigies/</guid>
+      <description>Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...</description>
+    </item>
+    
+  </channel>
+</rss>
