@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Open-Source&#34; on Shubham Singh</title>
+    <title>Open-Source on Shubham Singh</title>
     <link>http://localhost:1313/tags/open-source/</link>
-    <description>Recent content in Open-Source&#34; on Shubham Singh</description>
+    <description>Recent content in Open-Source on Shubham Singh</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://localhost:1313/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="http://localhost:1313/tags/open-source/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>All about the Storyblok Ambassadors Program</title>
-      <link>http://localhost:1313/blog/storyblokambassador/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>CNCF ORAS Contributor</title>
+      <link>http://localhost:1313/experience/cncf-oras/</link>
+      <pubDate>Wed, 16 Aug 2023 11:11:19 +0530</pubDate>
       
-      <guid>http://localhost:1313/blog/storyblokambassador/</guid>
-      <description>Hey there! So, remember when I mentioned Storyblok in my previous blog? Well, guess what? I discovered something super cool called the Storyblok...</description>
+      <guid>http://localhost:1313/experience/cncf-oras/</guid>
+      <description>ORAS is the de facto tool for working with OCI Artifacts. It treats media types as a critical piece of the puzzle. Container images are never assumed to be the artifact in question. ORAS provides CLI and client libraries to distribute artifacts across OCI-compliant registries.</description>
     </item>
     
     <item>
-      <title>Introduction to Storyblok: Transforming the Way You Create and Manage Content</title>
-      <link>http://localhost:1313/blog/storybok/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>CNCF Zero to Merge</title>
+      <link>http://localhost:1313/experience/cncf-zero-to-merge/</link>
+      <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
       
-      <guid>http://localhost:1313/blog/storybok/</guid>
-      <description>Explaining Storyblok in simple and powerful terms. · Recently while randomly scrolling Twitter, I stumbled upon a great tool for Building websites and...</description>
-    </item>
-    
-  </channel>
-</rss>
-, understand large and complex codebases and contribute to them.</description>
+      <guid>http://localhost:1313/experience/cncf-zero-to-merge/</guid>
+      <description>CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.</description>
     </item>
     
     <item>

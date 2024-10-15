@@ -7,20 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="http://localhost:1313/tags/backend/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Everything about API explained!!</title>
-      <link>http://localhost:1313/blog/api/</link>
+      <title>Building a Golang backend system with JWT authentication</title>
+      <link>http://localhost:1313/blog/jwt/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/api/</guid>
+      <guid>http://localhost:1313/blog/jwt/</guid>
       <description>API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...</description>
     </item>
     
     <item>
       <title>Everything about API explained!!</title>
-      <link>http://localhost:1313/blog/jwt/</link>
+      <link>http://localhost:1313/blog/api/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/jwt/</guid>
+      <guid>http://localhost:1313/blog/api/</guid>
       <description>API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...</description>
     </item>
     

@@ -29,6 +29,8 @@
   </url><url>
     <loc>http://localhost:1313/blog/storyblokambassador/</loc>
   </url><url>
+    <loc>http://localhost:1313/blog/jwt/</loc>
+  </url><url>
     <loc>http://localhost:1313/blog/database/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/datainpython/</loc>
@@ -38,8 +40,6 @@
     <loc>http://localhost:1313/blog/sass/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/api/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/jwt/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/artifacts/</loc>
   </url><url>
@@ -129,6 +129,8 @@
   </url><url>
     <loc>http://localhost:1313/tags/frontend/</loc>
   </url><url>
+    <loc>http://localhost:1313/tags/gin/</loc>
+  </url><url>
     <loc>http://localhost:1313/tags/ginkgo/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/github/</loc>
@@ -144,6 +146,8 @@
     <loc>http://localhost:1313/tags/hugo/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/json/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/jwt-authentication/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/kubeedge/</loc>
   </url><url>

@@ -62,6 +62,15 @@
     </item>
     
     <item>
+      <title>Building a Golang backend system with JWT authentication</title>
+      <link>http://localhost:1313/blog/jwt/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/jwt/</guid>
+      <description>API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...</description>
+    </item>
+    
+    <item>
       <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
       <link>http://localhost:1313/blog/open-source101/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

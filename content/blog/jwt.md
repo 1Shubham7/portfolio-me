@@ -1,17 +1,17 @@
 ---
 title: "Building a Golang backend system with JWT authentication"
-description: "API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,..."
-dateString: October 2023
+description: "When creating a website's backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely..."
+dateString: October 2024
 draft: false
-tags: ["API", "Backend", "Programming"]
+tags: ["Golang", "Backend", "Gin", "JWT authentication"]
 weight: 101
 cover:
-    image: "blog/api.png"
+    image: "blog/jwt-logo.png"
 ---
 
 When creating a website's backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely. In this article, we will discuss JWT authentication and most importantly we will create an entire project for Fast and Efficient JWT authentication using Gin-Gonic, this will be a step-by-step project tutorial that will help you create a very fast and industry-level authentication API for your website or application's backend. 
 
-Table of Content:
+**Table of Content:**
 
 - What is JWT authentication?
 - Project Structure
