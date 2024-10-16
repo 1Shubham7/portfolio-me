@@ -4,7 +4,7 @@ description: "API : from beginner to advanced concepts · During our Web develop
 dateString: October 2023
 draft: false
 tags: ["API", "Backend", "Programming"]
-weight: 101
+weight: 110
 cover:
     image: "blog/api.png"
 ---
