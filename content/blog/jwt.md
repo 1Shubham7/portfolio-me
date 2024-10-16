@@ -22,6 +22,7 @@ When creating a website's backend, one very important term we get to hear is JWT
 - Conclusion
 
 ## What is JWT authentication?
+
 JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely.
 
 Let's try to understand that by the help of an example. Consider a situation when we show up at a hotel and we walk up to the front desk and the receptionist says "hey, what can I do for you?". I would say "Hi, my name is Shubham, I'm here for a conference, the sponsors are paying for my hotel". The receptionist says "okay great! well I'm going to need to see a couple things". Usually they'll need to see my identification so to prove who I am and once that they have verified that I am the right person, they will issue me a key. And authentication works in a very similar way to this example.
@@ -64,8 +65,9 @@ go mod init github.com/1shubham7/jwt
 
 This will create a go.mod file.
 
-Step 2. Create a main.go file and let's create a web server in main.go. For that, add the following code in the file:
+**Step 2.** Create a main.go file and let's create a web server in main.go. For that, add the following code in the file:
 
+```go
 package main
 import(
 	"github.com/gin-gonic/gin"
@@ -96,17 +98,22 @@ func main() {
 	})
 	router.Run(":" + port)
 }
+```
 
 'os' package to retrieve environment variables.
 we are using gin-gonic package to create a web server.
 Later we will create a routes package.
 AuthRoutes(), UserRoutes() are functions inside a file from routes package, we will create it later on.
-Step 3. Download the gin-gonic package:
 
+**Step 3.** Download the gin-gonic package:
+
+```sh
 go get github.com/gin-gonic/gin
+```
 
-Step 4. Create a models folder and inside it create a userModel.go file. Enter the following code inside the userModel.go:
+***Step 4.*** Create a models folder and inside it create a userModel.go file. Enter the following code inside the userModel.go:
 
+```go
 package models
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -126,13 +133,16 @@ type User struct {
 	Updated_at    time.Time          `json:"updated_at"`
 	User_id       string             `json:"user_id"`
 }
+```
 
 We have created a struct called User and have added necessary fields to the struct.
 
 `json:"first_name" validate:"required, min=2, max=100"` this are called field tags, these are used during decoding and encoding of go code to JSON and JSON to go.
 Here validate:"required, min=2, max=100" this is used for validate that the particular field must have minimum 2 characters and maximum 100 characters.
-Step 5. Create a database folder and inside it create a databaseConnection.go file, enter the following code inside it:
 
+**Step 5.** Create a database folder and inside it create a databaseConnection.go file, enter the following code inside it:
+
+```go
 package database
 import (
 	"fmt"
@@ -167,11 +177,14 @@ var Client *mongo.Client = DBinstance()
 func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	var collection *mongo.Collection = client.Database("cluster0").Collection(collectionName)
 	return collection
-} 
+}
+```
 
 also make sure to download the 'mongo' package:
 
+```sh
 go get go.mongodb.org/mongo-driver/mongo
+```
 
 Here we are connecting your mongo database with the application.
 
@@ -179,14 +192,17 @@ we are using 'godotenv' for loading environment variables that we will set in th
 The DBinstance Function, we take the value of "THE_MONGODB_URL" from the .env file (we will create that in the coming steps) and create a new mongoDB client using the value.
 'context' is used to have a timeout of 10 seconds.
 OpenCollection Function() takes client and collectionName as input and creates a collection for it.
-Step 6. For the routes, we will create two different files, authRouter and userRouter. authRouter includes '/signup' and '/login' . These will public to everyone so that they can authorize themselves. userRouter will not be public to everyone. It will include '/users' and '/users/:user_id'.
+
+**Step 6.** For the routes, we will create two different files, authRouter and userRouter. authRouter includes '/signup' and '/login' . These will public to everyone so that they can authorize themselves. userRouter will not be public to everyone. It will include '/users' and '/users/:user_id'.
 
 Create a folder called routes and add two files into it:
 
-userRouter.go
-authRouter.go
+- userRouter.go
+- authRouter.go
+
 enter the following code into userRouter.go:
 
+```go
 package routes
 import (
 	"github.com/gin-gonic/gin"
@@ -201,9 +217,11 @@ func UserRoutes (incomingRoutes *gin.Engine) {
 	incomingRoutes.GET("/users", controllers.GetUsers())
 	incomingRoutes.GET("users/:user_id", controllers.GetUserById())
 }
+```
 
-Step 7. enter the following code into the authRouter.go:
+**Step 7.** enter the following code into the authRouter.go:
 
+```go
 package routes
 import (
 	"github.com/gin-gonic/gin"
@@ -215,9 +233,11 @@ func AuthRoutes(incomingRoutes *gin.Engine) {
 	incomingRoutes.POST("users/signup", controllers.SignUp())
 	incomingRoutes.POST("user/login", controllers.Login())
 }
+```
 
-Step 8. create a folder called controllers and add a file called 'userController.go' to it. enter the following code inside it.
+**Step 8.** create a folder called controllers and add a file called 'userController.go' to it. enter the following code inside it.
 
+```go
 package controllers
 import (
 	"context"
@@ -251,11 +271,13 @@ Step 9. To keep environment variables in a separate file, we will create a .env 
 
 PORT=1111
 THE_MONGODB_URL=mongodb://localhost:27017/go-auth
+```
 
 These two variables have already been used in our previous code.
 
-Step 10. Let's create the GetUserById() function first. Enter the following code in GetUserById() function:
+**Step 10.** Let's create the GetUserById() function first. Enter the following code in GetUserById() function:
 
+```go
 func GetUserById() gin.HandlerFunc{
 	return func(c *gin.Context){
 		userId := c.Param("user_id") // we are taking the user_id given by the user in json
@@ -280,9 +302,11 @@ func GetUserById() gin.HandlerFunc{
 		c.JSON(http.StatusOK, user)
 	}
 }
+```
 
-Step 11. Let's create a folder called helpers and add a file called authHelper.go into it. Enter the following code into the authHelper.go :
+**Step 11.** Let's create a folder called helpers and add a file called authHelper.go into it. Enter the following code into the authHelper.go :
 
+```go
 package helpers
 import (
 	"errors"
@@ -310,11 +334,14 @@ func MatchUserTypeToUserId(c *gin.Context, userId string) (err error) {
 	err = CheckUserType(c, userType)
 	return err
 }
+```
 
 The MatchUserTypeToUserId() function just matches if the user is a Admin or just a user.
 We are using CheckUserType() function inside MatchUserTypeToUserId(), this is just checking if everything is fine (if the user_type we get from user is same as the userType variable.
-Step 12. We can now work on the SignUp() function of userController.go:
 
+**Step 12.** We can now work on the SignUp() function of userController.go:
+
+```go
 func SignUp()gin.HandlerFunc{
 	return func(c *gin.Context){
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -369,17 +396,27 @@ func SignUp()gin.HandlerFunc{
 		c.JSON(http.StatusOK, resultInsertionNumber)
 	}
 }
+```
 
-We created a variable user of type User.
-validationErr is used to validate the struct tags, we already discussed this.
-We are also using count variable to validate. As in if we find documents with the user email already then the count would be more than 0, and we can then handle that error (err)
-Then we are using 'time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))' to set the time for Created_at, Updated_at struct fields. When the user tries to sign up, the function SignUp() will run and that particular time will be stored in  Created_at, Updated_at struct fields.
-Then we are creating tokens using GenerateAllTokens() function that we will create in tokenHelper.go file in the same package in the next step.
-We also have a HashPassword() function that is doing nothing but hashing the user.password and replacing the user.password with the hashed password. We will also create that thing later.
-And then we are just inserting the data and the tokens etc. to the userCollection
-If everything goes right, we will give StatusOK back.
-Step 13. create a file in helpers folder called 'tokenHelper.go' and enter the following code inside it.
+- We created a variable user of type User.
 
+- validationErr is used to validate the struct tags, we already discussed this.
+
+- We are also using count variable to validate. As in if we find documents with the user email already then the count would be more than 0, and we can then handle that error (err)
+
+- Then we are using 'time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))' to set the time for Created_at, Updated_at struct fields. When the user tries to sign up, the function SignUp() will run and that particular time will be stored in  Created_at, Updated_at struct fields.
+
+- Then we are creating tokens using GenerateAllTokens() function that we will create in tokenHelper.go file in the same package in the next step.
+
+- We also have a HashPassword() function that is doing nothing but hashing the user.password and replacing the user.password with the hashed password. We will also create that thing later.
+
+- And then we are just inserting the data and the tokens etc. to the userCollection
+
+- If everything goes right, we will give StatusOK back.
+
+**Step 13.** create a file in helpers folder called 'tokenHelper.go' and enter the following code inside it.
+
+```go
 package helpers
 import (
 	"context"
@@ -432,18 +469,27 @@ func GenerateAllTokens(email string, firstName string, lastName string, userType
 	}
 	return token, refreshToken, err
 }
+```
 
 Also make sure to download the github.com/dgrijalva/jwt-go package:
 
+```sh
 go get github.com/dgrijalva/jwt-go
+```
 
-Here we are using github.com/dgrijalva/jwt-go for generating tokens.
-We are creating a struct called SignedDetails with field names required for generating tokens.
-we are using NewWithClaims to generate new tokens and are giving the value to the claims and refreshClaims structs. claims has token for the first time users and refreshClaims has it when the user has to refresh the token. that is, they previously had a token which is now expired.
-time.Now().Local().Add(time.Hour *time.Duration(120)).Unix() is being used for setting the expiry of the token.
-we are then simply returning three things - token, refreshToken and err which we are using in the SignUp() function.
-Step 14. In the same file as SignUp() function, let's create the HashPassword() function we talked about in step 9.
+- Here we are using github.com/dgrijalva/jwt-go for generating tokens.
 
+- We are creating a struct called SignedDetails with field names required for generating tokens.
+
+- we are using NewWithClaims to generate new tokens and are giving the value to the claims and refreshClaims structs. claims has token for the first time users and refreshClaims has it when the user has to refresh the token. that is, they previously had a token which is now expired.
+
+- time.Now().Local().Add(time.Hour *time.Duration(120)).Unix() is being used for setting the expiry of the token.
+
+- we are then simply returning three things - token, refreshToken and err which we are using in the SignUp() function.
+
+**Step 14.** In the same file as SignUp() function, let's create the HashPassword() function we talked about in step 9.
+
+```go
 func HashPassword(password string) string {
 	hashed, err:=bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err!=nil{
@@ -451,12 +497,17 @@ func HashPassword(password string) string {
 	}
 	return string(hashed)
 }
+```
 
-We are simply using the GenerateFromPassword() method from bcrypt package which is used to generate hashed passwords from the actual password.
-This is important because we would not want and hacker to hack into our systems and steal all the passwords, also for the users privacy.
-[]byte (array of bytes) is simply string.
-Step 15. Let's create the Login() function in 'userController.go' and in later steps we can create the functions that Login() uses:
+- We are simply using the GenerateFromPassword() method from bcrypt package which is used to generate hashed passwords from the actual password.
 
+- This is important because we would not want and hacker to hack into our systems and steal all the passwords, also for the users privacy.
+
+- []byte (array of bytes) is simply string.
+
+**Step 15.** Let's create the Login() function in 'userController.go' and in later steps we can create the functions that Login() uses:
+
+```go
 func Login() gin.HandlerFunc{
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -495,15 +546,23 @@ func Login() gin.HandlerFunc{
 		c.JSON(http.StatusOK, foundUser)
 	}
 }
+```
 
-We are creating two variables of type User, these are user and Founduser. and giving the data from request to user.
-By the help of 'userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)' we are finding the user through his/her email and if found, storing it in foundUser variable.
-Then we are using VerifyPassword() function to verify the password and store it, remember that we are taking pointers as parameters in VerifyPassword(), if not, it would create a new instance of those in parameters rather than actually changing them.
-We will create VerifyPassword() in the next step.
-Then we are simply using GenerateAllTokens() and UpdateAllTokens() to generate and update the token and refreshToken (which are basically tokens).
-And every step, we are all handling the errors.
-Step 16. Let's create the VerifyPassword() function in the same file as Login() function:
+- We are creating two variables of type User, these are user and Founduser. and giving the data from request to user.
 
+- By the help of 'userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)' we are finding the user through his/her email and if found, storing it in foundUser variable.
+
+- Then we are using VerifyPassword() function to verify the password and store it, remember that we are taking pointers as parameters in VerifyPassword(), if not, it would create a new instance of those in parameters rather than actually changing them.
+
+- We will create VerifyPassword() in the next step.
+
+- Then we are simply using GenerateAllTokens() and UpdateAllTokens() to generate and update the token and refreshToken (which are basically tokens).
+
+- And every step, we are all handling the errors.
+
+**Step 16.** Let's create the VerifyPassword() function in the same file as Login() function:
+
+```go
 func VerifyPassword(userPassword, providedPassword string) (bool, string) {
 	
 	err := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))
@@ -515,11 +574,15 @@ func VerifyPassword(userPassword, providedPassword string) (bool, string) {
 	}
 	return check, msg
 }
+```
 
-We are simply using the CompareHashAndPassword() method from bcrypt package which is used to compare hashed passwords. and returning a boolean value depening on the results.
-[]byte (array of bytes) is simply string, but []byte helps in comparing.
-Step 17. Let's create the UpdateAllTokens() function in the 'tokenHelper.go' file:
+- We are simply using the CompareHashAndPassword() method from bcrypt package which is used to compare hashed passwords. and returning a boolean value depening on the results.
 
+- []byte (array of bytes) is simply string, but []byte helps in comparing.
+
+**Step 17.** Let's create the UpdateAllTokens() function in the 'tokenHelper.go' file:
+
+```go
 func UpdateAllTokens(signedToken string, signedRefreshToken string, userId string){
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	var updateObj primitive.D
@@ -547,18 +610,27 @@ func UpdateAllTokens(signedToken string, signedRefreshToken string, userId strin
 	}
 	return
 }
+```
 
-We are creating a variable called updateObj which is of type primitive.D. primitive.D type in MongoDB's Go driver is a representation of a BSON document.
-Append() is appending a key-value pair to updateObj each and every time its running.
-Then 'time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))' is used to update the current time (time when the updation happens and the function runs) to Updated_at.
-Rest of the code block is performing update using the UpdateOne method of mongoDB collection.
-At the last step we are also handling the error in case any error occurs.
-Step 18. Before continuing ahead, let's download the go.mongodb.org/mongo-driver package:
+- We are creating a variable called updateObj which is of type primitive.D. primitive.D type in MongoDB's Go driver is a representation of a BSON document.
 
+- Append() is appending a key-value pair to updateObj each and every time its running.
+
+- Then 'time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))' is used to update the current time (time when the updation happens and the function runs) to Updated_at.
+
+- Rest of the code block is performing update using the UpdateOne method of mongoDB collection.
+
+- At the last step we are also handling the error in case any error occurs.
+
+**Step 18.** Before continuing ahead, let's download the go.mongodb.org/mongo-driver package:
+
+```sh
 go get go.mongodb.org/mongo-driver
+```
 
-Step 19. Let's now work on GetUserById() function. Remember that GetUserById() is for the users to access there own information, Admins can access all the users data, users can only access theirs.
+**Step 19.** Let's now work on GetUserById() function. Remember that GetUserById() is for the users to access there own information, Admins can access all the users data, users can only access theirs.
 
+```go
 func GetUserById() gin.HandlerFunc{
 	return func(c *gin.Context){
 		userId := c.Param("user_id") // we are taking the user_id given by the user in json
@@ -583,14 +655,19 @@ func GetUserById() gin.HandlerFunc{
 		c.JSON(http.StatusOK, user)
 	}
 }
+```
 
-Taking the user_id from the request and storing it in userId variable.
-creating a variable called user of type User.
-then simply searching the user in our database with the help of user_id, if the user_id matches, we will store that persons information in user variable.
-If everything goes fine, StatusOk
-we are also handling the errors at every step.
-Step 20.  Let's now work on GetUsers() function. Remember that only the admin can access the GetUsers() function because it would include the data of all the users. Create a GetUsers() function in the same file as GetUserById(), Login() and SignUp() function:
+- Taking the user_id from the request and storing it in userId variable.
 
+- creating a variable called user of type User. then simply searching the user in our database with the help of user_id, if the user_id matches, we will store that persons information in user variable.
+
+- If everything goes fine, StatusOk
+
+- we are also handling the errors at every step.
+
+**Step 20.**  Let's now work on GetUsers() function. Remember that only the admin can access the GetUsers() function because it would include the data of all the users. Create a GetUsers() function in the same file as GetUserById(), Login() and SignUp() function:
+
+```go
 func GetUsers() gin.HandlerFunc{
 	return func(c *gin.Context){
 		if err := helper.CheckUserType(c, "ADMIN"); err != nil{
@@ -643,18 +720,29 @@ func GetUsers() gin.HandlerFunc{
 		c.JSON(http.StatusOK, allUsers[0])
 	}
 }
+```
 
-Firstly, we will check if the request is coming from the admin or not, we do that by the help of CheckUserType() we created in previous steps.
-Then we are setting how many records you want per page.
-We can do that by taking the recodePerPage from the request and converting it to int, this is done by srtconv.
- If any error occurs in setting recordPerPage or recordPerPage is less than 1, by default we will have 9 records per page
-Similarly we are taking the page number in variable 'page'.
-By default we will have page number as 1 and 9 recordPerPage.
-Then we created three stages (matchStage, groupStage, projectStage). 
-Then we are setting these three stages in our Mongo pipeline using Aggregate() function
-Also we are handling errors are every step.
-Step 21. Our 'userController.go' is now ready, this is how the 'userController.go' file looks like after completion:
+- Firstly, we will check if the request is coming from the admin or not, we do that by the help of CheckUserType() we created in previous steps.
 
+- Then we are setting how many records you want per page.
+
+- We can do that by taking the recodePerPage from the request and converting it to int, this is done by srtconv.
+
+- If any error occurs in setting recordPerPage or recordPerPage is less than 1, by default we will have 9 records per page
+
+- Similarly we are taking the page number in variable 'page'.
+
+- By default we will have page number as 1 and 9 recordPerPage.
+
+- Then we created three stages (matchStage, groupStage, projectStage). 
+
+- Then we are setting these three stages in our Mongo pipeline using Aggregate() function
+
+- Also we are handling errors are every step.
+
+**Step 21.** Our 'userController.go' is now ready, this is how the 'userController.go' file looks like after completion:
+
+```go
 package controllers
 import (
 	"context"
@@ -862,9 +950,11 @@ func GetUserById() gin.HandlerFunc{
 		c.JSON(http.StatusOK, user)
 	}
 }
+```
 
-Step 22. Now we can work on the authentication part. For that we will create a authenticate middleware. Create a folder called 'middleware' and create a file inside it called 'authMiddleware.go'. Enter the following code in the file:
+**Step 22.** Now we can work on the authentication part. For that we will create a authenticate middleware. Create a folder called 'middleware' and create a file inside it called 'authMiddleware.go'. Enter the following code in the file:
 
+```go
 package middleware
 import (
 	"net/http"
@@ -894,9 +984,11 @@ func Authenticate() gin.HandlerFunc{
 		c.Next()
 	}
 }
+```
 
-Step 23. Now let's create ValidateToken() function, we will create this function in the 'tokenHelper.go':
+**Step 23.** Now let's create ValidateToken() function, we will create this function in the 'tokenHelper.go':
 
+```go
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	// this function is basically returning the token
 	token, err := jwt.ParseWithClaims(
@@ -925,33 +1017,37 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	}
 	return claims, msg
 }
+```
 
-ValidateToken takes signedToken and returns SignedDetails of that along with an error message. "" if there is no error.
-ParseWithClaims() function is being used to get us the token and store it in a variable called token.
-Then we are checking if the token is correct or not using the Claims method on token. And we are storing the result in claims variable.
-Then we are checking if the token has expired using ExpiresAt() function, if current time is greater than the ExpiresAt time, it would have expired.
-And then simply return the claims variable as well as the message.
-Step 24.  We are mostly done now, let's do 'go mod tidy', this command checks in your go.mod file, it deletes all the packages/dependencies that we installed but are not using and downloads any dependencies that we are using but haven't downloaded yet.
+- ValidateToken takes signedToken and returns SignedDetails of that along with an error message. "" if there is no error.
 
+- ParseWithClaims() function is being used to get us the token and store it in a variable called token.
+
+- Then we are checking if the token is correct or not using the Claims method on token. And we are storing the result in claims variable.
+
+- Then we are checking if the token has expired using ExpiresAt() function, if current time is greater than the ExpiresAt time, it would have expired.
+
+- And then simply return the claims variable as well as the message.
+
+**Step 24.** We are mostly done now, let's do 'go mod tidy', this command checks in your go.mod file, it deletes all the packages/dependencies that we installed but are not using and downloads any dependencies that we are using but haven't downloaded yet.
+
+```sh
 go mod tidy
+```
 
+![Output](/blog/jwt/three.png)
 
+## Output
 
-
-Screenshot-2023-11-16-091632
-
-
-Output
 With that our JWT authentication project is ready, to finally run the application enter the following command in the terminal:
 
+```sh
 go run main.go
+```
 
 You will get a similar output:
 
-
-
-
-Screenshot-2023-11-16-093330
+![Output](/blog/jwt/two.png)
 
 This will get the server up and running, and you can use curl or Postman API for sending request and receiving response. Or you can simply integrate this API with an frontend framework. And with that, our authentication API is ready, pat yourself on the back! 
 
