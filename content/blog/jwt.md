@@ -1035,7 +1035,7 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 go mod tidy
 ```
 
-![Output](/blog/jwt/three.png)
+![Output](/blog/jwt/two.png)
 
 ## Output
 
@@ -1047,7 +1047,7 @@ go run main.go
 
 You will get a similar output:
 
-![Output](/blog/jwt/two.png)
+![Output](/blog/jwt/three.png)
 
 This will get the server up and running, and you can use curl or Postman API for sending request and receiving response. Or you can simply integrate this API with an frontend framework. And with that, our authentication API is ready, pat yourself on the back! 
 
