@@ -11,26 +11,74 @@ cover:
 
 Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let's start with the basics.
 
-Kubernetes  Namespaces
+## Kubernetes  Namespaces
+
 Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In simpler words, Namespaces are used to organize resources. You can have multiple Namespaces in a Cluster And these Namespaces are kind of virtual Clusters of their own. Within a Kubernetes Namespace, resources must have unique names, but across different Namespaces, you can have resources with the same name.
 
-Why do we need Namespaces
+## Why do we need Namespaces
 Now Let's first discuss what is the need for Namespaces. when should you create them? And how you should use it? 
 
-1. Structuring Resources in Groups
+1. **Structuring Resources in Groups**
+
 The biggest use case of creating your Namespaces is this that instead of cluttering the Default Namespace with various components, Namespaces allow grouping resources logically. For Example, you can have a database Namespace where you deploy your database and all its required resources and you can have a Monitoring Namespace where you deploy monitoring related stuff.
 
-2. Preventing Conflicts between Multiple Teams
+2. **Preventing Conflicts between Multiple Teams**
 When multiple teams share a cluster, Namespaces prevent conflicts by isolating team deployments. This ensures that each team can work independently without interfering with others. For example, one team deploys an application which is called "my-app-deployment" and that deployment has its certain configuration. Now if another team had a Deployment that accidentally had the same name but a different configuration and they created that Deployment or they applied it, they would overwrite the first team's Deployment. But with different namespaces assigned to different teams, they can have same Deployment name without any conflicts.
 
-3. Resource Sharing
+3. **Resource Sharing**
+
 Lets say you have one Cluster and you want to host both Staging and Development environment in the same Cluster. and the reason for that is if you're using Nginx Controller or Elastic Stack for logging, you can deploy it in one Cluster and use it for both environments. In that way you don't have to deploy these common resources twice in two different clusters. So now the staging can use both resources as well as the development environment.
 
-4. Blue/Green Deployment
+4. **Blue/Green Deployment**
+
 Namespaces facilitate Blue/Green Deployment by allowing different versions of an application to coexist in the same cluster, utilizing shared resources efficiently. Which means that in the same cluster you can have two different versions of Production - The one that is in production now and another one that is going to be the next production version.
 
-5. Access Control and Resource Limitation
+5. **Access Control and Resource Limitation**
+
 Another reason for using Namespaces is to restrict access and resource consumption in multi-team environments. With each team having its Namespace, access can be limited to only their Namespace, preventing accidental interference with other teams' work. This ensures a secure and isolated environment for each team. Additionally, resource quotas per Namespace prevent one team from consuming excessive resources, ensuring fair resource allocation across the cluster.
+
+## Default Namespaces
+
+Default Namespaces are the four Namespaces that are present by default in any Kubernetes Cluster. To see these in your Namespaces you can simply enter this command:
+
+```sh
+kubectl get namespaces
+```
+
+And you will see that we have 4 default namespaces:
+
+
+Screenshot-2023-12-03-173805
+
+Before learning about the 4 default Namespaces, let's first briefly discuss kubernetes dashboard namespace, which is a Namespace that comes built-in with Minikube. 
+
+kubernetes dashboard namespace:
+"kubernetes dashboard namespace" is shipped automatically in Minikube. So it is specific to Minikube installation. We will not have this namespace in a standard Cluster.
+
+1. kube-system
+kube-system is the namespace that includes objects created by the Kubernetes system. The components that are deployed in this Namespace are the system processes - they are from Master managing processes or Kubectl etc. kube-system Namespace is not meant for our (developer's) use. so we do not have to create anything or modify anything in this namespace.
+
+2. kube-public
+kube-public contains the publicly accessible data. It has a config map that contains the Cluster information which is accessible even without authentication.
+
+you can simply type:
+
+```sh
+kubectl cluster-info
+```
+
+You will get the data stored in kube-public namespace.
+
+
+
+
+Screenshot-2023-12-03-191002
+
+3. kube-node-lease
+kube-node-lease Namespace is a new addition to Kubernetes. The purpose of this namespace is that it holds information about the heartbeats of Nodes. So each Node basically gets its own lease object in the Namespace. This object contains the information about that nodes availability.
+
+4. default
+default Namespace is the Namespace that we use in order to create the resources when we create a Namespace in the beginning.
 
 How to Change Namespace in Kubernetes - Tutorial
 Step 1: Starting a Kubernetes cluster
