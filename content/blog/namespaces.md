@@ -3,7 +3,7 @@ title: "Beginners guide to Kubernetes namespaces"
 description: ""
 dateString: August 2024
 draft: false
-tags: ["Kubernetes", "KubeEdge", "Golang", "E2E Testing", "Ginkgo", "Gomega", "Testify", "Behavior Driven Development (BDD)", "Test Driven Development (TDD)"]
+tags: ["Kubernetes", "Namespaces", "DevOps", "K8s basics"]
 weight: 100
 cover:
     image: "experience/lfx.webp"
@@ -16,6 +16,7 @@ Namespaces are Kubernetes Objects used to divide a Cluster into smaller organize
 Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In simpler words, Namespaces are used to organize resources. You can have multiple Namespaces in a Cluster And these Namespaces are kind of virtual Clusters of their own. Within a Kubernetes Namespace, resources must have unique names, but across different Namespaces, you can have resources with the same name.
 
 ## Why do we need Namespaces
+
 Now Let's first discuss what is the need for Namespaces. when should you create them? And how you should use it? 
 
 1. **Structuring Resources in Groups**
