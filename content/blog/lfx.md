@@ -4,7 +4,7 @@ description: ""
 dateString: August 2024
 draft: false
 tags: ["Kubernetes", "KubeEdge", "Golang", "E2E Testing", "Ginkgo", "Gomega", "Testify", "Behavior Driven Development (BDD)", "Test Driven Development (TDD)"]
-weight: 98
+weight: 10
 cover:
     image: "experience/lfx.webp"
 ---

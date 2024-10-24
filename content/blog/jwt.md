@@ -4,7 +4,7 @@ description: "When creating a website's backend, one very important term we get 
 dateString: October 2024
 draft: false
 tags: ["Golang", "Backend", "Gin", "JWT authentication"]
-weight: 99
+weight: 11
 cover:
     image: "blog/jwt-logo.png"
 ---
