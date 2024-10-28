@@ -1,6 +1,6 @@
 ---
 title: "Building a Golang backend system with JWT authentication"
-description: "When creating a website's backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely..."
+description: "In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release..."
 dateString: October 2024
 draft: false
 tags: ["Golang", "Backend", "Gin", "JWT authentication"]
@@ -11,23 +11,28 @@ cover:
 
 StatefulSets are API objects in Kubernetes that are used to manage stateful applications. There are two types of applications in Kubernetes, Stateful applications and stateless applications. There are two ways to deploy these applications:
 
-Deployment (for stateless applications)
-StatefulSets (for stateful applications)
-What are Stateful Applications?
+- Deployment (for stateless applications)
+- StatefulSets (for stateful applications)
+
+## What are Stateful Applications?
+
 Those applications that maintain some form of persistent state or data are called stateful applications. The key characteristic that differentiates them from stateless applications is that these applications don't rely on storing data locally and they don't treat each request as independent. They manage data between interactions. Sometimes stateless applications connect to the stateful application to forward the requests to a database.
 
-What are Stateless Applications?
+## What are Stateless Applications?
+
 Those applications that do not maintain any form of persistent state or data locally are called stateless applications. In stateless applications, each request or interaction is treated independently. These applications are designed to be highly scalable, easy to manage, and fault-tolerant because, unlike Stateful applications, they don't have to track past interactions or requests.
 
 Stateless applications are deployed using deployment component. Deployment is an abstraction of pods and allows you to replicate the application, meaning it allows you to run to 1, 5, 10 or n identical pods of the same stateless application.
 
-What are StatefulSets?
+## What are StatefulSets?
+
 In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release.
 
 StatefulSets will represent the set of pods with different (unique), persistent identities, and elastic hostnames (stable). It makes you assure about the ordering of scaling and deployments. Before understanding StatefulSets, you must understand Kubernetes Deployment.
 
 Here is an example of a StatefulSet named web:
 
+```yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -60,10 +65,14 @@ spec:
       resources:
         requests:
           storage: 1Gi
-When to Use StatefulSets
+```
+
+## When to Use StatefulSets
+
 StatefulSets in Kubernetes are ideal for deploying stateful applications that require stable, unique network identifiers, persistent storage, and ordered, graceful deployment and scaling. They are suitable for applications like databases, key-value stores, and messaging queues that require consistent identity and storage.
 
-Example of Stateful and Stateless Applications
+### Example of Stateful and Stateless Applications
+
 Consider a node.js application connected to a MongoDB database. When a  request comes to the node.js application it handles the request independently and does not depend on previous data to do that. It handles the request based on the payload in the request itself. This node.js application is an example of Stateless application. Now the request will either update some data in the database or query some data from the database. When node.js forwards that request to MongoDB, MongoDB updates the data based on the previous state of the data or query the data from its storage. For each request it needs to handle data and it  depends upon the most up-to-date data or state to be available while node.js is just a pass-through for data updates or queries and it just processes code. Hence the node.js application should be a stateless application while the MongoDB application must be a stateful application.
 
 Sometimes stateless applications connect to the stateful application to forward the requests to a database. This is a good example of a stateless application forwarding request to a stateful application.
@@ -77,6 +86,7 @@ Step 1. Create a StatefulSet file. you can do that by entering the following com
 touch example-statefulset.yaml
 Step 2. Open this file in a code-editor and write the following code into it:
 
+```yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -107,13 +117,19 @@ spec:
       - name: www
         persistentVolumeClaim:
           claimName: myclaim
+```
+
 Step 3. Now we have to create a service file and a PersistentVolumeClaim file.
 
+```sh
 touch example-service.yaml
 touch example-persistentVolumeChain.yaml
+```
+
 Create a Service for the StatefulSet Application
 Step 4. Enter the following code into the service file:
 
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -142,15 +158,17 @@ spec:
   resources:
     requests:
       storage: 8Gi # This means we are requesting for 8 GB of storage
+```
+
 Now lets apply these changes.
 
 Step 6. Enter the following command in your terminal to create the gfg-example-statefulset:
 
- kubectl create -f example-statefulset.yaml
+```sh
+kubectl create -f example-statefulset.yaml
+```
+
 This will create our gfg-example-statefulset, you will get a similar result:
-
-
-
 
 Kubectl- apply 
 
