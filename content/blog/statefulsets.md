@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Statefulsets"
-description: "In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release..."
+description: "In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release, let see K8s Statefulsets in this article..."
 dateString: October 2024
 draft: false
 tags: ["Kubernetes", "Statefulsets", "K8s", "DevOps"]
@@ -77,13 +77,18 @@ Consider a node.js application connected to a MongoDB database. When a  request 
 
 Sometimes stateless applications connect to the stateful application to forward the requests to a database. This is a good example of a stateless application forwarding request to a stateful application.
 
-How to Create a StatefulSet in Kubernetes
+## How to Create a StatefulSet in Kubernetes
+
 Here is a step by step tutorial on how to use StatefulSets and some basic operations on StatefulSets.
 
-Create a Nginx StatefulSet Application
+### Create a Nginx StatefulSet Application
+
 **Step 1.** Create a StatefulSet file. you can do that by entering the following command:
 
+```sh
 touch example-statefulset.yaml
+```
+
 **Step 2.** Open this file in a code-editor and write the following code into it:
 
 ```yaml
@@ -126,7 +131,7 @@ touch example-service.yaml
 touch example-persistentVolumeChain.yaml
 ```
 
-Create a Service for the StatefulSet Application
+## Create a Service for the StatefulSet Application
 
 **Step 4.** Enter the following code into the service file:
 
@@ -146,9 +151,13 @@ spec:
   clusterIP: None
   selector:
     app: nginx
-Create a PersistentVolumeClaim for Application
-Step 5. Enter the following code into the PersistentVolumeClaim file:
+```
 
+## Create a PersistentVolumeClaim for Application
+
+**Step 5.** Enter the following code into the PersistentVolumeClaim file:
+
+```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -209,7 +218,7 @@ kubectl get services
 
 This will give you similar output:
 
-Kubectl get services
+![Output SS](/blog/StatefulSets/six.png)
 
 ## Some Operations On StatefulSets
 
