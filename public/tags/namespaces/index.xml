@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Namespaces on Shubham Singh</title>
+    <link>http://localhost:1313/tags/namespaces/</link>
+    <description>Recent content in Namespaces on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://localhost:1313/tags/namespaces/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Beginners guide to Kubernetes namespaces</title>
+      <link>http://localhost:1313/blog/namespaces/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/namespaces/</guid>
+      <description>&lt;p&gt;Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&amp;rsquo;s start with the basics.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

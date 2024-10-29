@@ -12,7 +12,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://localhost:1313/blog/jwt/</guid>
-      <description>API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...</description>
+      <description>When creating a website&amp;#39;s backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely...</description>
     </item>
     
   </channel>

@@ -16,6 +16,15 @@
     </item>
     
     <item>
+      <title>My journey from a CNCF contributor to LFX mentee</title>
+      <link>http://localhost:1313/blog/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/lfx/</guid>
+      <description>&lt;p&gt;Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>GeeksforGeeks Technical Writer</title>
       <link>http://localhost:1313/experience/gfg/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -25,12 +34,12 @@
     </item>
     
     <item>
-      <title>My journey from a CNCF contributor to LFX mentee</title>
-      <link>http://localhost:1313/blog/lfx/</link>
+      <title>Beginners guide to Kubernetes namespaces</title>
+      <link>http://localhost:1313/blog/namespaces/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/lfx/</guid>
-      <description>&lt;p&gt;Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.&lt;/p&gt;</description>
+      <guid>http://localhost:1313/blog/namespaces/</guid>
+      <description>&lt;p&gt;Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&amp;rsquo;s start with the basics.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -42,6 +51,15 @@
       <description>&lt;p&gt;Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.&lt;/p&gt;
 &lt;h2 id=&#34;admission-controllers&#34;&gt;Admission Controllers&lt;/h2&gt;
 &lt;p&gt;Let&amp;rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Statefulsets</title>
+      <link>http://localhost:1313/blog/statefulsets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/statefulsets/</guid>
+      <description>In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release...</description>
     </item>
     
     <item>

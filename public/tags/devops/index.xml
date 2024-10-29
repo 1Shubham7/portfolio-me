@@ -26,6 +26,24 @@
     </item>
     
     <item>
+      <title>Beginners guide to Kubernetes namespaces</title>
+      <link>http://localhost:1313/blog/namespaces/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/namespaces/</guid>
+      <description>&lt;p&gt;Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&amp;rsquo;s start with the basics.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Statefulsets</title>
+      <link>http://localhost:1313/blog/statefulsets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/statefulsets/</guid>
+      <description>In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release...</description>
+    </item>
+    
+    <item>
       <title>Databases - the easy way</title>
       <link>http://localhost:1313/blog/database/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -36,10 +54,10 @@
     
     <item>
       <title>Datatypes in Python</title>
-      <link>http://localhost:1313/blog/datainpython/</link>
+      <link>http://localhost:1313/blog/python_datatypes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/datainpython/</guid>
+      <guid>http://localhost:1313/blog/python_datatypes/</guid>
       <description>Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence...</description>
     </item>
     

@@ -4,6 +4,10 @@
   <url>
     <loc>http://localhost:1313/experience/lfx/</loc>
   </url><url>
+    <loc>http://localhost:1313/blog/lfx/</loc>
+  </url><url>
+    <loc>http://localhost:1313/blog/jwt/</loc>
+  </url><url>
     <loc>http://localhost:1313/experience/gfg/</loc>
   </url><url>
     <loc>http://localhost:1313/experience/cncf-oras/</loc>
@@ -19,33 +23,25 @@
     <loc>http://localhost:1313/experience/hashnode/</loc>
     <lastmod>2023-08-16T11:14:37+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/blog/lfx/</loc>
+    <loc>http://localhost:1313/blog/namespaces/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/kyverno-intro/</loc>
+  </url><url>
+    <loc>http://localhost:1313/blog/statefulsets/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/testing/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/gsoc/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/storyblokambassador/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/jwt/</loc>
-  </url><url>
     <loc>http://localhost:1313/blog/database/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/datainpython/</loc>
+    <loc>http://localhost:1313/blog/python_datatypes/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/dbms/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/sass/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/api/</loc>
-  </url><url>
     <loc>http://localhost:1313/blog/artifacts/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/hashnode/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/storybok/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/k8s-depl-stratigies/</loc>
   </url><url>
@@ -62,6 +58,8 @@
     <loc>http://localhost:1313/blog/vagrant/</loc>
   </url><url>
     <loc>http://localhost:1313/blog/yaml/</loc>
+  </url><url>
+    <loc>http://localhost:1313/blog/api/</loc>
   </url><url>
     <loc>http://localhost:1313/projects/code-buddy/</loc>
   </url><url>
@@ -103,15 +101,11 @@
   </url><url>
     <loc>http://localhost:1313/tags/behavior-driven-development-bdd/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/blogs/</loc>
-  </url><url>
     <loc>http://localhost:1313/blog/</loc>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/ci/cd/</loc>
-  </url><url>
-    <loc>http://localhost:1313/tags/cms/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/cncf/</loc>
   </url><url>
@@ -139,8 +133,6 @@
   </url><url>
     <loc>http://localhost:1313/tags/gsoc/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/hashnode/</loc>
-  </url><url>
     <loc>http://localhost:1313/tags/html/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/hugo/</loc>
@@ -148,6 +140,10 @@
     <loc>http://localhost:1313/tags/json/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/jwt-authentication/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/k8s/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/k8s-basics/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/kubeedge/</loc>
   </url><url>
@@ -159,6 +155,8 @@
   </url><url>
     <loc>http://localhost:1313/tags/markdown/</loc>
   </url><url>
+    <loc>http://localhost:1313/tags/namespaces/</loc>
+  </url><url>
     <loc>http://localhost:1313/tags/networking/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/nodejs/</loc>
@@ -166,8 +164,6 @@
     <loc>http://localhost:1313/tags/npm/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/open-source-programs/</loc>
-  </url><url>
-    <loc>http://localhost:1313/tags/open-source/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/osi-model/</loc>
   </url><url>
@@ -183,9 +179,7 @@
   </url><url>
     <loc>http://localhost:1313/search/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/storyblok/</loc>
-  </url><url>
-    <loc>http://localhost:1313/tags/storyblok-ambassadorship/</loc>
+    <loc>http://localhost:1313/tags/statefulsets/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/technical-writing/</loc>
   </url><url>

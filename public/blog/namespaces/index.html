@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Beginners guide to Kubernetes namespaces | Shubham Singh</title>
+<meta name="keywords" content="Kubernetes, Namespaces, DevOps, K8s basics">
+<meta name="description" content="Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&rsquo;s start with the basics.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/blog/namespaces/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/namespaces/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Beginners guide to Kubernetes namespaces" />
+<meta property="og:description" content="Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&rsquo;s start with the basics." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blog/namespaces/" />
+<meta property="og:image" content="http://localhost:1313/experience/lfx.webp" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/experience/lfx.webp" />
+<meta name="twitter:title" content="Beginners guide to Kubernetes namespaces"/>
+<meta name="twitter:description" content="Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&rsquo;s start with the basics."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blogs",
+      "item": "http://localhost:1313/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Beginners guide to Kubernetes namespaces",
+      "item": "http://localhost:1313/blog/namespaces/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Beginners guide to Kubernetes namespaces",
+  "name": "Beginners guide to Kubernetes namespaces",
+  "description": "Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let\u0026rsquo;s start with the basics.\n",
+  "keywords": [
+    "Kubernetes", "Namespaces", "DevOps", "K8s basics"
+  ],
+  "articleBody": "Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let’s start with the basics.\nKubernetes Namespaces Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In simpler words, Namespaces are used to organize resources. You can have multiple Namespaces in a Cluster And these Namespaces are kind of virtual Clusters of their own. Within a Kubernetes Namespace, resources must have unique names, but across different Namespaces, you can have resources with the same name.\nWhy do we need Namespaces Now Let’s first discuss what is the need for Namespaces. when should you create them? And how you should use it?\nStructuring Resources in Groups The biggest use case of creating your Namespaces is this that instead of cluttering the Default Namespace with various components, Namespaces allow grouping resources logically. For Example, you can have a database Namespace where you deploy your database and all its required resources and you can have a Monitoring Namespace where you deploy monitoring related stuff.\nPreventing Conflicts between Multiple Teams When multiple teams share a cluster, Namespaces prevent conflicts by isolating team deployments. This ensures that each team can work independently without interfering with others. For example, one team deploys an application which is called “my-app-deployment” and that deployment has its certain configuration. Now if another team had a Deployment that accidentally had the same name but a different configuration and they created that Deployment or they applied it, they would overwrite the first team’s Deployment. But with different namespaces assigned to different teams, they can have same Deployment name without any conflicts.\nResource Sharing\nLets say you have one Cluster and you want to host both Staging and Development environment in the same Cluster. and the reason for that is if you’re using Nginx Controller or Elastic Stack for logging, you can deploy it in one Cluster and use it for both environments. In that way you don’t have to deploy these common resources twice in two different clusters. So now the staging can use both resources as well as the development environment.\nBlue/Green Deployment Namespaces facilitate Blue/Green Deployment by allowing different versions of an application to coexist in the same cluster, utilizing shared resources efficiently. Which means that in the same cluster you can have two different versions of Production - The one that is in production now and another one that is going to be the next production version.\nAccess Control and Resource Limitation Another reason for using Namespaces is to restrict access and resource consumption in multi-team environments. With each team having its Namespace, access can be limited to only their Namespace, preventing accidental interference with other teams’ work. This ensures a secure and isolated environment for each team. Additionally, resource quotas per Namespace prevent one team from consuming excessive resources, ensuring fair resource allocation across the cluster.\nDefault Namespaces Default Namespaces are the four Namespaces that are present by default in any Kubernetes Cluster. To see these in your Namespaces you can simply enter this command:\nkubectl get namespaces And you will see that we have 4 default namespaces:\nScreenshot-2023-12-03-173805\nBefore learning about the 4 default Namespaces, let’s first briefly discuss kubernetes dashboard namespace, which is a Namespace that comes built-in with Minikube.\nkubernetes dashboard namespace: “kubernetes dashboard namespace” is shipped automatically in Minikube. So it is specific to Minikube installation. We will not have this namespace in a standard Cluster.\nkube-system kube-system is the namespace that includes objects created by the Kubernetes system. The components that are deployed in this Namespace are the system processes - they are from Master managing processes or Kubectl etc. kube-system Namespace is not meant for our (developer’s) use. so we do not have to create anything or modify anything in this namespace.\nkube-public kube-public contains the publicly accessible data. It has a config map that contains the Cluster information which is accessible even without authentication.\nyou can simply type:\nkubectl cluster-info You will get the data stored in kube-public namespace.\nScreenshot-2023-12-03-191002\nkube-node-lease kube-node-lease Namespace is a new addition to Kubernetes. The purpose of this namespace is that it holds information about the heartbeats of Nodes. So each Node basically gets its own lease object in the Namespace. This object contains the information about that nodes availability.\ndefault default Namespace is the Namespace that we use in order to create the resources when we create a Namespace in the beginning.\nHow to Change Namespace in Kubernetes - Tutorial Step 1: Starting a Kubernetes cluster You can skip this step if you already have a Kubernetes cluster running on your machine. But in case you don’t have a cluster running, enter the following command to create Kubernetes locally using Minikube:\nminikube start Screenshot-2024-03-27-085106\nStep 2. Creating Namespaces\nLet us create a Namespace so that we can later switch between the default and new namespace, before that let us check the list of namespaces we have currently in our cluster by entering the following command:\nkubectl get ns and you will get the same results:\nScreenshot-2024-03-27-013427\n“default” is the default namespace by Kubernetes and rest of the namespaces are created by Minikube. To create a namespace called namespace-one, enter the following command:\nkubectl create namespace namespace-one Step 3. Switching between namespaces\nNow that we have a new namespace created, let us learn how to switch between them. By default the currently active namespace is “default” namespace. You can check the currently active namespace by the following command:\nkubectl config view --minify | grep namespace You can change or switch Namespaces in Kubernetes using the following command:\nkubectl config set-context --current --namespace=namespace-one And now the namespace-one will be the currently active namespace. And is we check the currently active namespace:\nkubectl config view --minify | grep namespace You will see namespace-one as the currently active namespace:\nScreenshot-2024-03-27-083757\nThis is how you can change namespace or switch between namespace in a Kubernetes Cluster. Pat yourself on the back because we have just learned how to switch between Namespaces in a Kubernetes cluster.\nOperations on Kubernetes Namespaces To Create a Kubernetes Namespace enter the following command: kubectl create namespace To List Namespaces in the Cluster enter the following command: kubectl get namespaces To Delete a Namespace enter the following command: kubectl delete namespace To View Namespace Detail enter the following command: kubectl describe namespace To Set Current Namespace enter the following command: kubectl config set-context --current --namespace= To Edit a Namespace enter the following command: kubectl edit namespace To List Pods in a Namespace enter the following command: kubectl get pods --namespace= To List Services in a Namespace enter the following command: kubectl get services --namespace= To Apply a Resource Configuration to a Namespace enter the following command: kubectl apply -f --namespace= To Export Namespace Configuration enter the following command: kubectl get namespace -o yaml \u003e namespace-config.yaml To Import Namespace Configuration enter the following command: kubectl apply -f namespace-config.yaml Conclusion Kubernetes Namespaces are a way to group resources in a Kubernetes Cluster. In this article, we discussed how Namespaces work, What are the default Namespaces present already in a Kubernetes Cluster. From need of Namespaces to it’s characteristics, we discussed everything. Do follow the tutorial and try creating resources in a Namespace by your own because that’s the best way to learn. Make sure to learn more about kubectx and its features. We hope that this article helped you improve your understanding about Namespaces and you learned something valuable out of it.\nKubernetes Namespaces - FAQ’s What are the out of the box Namespaces provided by Kubernetes? There are three out of the box Namespaces provided by Kubernetes:\ndefault kube-system kube-public How to change Namespace in Kubernetes? You can change or switch Namespaces in Kubernetes using the following command:\nkubectl config set-context --current --namespace=namespace-one How do I export Namespace configuration? You can export the Namespace Configuration in Kubernetes by entering the following command:\nkubectl get namespace -o yaml \u003e namespace-config.yaml What is the purpose of a namespace? Purpose of Namespaces is to group resources of a Kubernetes Cluster in order to manage them in efficient manner.\nWhat are some unique characteristics of Namespaces? Some unique characteristics of Namespaces are as following:\nYou can not access most of the resources from another namespace. Service can be shared across Namespaces Volumes and Nodes cannot be created within a Namespace ",
+  "wordCount" : "1482",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/experience/lfx.webp","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/blog/namespaces/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Beginners guide to Kubernetes namespaces
+    </h1>
+    <div class="post-meta">
+
+
+August 2024
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/experience/lfx.webp" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#kubernetes--namespaces" aria-label="Kubernetes  Namespaces">Kubernetes  Namespaces</a></li>
+                <li>
+                    <a href="#why-do-we-need-namespaces" aria-label="Why do we need Namespaces">Why do we need Namespaces</a></li>
+                <li>
+                    <a href="#default-namespaces" aria-label="Default Namespaces">Default Namespaces</a></li>
+                <li>
+                    <a href="#how-to-change-namespace-in-kubernetes---tutorial" aria-label="How to Change Namespace in Kubernetes - Tutorial">How to Change Namespace in Kubernetes - Tutorial</a></li>
+                <li>
+                    <a href="#operations-on-kubernetes-namespaces" aria-label="Operations on Kubernetes Namespaces">Operations on Kubernetes Namespaces</a><ul>
+                        <ul>
+                        
+                <li>
+                    <a href="#to-create-a-kubernetes-namespace-enter-the-following-command" aria-label="To Create a Kubernetes Namespace enter the following command:">To Create a Kubernetes Namespace enter the following command:</a></li>
+                <li>
+                    <a href="#to-list-namespaces-in-the-cluster-enter-the-following-command" aria-label="To List Namespaces in the Cluster enter the following command:">To List Namespaces in the Cluster enter the following command:</a></li>
+                <li>
+                    <a href="#to-delete-a-namespace-enter-the-following-command" aria-label="To Delete a Namespace enter the following command:">To Delete a Namespace enter the following command:</a></li>
+                <li>
+                    <a href="#to-view-namespace-detail-enter-the-following-command" aria-label="To View Namespace Detail enter the following command:">To View Namespace Detail enter the following command:</a></li>
+                <li>
+                    <a href="#to-set-current-namespace-enter-the-following-command" aria-label="To Set Current Namespace enter the following command:">To Set Current Namespace enter the following command:</a></li>
+                <li>
+                    <a href="#to-edit-a-namespace-enter-the-following-command" aria-label="To Edit a Namespace enter the following command:">To Edit a Namespace enter the following command:</a></li>
+                <li>
+                    <a href="#to-list-pods-in-a-namespace-enter-the-following-command" aria-label="To List Pods in a Namespace enter the following command:">To List Pods in a Namespace enter the following command:</a></li>
+                <li>
+                    <a href="#to-list-services-in-a-namespace-enter-the-following-command" aria-label="To List Services in a Namespace enter the following command:">To List Services in a Namespace enter the following command:</a></li>
+                <li>
+                    <a href="#to-apply-a-resource-configuration-to-a-namespace-enter-the-following-command" aria-label="To Apply a Resource Configuration to a Namespace enter the following command:">To Apply a Resource Configuration to a Namespace enter the following command:</a></li>
+                <li>
+                    <a href="#to-export-namespace-configuration-enter-the-following-command" aria-label="To Export Namespace Configuration enter the following command:">To Export Namespace Configuration enter the following command:</a></li>
+                <li>
+                    <a href="#to-import-namespace-configuration-enter-the-following-command" aria-label="To Import Namespace Configuration enter the following command:">To Import Namespace Configuration enter the following command:</a></li></ul>
+                    
+                <li>
+                    <a href="#conclusion" aria-label="Conclusion">Conclusion</a></li></ul>
+                </li>
+                <li>
+                    <a href="#kubernetes-namespaces---faqs" aria-label="Kubernetes Namespaces - FAQ&rsquo;s">Kubernetes Namespaces - FAQ&rsquo;s</a><ul>
+                        <ul>
+                        
+                <li>
+                    <a href="#what-are-the-out-of-the-box-namespaces-provided-by-kubernetes" aria-label="What are the out of the box Namespaces provided by Kubernetes?">What are the out of the box Namespaces provided by Kubernetes?</a></li>
+                <li>
+                    <a href="#how-to-change-namespace-in-kubernetes" aria-label="How to change Namespace in Kubernetes?">How to change Namespace in Kubernetes?</a></li>
+                <li>
+                    <a href="#how-do-i-export-namespace-configuration" aria-label="How do I export Namespace configuration?">How do I export Namespace configuration?</a></li>
+                <li>
+                    <a href="#what-is-the-purpose-of-a-namespace" aria-label="What is the purpose of a namespace?">What is the purpose of a namespace?</a></li>
+                <li>
+                    <a href="#what-are-some-unique-characteristics-of-namespaces" aria-label="What are some unique characteristics of Namespaces?">What are some unique characteristics of Namespaces?</a>
+                </li>
+            </ul>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&rsquo;s start with the basics.</p>
+<h2 id="kubernetes--namespaces">Kubernetes  Namespaces<a hidden class="anchor" aria-hidden="true" href="#kubernetes--namespaces">#</a></h2>
+<p>Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In simpler words, Namespaces are used to organize resources. You can have multiple Namespaces in a Cluster And these Namespaces are kind of virtual Clusters of their own. Within a Kubernetes Namespace, resources must have unique names, but across different Namespaces, you can have resources with the same name.</p>
+<h2 id="why-do-we-need-namespaces">Why do we need Namespaces<a hidden class="anchor" aria-hidden="true" href="#why-do-we-need-namespaces">#</a></h2>
+<p>Now Let&rsquo;s first discuss what is the need for Namespaces. when should you create them? And how you should use it?</p>
+<ol>
+<li><strong>Structuring Resources in Groups</strong></li>
+</ol>
+<p>The biggest use case of creating your Namespaces is this that instead of cluttering the Default Namespace with various components, Namespaces allow grouping resources logically. For Example, you can have a database Namespace where you deploy your database and all its required resources and you can have a Monitoring Namespace where you deploy monitoring related stuff.</p>
+<ol start="2">
+<li>
+<p><strong>Preventing Conflicts between Multiple Teams</strong>
+When multiple teams share a cluster, Namespaces prevent conflicts by isolating team deployments. This ensures that each team can work independently without interfering with others. For example, one team deploys an application which is called &ldquo;my-app-deployment&rdquo; and that deployment has its certain configuration. Now if another team had a Deployment that accidentally had the same name but a different configuration and they created that Deployment or they applied it, they would overwrite the first team&rsquo;s Deployment. But with different namespaces assigned to different teams, they can have same Deployment name without any conflicts.</p>
+</li>
+<li>
+<p><strong>Resource Sharing</strong></p>
+</li>
+</ol>
+<p>Lets say you have one Cluster and you want to host both Staging and Development environment in the same Cluster. and the reason for that is if you&rsquo;re using Nginx Controller or Elastic Stack for logging, you can deploy it in one Cluster and use it for both environments. In that way you don&rsquo;t have to deploy these common resources twice in two different clusters. So now the staging can use both resources as well as the development environment.</p>
+<ol start="4">
+<li><strong>Blue/Green Deployment</strong></li>
+</ol>
+<p>Namespaces facilitate Blue/Green Deployment by allowing different versions of an application to coexist in the same cluster, utilizing shared resources efficiently. Which means that in the same cluster you can have two different versions of Production - The one that is in production now and another one that is going to be the next production version.</p>
+<ol start="5">
+<li><strong>Access Control and Resource Limitation</strong></li>
+</ol>
+<p>Another reason for using Namespaces is to restrict access and resource consumption in multi-team environments. With each team having its Namespace, access can be limited to only their Namespace, preventing accidental interference with other teams&rsquo; work. This ensures a secure and isolated environment for each team. Additionally, resource quotas per Namespace prevent one team from consuming excessive resources, ensuring fair resource allocation across the cluster.</p>
+<h2 id="default-namespaces">Default Namespaces<a hidden class="anchor" aria-hidden="true" href="#default-namespaces">#</a></h2>
+<p>Default Namespaces are the four Namespaces that are present by default in any Kubernetes Cluster. To see these in your Namespaces you can simply enter this command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl get namespaces
+</span></span></code></pre></div><p>And you will see that we have 4 default namespaces:</p>
+<p>Screenshot-2023-12-03-173805</p>
+<p>Before learning about the 4 default Namespaces, let&rsquo;s first briefly discuss kubernetes dashboard namespace, which is a Namespace that comes built-in with Minikube.</p>
+<p>kubernetes dashboard namespace:
+&ldquo;kubernetes dashboard namespace&rdquo; is shipped automatically in Minikube. So it is specific to Minikube installation. We will not have this namespace in a standard Cluster.</p>
+<ol>
+<li>
+<p>kube-system
+kube-system is the namespace that includes objects created by the Kubernetes system. The components that are deployed in this Namespace are the system processes - they are from Master managing processes or Kubectl etc. kube-system Namespace is not meant for our (developer&rsquo;s) use. so we do not have to create anything or modify anything in this namespace.</p>
+</li>
+<li>
+<p>kube-public
+kube-public contains the publicly accessible data. It has a config map that contains the Cluster information which is accessible even without authentication.</p>
+</li>
+</ol>
+<p>you can simply type:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl cluster-info
+</span></span></code></pre></div><p>You will get the data stored in kube-public namespace.</p>
+<p>Screenshot-2023-12-03-191002</p>
+<ol start="3">
+<li>
+<p><strong>kube-node-lease</strong>
+kube-node-lease Namespace is a new addition to Kubernetes. The purpose of this namespace is that it holds information about the heartbeats of Nodes. So each Node basically gets its own lease object in the Namespace. This object contains the information about that nodes availability.</p>
+</li>
+<li>
+<p><strong>default</strong>
+default Namespace is the Namespace that we use in order to create the resources when we create a Namespace in the beginning.</p>
+</li>
+</ol>
+<h2 id="how-to-change-namespace-in-kubernetes---tutorial">How to Change Namespace in Kubernetes - Tutorial<a hidden class="anchor" aria-hidden="true" href="#how-to-change-namespace-in-kubernetes---tutorial">#</a></h2>
+<p><strong>Step 1:</strong> Starting a Kubernetes cluster
+You can skip this step if you already have a Kubernetes cluster running on your machine. But in case you don&rsquo;t have a cluster running, enter the following command to create Kubernetes locally using Minikube:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>minikube start
+</span></span></code></pre></div><p>Screenshot-2024-03-27-085106</p>
+<p><strong>Step 2.</strong> Creating Namespaces</p>
+<p>Let us create a Namespace so that we can later switch between the default and new namespace, before that let us check the list of namespaces we have currently in our cluster by entering the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl get ns
+</span></span></code></pre></div><p>and you will get the same results:</p>
+<p>Screenshot-2024-03-27-013427</p>
+<p>&ldquo;default&rdquo; is the default namespace by Kubernetes and rest of the namespaces are created by Minikube. To create a namespace called namespace-one, enter the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl create namespace namespace-one
+</span></span></code></pre></div><p><strong>Step 3.</strong> Switching between namespaces</p>
+<p>Now that we have a  new namespace created, let us learn how to switch between them. By default the currently active namespace is &ldquo;default&rdquo; namespace. You can check the currently active namespace by the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl config view --minify | grep namespace
+</span></span></code></pre></div><p>You can change or switch Namespaces in Kubernetes using the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl config set-context --current --namespace<span style="color:#f92672">=</span>namespace-one
+</span></span></code></pre></div><p>And now the namespace-one will be the currently active namespace. And is we check the currently active namespace:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl config view --minify | grep namespace
+</span></span></code></pre></div><p>You will see namespace-one as the currently active namespace:</p>
+<p>Screenshot-2024-03-27-083757</p>
+<p>This is how you can change namespace or switch between namespace in a Kubernetes Cluster. Pat yourself on the back because we have just learned how to switch between Namespaces in a Kubernetes cluster.</p>
+<h2 id="operations-on-kubernetes-namespaces">Operations on Kubernetes Namespaces<a hidden class="anchor" aria-hidden="true" href="#operations-on-kubernetes-namespaces">#</a></h2>
+<h4 id="to-create-a-kubernetes-namespace-enter-the-following-command">To Create a Kubernetes Namespace enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-create-a-kubernetes-namespace-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl create namespace &lt;namespace-name&gt;
+</span></span></code></pre></div><h4 id="to-list-namespaces-in-the-cluster-enter-the-following-command">To List Namespaces in the Cluster enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-list-namespaces-in-the-cluster-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl get namespaces
+</span></span></code></pre></div><h4 id="to-delete-a-namespace-enter-the-following-command">To Delete a Namespace enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-delete-a-namespace-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl delete namespace &lt;namespace-name&gt;
+</span></span></code></pre></div><h4 id="to-view-namespace-detail-enter-the-following-command">To View Namespace Detail enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-view-namespace-detail-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl describe namespace &lt;namespace-name&gt;
+</span></span></code></pre></div><h4 id="to-set-current-namespace-enter-the-following-command">To Set Current Namespace enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-set-current-namespace-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl config set-context --current --namespace<span style="color:#f92672">=</span>&lt;namespace-name&gt;
+</span></span></code></pre></div><h4 id="to-edit-a-namespace-enter-the-following-command">To Edit a Namespace enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-edit-a-namespace-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl edit namespace &lt;namespace-name&gt;
+</span></span></code></pre></div><h4 id="to-list-pods-in-a-namespace-enter-the-following-command">To List Pods in a Namespace enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-list-pods-in-a-namespace-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl get pods --namespace<span style="color:#f92672">=</span>&lt;namespace-name&gt;
+</span></span></code></pre></div><h4 id="to-list-services-in-a-namespace-enter-the-following-command">To List Services in a Namespace enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-list-services-in-a-namespace-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl get services --namespace<span style="color:#f92672">=</span>&lt;namespace-name&gt;
+</span></span></code></pre></div><h4 id="to-apply-a-resource-configuration-to-a-namespace-enter-the-following-command">To Apply a Resource Configuration to a Namespace enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-apply-a-resource-configuration-to-a-namespace-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl apply -f &lt;resource-config.yaml&gt; --namespace<span style="color:#f92672">=</span>&lt;namespace-name&gt;
+</span></span></code></pre></div><h4 id="to-export-namespace-configuration-enter-the-following-command">To Export Namespace Configuration enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-export-namespace-configuration-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl get namespace &lt;namespace-name&gt; -o yaml &gt; namespace-config.yaml
+</span></span></code></pre></div><h4 id="to-import-namespace-configuration-enter-the-following-command">To Import Namespace Configuration enter the following command:<a hidden class="anchor" aria-hidden="true" href="#to-import-namespace-configuration-enter-the-following-command">#</a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl apply -f namespace-config.yaml
+</span></span></code></pre></div><h3 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h3>
+<p>Kubernetes Namespaces are a way to group resources in a Kubernetes Cluster. In this article, we discussed how Namespaces work, What are the default Namespaces present already in a Kubernetes Cluster. From need of Namespaces to it&rsquo;s characteristics, we discussed everything. Do follow the tutorial and try creating resources in a Namespace by your own because that&rsquo;s the best way to learn. Make sure to learn more about kubectx and its features. We hope that this article helped you improve your understanding about Namespaces and you learned something valuable out of it.</p>
+<h2 id="kubernetes-namespaces---faqs">Kubernetes Namespaces - FAQ&rsquo;s<a hidden class="anchor" aria-hidden="true" href="#kubernetes-namespaces---faqs">#</a></h2>
+<h4 id="what-are-the-out-of-the-box-namespaces-provided-by-kubernetes">What are the out of the box Namespaces provided by Kubernetes?<a hidden class="anchor" aria-hidden="true" href="#what-are-the-out-of-the-box-namespaces-provided-by-kubernetes">#</a></h4>
+<p>There are three out of the box Namespaces provided by Kubernetes:</p>
+<ul>
+<li>default</li>
+<li>kube-system</li>
+<li>kube-public</li>
+</ul>
+<h4 id="how-to-change-namespace-in-kubernetes">How to change Namespace in Kubernetes?<a hidden class="anchor" aria-hidden="true" href="#how-to-change-namespace-in-kubernetes">#</a></h4>
+<p>You can change or switch Namespaces in Kubernetes using the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl config set-context --current --namespace<span style="color:#f92672">=</span>namespace-one
+</span></span></code></pre></div><h4 id="how-do-i-export-namespace-configuration">How do I export Namespace configuration?<a hidden class="anchor" aria-hidden="true" href="#how-do-i-export-namespace-configuration">#</a></h4>
+<p>You can export the Namespace Configuration in Kubernetes by entering the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kubectl get namespace &lt;namespace-name&gt; -o yaml &gt; namespace-config.yaml
+</span></span></code></pre></div><h4 id="what-is-the-purpose-of-a-namespace">What is the purpose of a namespace?<a hidden class="anchor" aria-hidden="true" href="#what-is-the-purpose-of-a-namespace">#</a></h4>
+<p>Purpose of Namespaces is to group resources of a Kubernetes Cluster in order to manage them in efficient manner.</p>
+<h4 id="what-are-some-unique-characteristics-of-namespaces">What are some unique characteristics of Namespaces?<a hidden class="anchor" aria-hidden="true" href="#what-are-some-unique-characteristics-of-namespaces">#</a></h4>
+<p>Some unique characteristics of Namespaces are as following:</p>
+<ul>
+<li>You can not access most of the resources from another namespace.</li>
+<li>Service can be shared across Namespaces</li>
+<li>Volumes and Nodes cannot be created within a Namespace</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/kubernetes/">Kubernetes</a></li>
+      <li><a href="http://localhost:1313/tags/namespaces/">Namespaces</a></li>
+      <li><a href="http://localhost:1313/tags/devops/">DevOps</a></li>
+      <li><a href="http://localhost:1313/tags/k8s-basics/">K8s Basics</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

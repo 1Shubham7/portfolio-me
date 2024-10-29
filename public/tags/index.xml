@@ -80,29 +80,11 @@
     </item>
     
     <item>
-      <title>Blogs</title>
-      <link>http://localhost:1313/tags/blogs/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/blogs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>CI/CD</title>
       <link>http://localhost:1313/tags/ci/cd/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://localhost:1313/tags/ci/cd/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CMS</title>
-      <link>http://localhost:1313/tags/cms/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/cms/</guid>
       <description></description>
     </item>
     
@@ -224,15 +206,6 @@
     </item>
     
     <item>
-      <title>Hashnode</title>
-      <link>http://localhost:1313/tags/hashnode/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/hashnode/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>HTML</title>
       <link>http://localhost:1313/tags/html/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -265,6 +238,24 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://localhost:1313/tags/jwt-authentication/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>K8s</title>
+      <link>http://localhost:1313/tags/k8s/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/tags/k8s/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>K8s Basics</title>
+      <link>http://localhost:1313/tags/k8s-basics/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/tags/k8s-basics/</guid>
       <description></description>
     </item>
     
@@ -314,6 +305,15 @@
     </item>
     
     <item>
+      <title>Namespaces</title>
+      <link>http://localhost:1313/tags/namespaces/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/tags/namespaces/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Networking</title>
       <link>http://localhost:1313/tags/networking/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -346,15 +346,6 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://localhost:1313/tags/open-source-programs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Open-Source&#34;</title>
-      <link>http://localhost:1313/tags/open-source/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/open-source/</guid>
       <description></description>
     </item>
     
@@ -413,20 +404,11 @@
     </item>
     
     <item>
-      <title>Storyblok</title>
-      <link>http://localhost:1313/tags/storyblok/</link>
+      <title>Statefulsets</title>
+      <link>http://localhost:1313/tags/statefulsets/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/storyblok/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Storyblok Ambassadorship</title>
-      <link>http://localhost:1313/tags/storyblok-ambassadorship/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/storyblok-ambassadorship/</guid>
+      <guid>http://localhost:1313/tags/statefulsets/</guid>
       <description></description>
     </item>
     
