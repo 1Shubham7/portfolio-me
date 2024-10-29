@@ -171,47 +171,53 @@ kubectl create -f example-statefulset.yaml
 
 This will create our gfg-example-statefulset, you will get a similar result:
 
-Kubectl- apply 
+![Output SS](/blog/StatefulSets/one.png)
 
 now if we search our StatefulSets in our terminal by the command
 
- kubectl get statefulsets
+```sh
+kubectl get statefulsets
+```
+
 we will find our gfg-example-statefulset in the list.
 
-
-
-
-kubectlget stateful set 
+![Output SS](/blog/StatefulSets/three.png)
 
 **Step 7.** Enter the following command in your terminal to create the gfg-example-service.
 
+```sh
 kubectl apply -f example-service.yaml
+```
+
 this will create a service with the name "gfg-example-service"
 
 **Step 8.** Let's check our pods and services, for getting the list of pods enter the following command in your terminal:
 
+```sh
 kubectl get pods
+```
+
 You will get the list of the three gfg- pods that we create though defining three replicas in the example-stateful-set.yaml file. You will get a similar output:
 
-
-
-
-Kubectl get pods 
+![Output SS](/blog/StatefulSets/two.png)
 
 for checking the list of services, enter the following command in your terminal:
 
+```sh
 kubectl get services
+```
+
 This will give you similar output:
-
-
-
 
 Kubectl get services
 
-Some Operations On StatefulSets
+## Some Operations On StatefulSets
+
 Adding a StatefulSet: To add a StatefulSet to your Kubernetes cluster, use the command kubectl create -f [StatefulSet file name], replacing [StatefulSet file name] with the name of your StatefulSet manifest file.
 
-kubectl create -f [StatefulSet file name]
+```sh
+kubectl create -f StatefulSet_file_name
+```
 
 Deleting a StatefulSet: To delete a StatefulSet in Kubernetes, you can use the kubectl delete statefulset [name] command, where [name] is the name of the StatefulSet you want to delete.
 
