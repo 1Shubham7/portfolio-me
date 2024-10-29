@@ -6,7 +6,7 @@ draft: false
 tags: ["Kubernetes", "Statefulsets", "K8s", "DevOps"]
 weight: 100
 cover:
-    image: "blog/jwt-logo.png"
+    image: "blog/statefulsets.webp"
 ---
 
 StatefulSets are API objects in Kubernetes that are used to manage stateful applications. There are two types of applications in Kubernetes, Stateful applications and stateless applications. There are two ways to deploy these applications:
@@ -213,49 +213,61 @@ Kubectl get services
 
 ## Some Operations On StatefulSets
 
-Adding a StatefulSet: To add a StatefulSet to your Kubernetes cluster, use the command kubectl create -f [StatefulSet file name], replacing [StatefulSet file name] with the name of your StatefulSet manifest file.
+***Adding a StatefulSet:*** To add a StatefulSet to your Kubernetes cluster, use the command kubectl create -f [StatefulSet file name], replacing [StatefulSet file name] with the name of your StatefulSet manifest file.
 
 ```sh
 kubectl create -f StatefulSet_file_name
 ```
 
-Deleting a StatefulSet: To delete a StatefulSet in Kubernetes, you can use the kubectl delete statefulset [name] command, where [name] is the name of the StatefulSet you want to delete.
+***Deleting a StatefulSet:*** To delete a StatefulSet in Kubernetes, you can use the kubectl delete statefulset [name] command, where [name] is the name of the StatefulSet you want to delete.
 
+```sh
 kubectl delete statefulset [name]
+```
 
-Editing a StatefulSet: The command kubectl edit statefulset [name] allows you to modify the configuration of a StatefulSet directly from the command line by opening an editor.
+***Editing a StatefulSet:*** The command kubectl edit statefulset [name] allows you to modify the configuration of a StatefulSet directly from the command line by opening an editor.
 
+```sh
 kubectl edit statefulset [name]
+```
 
-Scaling of Replicas: The kubectl scale command scales the number of replicas in a StatefulSet named [StatefulSet name] to the specified [Number of replicas].
+***Scaling of Replicas:*** The kubectl scale command scales the number of replicas in a StatefulSet named [StatefulSet name] to the specified [Number of replicas].
 
+```sh
 kubectl scale statefulset [StatefulSet name] --replicas=[Number of replicas]
+```
 
 **Step 9.** Now let's scale up our pods and check if it works! for scaling up the pods to 6 pods, enter the following command:
 
+```sh
 kubectl scale statefulset gfg-example-statefulset --replicas=6
+```
+
 This will create 3 more pods and number of pods are now 6, to get list of pods enter the following command:
 
+```sh
 kubectl get pods
+```
+
 You will get a similar output:
 
-
-
-
-Kubectl get pods 
+![Output SS](/blog/StatefulSets/four.png)
 
 **Step 10.** Now let's scale down pods to 3, for that enter the same command, just change the number of replicas back to 3:
 
+```sh
 kubectl scale statefulset gfg-example-statefulset --replicas=3
+```
+
 now if we check the list of pods by 
 
+```sh
 kubectl get pods
+```
+
 you will see only 3 pods running:
 
-
-
-
-pods 
+![Output SS](/blog/StatefulSets/five.png)
 
 In this way we can create StatefulSets, scale them up and then scale them down as well. Make sure to delete the StatefulSet and the service before closing the terminal.To know more commands of of kubectl refer to Kubectl Command Cheat Sheet.
 
@@ -267,7 +279,7 @@ Each pod has its own replica of the data storage, ensuring data isolation and in
 Synchronization mechanisms are employed to ensure that all pods have the same data state, with slave pods updating their data storage when the master pod changes data.
 Continuous synchronization is necessary to maintain data consistency among all pods in the stateful applications.
 
-Example:
+***Example:***
 Let's say we have one master and two slave pods of MySQL. Now what happens when a new pod replica joins the existing setup? because now that new pod also needs to create its own storage and take care of synchronizing it what happens is that it first clones the data from the previous pod and then it starts continuous synchronization to listen for any updates by master pod. since each pod has its own data storage (persistent volume) that is backed up by its own physical storage which includes the synchronized data and the state of the pod. Each pod has its own state which has information about whether it's a master pod or a slave pod and other individual characteristics. All of this gets stored in the pods own storage. Therefore when a pod dies and gets replaced the persistent pod. Identifiers make sure that the storage volume gets reattached to the replacement pod. In this way even if the cluster crashes, it is made sure that data is not lost.
 
 ## Conclusion
