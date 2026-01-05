@@ -1,20 +1,16 @@
 ---
-title: "LFX Mentee - CNCF KubeEdge"
-description: "The Linux Foundation Mentorship Program (LFX Mentorship) is 3 months paid internship/mentorship program where people contribute to open source projects. The program aims to foster innovation and talent in the open source community, and to help developers get job and internship opportunities after graduating. The program offers part-time and full-time mentor positions, and mentorships for projects such as CNCF, GraphQL, Hyperledger, LF Networking, Linux Kernel, OpenHPC, Open Mainframe Project, and RISC-V..."
-dateString: June 2024 - Aug 2024
+title: "SWE Intern (Linux Foundation Mentorship)"
+dateString: June 2024 – August 2024
 draft: false
-tags: ["Golang", "Kubernetes", "KubeEdge", "Tests", "Ginkgo", "Gomega", "Testify" ]
+tags: ["KubeEdge", "Golang", "Kubernetes", "Testing", "Open Source"]
 showToc: false
 weight: 10
 cover:
     image: "experience/lfx.webp"
 ---
 
-## About the internship
+## Outline
+Selected as one of 47 mentees globally from thousands of applicants for the Linux Foundation Mentorship program. Worked directly under senior engineers from Huawei and KubeSphere, who are core maintainers of the KubeEdge project. Collaborated closely with maintainers through weekly discussions, providing input on testing strategy and future test development for the project. At the end of the mentorship, was awarded organization membership by KubeEdge in recognition of contributions.
 
-**The Linux Foundation Mentorship Program (LFX Mentorship)** is 3 months paid internship/mentorship program where people contribute to open source projects. The program aims to foster innovation and talent in the open source community, and to help developers get job and internship opportunities after graduating. The program offers part-time and full-time mentor positions, and mentorships for projects such as CNCF, GraphQL, Hyperledger, LF Networking, Linux Kernel, OpenHPC, Open Mainframe Project, and RISC-V
-
-- I worked as an LFX mentee for the project KubeEdge under my mentors Yue Boa and Fisher Xu. In my mentorship duration I worked on improving the test coverage of the project by writing unit tests, E2E tests and integration tests. I also worked on improving the KubeEdge documentation as well as migrating some tests from standard libraries to more convenient and faster assertion librabies like Testify.
-
-Learnings: 
-
+- Increased project test coverage by 20% by writing 20k lines of tests (unit, E2E and integration tests). Developed end-to-end tests for health Probes and Device Plugins, improved integration test scenarios, solved multiple bugs like optimizing db querying etc. And migrated the project to a new assertion library.
+- Authored blogs for 7 official KubeEdge releases (v1.10–v1.17) and wrote 2 industry case studies showcasing real world use cases of KubeEdge by companies and universities. Rewrote 20% of the KubeEdge documentation, improving the user journey for local setup, developer guides, and overall usability.
