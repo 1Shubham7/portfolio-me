@@ -5,6 +5,8 @@ draft: false
 tags: ["Kubernetes", "SRE", "Go", "Observability", "Security"]
 showToc: false
 weight: 5
+cover:
+    image: "experience/obmondo.jpeg"
 ---
 
 ## Outline
