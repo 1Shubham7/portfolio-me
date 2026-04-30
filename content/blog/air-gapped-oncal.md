@@ -6,7 +6,7 @@ draft: false
 tags: ["Grafana", "Kubernetes", "DevOps", "Air-Gapped", "Helm", "OCI", "Harbor"]
 weight: 101
 cover:
-    image: "blog/grafana-airgap.png"
+    image: "/blog/grafana-graphs/grafana-cover.png"
 ---
 
 ## The Problem
