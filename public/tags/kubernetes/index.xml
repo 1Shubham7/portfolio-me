@@ -2,73 +2,110 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Kubernetes on Shubham Singh</title>
-    <link>http://localhost:1313/tags/kubernetes/</link>
+    <link>https://1shubham7.netlify.app/tags/kubernetes/</link>
     <description>Recent content in Kubernetes on Shubham Singh</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://localhost:1313/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://1shubham7.netlify.app/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>LFX Mentee - CNCF KubeEdge</title>
-      <link>http://localhost:1313/experience/lfx/</link>
+      <title>Grafana Showed My Node Was Out of Memory. It Wasn&#39;t.</title>
+      <link>https://1shubham7.netlify.app/blog/grafana-dashboards/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/experience/lfx/</guid>
-      <description>The Linux Foundation Mentorship Program (LFX Mentorship) is 3 months paid internship/mentorship program where people contribute to open source projects. The program aims to foster innovation and talent in the open source community, and to help developers get job and internship opportunities after graduating. The program offers part-time and full-time mentor positions, and mentorships for projects such as CNCF, GraphQL, Hyperledger, LF Networking, Linux Kernel, OpenHPC, Open Mainframe Project, and RISC-V...</description>
+      <guid>https://1shubham7.netlify.app/blog/grafana-dashboards/</guid>
+      <description>Two Grafana dashboards, same node, same timestamp - one shows 62 GB used, other shows 10 GB. Both are correct. Here&amp;#39;s the full story of how Linux memory actually works and which number you should actually be watching.</description>
+    </item>
+    
+    <item>
+      <title>Deploying Grafana OnCall in an Air-Gapped Kubernetes Cluster</title>
+      <link>https://1shubham7.netlify.app/blog/air-gapped-oncal/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/air-gapped-oncal/</guid>
+      <description>A step-by-step guide to running Grafana OnCall without any egress to grafana.com — using OCI artifacts, init containers, and Kubernetes secrets to deliver plugins in restricted environments.</description>
     </item>
     
     <item>
       <title>My journey from a CNCF contributor to LFX mentee</title>
-      <link>http://localhost:1313/blog/lfx/</link>
+      <link>https://1shubham7.netlify.app/blog/lfx/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/lfx/</guid>
-      <description>&lt;p&gt;Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>GeeksforGeeks Technical Writer</title>
-      <link>http://localhost:1313/experience/gfg/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/experience/gfg/</guid>
-      <description>GeeksforGeeks is a leading platform that provides computer science resources and coding challenges for programmers and technology enthusiasts, along with interview and exam preparations for upcoming aspirants. With a strong emphasis on enhancing coding skills and knowledge, it has become a trusted destination for over 12 million plus registered users worldwide. The platform offers a vast collection of tutorials, practice problems, interview tutorials, articles, and courses, covering various domains of computer science.</description>
-    </item>
-    
-    <item>
-      <title>Beginners guide to Kubernetes namespaces</title>
-      <link>http://localhost:1313/blog/namespaces/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/namespaces/</guid>
-      <description>&lt;p&gt;Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&amp;rsquo;s start with the basics.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Introduction to Kubernetes Native Policy Management with Kyverno</title>
-      <link>http://localhost:1313/blog/kyverno-intro/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/kyverno-intro/</guid>
-      <description>&lt;p&gt;Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.&lt;/p&gt;
-&lt;h2 id=&#34;admission-controllers&#34;&gt;Admission Controllers&lt;/h2&gt;
-&lt;p&gt;Let&amp;rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.&lt;/p&gt;</description>
+      <guid>https://1shubham7.netlify.app/blog/lfx/</guid>
+      <description>Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.</description>
     </item>
     
     <item>
       <title>Kubernetes Statefulsets</title>
-      <link>http://localhost:1313/blog/statefulsets/</link>
+      <link>https://1shubham7.netlify.app/blog/statefulsets/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/statefulsets/</guid>
-      <description>In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release...</description>
+      <guid>https://1shubham7.netlify.app/blog/statefulsets/</guid>
+      <description>In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release, let see K8s Statefulsets in this article...</description>
+    </item>
+    
+    <item>
+      <title>Site Reliability Engineer (Obmondo)</title>
+      <link>https://1shubham7.netlify.app/experience/obmondo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/obmondo/</guid>
+      <description>Outline Worked as an SRE, handling production systems and managing Kubernetes clusters and Linux servers across both internal and customer environments. As the youngest SRE at Obmondo, regularly took ownership of production alerts and incidents, performing root cause analysis and implementing long-term fixes. Led the rewrite of the most business-critical internal tool, improving its reliability, testing, and integration into GitOps workflows. Authored and improved a large part of the company’s ISMS, strengthening both the company’s and customers’ information security.</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Kubernetes Native Policy Management with Kyverno</title>
+      <link>https://1shubham7.netlify.app/blog/kyverno-intro/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/kyverno-intro/</guid>
+      <description>Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.
+Admission Controllers Let&amp;rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.</description>
     </item>
     
     <item>
       <title>Kubernetes Deployment Strategies</title>
-      <link>http://localhost:1313/blog/k8s-depl-stratigies/</link>
+      <link>https://1shubham7.netlify.app/blog/k8s-depl-stratigies/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/k8s-depl-stratigies/</guid>
+      <guid>https://1shubham7.netlify.app/blog/k8s-depl-stratigies/</guid>
       <description>Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...</description>
+    </item>
+    
+    <item>
+      <title>Beginners guide to Kubernetes namespaces</title>
+      <link>https://1shubham7.netlify.app/blog/namespaces/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/namespaces/</guid>
+      <description>Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&amp;rsquo;s start with the basics.</description>
+    </item>
+    
+    <item>
+      <title>SWE Intern (Linux Foundation Mentorship)</title>
+      <link>https://1shubham7.netlify.app/experience/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/lfx/</guid>
+      <description>Outline Selected as one of 47 mentees globally from thousands of applicants for the Linux Foundation Mentorship program. Worked directly under senior engineers from Huawei and KubeSphere, who are core maintainers of the KubeEdge project. Collaborated closely with maintainers through weekly discussions, providing input on testing strategy and future test development for the project. At the end of the mentorship, was awarded organization membership by KubeEdge in recognition of contributions.</description>
+    </item>
+    
+    <item>
+      <title>Technical Writer (GeeksforGeeks)</title>
+      <link>https://1shubham7.netlify.app/experience/gfg/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/gfg/</guid>
+      <description>Outline Worked as a Technical Writing at GeeksforGeeks, creating educational content focused on DevOps, Kubernetes, Docker, and web technologies. Contributed consistently to learner-facing material and simplifying complex technical concepts for students and early-career engineers. My work reached more than 180,000 learners globally.
+ Wrote more than 200 tutorials and articles as part of my work that reached more than 180,000 learners. These tutorials and articles were mainly focused on DevOps, Kubernetes, Docker, and Web design.</description>
+    </item>
+    
+    <item>
+      <title>Open-source Contributor (CNCF)</title>
+      <link>https://1shubham7.netlify.app/experience/cncf/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/cncf/</guid>
+      <description>Outline Actively contributed to multiple Cloud Native Computing Foundation (CNCF) projects for over 3 years, working across codebases, testing, and documentation. Collaborated closely with project maintainers to identify and fix critical issues, improve developer experience, and strengthen overall project quality. Contributions spanned engineering, documentation, and introducing projects to a wider audience through videos and presentations.
+ Fixed 13 critical issues in CNCF projects, including improving webhook-CLI consistency, standardizing image variable fields, creating less vulnerable production-level image, enhancing error logging and increasing test coverage; authored 13 Pull Requests that got merged.</description>
     </item>
     
   </channel>

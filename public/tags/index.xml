@@ -2,494 +2,647 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Shubham Singh</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://1shubham7.netlify.app/tags/</link>
     <description>Recent content in Tags on Shubham Singh</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="https://1shubham7.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Golang</title>
-      <link>http://localhost:1313/tags/golang/</link>
+      <link>https://1shubham7.netlify.app/tags/golang/</link>
       <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
       
-      <guid>http://localhost:1313/tags/golang/</guid>
+      <guid>https://1shubham7.netlify.app/tags/golang/</guid>
       <description></description>
     </item>
     
     <item>
       <title>JavaScript</title>
-      <link>http://localhost:1313/tags/javascript/</link>
+      <link>https://1shubham7.netlify.app/tags/javascript/</link>
       <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
       
-      <guid>http://localhost:1313/tags/javascript/</guid>
+      <guid>https://1shubham7.netlify.app/tags/javascript/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Open-Source</title>
-      <link>http://localhost:1313/tags/open-source/</link>
+      <title>Open-source</title>
+      <link>https://1shubham7.netlify.app/tags/open-source/</link>
       <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
       
-      <guid>http://localhost:1313/tags/open-source/</guid>
+      <guid>https://1shubham7.netlify.app/tags/open-source/</guid>
       <description></description>
     </item>
     
     <item>
       <title>React</title>
-      <link>http://localhost:1313/tags/react/</link>
+      <link>https://1shubham7.netlify.app/tags/react/</link>
       <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
       
-      <guid>http://localhost:1313/tags/react/</guid>
+      <guid>https://1shubham7.netlify.app/tags/react/</guid>
       <description></description>
     </item>
     
     <item>
       <title>DevOps</title>
-      <link>http://localhost:1313/tags/devops/</link>
+      <link>https://1shubham7.netlify.app/tags/devops/</link>
       <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
       
-      <guid>http://localhost:1313/tags/devops/</guid>
+      <guid>https://1shubham7.netlify.app/tags/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Air-Gapped</title>
+      <link>https://1shubham7.netlify.app/tags/air-gapped/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/air-gapped/</guid>
       <description></description>
     </item>
     
     <item>
       <title>API</title>
-      <link>http://localhost:1313/tags/api/</link>
+      <link>https://1shubham7.netlify.app/tags/api/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/api/</guid>
+      <guid>https://1shubham7.netlify.app/tags/api/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Backend</title>
-      <link>http://localhost:1313/tags/backend/</link>
+      <link>https://1shubham7.netlify.app/tags/backend/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/backend/</guid>
+      <guid>https://1shubham7.netlify.app/tags/backend/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Behavior Driven Development (BDD)</title>
-      <link>http://localhost:1313/tags/behavior-driven-development-bdd/</link>
+      <link>https://1shubham7.netlify.app/tags/behavior-driven-development-bdd/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/behavior-driven-development-bdd/</guid>
+      <guid>https://1shubham7.netlify.app/tags/behavior-driven-development-bdd/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CI/CD</title>
-      <link>http://localhost:1313/tags/ci/cd/</link>
+      <link>https://1shubham7.netlify.app/tags/ci/cd/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/ci/cd/</guid>
+      <guid>https://1shubham7.netlify.app/tags/ci/cd/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CNCF</title>
-      <link>http://localhost:1313/tags/cncf/</link>
+      <link>https://1shubham7.netlify.app/tags/cncf/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/cncf/</guid>
+      <guid>https://1shubham7.netlify.app/tags/cncf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CSS</title>
-      <link>http://localhost:1313/tags/css/</link>
+      <link>https://1shubham7.netlify.app/tags/css/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/css/</guid>
+      <guid>https://1shubham7.netlify.app/tags/css/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Datatypes</title>
-      <link>http://localhost:1313/tags/datatypes/</link>
+      <link>https://1shubham7.netlify.app/tags/datatypes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/datatypes/</guid>
+      <guid>https://1shubham7.netlify.app/tags/datatypes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Deployment</title>
-      <link>http://localhost:1313/tags/deployment/</link>
+      <link>https://1shubham7.netlify.app/tags/deployment/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/deployment/</guid>
+      <guid>https://1shubham7.netlify.app/tags/deployment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Developer Tools</title>
+      <link>https://1shubham7.netlify.app/tags/developer-tools/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/developer-tools/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Django</title>
-      <link>http://localhost:1313/tags/django/</link>
+      <link>https://1shubham7.netlify.app/tags/django/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/django/</guid>
+      <guid>https://1shubham7.netlify.app/tags/django/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://1shubham7.netlify.app/tags/docker/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>DSA</title>
-      <link>http://localhost:1313/tags/dsa/</link>
+      <link>https://1shubham7.netlify.app/tags/dsa/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/dsa/</guid>
+      <guid>https://1shubham7.netlify.app/tags/dsa/</guid>
       <description></description>
     </item>
     
     <item>
       <title>E2E Testing</title>
-      <link>http://localhost:1313/tags/e2e-testing/</link>
+      <link>https://1shubham7.netlify.app/tags/e2e-testing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/e2e-testing/</guid>
+      <guid>https://1shubham7.netlify.app/tags/e2e-testing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Frontend</title>
-      <link>http://localhost:1313/tags/frontend/</link>
+      <link>https://1shubham7.netlify.app/tags/frontend/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/frontend/</guid>
+      <guid>https://1shubham7.netlify.app/tags/frontend/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Gin</title>
-      <link>http://localhost:1313/tags/gin/</link>
+      <link>https://1shubham7.netlify.app/tags/gin/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/gin/</guid>
+      <guid>https://1shubham7.netlify.app/tags/gin/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Ginkgo</title>
-      <link>http://localhost:1313/tags/ginkgo/</link>
+      <link>https://1shubham7.netlify.app/tags/ginkgo/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/ginkgo/</guid>
+      <guid>https://1shubham7.netlify.app/tags/ginkgo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>GitHub</title>
-      <link>http://localhost:1313/tags/github/</link>
+      <link>https://1shubham7.netlify.app/tags/github/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/github/</guid>
+      <guid>https://1shubham7.netlify.app/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Go</title>
+      <link>https://1shubham7.netlify.app/tags/go/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Gomega</title>
-      <link>http://localhost:1313/tags/gomega/</link>
+      <link>https://1shubham7.netlify.app/tags/gomega/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/gomega/</guid>
+      <guid>https://1shubham7.netlify.app/tags/gomega/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Grafana</title>
+      <link>https://1shubham7.netlify.app/tags/grafana/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/grafana/</guid>
       <description></description>
     </item>
     
     <item>
       <title>GSOC</title>
-      <link>http://localhost:1313/tags/gsoc/</link>
+      <link>https://1shubham7.netlify.app/tags/gsoc/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/gsoc/</guid>
+      <guid>https://1shubham7.netlify.app/tags/gsoc/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>HTML</title>
-      <link>http://localhost:1313/tags/html/</link>
+      <title>Harbor</title>
+      <link>https://1shubham7.netlify.app/tags/harbor/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/html/</guid>
+      <guid>https://1shubham7.netlify.app/tags/harbor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Helm</title>
+      <link>https://1shubham7.netlify.app/tags/helm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/helm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hugo</title>
-      <link>http://localhost:1313/tags/hugo/</link>
+      <link>https://1shubham7.netlify.app/tags/hugo/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/hugo/</guid>
+      <guid>https://1shubham7.netlify.app/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>JSON</title>
-      <link>http://localhost:1313/tags/json/</link>
+      <link>https://1shubham7.netlify.app/tags/json/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/json/</guid>
+      <guid>https://1shubham7.netlify.app/tags/json/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>JWT Authentication</title>
-      <link>http://localhost:1313/tags/jwt-authentication/</link>
+      <title>JWT authentication</title>
+      <link>https://1shubham7.netlify.app/tags/jwt-authentication/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/jwt-authentication/</guid>
+      <guid>https://1shubham7.netlify.app/tags/jwt-authentication/</guid>
       <description></description>
     </item>
     
     <item>
       <title>K8s</title>
-      <link>http://localhost:1313/tags/k8s/</link>
+      <link>https://1shubham7.netlify.app/tags/k8s/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/k8s/</guid>
+      <guid>https://1shubham7.netlify.app/tags/k8s/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>K8s Basics</title>
-      <link>http://localhost:1313/tags/k8s-basics/</link>
+      <title>K8s basics</title>
+      <link>https://1shubham7.netlify.app/tags/k8s-basics/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/k8s-basics/</guid>
+      <guid>https://1shubham7.netlify.app/tags/k8s-basics/</guid>
       <description></description>
     </item>
     
     <item>
       <title>KubeEdge</title>
-      <link>http://localhost:1313/tags/kubeedge/</link>
+      <link>https://1shubham7.netlify.app/tags/kubeedge/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/kubeedge/</guid>
+      <guid>https://1shubham7.netlify.app/tags/kubeedge/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kubernetes</title>
-      <link>http://localhost:1313/tags/kubernetes/</link>
+      <link>https://1shubham7.netlify.app/tags/kubernetes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/kubernetes/</guid>
+      <guid>https://1shubham7.netlify.app/tags/kubernetes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kubernetes API</title>
-      <link>http://localhost:1313/tags/kubernetes-api/</link>
+      <link>https://1shubham7.netlify.app/tags/kubernetes-api/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/kubernetes-api/</guid>
+      <guid>https://1shubham7.netlify.app/tags/kubernetes-api/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kyverno</title>
-      <link>http://localhost:1313/tags/kyverno/</link>
+      <link>https://1shubham7.netlify.app/tags/kyverno/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/kyverno/</guid>
+      <guid>https://1shubham7.netlify.app/tags/kyverno/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Markdown</title>
-      <link>http://localhost:1313/tags/markdown/</link>
+      <title>Linux</title>
+      <link>https://1shubham7.netlify.app/tags/linux/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/markdown/</guid>
+      <guid>https://1shubham7.netlify.app/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>markdown</title>
+      <link>https://1shubham7.netlify.app/tags/markdown/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/markdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Namespaces</title>
-      <link>http://localhost:1313/tags/namespaces/</link>
+      <link>https://1shubham7.netlify.app/tags/namespaces/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/namespaces/</guid>
+      <guid>https://1shubham7.netlify.app/tags/namespaces/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Networking</title>
-      <link>http://localhost:1313/tags/networking/</link>
+      <link>https://1shubham7.netlify.app/tags/networking/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/networking/</guid>
+      <guid>https://1shubham7.netlify.app/tags/networking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Node Exporter</title>
+      <link>https://1shubham7.netlify.app/tags/node-exporter/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/node-exporter/</guid>
       <description></description>
     </item>
     
     <item>
       <title>NodeJS</title>
-      <link>http://localhost:1313/tags/nodejs/</link>
+      <link>https://1shubham7.netlify.app/tags/nodejs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/nodejs/</guid>
+      <guid>https://1shubham7.netlify.app/tags/nodejs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>NPM</title>
-      <link>http://localhost:1313/tags/npm/</link>
+      <link>https://1shubham7.netlify.app/tags/npm/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/npm/</guid>
+      <guid>https://1shubham7.netlify.app/tags/npm/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Open-Source Programs</title>
-      <link>http://localhost:1313/tags/open-source-programs/</link>
+      <title>Observability</title>
+      <link>https://1shubham7.netlify.app/tags/observability/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/open-source-programs/</guid>
+      <guid>https://1shubham7.netlify.app/tags/observability/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>OCI</title>
+      <link>https://1shubham7.netlify.app/tags/oci/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/oci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Open-source Programs</title>
+      <link>https://1shubham7.netlify.app/tags/open-source-programs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/open-source-programs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ORAS</title>
+      <link>https://1shubham7.netlify.app/tags/oras/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/oras/</guid>
       <description></description>
     </item>
     
     <item>
       <title>OSI Model</title>
-      <link>http://localhost:1313/tags/osi-model/</link>
+      <link>https://1shubham7.netlify.app/tags/osi-model/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/osi-model/</guid>
+      <guid>https://1shubham7.netlify.app/tags/osi-model/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Package Managers</title>
-      <link>http://localhost:1313/tags/package-managers/</link>
+      <link>https://1shubham7.netlify.app/tags/package-managers/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/package-managers/</guid>
+      <guid>https://1shubham7.netlify.app/tags/package-managers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Productivity</title>
+      <link>https://1shubham7.netlify.app/tags/productivity/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/productivity/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Programming</title>
-      <link>http://localhost:1313/tags/programming/</link>
+      <link>https://1shubham7.netlify.app/tags/programming/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/programming/</guid>
+      <guid>https://1shubham7.netlify.app/tags/programming/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>http://localhost:1313/tags/python/</link>
+      <link>https://1shubham7.netlify.app/tags/python/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/python/</guid>
+      <guid>https://1shubham7.netlify.app/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SASS</title>
-      <link>http://localhost:1313/tags/sass/</link>
+      <link>https://1shubham7.netlify.app/tags/sass/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/sass/</guid>
+      <guid>https://1shubham7.netlify.app/tags/sass/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SCSS</title>
-      <link>http://localhost:1313/tags/scss/</link>
+      <link>https://1shubham7.netlify.app/tags/scss/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/scss/</guid>
+      <guid>https://1shubham7.netlify.app/tags/scss/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>https://1shubham7.netlify.app/tags/security/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SRE</title>
+      <link>https://1shubham7.netlify.app/tags/sre/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/sre/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Statefulsets</title>
-      <link>http://localhost:1313/tags/statefulsets/</link>
+      <link>https://1shubham7.netlify.app/tags/statefulsets/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/statefulsets/</guid>
+      <guid>https://1shubham7.netlify.app/tags/statefulsets/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tailwind CSS</title>
+      <link>https://1shubham7.netlify.app/tags/tailwind-css/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/tailwind-css/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Technical Writing</title>
-      <link>http://localhost:1313/tags/technical-writing/</link>
+      <link>https://1shubham7.netlify.app/tags/technical-writing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/technical-writing/</guid>
+      <guid>https://1shubham7.netlify.app/tags/technical-writing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Terminal</title>
+      <link>https://1shubham7.netlify.app/tags/terminal/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/terminal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Terminator</title>
+      <link>https://1shubham7.netlify.app/tags/terminator/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/terminator/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Test Driven Development (TDD)</title>
-      <link>http://localhost:1313/tags/test-driven-development-tdd/</link>
+      <link>https://1shubham7.netlify.app/tags/test-driven-development-tdd/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/test-driven-development-tdd/</guid>
+      <guid>https://1shubham7.netlify.app/tags/test-driven-development-tdd/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Testify</title>
-      <link>http://localhost:1313/tags/testify/</link>
+      <link>https://1shubham7.netlify.app/tags/testify/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/testify/</guid>
+      <guid>https://1shubham7.netlify.app/tags/testify/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Testing</title>
-      <link>http://localhost:1313/tags/testing/</link>
+      <link>https://1shubham7.netlify.app/tags/testing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/testing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tests</title>
-      <link>http://localhost:1313/tags/tests/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/tags/tests/</guid>
+      <guid>https://1shubham7.netlify.app/tags/testing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Unit-Testing</title>
-      <link>http://localhost:1313/tags/unit-testing/</link>
+      <link>https://1shubham7.netlify.app/tags/unit-testing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/unit-testing/</guid>
+      <guid>https://1shubham7.netlify.app/tags/unit-testing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Vagrant</title>
-      <link>http://localhost:1313/tags/vagrant/</link>
+      <link>https://1shubham7.netlify.app/tags/vagrant/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/vagrant/</guid>
+      <guid>https://1shubham7.netlify.app/tags/vagrant/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Web Design</title>
-      <link>http://localhost:1313/tags/web-design/</link>
+      <link>https://1shubham7.netlify.app/tags/web-design/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/web-design/</guid>
+      <guid>https://1shubham7.netlify.app/tags/web-design/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web Development</title>
+      <link>https://1shubham7.netlify.app/tags/web-development/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/tags/web-development/</guid>
       <description></description>
     </item>
     
     <item>
       <title>YAML</title>
-      <link>http://localhost:1313/tags/yaml/</link>
+      <link>https://1shubham7.netlify.app/tags/yaml/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/yaml/</guid>
+      <guid>https://1shubham7.netlify.app/tags/yaml/</guid>
       <description></description>
     </item>
     

@@ -4,7 +4,7 @@ description: "Start your DevOps journey with these terms. · DevOps can be a bit
 dateString: August 2023
 draft: false
 tags: ["CNCF", "DevOps", "Open-source", "CI/CD"]
-weight: 101
+weight: 15
 cover:
     image: "blog/devops.png"
 ---

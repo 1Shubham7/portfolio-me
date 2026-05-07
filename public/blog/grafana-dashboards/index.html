@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Grafana Showed My Node Was Out of Memory. It Wasn&#39;t. | Shubham Singh</title>
+<meta name="keywords" content="Linux, Grafana, Kubernetes, DevOps, SRE, Observability, Node Exporter">
+<meta name="description" content="Two Grafana dashboards, same node, same timestamp - one shows 62 GB used, other shows 10 GB. Both are correct. Here&#39;s the full story of how Linux memory actually works and which number you should actually be watching.">
+<meta name="author" content="">
+<link rel="canonical" href="https://1shubham7.netlify.app/blog/grafana-dashboards/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://1shubham7.netlify.app/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://1shubham7.netlify.app/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://1shubham7.netlify.app/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://1shubham7.netlify.app/apple-touch-icon.png">
+<link rel="mask-icon" href="https://1shubham7.netlify.app/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Grafana Showed My Node Was Out of Memory. It Wasn&#39;t." />
+<meta property="og:description" content="Two Grafana dashboards, same node, same timestamp - one shows 62 GB used, other shows 10 GB. Both are correct. Here&#39;s the full story of how Linux memory actually works and which number you should actually be watching." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://1shubham7.netlify.app/blog/grafana-dashboards/" />
+<meta property="og:image" content="https://1shubham7.netlify.app/blog/grafana-graphs/grafana-cover.png" /><meta property="article:section" content="blog" />
+
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://1shubham7.netlify.app/blog/grafana-graphs/grafana-cover.png" />
+<meta name="twitter:title" content="Grafana Showed My Node Was Out of Memory. It Wasn&#39;t."/>
+<meta name="twitter:description" content="Two Grafana dashboards, same node, same timestamp - one shows 62 GB used, other shows 10 GB. Both are correct. Here&#39;s the full story of how Linux memory actually works and which number you should actually be watching."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Blogs",
+      "item": "https://1shubham7.netlify.app/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Grafana Showed My Node Was Out of Memory. It Wasn't.",
+      "item": "https://1shubham7.netlify.app/blog/grafana-dashboards/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Grafana Showed My Node Was Out of Memory. It Wasn't.",
+  "name": "Grafana Showed My Node Was Out of Memory. It Wasn\u0027t.",
+  "description": "Two Grafana dashboards, same node, same timestamp - one shows 62 GB used, other shows 10 GB. Both are correct. Here's the full story of how Linux memory actually works and which number you should actually be watching.",
+  "keywords": [
+    "Linux", "Grafana", "Kubernetes", "DevOps", "SRE", "Observability", "Node Exporter"
+  ],
+  "articleBody": "Two Grafana dashboards. Same node. Same timestamp. One shows 62 GB used out of 64 GB. The other shows 10 GB used. I was ready to file an incident. The node was perfectly fine.\nHere’s what was actually happening - and why most people are watching the wrong memory metric.\nThe Two Graphs   Graph 1 - Node Exporter: reads raw kernel stats, shows ~62 GB used\n    Graph 2 - Compute Resources (kube-state-metrics): shows ~10 GB used by workloads\n  The difference isn’t a bug. It isn’t a misconfiguration. It comes down to where each graph gets its data from - and what that data actually includes.\n Why Graph 1 (Node Exporter) Shows 62 GB Node Exporter takes a very short, very raw path to your screen:\n The Linux kernel maintains a file at /proc/meminfo that tracks every memory stat on the system. Node Exporter reads this file directly - no filtering, no interpretation. It exposes the raw numbers to Prometheus. Grafana computes MemTotal - MemFree and draws the graph.  That subtraction includes everything the kernel is holding - your apps, caches, buffers, kernel internals. All of it looks “used” here.\n Why Graph 2 (kube-state-metrics) Shows 10 GB This graph travels through many more layers, but each layer filters down to just real app memory:\n Your container runs a process which occupies actual RAM pages. cAdvisor, running on every node, reads each container’s RSS (Resident Set Size) - the RAM the process is literally sitting in right now - and exposes it to kubelet. kubelet reports this up to the Kubernetes API server. kube-state-metrics scrapes the API server and converts it into Prometheus metrics. Grafana queries those metrics and draws the graph.  By the time the number reaches your screen, it represents only what your workloads are actually consuming. Nothing else. That’s why it shows ~10 GB.\n So What’s Hiding in the Other 52 GB? Here’s the full breakdown of where memory was actually going on this node:\n   What Amount Reclaimable?     App workloads (RSS) ~10 GB ❌ Real usage   ZFS ARC Cache ~29 GB ✅ Yes   Linux Page Cache ~14 GB ✅ Yes   Kernel Buffers ~3 GB ✅ Yes   Kernel Slab ~5 GB ✅ Mostly    ZFS ARC Cache (~29 GB) - ZFS aggressively caches disk blocks in RAM so storage reads never hit the actual disk. It looks used, but Linux will evict it the moment a real application needs the memory.\nLinux Page Cache (~14 GB) - Every file you read - logs, configs, binaries - Linux keeps a copy in RAM so the next read is instant. Same deal: fully reclaimable.\nKernel Buffers (~3 GB) - Not file contents, but filesystem structure. Where files live on disk, their permissions, their size. The index, not the books.\nKernel Slab (~5 GB) - Internal kernel data structures: network connections, process tables, directory entry caches.\nAdd it up: 10 + 29 + 14 + 3 + 5 = ~61 GB. That’s your “62 GB used” in Node Exporter.\n Why Does Linux Do This? Linux has one philosophy: idle RAM is wasted RAM.\nEvery spare byte gets put to work caching something - files, disk blocks, metadata. And the moment a real application needs that RAM, Linux silently evicts the cache and hands it over. No drama. No OOM killer. Just quiet background optimization.\nA low MemFree on Linux is not a warning sign. It’s the kernel doing its job.\n The Numbers That Actually Matter There are three numbers worth watching. Most dashboards show you the wrong one by default.\nMemFree - RAM nobody is touching at all. Linux intentionally keeps this low. Do not watch this.\nMemAvailable - MemFree plus everything Linux is willing to evict on demand. This is your real headroom. This is the number that matters. On this node it was ~24 GB - plenty of room.\nRSS via cAdvisor - What your actual workloads are consuming. This is what Graph 2 shows you.\nThe formula for actually free memory, if you want to calculate it manually:\nActually Free = MemFree + MemCached + Buffers Or just read MemAvailable directly - the kernel already does this math for you.\n The Rule MemTotal - MemFree will always look scary on Linux. Ignore it.\nMemAvailable approaching zero - that’s when you actually wake someone up.\n",
+  "wordCount" : "713",
+  "inLanguage": "en",
+  "image":"https://1shubham7.netlify.app/blog/grafana-graphs/grafana-cover.png","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://1shubham7.netlify.app/blog/grafana-dashboards/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shubham Singh",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://1shubham7.netlify.app/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header sticky-header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://1shubham7.netlify.app" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://1shubham7.netlify.app/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://1shubham7.netlify.app/experience" title="Experience">
+                    <span>Experience</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://1shubham7.netlify.app/blog" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://1shubham7.netlify.app/search" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://1shubham7.netlify.app">Home</a>&nbsp;»&nbsp;<a href="https://1shubham7.netlify.app/blog/">Blogs</a></div>
+    <h1 class="post-title">
+      Grafana Showed My Node Was Out of Memory. It Wasn&#39;t.
+    </h1>
+    <div class="post-description">
+      Two Grafana dashboards, same node, same timestamp - one shows 62 GB used, other shows 10 GB. Both are correct. Here&#39;s the full story of how Linux memory actually works and which number you should actually be watching.
+    </div>
+    <div class="post-meta">
+
+
+April 2026
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="https://1shubham7.netlify.app/blog/grafana-graphs/grafana-cover.png" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">‎ Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#the-two-graphs" aria-label="The Two Graphs">The Two Graphs</a></li>
+                <li>
+                    <a href="#why-graph-1-node-exporter-shows-62-gb" aria-label="Why Graph 1 (Node Exporter) Shows 62 GB">Why Graph 1 (Node Exporter) Shows 62 GB</a></li>
+                <li>
+                    <a href="#why-graph-2-kube-state-metrics-shows-10-gb" aria-label="Why Graph 2 (kube-state-metrics) Shows 10 GB">Why Graph 2 (kube-state-metrics) Shows 10 GB</a></li>
+                <li>
+                    <a href="#so-whats-hiding-in-the-other-52-gb" aria-label="So What&amp;rsquo;s Hiding in the Other 52 GB?">So What&rsquo;s Hiding in the Other 52 GB?</a></li>
+                <li>
+                    <a href="#why-does-linux-do-this" aria-label="Why Does Linux Do This?">Why Does Linux Do This?</a></li>
+                <li>
+                    <a href="#the-numbers-that-actually-matter" aria-label="The Numbers That Actually Matter">The Numbers That Actually Matter</a></li>
+                <li>
+                    <a href="#the-rule" aria-label="The Rule">The Rule</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Two Grafana dashboards. Same node. Same timestamp. One shows 62 GB used out of 64 GB. The other shows 10 GB used. I was ready to file an incident. The node was perfectly fine.</p>
+<p>Here&rsquo;s what was actually happening - and why most people are watching the wrong memory metric.</p>
+<h2 id="the-two-graphs">The Two Graphs<a hidden class="anchor" aria-hidden="true" href="#the-two-graphs">#</a></h2>
+<figure>
+    <img loading="lazy" src="/blog/grafana-graphs/graph-1.png"
+         alt="Node Exporter memory dashboard showing ~62 GB used"/> <figcaption>
+            <p>Graph 1 - Node Exporter: reads raw kernel stats, shows ~62 GB used</p>
+        </figcaption>
+</figure>
+
+<figure>
+    <img loading="lazy" src="/blog/grafana-graphs/graph-2.png"
+         alt="Compute Resources dashboard showing ~10 GB used by apps"/> <figcaption>
+            <p>Graph 2 - Compute Resources (kube-state-metrics): shows ~10 GB used by workloads</p>
+        </figcaption>
+</figure>
+
+<p>The difference isn&rsquo;t a bug. It isn&rsquo;t a misconfiguration. It comes down to <strong>where each graph gets its data from</strong> - and what that data actually includes.</p>
+<hr>
+<h2 id="why-graph-1-node-exporter-shows-62-gb">Why Graph 1 (Node Exporter) Shows 62 GB<a hidden class="anchor" aria-hidden="true" href="#why-graph-1-node-exporter-shows-62-gb">#</a></h2>
+<p>Node Exporter takes a very short, very raw path to your screen:</p>
+<ol>
+<li>The Linux kernel maintains a file at <code>/proc/meminfo</code> that tracks every memory stat on the system.</li>
+<li>Node Exporter reads this file directly - no filtering, no interpretation.</li>
+<li>It exposes the raw numbers to Prometheus.</li>
+<li>Grafana computes <code>MemTotal - MemFree</code> and draws the graph.</li>
+</ol>
+<p>That subtraction includes <strong>everything</strong> the kernel is holding - your apps, caches, buffers, kernel internals. All of it looks &ldquo;used&rdquo; here.</p>
+<hr>
+<h2 id="why-graph-2-kube-state-metrics-shows-10-gb">Why Graph 2 (kube-state-metrics) Shows 10 GB<a hidden class="anchor" aria-hidden="true" href="#why-graph-2-kube-state-metrics-shows-10-gb">#</a></h2>
+<p>This graph travels through many more layers, but each layer filters down to just real app memory:</p>
+<ol>
+<li>Your container runs a process which occupies actual RAM pages.</li>
+<li>cAdvisor, running on every node, reads each container&rsquo;s <strong>RSS (Resident Set Size)</strong> - the RAM the process is literally sitting in right now - and exposes it to kubelet.</li>
+<li>kubelet reports this up to the Kubernetes API server.</li>
+<li>kube-state-metrics scrapes the API server and converts it into Prometheus metrics.</li>
+<li>Grafana queries those metrics and draws the graph.</li>
+</ol>
+<p>By the time the number reaches your screen, it represents <strong>only what your workloads are actually consuming</strong>. Nothing else. That&rsquo;s why it shows ~10 GB.</p>
+<hr>
+<h2 id="so-whats-hiding-in-the-other-52-gb">So What&rsquo;s Hiding in the Other 52 GB?<a hidden class="anchor" aria-hidden="true" href="#so-whats-hiding-in-the-other-52-gb">#</a></h2>
+<p>Here&rsquo;s the full breakdown of where memory was actually going on this node:</p>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>Amount</th>
+<th>Reclaimable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App workloads (RSS)</td>
+<td>~10 GB</td>
+<td>❌ Real usage</td>
+</tr>
+<tr>
+<td>ZFS ARC Cache</td>
+<td>~29 GB</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Linux Page Cache</td>
+<td>~14 GB</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Kernel Buffers</td>
+<td>~3 GB</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Kernel Slab</td>
+<td>~5 GB</td>
+<td>✅ Mostly</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ZFS ARC Cache (~29 GB)</strong> - ZFS aggressively caches disk blocks in RAM so storage reads never hit the actual disk. It looks used, but Linux will evict it the moment a real application needs the memory.</p>
+<p><strong>Linux Page Cache (~14 GB)</strong> - Every file you read - logs, configs, binaries - Linux keeps a copy in RAM so the next read is instant. Same deal: fully reclaimable.</p>
+<p><strong>Kernel Buffers (~3 GB)</strong> - Not file contents, but filesystem <em>structure</em>. Where files live on disk, their permissions, their size. The index, not the books.</p>
+<p><strong>Kernel Slab (~5 GB)</strong> - Internal kernel data structures: network connections, process tables, directory entry caches.</p>
+<p>Add it up: <code>10 + 29 + 14 + 3 + 5 = ~61 GB</code>. That&rsquo;s your &ldquo;62 GB used&rdquo; in Node Exporter.</p>
+<hr>
+<h2 id="why-does-linux-do-this">Why Does Linux Do This?<a hidden class="anchor" aria-hidden="true" href="#why-does-linux-do-this">#</a></h2>
+<p>Linux has one philosophy: <strong>idle RAM is wasted RAM.</strong></p>
+<p>Every spare byte gets put to work caching something - files, disk blocks, metadata. And the moment a real application needs that RAM, Linux silently evicts the cache and hands it over. No drama. No OOM killer. Just quiet background optimization.</p>
+<p>A low <code>MemFree</code> on Linux is not a warning sign. It&rsquo;s the kernel doing its job.</p>
+<hr>
+<h2 id="the-numbers-that-actually-matter">The Numbers That Actually Matter<a hidden class="anchor" aria-hidden="true" href="#the-numbers-that-actually-matter">#</a></h2>
+<p>There are three numbers worth watching. Most dashboards show you the wrong one by default.</p>
+<p><strong>MemFree</strong> - RAM nobody is touching at all. Linux intentionally keeps this low. Do not watch this.</p>
+<p><strong>MemAvailable</strong> - MemFree plus everything Linux is willing to evict on demand. This is your real headroom. This is the number that matters. On this node it was ~24 GB - plenty of room.</p>
+<p><strong>RSS via cAdvisor</strong> - What your actual workloads are consuming. This is what Graph 2 shows you.</p>
+<p>The formula for actually free memory, if you want to calculate it manually:</p>
+<pre tabindex="0"><code>Actually Free = MemFree + MemCached + Buffers
+</code></pre><p>Or just read <code>MemAvailable</code> directly - the kernel already does this math for you.</p>
+<hr>
+<h2 id="the-rule">The Rule<a hidden class="anchor" aria-hidden="true" href="#the-rule">#</a></h2>
+<p><code>MemTotal - MemFree</code> will always look scary on Linux. Ignore it.</p>
+<p><code>MemAvailable</code> approaching zero - that&rsquo;s when you actually wake someone up.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://1shubham7.netlify.app/tags/linux/">Linux</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/grafana/">Grafana</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/kubernetes/">Kubernetes</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/devops/">DevOps</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/sre/">SRE</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/observability/">Observability</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/node-exporter/">Node Exporter</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2026 <a href="https://1shubham7.netlify.app">Shubham Singh</a></span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

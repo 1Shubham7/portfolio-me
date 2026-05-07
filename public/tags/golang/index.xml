@@ -2,90 +2,82 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Golang on Shubham Singh</title>
-    <link>http://localhost:1313/tags/golang/</link>
+    <link>https://1shubham7.netlify.app/tags/golang/</link>
     <description>Recent content in Golang on Shubham Singh</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="http://localhost:1313/tags/golang/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>LFX Mentee - CNCF KubeEdge</title>
-      <link>http://localhost:1313/experience/lfx/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/experience/lfx/</guid>
-      <description>The Linux Foundation Mentorship Program (LFX Mentorship) is 3 months paid internship/mentorship program where people contribute to open source projects. The program aims to foster innovation and talent in the open source community, and to help developers get job and internship opportunities after graduating. The program offers part-time and full-time mentor positions, and mentorships for projects such as CNCF, GraphQL, Hyperledger, LF Networking, Linux Kernel, OpenHPC, Open Mainframe Project, and RISC-V...</description>
-    </item>
-    
-    <item>
-      <title>My journey from a CNCF contributor to LFX mentee</title>
-      <link>http://localhost:1313/blog/lfx/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/lfx/</guid>
-      <description>&lt;p&gt;Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.&lt;/p&gt;</description>
-    </item>
-    
+    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="https://1shubham7.netlify.app/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building a Golang backend system with JWT authentication</title>
-      <link>http://localhost:1313/blog/jwt/</link>
+      <link>https://1shubham7.netlify.app/blog/jwt/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/jwt/</guid>
+      <guid>https://1shubham7.netlify.app/blog/jwt/</guid>
       <description>When creating a website&amp;#39;s backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely...</description>
     </item>
     
     <item>
-      <title>CNCF ORAS Contributor</title>
-      <link>http://localhost:1313/experience/cncf-oras/</link>
-      <pubDate>Wed, 16 Aug 2023 11:11:19 +0530</pubDate>
+      <title>My journey from a CNCF contributor to LFX mentee</title>
+      <link>https://1shubham7.netlify.app/blog/lfx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/experience/cncf-oras/</guid>
-      <description>ORAS is the de facto tool for working with OCI Artifacts. It treats media types as a critical piece of the puzzle. Container images are never assumed to be the artifact in question. ORAS provides CLI and client libraries to distribute artifacts across OCI-compliant registries.</description>
-    </item>
-    
-    <item>
-      <title>CNCF Zero to Merge</title>
-      <link>http://localhost:1313/experience/cncf-zero-to-merge/</link>
-      <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
-      
-      <guid>http://localhost:1313/experience/cncf-zero-to-merge/</guid>
-      <description>CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.</description>
-    </item>
-    
-    <item>
-      <title>Technical Blogs on Hashnode</title>
-      <link>http://localhost:1313/experience/hashnode/</link>
-      <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
-      
-      <guid>http://localhost:1313/experience/hashnode/</guid>
-      <description>Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community.</description>
+      <guid>https://1shubham7.netlify.app/blog/lfx/</guid>
+      <description>Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.</description>
     </item>
     
     <item>
       <title>Unit testing using Golang - a beginner&#39;s guide</title>
-      <link>http://localhost:1313/blog/testing/</link>
+      <link>https://1shubham7.netlify.app/blog/testing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/testing/</guid>
+      <guid>https://1shubham7.netlify.app/blog/testing/</guid>
       <description>A beginners guide to writing unit tests in Golang · Let&amp;#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...</description>
     </item>
     
     <item>
-      <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
-      <link>http://localhost:1313/blog/open-source101/</link>
+      <title>SWE Intern (Linux Foundation Mentorship)</title>
+      <link>https://1shubham7.netlify.app/experience/lfx/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/open-source101/</guid>
-      <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
+      <guid>https://1shubham7.netlify.app/experience/lfx/</guid>
+      <description>Outline Selected as one of 47 mentees globally from thousands of applicants for the Linux Foundation Mentorship program. Worked directly under senior engineers from Huawei and KubeSphere, who are core maintainers of the KubeEdge project. Collaborated closely with maintainers through weekly discussions, providing input on testing strategy and future test development for the project. At the end of the mentorship, was awarded organization membership by KubeEdge in recognition of contributions.</description>
     </item>
     
     <item>
-      <title>Code Buddy</title>
-      <link>http://localhost:1313/projects/code-buddy/</link>
+      <title>CNCF Zero to Merge</title>
+      <link>https://1shubham7.netlify.app/experience/cncf-zero-to-merge/</link>
+      <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/cncf-zero-to-merge/</guid>
+      <description>CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.</description>
+    </item>
+    
+    <item>
+      <title>Open-source Contributor (CNCF)</title>
+      <link>https://1shubham7.netlify.app/experience/cncf/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/projects/code-buddy/</guid>
-      <description>a place for coders to find their buddies - find a coding partner for hackathons, events and just chilling out. find programmers near you, Sort by location, technology, and shared interests.</description>
+      <guid>https://1shubham7.netlify.app/experience/cncf/</guid>
+      <description>Outline Actively contributed to multiple Cloud Native Computing Foundation (CNCF) projects for over 3 years, working across codebases, testing, and documentation. Collaborated closely with project maintainers to identify and fix critical issues, improve developer experience, and strengthen overall project quality. Contributions spanned engineering, documentation, and introducing projects to a wider audience through videos and presentations.
+ Fixed 13 critical issues in CNCF projects, including improving webhook-CLI consistency, standardizing image variable fields, creating less vulnerable production-level image, enhancing error logging and increasing test coverage; authored 13 Pull Requests that got merged.</description>
+    </item>
+    
+    <item>
+      <title>Technical Blogs on Hashnode</title>
+      <link>https://1shubham7.netlify.app/experience/hashnode/</link>
+      <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/hashnode/</guid>
+      <description>Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community.</description>
+    </item>
+    
+    <item>
+      <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
+      <link>https://1shubham7.netlify.app/blog/open-source101/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/open-source101/</guid>
+      <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
     </item>
     
   </channel>

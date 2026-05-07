@@ -4,7 +4,7 @@ description: "Avoid these 5 mistakes to get selected in GSoC. · Let's first sta
 dateString: September 2023
 draft: false
 tags: ["Open-source Programs", "GSOC", "Open-source", "GitHub"]
-weight: 101
+weight: 17
 cover:
     image: "blog/gsoc.avif"
 ---

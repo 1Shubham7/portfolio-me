@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Introduction to Kubernetes Native Policy Management with Kyverno | Shubham Singh</title>
 <meta name="keywords" content="Kubernetes, Kyverno, Kubernetes API">
 <meta name="description" content="Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.
-Admission Controllers
-Let&rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.">
+Admission Controllers Let&rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/blog/kyverno-intro/">
+<link rel="canonical" href="https://1shubham7.netlify.app/blog/kyverno-intro/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://1shubham7.netlify.app/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://1shubham7.netlify.app/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://1shubham7.netlify.app/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://1shubham7.netlify.app/apple-touch-icon.png">
+<link rel="mask-icon" href="https://1shubham7.netlify.app/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/kyverno-intro/">
 <noscript>
     <style>
         #theme-toggle,
@@ -61,38 +59,36 @@ Let&rsquo;s first start with admission controllers since Kyverno is an admission
     </style>
 </noscript><meta property="og:title" content="Introduction to Kubernetes Native Policy Management with Kyverno" />
 <meta property="og:description" content="Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.
-Admission Controllers
-Let&rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime." />
+Admission Controllers Let&rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/blog/kyverno-intro/" />
-<meta property="og:image" content="http://localhost:1313/blog/kyverno.png" /><meta property="article:section" content="blog" />
+<meta property="og:url" content="https://1shubham7.netlify.app/blog/kyverno-intro/" />
+<meta property="og:image" content="https://1shubham7.netlify.app/blog/kyverno.png" /><meta property="article:section" content="blog" />
 
 
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="http://localhost:1313/blog/kyverno.png" />
+<meta name="twitter:image" content="https://1shubham7.netlify.app/blog/kyverno.png" />
 <meta name="twitter:title" content="Introduction to Kubernetes Native Policy Management with Kyverno"/>
 <meta name="twitter:description" content="Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.
-Admission Controllers
-Let&rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime."/>
+Admission Controllers Let&rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime."/>
 
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Blogs",
-      "item": "http://localhost:1313/blog/"
-    }, 
+  "itemListElement": [, 
     {
       "@type": "ListItem",
       "position":  2 ,
+      "name": "Blogs",
+      "item": "https://1shubham7.netlify.app/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
       "name": "Introduction to Kubernetes Native Policy Management with Kyverno",
-      "item": "http://localhost:1313/blog/kyverno-intro/"
+      "item": "https://1shubham7.netlify.app/blog/kyverno-intro/"
     }
   ]
 }
@@ -103,25 +99,25 @@ Let&rsquo;s first start with admission controllers since Kyverno is an admission
   "@type": "BlogPosting",
   "headline": "Introduction to Kubernetes Native Policy Management with Kyverno",
   "name": "Introduction to Kubernetes Native Policy Management with Kyverno",
-  "description": "Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.\nAdmission Controllers Let\u0026rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.\n",
+  "description": "Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.\nAdmission Controllers Let\u0026rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.",
   "keywords": [
     "Kubernetes", "Kyverno", "Kubernetes API"
   ],
-  "articleBody": "Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.\nAdmission Controllers Let’s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.\nAdmission control phases\nThe primary job of a admission controller is to validate the resources. If a resource is passed to an admission controller it will tell if it is allowed or not. And that is all what an admission controller does. But as we said Kyverno is more than just an admission controller. Kyverno acts as a admission controller and validates the resources but it also can change the resources transparently.\nIn this beginner friendly article, we will discuss what Kyverno is and how it works on theory, but before that let’s have a look at some basic terms:\nCustom resources Custom resources are the extensions of the Kubernetes API that are not available in the default Kubernetes installation. These are like additional stuff or customization we can add on Kubernetes. However, many Kubernetes core functions are now build using custom resources, this make Kubernetes very modular. A Kyverno policy is a standard Kubernetes custom resource.\nCustom Controllers The custom resources lets us store and retrieve structured data. But when we combine a custom resource with a custom controller, it provides us a declarative API. Custom controllers are used to encode domain knowledge for specific applications into an extension of Kubernetes API.\nAdmission Controllers In simplest terms, If a resource is passed to an admission controller it will tell if it is allowed or not. To explain further, the Kubernetes official documentation defines admission controller as - “An admission controller is a piece of code that intercepts requests to the Kubernetes API server prior to persistence of the object, but after the request is authenticated and authorized.” Admission controllers can either validate resources or mutate them, or do both.\nWhy Kyverno Kyverno is not just another admission controller, it can do much more than that. Where an ordinary admission controller can only validate the resources in the cluster. Kyverno not just validates the resources but can also change the resources transparently. when Kyverno receives the API requests, it can validate them, this can also be done in blocking mode.\nBlocking mode means it won’t prevent or allow cluster to run but specify that in a policy report.\nOther than this Kyverno also has the ability to mutate the resources transparently. Through Kyverno you can also generate Kubernetes resources. This means you can create new Kubernetes resources of any type or configuration based upon a policy that you define and install in the cluster.\nKyverno Policy A Kyverno policy can be one of:\nCluster scoped Namespace scoped Inside the Kyverno policy we have rules. A single policy has one or multiple rules. Each rule has a match block and can optionally also have an exclude block.\nKyverno\nYou can define scope of the resource you want to apply your policy to, using the following options. You can off-course choose one or multiple of these options:\nResource Kinds Resource Names Labels Annotations Namespaces Namespace Labels (Cluster)Roles Users Groups ServiceAccounts You can also declare what you want from the Policy, do you want to use it for Validation, mutating or something else. Here are the options you can choose in Kyverno:\nValidate the resource Mutate the resource Generate a resource Verify images Example of Kyverno Policy Here is a sample Kyverno Policy, A “ClusterPolicy” applies to the entire cluster. you can see we have a single rules block inside which we have a match block. We have set validationFailureAction to Audit therefore, it will be allowed even after the resource validation failure what but we should get a report if the resource validation fails.\nThis policy will perform validation of the pods and check the label. If the label is not provided with any value then it will send a message saying “The label app.kubernetes.io/name is must” .\nScreenshot-2023-09-29-072343\nYou can copy the same policy from the following code:\napiVersion: kyverno.io/v1 kind: ClusterPolicy metadata: name: require-labels spec: validationFailureAction: Audit background: true rules:\nname: check-for-labels match: any: resources: kinds: -Pod validate: message: “The label app.kubernetes.io/name is must” pattern: metadata: labels: app.kubernetes.io/name: “?*” Kyverno Usecases These are all the use cases of Kyverno, Feel free to skip them if you can not understand them as of now:\nSecurity Pod security Workload security Granular RBAC Workload isolation Image signing \u0026 verification Workload identity Reports Operations Namespaces-as-a-Service Clusters-as-a-Service Custom CA root certificate injection Automated resource generation Conditional patching of resources Inject sidecar container ConfigMap/Secret copying/syncing Stale resources cleanup Cost Governance Pod requests and limits Namespace quotas Team and app labels QoS management Auto-scalers Advantages of Kyverno over its other alternatives There are a lot of additional features that Kyverno provides compared with other alternative admission controllers, here are a few of them:\nEverything YAML - Simple to write All of the policies in Kyverno are written in YAML, Kyverno takes care of the heavy-lifting while you can simply use YAML for writing the Policy.\nMutating Resources Where an ordinary admission controller can only validate the resources in the cluster. Kyverno not just validates the resources but can also change the resources transparently.\nNamespaces-as-a-Service In Kyverno you can perform tasks like Namespaces-as-a-Service. You can simply create a namespace with a bunch of other resources that are in it. Kyverno can then generate all of those resources for you based on the manifest. You don’t have to run bash scripts or spit out resource quotas and limit ranges. You just have to simply write a Kyverno policy in YAML, install it in the cluster and version it. Kyverno will perform all the tasks for you after that.\nImage signing and verification Kyverno can also be used for image signing and verification purposes. Kyverno can do image verification without needing other bolt-on components. The Kyverno policy will need to know which images you want to check. Whenever that image gets built, it will get signed and pushed to the OCI registry.\nSome more features of Kyverno Some more features of Kyverno includes:\nMatching resources using label selectors and wildcards. Validating and mutating resources using overlays. Synchronizing configurations across namespaces. Blocking any non-conformant resources using admission controls, or report policy violations. Kyverno CLI - for testing policies and validating resources in the CI/CD pipeline. managing policies as code using familiar tools like git and kustomize. Conclusion As we discussed in previous sections, Kyverno is not just any admission controller, it is much more than that. An ordinary admission controller can only validate the resources in the cluster. Kyverno not just validates the resources but can also change the resources transparently. We discussed about Kyverno is this article we started off with an introduction to Kyverno, later we dicusses the terms like custom resources and custom controllers. Custom resources are the extensions of the Kubernetes API that are not available in the default Kubernetes installation. While custom controllers are used to encode domain knowledge for specific applications into an extension of Kubernetes API. We then say what Kyverno does? and an example of a Kyverno policy. At the end we discussed the advantages of Kyverno over other admission controllers and various usecases of Kyverno.\nThis marks the end of this article and we hope that this article helped you improve your understanding about Kyverno and policy management in Kubernetes.\nminikube start\nkubectl create -f https://github.com/kyverno/kyverno/releases/download/v1.10.0/install.yaml\nkubectl explain policy.spec.rules.preconditions\nKyverno primarily functions as an admission controller but not just another admission controller. Along with that Kyverno comes with a CLI that you can use outside of Kubernetes\nOnce Kyverno gets installed, it pull down a number of different configurations including there’s a bunch of roles it configures so there’s fine grain configuration there’s a security section in the docs which explains what each one of these roles are doing it also installs some webhooks which is what tells the api server to in you know contact Kyverno based on certain settings and then it’s creating some resources custom resources for policies policy reports\nWhy do we need Kyverno, one good example would be this scary piece of code in Kubernetes, if we enter this in the command line\nkubectl run r00t --restart=Never -ti --rm --image lol --overrides '{\"spec\":{\"hostPID\": true, \"containers\":[{\"name\":\"1\",\"image\":\"public.ecr.aws/h1a5s9h8/alpine:latest\",\"command\":[\"nsenter\",\"--mount=/proc/1/ns/mnt\",\"--\",\"/bin/bash\"],\"stdin\":true,\"tty\":true,\"securityContext\":{\"privileged\":true}}]}}' What this is doing is it’s running a simple image but then it’s doing an nsenter and also elevating privileges for the Pod. So if we run this, the interesting thing that happens if we have no policies or no guardrails in place it that all we need is permissions to run a container in any namespace and we will have access to bash shell. With that we can look at all the containers running.\ncd var/log/containers\nls\nexit\nTutorial `minikube start\nkubectl create -f https://github.com/kyverno/kyverno/releases/download/v1.11.1/install.yaml\n",
+  "articleBody": "Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.\nAdmission Controllers Let’s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.\nAdmission control phases\nThe primary job of a admission controller is to validate the resources. If a resource is passed to an admission controller it will tell if it is allowed or not. And that is all what an admission controller does. But as we said Kyverno is more than just an admission controller. Kyverno acts as a admission controller and validates the resources but it also can change the resources transparently.\nIn this beginner friendly article, we will discuss what Kyverno is and how it works on theory, but before that let’s have a look at some basic terms:\nCustom resources Custom resources are the extensions of the Kubernetes API that are not available in the default Kubernetes installation. These are like additional stuff or customization we can add on Kubernetes. However, many Kubernetes core functions are now build using custom resources, this make Kubernetes very modular. A Kyverno policy is a standard Kubernetes custom resource.\nCustom Controllers The custom resources lets us store and retrieve structured data. But when we combine a custom resource with a custom controller, it provides us a declarative API. Custom controllers are used to encode domain knowledge for specific applications into an extension of Kubernetes API.\nAdmission Controllers In simplest terms, If a resource is passed to an admission controller it will tell if it is allowed or not. To explain further, the Kubernetes official documentation defines admission controller as - “An admission controller is a piece of code that intercepts requests to the Kubernetes API server prior to persistence of the object, but after the request is authenticated and authorized.” Admission controllers can either validate resources or mutate them, or do both.\nWhy Kyverno Kyverno is not just another admission controller, it can do much more than that. Where an ordinary admission controller can only validate the resources in the cluster. Kyverno not just validates the resources but can also change the resources transparently. when Kyverno receives the API requests, it can validate them, this can also be done in blocking mode.\nBlocking mode means it won’t prevent or allow cluster to run but specify that in a policy report.\nOther than this Kyverno also has the ability to mutate the resources transparently. Through Kyverno you can also generate Kubernetes resources. This means you can create new Kubernetes resources of any type or configuration based upon a policy that you define and install in the cluster.\nKyverno Policy A Kyverno policy can be one of:\nCluster scoped Namespace scoped Inside the Kyverno policy we have rules. A single policy has one or multiple rules. Each rule has a match block and can optionally also have an exclude block.\nKyverno\nYou can define scope of the resource you want to apply your policy to, using the following options. You can off-course choose one or multiple of these options:\nResource Kinds Resource Names Labels Annotations Namespaces Namespace Labels (Cluster)Roles Users Groups ServiceAccounts You can also declare what you want from the Policy, do you want to use it for Validation, mutating or something else. Here are the options you can choose in Kyverno:\nValidate the resource Mutate the resource Generate a resource Verify images Example of Kyverno Policy Here is a sample Kyverno Policy, A “ClusterPolicy” applies to the entire cluster. you can see we have a single rules block inside which we have a match block. We have set validationFailureAction to Audit therefore, it will be allowed even after the resource validation failure what but we should get a report if the resource validation fails.\nThis policy will perform validation of the pods and check the label. If the label is not provided with any value then it will send a message saying “The label app.kubernetes.io/name is must” .\nScreenshot-2023-09-29-072343\nYou can copy the same policy from the following code:\napiVersion: kyverno.io/v1 kind: ClusterPolicy metadata: name: require-labels spec: validationFailureAction: Audit background: true rules:\n name: check-for-labels match: any:  resources: kinds: -Pod validate: message: “The label app.kubernetes.io/name is must” pattern: metadata: labels: app.kubernetes.io/name: “?*”    Kyverno Usecases These are all the use cases of Kyverno, Feel free to skip them if you can not understand them as of now:\nSecurity Pod security Workload security Granular RBAC Workload isolation Image signing \u0026 verification Workload identity Reports Operations Namespaces-as-a-Service Clusters-as-a-Service Custom CA root certificate injection Automated resource generation Conditional patching of resources Inject sidecar container ConfigMap/Secret copying/syncing Stale resources cleanup Cost Governance Pod requests and limits Namespace quotas Team and app labels QoS management Auto-scalers Advantages of Kyverno over its other alternatives There are a lot of additional features that Kyverno provides compared with other alternative admission controllers, here are a few of them:\n  Everything YAML - Simple to write All of the policies in Kyverno are written in YAML, Kyverno takes care of the heavy-lifting while you can simply use YAML for writing the Policy.\n  Mutating Resources Where an ordinary admission controller can only validate the resources in the cluster. Kyverno not just validates the resources but can also change the resources transparently.\n  Namespaces-as-a-Service In Kyverno you can perform tasks like Namespaces-as-a-Service. You can simply create a namespace with a bunch of other resources that are in it. Kyverno can then generate all of those resources for you based on the manifest. You don’t have to run bash scripts or spit out resource quotas and limit ranges. You just have to simply write a Kyverno policy in YAML, install it in the cluster and version it. Kyverno will perform all the tasks for you after that.\n  Image signing and verification Kyverno can also be used for image signing and verification purposes. Kyverno can do image verification without needing other bolt-on components. The Kyverno policy will need to know which images you want to check. Whenever that image gets built, it will get signed and pushed to the OCI registry.\n  Some more features of Kyverno Some more features of Kyverno includes:\n  Matching resources using label selectors and wildcards. Validating and mutating resources using overlays. Synchronizing configurations across namespaces. Blocking any non-conformant resources using admission controls, or report policy violations. Kyverno CLI - for testing policies and validating resources in the CI/CD pipeline. managing policies as code using familiar tools like git and kustomize. Conclusion As we discussed in previous sections, Kyverno is not just any admission controller, it is much more than that. An ordinary admission controller can only validate the resources in the cluster. Kyverno not just validates the resources but can also change the resources transparently. We discussed about Kyverno is this article we started off with an introduction to Kyverno, later we dicusses the terms like custom resources and custom controllers. Custom resources are the extensions of the Kubernetes API that are not available in the default Kubernetes installation. While custom controllers are used to encode domain knowledge for specific applications into an extension of Kubernetes API. We then say what Kyverno does? and an example of a Kyverno policy. At the end we discussed the advantages of Kyverno over other admission controllers and various usecases of Kyverno.\nThis marks the end of this article and we hope that this article helped you improve your understanding about Kyverno and policy management in Kubernetes.\nminikube start\nkubectl create -f https://github.com/kyverno/kyverno/releases/download/v1.10.0/install.yaml\nkubectl explain policy.spec.rules.preconditions\nKyverno primarily functions as an admission controller but not just another admission controller. Along with that Kyverno comes with a CLI that you can use outside of Kubernetes\nOnce Kyverno gets installed, it pull down a number of different configurations including there’s a bunch of roles it configures so there’s fine grain configuration there’s a security section in the docs which explains what each one of these roles are doing it also installs some webhooks which is what tells the api server to in you know contact Kyverno based on certain settings and then it’s creating some resources custom resources for policies policy reports\nWhy do we need Kyverno, one good example would be this scary piece of code in Kubernetes, if we enter this in the command line\nkubectl run r00t --restart=Never -ti --rm --image lol --overrides '{\"spec\":{\"hostPID\": true, \"containers\":[{\"name\":\"1\",\"image\":\"public.ecr.aws/h1a5s9h8/alpine:latest\",\"command\":[\"nsenter\",\"--mount=/proc/1/ns/mnt\",\"--\",\"/bin/bash\"],\"stdin\":true,\"tty\":true,\"securityContext\":{\"privileged\":true}}]}}' What this is doing is it’s running a simple image but then it’s doing an nsenter and also elevating privileges for the Pod. So if we run this, the interesting thing that happens if we have no policies or no guardrails in place it that all we need is permissions to run a container in any namespace and we will have access to bash shell. With that we can look at all the containers running.\ncd var/log/containers\nls\nexit\nTutorial `minikube start\nkubectl create -f https://github.com/kyverno/kyverno/releases/download/v1.11.1/install.yaml\n",
   "wordCount" : "1561",
   "inLanguage": "en",
-  "image":"http://localhost:1313/blog/kyverno.png","datePublished": "0001-01-01T00:00:00Z",
+  "image":"https://1shubham7.netlify.app/blog/kyverno.png","datePublished": "0001-01-01T00:00:00Z",
   "dateModified": "0001-01-01T00:00:00Z",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "http://localhost:1313/blog/kyverno-intro/"
+    "@id": "https://1shubham7.netlify.app/blog/kyverno-intro/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Shubham Singh",
     "logo": {
       "@type": "ImageObject",
-      "url": "http://localhost:1313/favicon.ico"
+      "url": "https://1shubham7.netlify.app/favicon.ico"
     }
   }
 }
@@ -143,7 +139,7 @@ Let&rsquo;s first start with admission controllers since Kyverno is an admission
 <header class="header sticky-header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <a href="https://1shubham7.netlify.app" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
             <span class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -165,33 +161,26 @@ Let&rsquo;s first start with admission controllers since Kyverno is an admission
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-                <ul class="lang-switch"><li>|</li>
-                </ul>
             </span>
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/" title="Home">
+                <a href="https://1shubham7.netlify.app/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/experience" title="Experience">
+                <a href="https://1shubham7.netlify.app/experience" title="Experience">
                     <span>Experience</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/blog" title="Blog">
+                <a href="https://1shubham7.netlify.app/blog" title="Blog">
                     <span>Blog</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/projects" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="https://1shubham7.netlify.app/search" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
@@ -202,7 +191,7 @@ Let&rsquo;s first start with admission controllers since Kyverno is an admission
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <div class="breadcrumbs"><a href="https://1shubham7.netlify.app">Home</a>&nbsp;»&nbsp;<a href="https://1shubham7.netlify.app/blog/">Blogs</a></div>
     <h1 class="post-title">
       Introduction to Kubernetes Native Policy Management with Kyverno
     </h1>
@@ -213,7 +202,7 @@ December 2023
 
 </div>
   </header> 
-<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/kyverno.png" alt="">
+<figure class="entry-cover"><img loading="lazy" src="https://1shubham7.netlify.app/blog/kyverno.png" alt="">
         
 </figure><div class="toc">
     <details >
@@ -365,7 +354,7 @@ As we discussed in previous sections, Kyverno is not just any admission controll
 <p>Kyverno primarily functions as an admission controller but not just another admission controller. Along with that Kyverno comes with a CLI that you can use outside of Kubernetes</p>
 <p>Once Kyverno gets installed, it pull down a number of different configurations including there&rsquo;s a bunch of roles it configures so there&rsquo;s fine grain configuration there&rsquo;s a security section in the docs which explains what each one of these roles are doing it also installs some webhooks which is what tells the api server to in you know contact Kyverno based on certain settings and then it&rsquo;s creating some resources custom resources for policies policy reports</p>
 <p>Why do we need Kyverno, one good example would be this scary piece of code in Kubernetes, if we enter this in the command line</p>
-<pre tabindex="0"><code>kubectl run r00t --restart=Never -ti --rm --image lol --overrides &#39;{&#34;spec&#34;:{&#34;hostPID&#34;: true, &#34;containers&#34;:[{&#34;name&#34;:&#34;1&#34;,&#34;image&#34;:&#34;public.ecr.aws/h1a5s9h8/alpine:latest&#34;,&#34;command&#34;:[&#34;nsenter&#34;,&#34;--mount=/proc/1/ns/mnt&#34;,&#34;--&#34;,&#34;/bin/bash&#34;],&#34;stdin&#34;:true,&#34;tty&#34;:true,&#34;securityContext&#34;:{&#34;privileged&#34;:true}}]}}&#39;
+<pre tabindex="0"><code>kubectl run r00t --restart=Never -ti --rm --image lol --overrides '{&quot;spec&quot;:{&quot;hostPID&quot;: true, &quot;containers&quot;:[{&quot;name&quot;:&quot;1&quot;,&quot;image&quot;:&quot;public.ecr.aws/h1a5s9h8/alpine:latest&quot;,&quot;command&quot;:[&quot;nsenter&quot;,&quot;--mount=/proc/1/ns/mnt&quot;,&quot;--&quot;,&quot;/bin/bash&quot;],&quot;stdin&quot;:true,&quot;tty&quot;:true,&quot;securityContext&quot;:{&quot;privileged&quot;:true}}]}}'
 </code></pre><p>What this is doing is it&rsquo;s running a simple image but then it&rsquo;s doing an nsenter and also elevating privileges for the Pod. So if we run this, the interesting thing that happens if we have no policies or no guardrails in place it that all we need is permissions to run a container in any namespace and we will have access to bash shell. With that we can look at all the containers running.</p>
 <p><code>cd var/log/containers</code></p>
 <p><code>ls</code></p>
@@ -379,16 +368,16 @@ As we discussed in previous sections, Kyverno is not just any admission controll
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="http://localhost:1313/tags/kubernetes/">Kubernetes</a></li>
-      <li><a href="http://localhost:1313/tags/kyverno/">Kyverno</a></li>
-      <li><a href="http://localhost:1313/tags/kubernetes-api/">Kubernetes API</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/kubernetes/">Kubernetes</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/kyverno/">Kyverno</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/kubernetes-api/">Kubernetes API</a></li>
     </ul>
   </footer>
 </article>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+    <span>&copy; 2026 <a href="https://1shubham7.netlify.app">Shubham Singh</a></span>
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">

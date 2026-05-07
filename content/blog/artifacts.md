@@ -4,7 +4,7 @@ description: "Artifacts - from beginner to advanced. · What are artifacts? In t
 dateString: October 2023
 draft: false
 tags: ["CNCF", "DevOps", "Open-source", "CI/CD"]
-weight: 101
+weight: 10
 cover:
     image: "blog/artifacts.png"
 ---

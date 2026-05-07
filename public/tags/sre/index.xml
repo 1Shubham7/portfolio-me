@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>SRE on Shubham Singh</title>
+    <link>https://1shubham7.netlify.app/tags/sre/</link>
+    <description>Recent content in SRE on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://1shubham7.netlify.app/tags/sre/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Grafana Showed My Node Was Out of Memory. It Wasn&#39;t.</title>
+      <link>https://1shubham7.netlify.app/blog/grafana-dashboards/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/grafana-dashboards/</guid>
+      <description>Two Grafana dashboards, same node, same timestamp - one shows 62 GB used, other shows 10 GB. Both are correct. Here&amp;#39;s the full story of how Linux memory actually works and which number you should actually be watching.</description>
+    </item>
+    
+    <item>
+      <title>Site Reliability Engineer (Obmondo)</title>
+      <link>https://1shubham7.netlify.app/experience/obmondo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/obmondo/</guid>
+      <description>Outline Worked as an SRE, handling production systems and managing Kubernetes clusters and Linux servers across both internal and customer environments. As the youngest SRE at Obmondo, regularly took ownership of production alerts and incidents, performing root cause analysis and implementing long-term fixes. Led the rewrite of the most business-critical internal tool, improving its reliability, testing, and integration into GitOps workflows. Authored and improved a large part of the company’s ISMS, strengthening both the company’s and customers’ information security.</description>
+    </item>
+    
+  </channel>
+</rss>

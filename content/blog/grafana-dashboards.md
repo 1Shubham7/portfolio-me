@@ -4,7 +4,7 @@ description: "Two Grafana dashboards, same node, same timestamp - one shows 62 G
 dateString: April 2026
 draft: false
 tags: ["Linux", "Grafana", "Kubernetes", "DevOps", "SRE", "Observability", "Node Exporter"]
-weight: 102
+weight: 1
 cover:
     image: "/blog/grafana-graphs/grafana-cover.png"
 ---

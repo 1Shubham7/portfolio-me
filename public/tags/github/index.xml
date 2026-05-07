@@ -2,35 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>GitHub on Shubham Singh</title>
-    <link>http://localhost:1313/tags/github/</link>
+    <link>https://1shubham7.netlify.app/tags/github/</link>
     <description>Recent content in GitHub on Shubham Singh</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://localhost:1313/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://1shubham7.netlify.app/tags/github/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience</title>
-      <link>http://localhost:1313/blog/gsoc/</link>
+      <title>YAML - from basics to advanced</title>
+      <link>https://1shubham7.netlify.app/blog/yaml/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/gsoc/</guid>
+      <guid>https://1shubham7.netlify.app/blog/yaml/</guid>
+      <description>explaining YAML from basics to advanced · What is YAML? YAML (which stands for &amp;#39;YAML Ain&amp;#39;t Markup Language&amp;#39;) is a human-readable data serialization...</description>
+    </item>
+    
+    <item>
+      <title>5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience</title>
+      <link>https://1shubham7.netlify.app/blog/gsoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/gsoc/</guid>
       <description>Avoid these 5 mistakes to get selected in GSoC. · Let&amp;#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual...</description>
     </item>
     
     <item>
       <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
-      <link>http://localhost:1313/blog/open-source101/</link>
+      <link>https://1shubham7.netlify.app/blog/open-source101/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/open-source101/</guid>
+      <guid>https://1shubham7.netlify.app/blog/open-source101/</guid>
       <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
-    </item>
-    
-    <item>
-      <title>YAML - from basics to advanced</title>
-      <link>http://localhost:1313/blog/yaml/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/yaml/</guid>
-      <description>explaining YAML from basics to advanced · What is YAML? YAML (which stands for &amp;#39;YAML Ain&amp;#39;t Markup Language&amp;#39;) is a human-readable data serialization...</description>
     </item>
     
   </channel>

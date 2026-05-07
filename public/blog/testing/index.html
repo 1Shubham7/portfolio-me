@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -9,18 +9,17 @@
 <meta name="keywords" content="Golang, Testing, Unit-Testing, Open-source">
 <meta name="description" content="A beginners guide to writing unit tests in Golang · Let&#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/blog/testing/">
+<link rel="canonical" href="https://1shubham7.netlify.app/blog/testing/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://1shubham7.netlify.app/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://1shubham7.netlify.app/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://1shubham7.netlify.app/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://1shubham7.netlify.app/apple-touch-icon.png">
+<link rel="mask-icon" href="https://1shubham7.netlify.app/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/testing/">
 <noscript>
     <style>
         #theme-toggle,
@@ -60,13 +59,13 @@
 </noscript><meta property="og:title" content="Unit testing using Golang - a beginner&#39;s guide" />
 <meta property="og:description" content="A beginners guide to writing unit tests in Golang · Let&#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a..." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/blog/testing/" />
-<meta property="og:image" content="http://localhost:1313/blog/testing.avif" /><meta property="article:section" content="blog" />
+<meta property="og:url" content="https://1shubham7.netlify.app/blog/testing/" />
+<meta property="og:image" content="https://1shubham7.netlify.app/blog/testing.avif" /><meta property="article:section" content="blog" />
 
 
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="http://localhost:1313/blog/testing.avif" />
+<meta name="twitter:image" content="https://1shubham7.netlify.app/blog/testing.avif" />
 <meta name="twitter:title" content="Unit testing using Golang - a beginner&#39;s guide"/>
 <meta name="twitter:description" content="A beginners guide to writing unit tests in Golang · Let&#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a..."/>
 
@@ -75,18 +74,18 @@
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Blogs",
-      "item": "http://localhost:1313/blog/"
-    }, 
+  "itemListElement": [, 
     {
       "@type": "ListItem",
       "position":  2 ,
+      "name": "Blogs",
+      "item": "https://1shubham7.netlify.app/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
       "name": "Unit testing using Golang - a beginner's guide",
-      "item": "http://localhost:1313/blog/testing/"
+      "item": "https://1shubham7.netlify.app/blog/testing/"
     }
   ]
 }
@@ -101,21 +100,21 @@
   "keywords": [
     "Golang", "Testing", "Unit-Testing", "Open-source"
   ],
-  "articleBody": "Unit testing using Golang Let’s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a unit of software is tested to determine if it works properly and exhibits the expected behavior. But why do we need unit testing? There are multiple reasons for that. See, how can we ensure that even if we change code, the code still works and there are no new bugs introduced, it’s better to detect them early than to wait and run the entire application in order to check a small code. In this way, unit tests help ensure quality code, help in catching bugs early, and provide a safety net if the code changes in the future.\nWhat is unit testing? As per IEEE (Institute for Electrical and Electronics Engineers), unit testing is the “testing of individual hardware or software units or groups of related units”. Unit testing is a software testing technique where individual components or units of a software application are tested in isolation.\nBy unit, we mean the smallest testable part of a code. mostly, it is a single function in Golang. The goal of unit testing is to ensure that each of these units functions correctly (produces expected results).\nThe term “unit” in unit testing refers to the smallest testable part of a software program, typically a single function, method, or class. The primary goal of unit testing is to ensure that each of these individual units of code functions correctly and produces the expected results.\nWhy Unit tests in Go? • Helps in verifying small changes (refactoring, debugging) quickly • Measures the quality of the code\n• Helps in understanding the complex logics\n• Helps in understanding the cause of failure quickly\n• Helps the reviewer to understand the fixes/changes\n• Great way to learn about a language as well as the project.\nLet’s create a basic unit test: Step 1. Start with initializing a go package\ngo mod init github.com/1shubham7/basic-unit-test\nStep 2. Download a unit testing package called go-money\ngo get github.com/Rhymond/go-money\nStep 3. Create this file structure:\nCreate a internal folder, inside that create a order folder, and inside the order folder, create a order.go file.\nStep 4. Start coding in the order.go file\npackage order\rimport (\r\"github.com/Rhymond/go-money\"\r\"fmt\"\r)\rtype Order struct {\rID string\rCurrencyAlphaCode string\rItems []Item\r}\rtype Item struct {\rID string\rQuantity uint\rUnitPrice *money.Money\r}\rfunc (o Order) ComputeTotal() (*money.Money, error) {\ramount := money.New(0, o.CurrencyAlphaCode)\rfor _, item := range o.Items {\rvar err error\ramount, err = amount.Add(item.UnitPrice)\rif err!= nil {\rreturn nil, fmt.Errorf(\"not adding item elements, error: %w\", err)\r}\r}\rreturn amount, nil\r} Step 5. Enter the following command to download testify\n/go get github.com/stretchr/testify\nStep 6. Create a order_test.go file and enter the following code inside it:\npackage order\rimport (\r\"testing\"\r\"github.com/Rhymond/go-money\"\r\"github.com/stretchr/testify/assert\"\r)\rfunc TestOrder(t *testing.T) {\ro := Order{\rID: \"100\",\rCurrencyAlphaCode: \"INR\",\rItems: []Item{\r{\rID: \"500\",\rQuantity: 2,\rUnitPrice: money.New(100, \"INR\"),\r},\r},\r}\rtotal, err := o.ComputeTotal()\rassert.NoError(t, err)\rassert.Equal(t, 200, total.Amount())\rassert.Equal(t, \"INR\", total.Currency())\r} Step 7. Now this command is used to run all the unit test in that perticular directory, enter the following command:\ngo test ./...\nit will give you the result:\n--- FAIL: TestOrder (0.00s) order_test.go:25: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:25\rError: Not equal: expected: int(200) actual : int64(100) Test: TestOrder order_test.go:26: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:26\rError: Not equal: expected: string(\"INR\") actual : *money.Currency(\u0026money.Currency{Code:\"INR\", NumericCode:\"356\", Fraction:2, Grapheme:\"₹\", Template:\"$1\", Decimal:\".\", Thousand:\",\"}) Test: TestOrder FAIL FAIL github.com/1shubham7/basic-unit-test/internal/order 1.001s FAIL Step 8. to fix this up, we have to make some changes in the code:\nMake these changes to the code:\norder.go:\npackage order\nimport (\r\"github.com/Rhymond/go-money\"\r\"fmt\"\r)\rtype Order struct {\rID string\rCurrencyAlphaCode string\rItems []Item\r}\rtype Item struct {\rID string\rQuantity uint\rUnitPrice *money.Money\r}\rfunc (o Order) ComputeTotal() (*money.Money, error) {\ramount := money.New(0, o.CurrencyAlphaCode)\rfor _, item := range o.Items {\rvar err error\ramount, err = amount.Add(item.UnitPrice.Multiply(int64(item.Quantity)))\rif err!= nil {\rreturn nil, fmt.Errorf(\"not adding item elements, error: %w\", err)\r}\r}\rreturn amount, nil\r} order_test.go:\npackage order\rimport (\r\"testing\"\r\"github.com/Rhymond/go-money\"\r\"github.com/stretchr/testify/assert\"\r)\rfunc TestOrder(t *testing.T) {\ro := Order{\rID: \"100\",\rCurrencyAlphaCode: \"INR\",\rItems: []Item{\r{\rID: \"500\",\rQuantity: 2,\rUnitPrice: money.New(100, \"INR\"),\r},\r},\r}\rtotal, err := o.ComputeTotal()\rassert.NoError(t, err)\rassert.Equal(t, int64(200), total.Amount())\rassert.Equal(t, \"INR\", total.Currency().Code)\r} Now if you enter the same command:\ngo test ./...\nIt works perfectly fine: And that’s how we create a unit test. See you in some next tutorial. Thanks for reading.\n",
+  "articleBody": "Unit testing using Golang Let’s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a unit of software is tested to determine if it works properly and exhibits the expected behavior. But why do we need unit testing? There are multiple reasons for that. See, how can we ensure that even if we change code, the code still works and there are no new bugs introduced, it’s better to detect them early than to wait and run the entire application in order to check a small code. In this way, unit tests help ensure quality code, help in catching bugs early, and provide a safety net if the code changes in the future.\nWhat is unit testing? As per IEEE (Institute for Electrical and Electronics Engineers), unit testing is the “testing of individual hardware or software units or groups of related units”. Unit testing is a software testing technique where individual components or units of a software application are tested in isolation.\nBy unit, we mean the smallest testable part of a code. mostly, it is a single function in Golang. The goal of unit testing is to ensure that each of these units functions correctly (produces expected results).\nThe term “unit” in unit testing refers to the smallest testable part of a software program, typically a single function, method, or class. The primary goal of unit testing is to ensure that each of these individual units of code functions correctly and produces the expected results.\nWhy Unit tests in Go? • Helps in verifying small changes (refactoring, debugging) quickly • Measures the quality of the code\n• Helps in understanding the complex logics\n• Helps in understanding the cause of failure quickly\n• Helps the reviewer to understand the fixes/changes\n• Great way to learn about a language as well as the project.\nLet’s create a basic unit test: Step 1. Start with initializing a go package\ngo mod init github.com/1shubham7/basic-unit-test\nStep 2. Download a unit testing package called go-money\ngo get github.com/Rhymond/go-money\nStep 3. Create this file structure:\nCreate a internal folder, inside that create a order folder, and inside the order folder, create a order.go file.\nStep 4. Start coding in the order.go file\npackage order import ( \"github.com/Rhymond/go-money\" \"fmt\" ) type Order struct { ID string CurrencyAlphaCode string Items []Item } type Item struct { ID string Quantity uint UnitPrice *money.Money } func (o Order) ComputeTotal() (*money.Money, error) { amount := money.New(0, o.CurrencyAlphaCode) for _, item := range o.Items { var err error amount, err = amount.Add(item.UnitPrice) if err!= nil { return nil, fmt.Errorf(\"not adding item elements, error: %w\", err) } } return amount, nil } Step 5. Enter the following command to download testify\n/go get github.com/stretchr/testify\nStep 6. Create a order_test.go file and enter the following code inside it:\npackage order import ( \"testing\" \"github.com/Rhymond/go-money\" \"github.com/stretchr/testify/assert\" ) func TestOrder(t *testing.T) { o := Order{ ID: \"100\", CurrencyAlphaCode: \"INR\", Items: []Item{ { ID: \"500\", Quantity: 2, UnitPrice: money.New(100, \"INR\"), }, }, } total, err := o.ComputeTotal() assert.NoError(t, err) assert.Equal(t, 200, total.Amount()) assert.Equal(t, \"INR\", total.Currency()) } Step 7. Now this command is used to run all the unit test in that perticular directory, enter the following command:\ngo test ./...\nit will give you the result:\n--- FAIL: TestOrder (0.00s) order_test.go:25: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:25 Error: Not equal: expected: int(200) actual : int64(100) Test: TestOrder order_test.go:26: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:26 Error: Not equal: expected: string(\"INR\") actual : *money.Currency(\u0026money.Currency{Code:\"INR\", NumericCode:\"356\", Fraction:2, Grapheme:\"₹\", Template:\"$1\", Decimal:\".\", Thousand:\",\"}) Test: TestOrder FAIL FAIL github.com/1shubham7/basic-unit-test/internal/order 1.001s FAIL Step 8. to fix this up, we have to make some changes in the code:\nMake these changes to the code:\norder.go:\npackage order\nimport ( \"github.com/Rhymond/go-money\" \"fmt\" ) type Order struct { ID string CurrencyAlphaCode string Items []Item } type Item struct { ID string Quantity uint UnitPrice *money.Money } func (o Order) ComputeTotal() (*money.Money, error) { amount := money.New(0, o.CurrencyAlphaCode) for _, item := range o.Items { var err error amount, err = amount.Add(item.UnitPrice.Multiply(int64(item.Quantity))) if err!= nil { return nil, fmt.Errorf(\"not adding item elements, error: %w\", err) } } return amount, nil } order_test.go:\npackage order import ( \"testing\" \"github.com/Rhymond/go-money\" \"github.com/stretchr/testify/assert\" ) func TestOrder(t *testing.T) { o := Order{ ID: \"100\", CurrencyAlphaCode: \"INR\", Items: []Item{ { ID: \"500\", Quantity: 2, UnitPrice: money.New(100, \"INR\"), }, }, } total, err := o.ComputeTotal() assert.NoError(t, err) assert.Equal(t, int64(200), total.Amount()) assert.Equal(t, \"INR\", total.Currency().Code) } Now if you enter the same command:\ngo test ./...\nIt works perfectly fine: And that’s how we create a unit test. See you in some next tutorial. Thanks for reading.\n",
   "wordCount" : "768",
   "inLanguage": "en",
-  "image":"http://localhost:1313/blog/testing.avif","datePublished": "0001-01-01T00:00:00Z",
+  "image":"https://1shubham7.netlify.app/blog/testing.avif","datePublished": "0001-01-01T00:00:00Z",
   "dateModified": "0001-01-01T00:00:00Z",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "http://localhost:1313/blog/testing/"
+    "@id": "https://1shubham7.netlify.app/blog/testing/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Shubham Singh",
     "logo": {
       "@type": "ImageObject",
-      "url": "http://localhost:1313/favicon.ico"
+      "url": "https://1shubham7.netlify.app/favicon.ico"
     }
   }
 }
@@ -137,7 +136,7 @@
 <header class="header sticky-header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <a href="https://1shubham7.netlify.app" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
             <span class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -159,33 +158,26 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-                <ul class="lang-switch"><li>|</li>
-                </ul>
             </span>
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/" title="Home">
+                <a href="https://1shubham7.netlify.app/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/experience" title="Experience">
+                <a href="https://1shubham7.netlify.app/experience" title="Experience">
                     <span>Experience</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/blog" title="Blog">
+                <a href="https://1shubham7.netlify.app/blog" title="Blog">
                     <span>Blog</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/projects" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="https://1shubham7.netlify.app/search" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
@@ -196,7 +188,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <div class="breadcrumbs"><a href="https://1shubham7.netlify.app">Home</a>&nbsp;»&nbsp;<a href="https://1shubham7.netlify.app/blog/">Blogs</a></div>
     <h1 class="post-title">
       Unit testing using Golang - a beginner&#39;s guide
     </h1>
@@ -210,7 +202,7 @@ October 2023
 
 </div>
   </header> 
-<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/testing.avif" alt="">
+<figure class="entry-cover"><img loading="lazy" src="https://1shubham7.netlify.app/blog/testing.avif" alt="">
         
 </figure><div class="toc">
     <details >
@@ -227,7 +219,7 @@ October 2023
                 <li>
                     <a href="#why-unit-tests-in-go" aria-label="Why Unit tests in Go?">Why Unit tests in Go?</a></li>
                 <li>
-                    <a href="#lets-create-a-basic-unit-test" aria-label="Let&rsquo;s create a basic unit test:">Let&rsquo;s create a basic unit test:</a>
+                    <a href="#lets-create-a-basic-unit-test" aria-label="Let&amp;rsquo;s create a basic unit test:">Let&rsquo;s create a basic unit test:</a>
                 </li>
             </ul>
             </li>
@@ -261,8 +253,8 @@ October 2023
 <pre tabindex="0"><code>package order
 
 import (
-	&#34;github.com/Rhymond/go-money&#34;
-	&#34;fmt&#34;
+	&quot;github.com/Rhymond/go-money&quot;
+	&quot;fmt&quot;
 )
 
 type Order struct {
@@ -283,7 +275,7 @@ func (o Order) ComputeTotal() (*money.Money, error) {
 		var err error
 		amount, err = amount.Add(item.UnitPrice)
 		if err!= nil {
-			return nil, fmt.Errorf(&#34;not adding item elements, error: %w&#34;, err)
+			return nil, fmt.Errorf(&quot;not adding item elements, error: %w&quot;, err)
 		}
 	}
 
@@ -295,43 +287,43 @@ func (o Order) ComputeTotal() (*money.Money, error) {
 <pre tabindex="0"><code>package order
 
 import (
-	&#34;testing&#34;
+	&quot;testing&quot;
 
-	&#34;github.com/Rhymond/go-money&#34;
+	&quot;github.com/Rhymond/go-money&quot;
 
-	&#34;github.com/stretchr/testify/assert&#34;
+	&quot;github.com/stretchr/testify/assert&quot;
 )
 
 func TestOrder(t *testing.T) {
 	o := Order{
-		ID: &#34;100&#34;,
-		CurrencyAlphaCode: &#34;INR&#34;,
+		ID: &quot;100&quot;,
+		CurrencyAlphaCode: &quot;INR&quot;,
 		Items: []Item{
 			{
-			ID: &#34;500&#34;,
+			ID: &quot;500&quot;,
 			Quantity: 2,
-			UnitPrice: money.New(100, &#34;INR&#34;),
+			UnitPrice: money.New(100, &quot;INR&quot;),
 		},
 	},
 }
 	total, err := o.ComputeTotal()
 	assert.NoError(t, err)
 	assert.Equal(t, 200, total.Amount())
-	assert.Equal(t, &#34;INR&#34;, total.Currency())
+	assert.Equal(t, &quot;INR&quot;, total.Currency())
 }
 </code></pre><p><strong>Step 7.</strong> Now this command is used to run all the unit test in that perticular directory, enter the following command:</p>
 <p><code>go test ./...</code></p>
 <p>it will give you the result:</p>
 <pre tabindex="0"><code>--- FAIL: TestOrder (0.00s) order_test.go:25: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:25
 Error: Not equal: expected: int(200) actual : int64(100) Test: TestOrder order_test.go:26: Error Trace: D:/Files/Golang/Basic Unit Test/internal/order/order_test.go:26
-Error: Not equal: expected: string(&#34;INR&#34;) actual : *money.Currency(&amp;money.Currency{Code:&#34;INR&#34;, NumericCode:&#34;356&#34;, Fraction:2, Grapheme:&#34;₹&#34;, Template:&#34;$1&#34;, Decimal:&#34;.&#34;, Thousand:&#34;,&#34;}) Test: TestOrder FAIL FAIL github.com/1shubham7/basic-unit-test/internal/order 1.001s FAIL
+Error: Not equal: expected: string(&quot;INR&quot;) actual : *money.Currency(&amp;money.Currency{Code:&quot;INR&quot;, NumericCode:&quot;356&quot;, Fraction:2, Grapheme:&quot;₹&quot;, Template:&quot;$1&quot;, Decimal:&quot;.&quot;, Thousand:&quot;,&quot;}) Test: TestOrder FAIL FAIL github.com/1shubham7/basic-unit-test/internal/order 1.001s FAIL
 </code></pre><p><strong>Step 8.</strong> to fix this up, we have to make some changes in the code:</p>
 <p>Make these changes to the code:</p>
 <p><em><strong>order.go:</strong></em></p>
 <p>package order</p>
 <pre tabindex="0"><code>import (
-	&#34;github.com/Rhymond/go-money&#34;
-	&#34;fmt&#34;
+	&quot;github.com/Rhymond/go-money&quot;
+	&quot;fmt&quot;
 )
 
 type Order struct {
@@ -352,7 +344,7 @@ func (o Order) ComputeTotal() (*money.Money, error) {
 		var err error
 		amount, err = amount.Add(item.UnitPrice.Multiply(int64(item.Quantity)))
 		if err!= nil {
-			return nil, fmt.Errorf(&#34;not adding item elements, error: %w&#34;, err)
+			return nil, fmt.Errorf(&quot;not adding item elements, error: %w&quot;, err)
 		}
 	}
 
@@ -362,29 +354,29 @@ func (o Order) ComputeTotal() (*money.Money, error) {
 <pre tabindex="0"><code>package order
 
 import (
-	&#34;testing&#34;
+	&quot;testing&quot;
 
-	&#34;github.com/Rhymond/go-money&#34;
+	&quot;github.com/Rhymond/go-money&quot;
 
-	&#34;github.com/stretchr/testify/assert&#34;
+	&quot;github.com/stretchr/testify/assert&quot;
 )
 
 func TestOrder(t *testing.T) {
 	o := Order{
-		ID: &#34;100&#34;,
-		CurrencyAlphaCode: &#34;INR&#34;,
+		ID: &quot;100&quot;,
+		CurrencyAlphaCode: &quot;INR&quot;,
 		Items: []Item{
 			{
-			ID: &#34;500&#34;,
+			ID: &quot;500&quot;,
 			Quantity: 2,
-			UnitPrice: money.New(100, &#34;INR&#34;),
+			UnitPrice: money.New(100, &quot;INR&quot;),
 		},
 	},
 }
 	total, err := o.ComputeTotal()
 	assert.NoError(t, err)
 	assert.Equal(t, int64(200), total.Amount())
-	assert.Equal(t, &#34;INR&#34;, total.Currency().Code)
+	assert.Equal(t, &quot;INR&quot;, total.Currency().Code)
 }
 </code></pre><p>Now if you enter the same command:</p>
 <p><code>go test ./...</code></p>
@@ -399,17 +391,17 @@ Thanks for reading.</p>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="http://localhost:1313/tags/golang/">Golang</a></li>
-      <li><a href="http://localhost:1313/tags/testing/">Testing</a></li>
-      <li><a href="http://localhost:1313/tags/unit-testing/">Unit-Testing</a></li>
-      <li><a href="http://localhost:1313/tags/open-source/">Open-Source</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/golang/">Golang</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/testing/">Testing</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/unit-testing/">Unit-Testing</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/open-source/">Open-source</a></li>
     </ul>
   </footer>
 </article>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+    <span>&copy; 2026 <a href="https://1shubham7.netlify.app">Shubham Singh</a></span>
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">

@@ -4,7 +4,7 @@ description: "A step-by-step guide to running Grafana OnCall without any egress 
 dateString: April 2026
 draft: false
 tags: ["Grafana", "Kubernetes", "DevOps", "Air-Gapped", "Helm", "OCI", "Harbor"]
-weight: 101
+weight: 2
 cover:
     image: "/blog/grafana-graphs/grafana-cover.png"
 ---

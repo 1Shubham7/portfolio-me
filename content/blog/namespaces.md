@@ -4,7 +4,7 @@ description: ""
 dateString: August 2024
 draft: false
 tags: ["Kubernetes", "Namespaces", "DevOps", "K8s basics"]
-weight: 100
+weight: 8
 cover:
     image: "experience/lfx.webp"
 ---

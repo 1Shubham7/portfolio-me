@@ -4,7 +4,7 @@ description: "explaining YAML from basics to advanced · What is YAML? YAML (whi
 dateString: October 2023
 draft: false
 tags: ["YAML", "markdown", "DevOps", "Open-source", "GitHub"]
-weight: 101
+weight: 12
 cover:
     image: "blog/yaml.avif"
 ---

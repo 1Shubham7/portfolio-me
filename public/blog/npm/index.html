@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -9,18 +9,17 @@
 <meta name="keywords" content="NPM, Package Managers, React, NodeJS">
 <meta name="description" content="JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/blog/npm/">
+<link rel="canonical" href="https://1shubham7.netlify.app/blog/npm/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.2b833c6baa7a96407c2417c7a4049985b42c21cccc2472abf4603967eafd2273.css" integrity="sha256-K4M8a6p6lkB8JBfHpASZhbQsIczMJHKr9GA5Z&#43;r9InM=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://1shubham7.netlify.app/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://1shubham7.netlify.app/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://1shubham7.netlify.app/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://1shubham7.netlify.app/apple-touch-icon.png">
+<link rel="mask-icon" href="https://1shubham7.netlify.app/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/npm/">
 <noscript>
     <style>
         #theme-toggle,
@@ -60,13 +59,13 @@
 </noscript><meta property="og:title" content="WTF is JSON" />
 <meta property="og:description" content="JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of..." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/blog/npm/" />
-<meta property="og:image" content="http://localhost:1313/blog/npm.avif" /><meta property="article:section" content="blog" />
+<meta property="og:url" content="https://1shubham7.netlify.app/blog/npm/" />
+<meta property="og:image" content="https://1shubham7.netlify.app/blog/npm.avif" /><meta property="article:section" content="blog" />
 
 
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="http://localhost:1313/blog/npm.avif" />
+<meta name="twitter:image" content="https://1shubham7.netlify.app/blog/npm.avif" />
 <meta name="twitter:title" content="WTF is JSON"/>
 <meta name="twitter:description" content="JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of..."/>
 
@@ -75,18 +74,18 @@
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Blogs",
-      "item": "http://localhost:1313/blog/"
-    }, 
+  "itemListElement": [, 
     {
       "@type": "ListItem",
       "position":  2 ,
+      "name": "Blogs",
+      "item": "https://1shubham7.netlify.app/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
       "name": "WTF is JSON",
-      "item": "http://localhost:1313/blog/npm/"
+      "item": "https://1shubham7.netlify.app/blog/npm/"
     }
   ]
 }
@@ -101,21 +100,21 @@
   "keywords": [
     "NPM", "Package Managers", "React", "NodeJS"
   ],
-  "articleBody": "You might remember using npm start in your React app or using pip in python. Both npm and pip are package managers of their respective languages. Therefore the technical definition of package manager is -\n“A package manager is a tool used in software development to manage the installation, updating, and removal of software packages or libraries.”\nPackage managers automate the process of searching, installing, and maintaining these packages, which makes it easier for developers to include them in their projects. Instead of manually downloading and installing each package separately, developers can use the package manager to handle all the dependencies and ensure that the necessary versions are installed.\nThere are two main types of package managers:\nSystem-Level Package Managers: These package managers are used to manage packages at the operating system level. Examples of system-level package managers include Aptitude (used in Debian and Ubuntu), YUM (used in CentOS and Fedora), and Homebrew (used in macOS).\nLanguage-Specific Package Managers: These package managers are used to manage packages specific to a programming language. Examples of language-specific package managers include npm (used in Node.js), pip (used in Python), Composer (used in PHP), and NuGet (used in .NET).\nIn conclusion, a package manager is a tool that automates the process of managing software dependencies by allowing developers to search, install, and update packages or libraries easily. The use of a package manager saves time and reduces duplication of effort by automating the handling of dependencies. Almost every programming language has its own package manager, and using one has become a critical part of modern software development workflows.\n",
+  "articleBody": "You might remember using npm start in your React app or using pip in python. Both npm and pip are package managers of their respective languages. Therefore the technical definition of package manager is -\n“A package manager is a tool used in software development to manage the installation, updating, and removal of software packages or libraries.\"\nPackage managers automate the process of searching, installing, and maintaining these packages, which makes it easier for developers to include them in their projects. Instead of manually downloading and installing each package separately, developers can use the package manager to handle all the dependencies and ensure that the necessary versions are installed.\nThere are two main types of package managers:\nSystem-Level Package Managers: These package managers are used to manage packages at the operating system level. Examples of system-level package managers include Aptitude (used in Debian and Ubuntu), YUM (used in CentOS and Fedora), and Homebrew (used in macOS).\nLanguage-Specific Package Managers: These package managers are used to manage packages specific to a programming language. Examples of language-specific package managers include npm (used in Node.js), pip (used in Python), Composer (used in PHP), and NuGet (used in .NET).\nIn conclusion, a package manager is a tool that automates the process of managing software dependencies by allowing developers to search, install, and update packages or libraries easily. The use of a package manager saves time and reduces duplication of effort by automating the handling of dependencies. Almost every programming language has its own package manager, and using one has become a critical part of modern software development workflows.\n",
   "wordCount" : "264",
   "inLanguage": "en",
-  "image":"http://localhost:1313/blog/npm.avif","datePublished": "0001-01-01T00:00:00Z",
+  "image":"https://1shubham7.netlify.app/blog/npm.avif","datePublished": "0001-01-01T00:00:00Z",
   "dateModified": "0001-01-01T00:00:00Z",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "http://localhost:1313/blog/npm/"
+    "@id": "https://1shubham7.netlify.app/blog/npm/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Shubham Singh",
     "logo": {
       "@type": "ImageObject",
-      "url": "http://localhost:1313/favicon.ico"
+      "url": "https://1shubham7.netlify.app/favicon.ico"
     }
   }
 }
@@ -137,7 +136,7 @@
 <header class="header sticky-header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
+            <a href="https://1shubham7.netlify.app" accesskey="h" title="Shubham Singh (Alt + H)">Shubham Singh</a>
             <span class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -159,33 +158,26 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-                <ul class="lang-switch"><li>|</li>
-                </ul>
             </span>
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/" title="Home">
+                <a href="https://1shubham7.netlify.app/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/experience" title="Experience">
+                <a href="https://1shubham7.netlify.app/experience" title="Experience">
                     <span>Experience</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/blog" title="Blog">
+                <a href="https://1shubham7.netlify.app/blog" title="Blog">
                     <span>Blog</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/projects" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/search" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="https://1shubham7.netlify.app/search" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
@@ -196,7 +188,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/blog/">Blogs</a></div>
+    <div class="breadcrumbs"><a href="https://1shubham7.netlify.app">Home</a>&nbsp;»&nbsp;<a href="https://1shubham7.netlify.app/blog/">Blogs</a></div>
     <h1 class="post-title">
       WTF is JSON
     </h1>
@@ -210,7 +202,7 @@ May 2023
 
 </div>
   </header> 
-<figure class="entry-cover"><img loading="lazy" src="http://localhost:1313/blog/npm.avif" alt="">
+<figure class="entry-cover"><img loading="lazy" src="https://1shubham7.netlify.app/blog/npm.avif" alt="">
         
 </figure><div class="toc">
     <details >
@@ -230,7 +222,7 @@ May 2023
 </div>
 
   <div class="post-content"><p>You might remember using npm start in your React app or using pip in python. Both npm and pip are package managers of their respective languages. Therefore the technical definition of package manager is -</p>
-<p><em><strong>&ldquo;A package manager is a tool used in software development to manage the installation, updating, and removal of software packages or libraries.&rdquo;</strong></em></p>
+<p><em><strong>&ldquo;A package manager is a tool used in software development to manage the installation, updating, and removal of software packages or libraries.&quot;</strong></em></p>
 <p>Package managers automate the process of searching, installing, and maintaining these packages, which makes it easier for developers to include them in their projects. Instead of manually downloading and installing each package separately, developers can use the package manager to handle all the dependencies and ensure that the necessary versions are installed.</p>
 <p>There are two main types of package managers:</p>
 <h2 id="system-level-package-managers">System-Level Package Managers:<a hidden class="anchor" aria-hidden="true" href="#system-level-package-managers">#</a></h2>
@@ -244,17 +236,17 @@ May 2023
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="http://localhost:1313/tags/npm/">NPM</a></li>
-      <li><a href="http://localhost:1313/tags/package-managers/">Package Managers</a></li>
-      <li><a href="http://localhost:1313/tags/react/">React</a></li>
-      <li><a href="http://localhost:1313/tags/nodejs/">NodeJS</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/npm/">NPM</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/package-managers/">Package Managers</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/react/">React</a></li>
+      <li><a href="https://1shubham7.netlify.app/tags/nodejs/">NodeJS</a></li>
     </ul>
   </footer>
 </article>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="http://localhost:1313/">Shubham Singh</a></span>
+    <span>&copy; 2026 <a href="https://1shubham7.netlify.app">Shubham Singh</a></span>
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">

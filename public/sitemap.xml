@@ -2,201 +2,230 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/experience/lfx/</loc>
+    <loc>https://1shubham7.netlify.app/blog/grafana-dashboards/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/lfx/</loc>
+    <loc>https://1shubham7.netlify.app/blog/air-gapped-oncal/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/jwt/</loc>
+    <loc>https://1shubham7.netlify.app/blog/jwt/</loc>
   </url><url>
-    <loc>http://localhost:1313/experience/gfg/</loc>
+    <loc>https://1shubham7.netlify.app/blog/lfx/</loc>
   </url><url>
-    <loc>http://localhost:1313/experience/cncf-oras/</loc>
-    <lastmod>2023-08-16T11:11:19+05:30</lastmod>
+    <loc>https://1shubham7.netlify.app/blog/statefulsets/</loc>
   </url><url>
-    <loc>http://localhost:1313/experience/cncf-zero-to-merge/</loc>
+    <loc>https://1shubham7.netlify.app/experience/obmondo/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/blog/kyverno-intro/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/blog/k8s-depl-stratigies/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/blog/namespaces/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/blog/testing/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/blog/artifacts/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/experience/lfx/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/blog/api/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/experience/gfg/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/experience/hooman/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/blog/yaml/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/experience/cncf-zero-to-merge/</loc>
     <lastmod>2023-08-16T11:12:44+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/experience/hooman/</loc>
+    <loc>https://1shubham7.netlify.app/blog/database/</loc>
   </url><url>
-    <loc>http://localhost:1313/experience/gssoc/</loc>
+    <loc>https://1shubham7.netlify.app/experience/cncf/</loc>
   </url><url>
-    <loc>http://localhost:1313/experience/hashnode/</loc>
+    <loc>https://1shubham7.netlify.app/blog/terminator/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/experience/gssoc/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/blog/devops/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/experience/hashnode/</loc>
     <lastmod>2023-08-16T11:14:37+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/blog/namespaces/</loc>
+    <loc>https://1shubham7.netlify.app/blog/vagrant/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/kyverno-intro/</loc>
+    <loc>https://1shubham7.netlify.app/blog/gsoc/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/statefulsets/</loc>
+    <loc>https://1shubham7.netlify.app/blog/open-source101/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/testing/</loc>
+    <loc>https://1shubham7.netlify.app/blog/python_datatypes/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/gsoc/</loc>
+    <loc>https://1shubham7.netlify.app/blog/osi/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/database/</loc>
+    <loc>https://1shubham7.netlify.app/blog/npm/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/python_datatypes/</loc>
+    <loc>https://1shubham7.netlify.app/blog/json/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/dbms/</loc>
+    <loc>https://1shubham7.netlify.app/blog/sass/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/sass/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/artifacts/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/k8s-depl-stratigies/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/open-source101/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/osi/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/devops/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/json/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/npm/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/vagrant/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/yaml/</loc>
-  </url><url>
-    <loc>http://localhost:1313/blog/api/</loc>
-  </url><url>
-    <loc>http://localhost:1313/projects/code-buddy/</loc>
-  </url><url>
-    <loc>http://localhost:1313/projects/</loc>
-    <lastmod>2023-08-16T11:18:26+05:30</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2023-08-16T11:18:26+05:30</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/web-server/</loc>
-    <lastmod>2023-08-16T11:18:26+05:30</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/experience/</loc>
+    <loc>https://1shubham7.netlify.app/experience/</loc>
     <lastmod>2023-08-16T11:14:37+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/golang/</loc>
+    <loc>https://1shubham7.netlify.app/tags/golang/</loc>
     <lastmod>2023-08-16T11:14:37+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/javascript/</loc>
+    <loc>https://1shubham7.netlify.app/tags/javascript/</loc>
     <lastmod>2023-08-16T11:14:37+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/open-source/</loc>
+    <loc>https://1shubham7.netlify.app/tags/open-source/</loc>
     <lastmod>2023-08-16T11:14:37+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/react/</loc>
+    <loc>https://1shubham7.netlify.app/tags/react/</loc>
     <lastmod>2023-08-16T11:14:37+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://1shubham7.netlify.app/</loc>
     <lastmod>2023-08-16T11:14:37+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/devops/</loc>
+    <loc>https://1shubham7.netlify.app/tags/</loc>
+    <lastmod>2023-08-16T11:14:37+05:30</lastmod>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/devops/</loc>
     <lastmod>2023-08-16T11:12:44+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/projects/mission-health/</loc>
+    <loc>https://1shubham7.netlify.app/tags/air-gapped/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/api/</loc>
+    <loc>https://1shubham7.netlify.app/tags/api/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/backend/</loc>
+    <loc>https://1shubham7.netlify.app/tags/backend/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/behavior-driven-development-bdd/</loc>
+    <loc>https://1shubham7.netlify.app/tags/behavior-driven-development-bdd/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/</loc>
+    <loc>https://1shubham7.netlify.app/blog/</loc>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://1shubham7.netlify.app/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/ci/cd/</loc>
+    <loc>https://1shubham7.netlify.app/tags/ci/cd/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/cncf/</loc>
+    <loc>https://1shubham7.netlify.app/tags/cncf/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/css/</loc>
+    <loc>https://1shubham7.netlify.app/tags/css/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/datatypes/</loc>
+    <loc>https://1shubham7.netlify.app/tags/datatypes/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/deployment/</loc>
+    <loc>https://1shubham7.netlify.app/tags/deployment/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/django/</loc>
+    <loc>https://1shubham7.netlify.app/tags/developer-tools/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/dsa/</loc>
+    <loc>https://1shubham7.netlify.app/tags/django/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/e2e-testing/</loc>
+    <loc>https://1shubham7.netlify.app/tags/docker/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/frontend/</loc>
+    <loc>https://1shubham7.netlify.app/tags/dsa/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/gin/</loc>
+    <loc>https://1shubham7.netlify.app/tags/e2e-testing/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/ginkgo/</loc>
+    <loc>https://1shubham7.netlify.app/tags/frontend/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/github/</loc>
+    <loc>https://1shubham7.netlify.app/tags/gin/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/gomega/</loc>
+    <loc>https://1shubham7.netlify.app/tags/ginkgo/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/gsoc/</loc>
+    <loc>https://1shubham7.netlify.app/tags/github/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/html/</loc>
+    <loc>https://1shubham7.netlify.app/tags/go/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/hugo/</loc>
+    <loc>https://1shubham7.netlify.app/tags/gomega/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/json/</loc>
+    <loc>https://1shubham7.netlify.app/tags/grafana/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/jwt-authentication/</loc>
+    <loc>https://1shubham7.netlify.app/tags/gsoc/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/k8s/</loc>
+    <loc>https://1shubham7.netlify.app/tags/harbor/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/k8s-basics/</loc>
+    <loc>https://1shubham7.netlify.app/tags/helm/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/kubeedge/</loc>
+    <loc>https://1shubham7.netlify.app/tags/hugo/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/kubernetes/</loc>
+    <loc>https://1shubham7.netlify.app/tags/json/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/kubernetes-api/</loc>
+    <loc>https://1shubham7.netlify.app/tags/jwt-authentication/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/kyverno/</loc>
+    <loc>https://1shubham7.netlify.app/tags/k8s/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/markdown/</loc>
+    <loc>https://1shubham7.netlify.app/tags/k8s-basics/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/namespaces/</loc>
+    <loc>https://1shubham7.netlify.app/tags/kubeedge/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/networking/</loc>
+    <loc>https://1shubham7.netlify.app/tags/kubernetes/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/nodejs/</loc>
+    <loc>https://1shubham7.netlify.app/tags/kubernetes-api/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/npm/</loc>
+    <loc>https://1shubham7.netlify.app/tags/kyverno/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/open-source-programs/</loc>
+    <loc>https://1shubham7.netlify.app/tags/linux/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/osi-model/</loc>
+    <loc>https://1shubham7.netlify.app/tags/markdown/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/package-managers/</loc>
+    <loc>https://1shubham7.netlify.app/tags/namespaces/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/programming/</loc>
+    <loc>https://1shubham7.netlify.app/tags/networking/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/python/</loc>
+    <loc>https://1shubham7.netlify.app/tags/node-exporter/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/sass/</loc>
+    <loc>https://1shubham7.netlify.app/tags/nodejs/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/scss/</loc>
+    <loc>https://1shubham7.netlify.app/tags/npm/</loc>
   </url><url>
-    <loc>http://localhost:1313/search/</loc>
+    <loc>https://1shubham7.netlify.app/tags/observability/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/statefulsets/</loc>
+    <loc>https://1shubham7.netlify.app/tags/oci/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/technical-writing/</loc>
+    <loc>https://1shubham7.netlify.app/tags/open-source-programs/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/test-driven-development-tdd/</loc>
+    <loc>https://1shubham7.netlify.app/tags/oras/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/testify/</loc>
+    <loc>https://1shubham7.netlify.app/tags/osi-model/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/testing/</loc>
+    <loc>https://1shubham7.netlify.app/tags/package-managers/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/tests/</loc>
+    <loc>https://1shubham7.netlify.app/tags/productivity/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/unit-testing/</loc>
+    <loc>https://1shubham7.netlify.app/tags/programming/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/vagrant/</loc>
+    <loc>https://1shubham7.netlify.app/tags/python/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/web-design/</loc>
+    <loc>https://1shubham7.netlify.app/tags/sass/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/yaml/</loc>
+    <loc>https://1shubham7.netlify.app/tags/scss/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/search/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/security/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/sre/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/statefulsets/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/tailwind-css/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/technical-writing/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/terminal/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/terminator/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/test-driven-development-tdd/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/testify/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/testing/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/unit-testing/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/vagrant/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/web-design/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/web-development/</loc>
+  </url><url>
+    <loc>https://1shubham7.netlify.app/tags/yaml/</loc>
   </url>
 </urlset>

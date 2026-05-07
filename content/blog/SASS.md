@@ -4,7 +4,7 @@ description: "SASS vs SCSS, Differences and similarities. · You must have heard
 dateString: July 2023
 draft: false
 tags: ["SASS", "CSS", "SCSS", "Web Design"]
-weight: 101
+weight: 23
 cover:
     image: "blog/sass.png"
 ---

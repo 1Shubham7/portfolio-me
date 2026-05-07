@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Helm on Shubham Singh</title>
+    <link>https://1shubham7.netlify.app/tags/helm/</link>
+    <description>Recent content in Helm on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://1shubham7.netlify.app/tags/helm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Deploying Grafana OnCall in an Air-Gapped Kubernetes Cluster</title>
+      <link>https://1shubham7.netlify.app/blog/air-gapped-oncal/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/air-gapped-oncal/</guid>
+      <description>A step-by-step guide to running Grafana OnCall without any egress to grafana.com — using OCI artifacts, init containers, and Kubernetes secrets to deliver plugins in restricted environments.</description>
+    </item>
+    
+  </channel>
+</rss>

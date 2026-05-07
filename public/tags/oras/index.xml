@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ORAS on Shubham Singh</title>
+    <link>https://1shubham7.netlify.app/tags/oras/</link>
+    <description>Recent content in ORAS on Shubham Singh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://1shubham7.netlify.app/tags/oras/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Open-source Contributor (CNCF)</title>
+      <link>https://1shubham7.netlify.app/experience/cncf/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/cncf/</guid>
+      <description>Outline Actively contributed to multiple Cloud Native Computing Foundation (CNCF) projects for over 3 years, working across codebases, testing, and documentation. Collaborated closely with project maintainers to identify and fix critical issues, improve developer experience, and strengthen overall project quality. Contributions spanned engineering, documentation, and introducing projects to a wider audience through videos and presentations.
+ Fixed 13 critical issues in CNCF projects, including improving webhook-CLI consistency, standardizing image variable fields, creating less vulnerable production-level image, enhancing error logging and increasing test coverage; authored 13 Pull Requests that got merged.</description>
+    </item>
+    
+  </channel>
+</rss>

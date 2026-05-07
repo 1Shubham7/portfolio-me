@@ -4,7 +4,7 @@ description: "JSON Explained · We often come through JSON files during developi
 dateString: May 2023
 draft: false
 tags: ["JSON", "JavaScript", "NodeJS"]
-weight: 101
+weight: 22
 cover:
     image: "blog/json.jpg"
 ---

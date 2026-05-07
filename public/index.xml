@@ -2,293 +2,292 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Shubham Singh</title>
-    <link>http://localhost:1313/</link>
+    <link>https://1shubham7.netlify.app/</link>
     <description>Recent content on Shubham Singh</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 16 Aug 2023 11:18:26 +0530</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Aug 2023 11:14:37 +0530</lastBuildDate><atom:link href="https://1shubham7.netlify.app/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>LFX Mentee - CNCF KubeEdge</title>
-      <link>http://localhost:1313/experience/lfx/</link>
+      <title>Grafana Showed My Node Was Out of Memory. It Wasn&#39;t.</title>
+      <link>https://1shubham7.netlify.app/blog/grafana-dashboards/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/experience/lfx/</guid>
-      <description>The Linux Foundation Mentorship Program (LFX Mentorship) is 3 months paid internship/mentorship program where people contribute to open source projects. The program aims to foster innovation and talent in the open source community, and to help developers get job and internship opportunities after graduating. The program offers part-time and full-time mentor positions, and mentorships for projects such as CNCF, GraphQL, Hyperledger, LF Networking, Linux Kernel, OpenHPC, Open Mainframe Project, and RISC-V...</description>
+      <guid>https://1shubham7.netlify.app/blog/grafana-dashboards/</guid>
+      <description>Two Grafana dashboards, same node, same timestamp - one shows 62 GB used, other shows 10 GB. Both are correct. Here&amp;#39;s the full story of how Linux memory actually works and which number you should actually be watching.</description>
     </item>
     
     <item>
-      <title>My journey from a CNCF contributor to LFX mentee</title>
-      <link>http://localhost:1313/blog/lfx/</link>
+      <title>Deploying Grafana OnCall in an Air-Gapped Kubernetes Cluster</title>
+      <link>https://1shubham7.netlify.app/blog/air-gapped-oncal/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/lfx/</guid>
-      <description>&lt;p&gt;Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX  program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.&lt;/p&gt;</description>
+      <guid>https://1shubham7.netlify.app/blog/air-gapped-oncal/</guid>
+      <description>A step-by-step guide to running Grafana OnCall without any egress to grafana.com — using OCI artifacts, init containers, and Kubernetes secrets to deliver plugins in restricted environments.</description>
     </item>
     
     <item>
       <title>Building a Golang backend system with JWT authentication</title>
-      <link>http://localhost:1313/blog/jwt/</link>
+      <link>https://1shubham7.netlify.app/blog/jwt/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/jwt/</guid>
+      <guid>https://1shubham7.netlify.app/blog/jwt/</guid>
       <description>When creating a website&amp;#39;s backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely...</description>
     </item>
     
     <item>
-      <title>GeeksforGeeks Technical Writer</title>
-      <link>http://localhost:1313/experience/gfg/</link>
+      <title>My journey from a CNCF contributor to LFX mentee</title>
+      <link>https://1shubham7.netlify.app/blog/lfx/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/experience/gfg/</guid>
-      <description>GeeksforGeeks is a leading platform that provides computer science resources and coding challenges for programmers and technology enthusiasts, along with interview and exam preparations for upcoming aspirants. With a strong emphasis on enhancing coding skills and knowledge, it has become a trusted destination for over 12 million plus registered users worldwide. The platform offers a vast collection of tutorials, practice problems, interview tutorials, articles, and courses, covering various domains of computer science.</description>
-    </item>
-    
-    <item>
-      <title>CNCF ORAS Contributor</title>
-      <link>http://localhost:1313/experience/cncf-oras/</link>
-      <pubDate>Wed, 16 Aug 2023 11:11:19 +0530</pubDate>
-      
-      <guid>http://localhost:1313/experience/cncf-oras/</guid>
-      <description>ORAS is the de facto tool for working with OCI Artifacts. It treats media types as a critical piece of the puzzle. Container images are never assumed to be the artifact in question. ORAS provides CLI and client libraries to distribute artifacts across OCI-compliant registries.</description>
-    </item>
-    
-    <item>
-      <title>CNCF Zero to Merge</title>
-      <link>http://localhost:1313/experience/cncf-zero-to-merge/</link>
-      <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
-      
-      <guid>http://localhost:1313/experience/cncf-zero-to-merge/</guid>
-      <description>CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.</description>
-    </item>
-    
-    <item>
-      <title>Hugo Expert Intern</title>
-      <link>http://localhost:1313/experience/hooman/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/experience/hooman/</guid>
-      <description>Creating engaging and user-friendly designs for digital interfaces, as well as developing fully functional and responsive websites. working with technologies around web development, Artificial Intelligence, and web3.</description>
-    </item>
-    
-    <item>
-      <title>GirlScript Summer of Code top 100 contributors</title>
-      <link>http://localhost:1313/experience/gssoc/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/experience/gssoc/</guid>
-      <description>Girlscript Summer Of Code is a three-month-long Open-Source Program conducted every summer by the Girlscript Foundation. With constant efforts, participants contribute to numerous projects under the extreme guidance of skilled mentors over these months.</description>
-    </item>
-    
-    <item>
-      <title>Technical Blogs on Hashnode</title>
-      <link>http://localhost:1313/experience/hashnode/</link>
-      <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
-      
-      <guid>http://localhost:1313/experience/hashnode/</guid>
-      <description>Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community.</description>
-    </item>
-    
-    <item>
-      <title>Beginners guide to Kubernetes namespaces</title>
-      <link>http://localhost:1313/blog/namespaces/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/namespaces/</guid>
-      <description>&lt;p&gt;Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&amp;rsquo;s start with the basics.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Introduction to Kubernetes Native Policy Management with Kyverno</title>
-      <link>http://localhost:1313/blog/kyverno-intro/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/kyverno-intro/</guid>
-      <description>&lt;p&gt;Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.&lt;/p&gt;
-&lt;h2 id=&#34;admission-controllers&#34;&gt;Admission Controllers&lt;/h2&gt;
-&lt;p&gt;Let&amp;rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.&lt;/p&gt;</description>
+      <guid>https://1shubham7.netlify.app/blog/lfx/</guid>
+      <description>Contributing to open source, specially to the Cloud Native Community Foundation (CNCF) has been one of the most effective ways for me to learn programming, understand how large codebases work and work with experienced engineers on large scale projects. It&amp;rsquo;s been a year for me as a contributor in the CNCF ecosystem and I also have recently completed my LFX (Linux Foundation Mentorship) program as a mentee. As I wrap up my LFX program I want to share my journey in open source - from contributing to CNCF projects to getting into the prestigious LFX (Linux Foundation Mentorship) program and completing it successfully.</description>
     </item>
     
     <item>
       <title>Kubernetes Statefulsets</title>
-      <link>http://localhost:1313/blog/statefulsets/</link>
+      <link>https://1shubham7.netlify.app/blog/statefulsets/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/statefulsets/</guid>
+      <guid>https://1shubham7.netlify.app/blog/statefulsets/</guid>
       <description>In simplest terms StatefulSets are Kubernetes component that is used specifically for stateful applications. These are workload API object used to manage stateful applications. They manage the deployment and scaling of a set of Pods (Creating more replicas or deleting them), and StatefulSets are also responsible for the ordering and uniqueness of these Pods. StatefulSet was released in the Kubernetes 1.9 release, let see K8s Statefulsets in this article...</description>
     </item>
     
     <item>
-      <title>Unit testing using Golang - a beginner&#39;s guide</title>
-      <link>http://localhost:1313/blog/testing/</link>
+      <title>Site Reliability Engineer (Obmondo)</title>
+      <link>https://1shubham7.netlify.app/experience/obmondo/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/testing/</guid>
-      <description>A beginners guide to writing unit tests in Golang · Let&amp;#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...</description>
+      <guid>https://1shubham7.netlify.app/experience/obmondo/</guid>
+      <description>Outline Worked as an SRE, handling production systems and managing Kubernetes clusters and Linux servers across both internal and customer environments. As the youngest SRE at Obmondo, regularly took ownership of production alerts and incidents, performing root cause analysis and implementing long-term fixes. Led the rewrite of the most business-critical internal tool, improving its reliability, testing, and integration into GitOps workflows. Authored and improved a large part of the company’s ISMS, strengthening both the company’s and customers’ information security.</description>
     </item>
     
     <item>
-      <title>5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience</title>
-      <link>http://localhost:1313/blog/gsoc/</link>
+      <title>Introduction to Kubernetes Native Policy Management with Kyverno</title>
+      <link>https://1shubham7.netlify.app/blog/kyverno-intro/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/gsoc/</guid>
-      <description>Avoid these 5 mistakes to get selected in GSoC. · Let&amp;#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual...</description>
-    </item>
-    
-    <item>
-      <title>Databases - the easy way</title>
-      <link>http://localhost:1313/blog/database/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/database/</guid>
-      <description>Databases in the simplest yet most powerful way ever. Keeping in mind placements and development. · Databases: just a digital tool that stores and...</description>
-    </item>
-    
-    <item>
-      <title>Datatypes in Python</title>
-      <link>http://localhost:1313/blog/python_datatypes/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/python_datatypes/</guid>
-      <description>Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence...</description>
-    </item>
-    
-    <item>
-      <title>DBMS - the easy way</title>
-      <link>http://localhost:1313/blog/dbms/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/dbms/</guid>
-      <description>Database Management System in the simplest but most powerful way. · What is DBMS? if you have created or are going to create a database, obviously, you...</description>
-    </item>
-    
-    <item>
-      <title>Difference between SASS and SCSS</title>
-      <link>http://localhost:1313/blog/sass/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/sass/</guid>
-      <description>SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two...</description>
-    </item>
-    
-    <item>
-      <title>Everything about Artifacts for DevOps</title>
-      <link>http://localhost:1313/blog/artifacts/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/artifacts/</guid>
-      <description>Artifacts - from beginner to advanced. · What are artifacts? In the broadest sense, artifacts are objects or items created or modified by humans that...</description>
+      <guid>https://1shubham7.netlify.app/blog/kyverno-intro/</guid>
+      <description>Kyverno is a dynamic admission controller that can be used to govern and enforce how a Kubernetes cluster is used.
+Admission Controllers Let&amp;rsquo;s first start with admission controllers since Kyverno is an admission controller. In Kubernetes admission controllers are used to intercept requests going to the API servier and one of the two or both the things with them - mutate or/and validate. Kubernetes comes up with built-in admission controllers. The issue with these built-in admission controllers is that they are highly specific and different organizations may have different use cases with admission contollers not being fulfilled by these built-in admission controllers, therefore, for meeting these requirements we have dynamic admission controllers that can be developed as extensions and can be run as webhooks configured at runtime.</description>
     </item>
     
     <item>
       <title>Kubernetes Deployment Strategies</title>
-      <link>http://localhost:1313/blog/k8s-depl-stratigies/</link>
+      <link>https://1shubham7.netlify.app/blog/k8s-depl-stratigies/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/k8s-depl-stratigies/</guid>
+      <guid>https://1shubham7.netlify.app/blog/k8s-depl-stratigies/</guid>
       <description>Kubernetes, or K8s, is an open-source container orchestration technology used to automate the manual processes of deploying, managing, and scaling applications with the help of containers. Originally developed by engineers at Google, Kubernetes was donated to the CNCF (Cloud Native Computing Foundation) in 2015...</description>
     </item>
     
     <item>
-      <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
-      <link>http://localhost:1313/blog/open-source101/</link>
+      <title>Beginners guide to Kubernetes namespaces</title>
+      <link>https://1shubham7.netlify.app/blog/namespaces/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/open-source101/</guid>
-      <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
+      <guid>https://1shubham7.netlify.app/blog/namespaces/</guid>
+      <description>Namespaces are Kubernetes Objects used to divide a Cluster into smaller organized sub clusters as per different needs. Namespaces enables users to isolate group of resources within a cluster, this is useful when multiple teams are working on a shared cluster and each team is independent of others. In this article, we will discuss how to change or switch namespaces in a Kubernetes cluster, but before that let&amp;rsquo;s start with the basics.</description>
     </item>
     
     <item>
-      <title>OSI Model - the easy way</title>
-      <link>http://localhost:1313/blog/osi/</link>
+      <title>Unit testing using Golang - a beginner&#39;s guide</title>
+      <link>https://1shubham7.netlify.app/blog/testing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/osi/</guid>
-      <description>OSI Model - Straight to the point. · OSI (Open Systems Interconnection) model describes seven layers through which computer systems communicate over a...</description>
+      <guid>https://1shubham7.netlify.app/blog/testing/</guid>
+      <description>A beginners guide to writing unit tests in Golang · Let&amp;#39;s first start with what unit testing is. Unit Testing is a way of testing where the behavior of a...</description>
     </item>
     
     <item>
-      <title>Some DevOps terms a beginner should know about</title>
-      <link>http://localhost:1313/blog/devops/</link>
+      <title>Everything about Artifacts for DevOps</title>
+      <link>https://1shubham7.netlify.app/blog/artifacts/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/devops/</guid>
-      <description>Start your DevOps journey with these terms. · DevOps can be a bit confusing for beginners, that is because of its complex terminologies. Here are some...</description>
+      <guid>https://1shubham7.netlify.app/blog/artifacts/</guid>
+      <description>Artifacts - from beginner to advanced. · What are artifacts? In the broadest sense, artifacts are objects or items created or modified by humans that...</description>
     </item>
     
     <item>
-      <title>WTF is JSON</title>
-      <link>http://localhost:1313/blog/json/</link>
+      <title>SWE Intern (Linux Foundation Mentorship)</title>
+      <link>https://1shubham7.netlify.app/experience/lfx/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/json/</guid>
-      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
-    </item>
-    
-    <item>
-      <title>WTF is JSON</title>
-      <link>http://localhost:1313/blog/npm/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/npm/</guid>
-      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
-    </item>
-    
-    <item>
-      <title>WTF is Vagrant</title>
-      <link>http://localhost:1313/blog/vagrant/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/vagrant/</guid>
-      <description>Vagrant explained for absolute beginner. · So recently, I was setting up locally an open-source software, so to contribute to it (BTW it is called Zulip,...</description>
-    </item>
-    
-    <item>
-      <title>YAML - from basics to advanced</title>
-      <link>http://localhost:1313/blog/yaml/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/blog/yaml/</guid>
-      <description>explaining YAML from basics to advanced · What is YAML? YAML (which stands for &amp;#39;YAML Ain&amp;#39;t Markup Language&amp;#39;) is a human-readable data serialization...</description>
+      <guid>https://1shubham7.netlify.app/experience/lfx/</guid>
+      <description>Outline Selected as one of 47 mentees globally from thousands of applicants for the Linux Foundation Mentorship program. Worked directly under senior engineers from Huawei and KubeSphere, who are core maintainers of the KubeEdge project. Collaborated closely with maintainers through weekly discussions, providing input on testing strategy and future test development for the project. At the end of the mentorship, was awarded organization membership by KubeEdge in recognition of contributions.</description>
     </item>
     
     <item>
       <title>Everything about API explained!!</title>
-      <link>http://localhost:1313/blog/api/</link>
+      <link>https://1shubham7.netlify.app/blog/api/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/api/</guid>
+      <guid>https://1shubham7.netlify.app/blog/api/</guid>
       <description>API : from beginner to advanced concepts · During our Web development journey will all get to hear the term - API. Some of us must have used some APIs,...</description>
     </item>
     
     <item>
-      <title>Code Buddy</title>
-      <link>http://localhost:1313/projects/code-buddy/</link>
+      <title>Technical Writer (GeeksforGeeks)</title>
+      <link>https://1shubham7.netlify.app/experience/gfg/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/projects/code-buddy/</guid>
-      <description>a place for coders to find their buddies - find a coding partner for hackathons, events and just chilling out. find programmers near you, Sort by location, technology, and shared interests.</description>
+      <guid>https://1shubham7.netlify.app/experience/gfg/</guid>
+      <description>Outline Worked as a Technical Writing at GeeksforGeeks, creating educational content focused on DevOps, Kubernetes, Docker, and web technologies. Contributed consistently to learner-facing material and simplifying complex technical concepts for students and early-career engineers. My work reached more than 180,000 learners globally.
+ Wrote more than 200 tutorials and articles as part of my work that reached more than 180,000 learners. These tutorials and articles were mainly focused on DevOps, Kubernetes, Docker, and Web design.</description>
     </item>
     
     <item>
-      <title>Web Server</title>
-      <link>http://localhost:1313/projects/web-server/</link>
-      <pubDate>Wed, 16 Aug 2023 11:18:26 +0530</pubDate>
+      <title>Web Developer (Hooman Digital)</title>
+      <link>https://1shubham7.netlify.app/experience/hooman/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/projects/web-server/</guid>
-      <description>&lt;h2 id=&#34;web-server&#34;&gt;web server&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/1Shubham7/web-server&#34;&gt;https://github.com/1Shubham7/web-server&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description>
+      <guid>https://1shubham7.netlify.app/experience/hooman/</guid>
+      <description>Outline Worked as a Web Developer during a short-term internship, delivering a fast, high-performance static website for a client using Hugo. Handled most of the development, from design implementation to JavaScript and Hugo templating, and collaborated closely with the client to meet project requirements.
+ Developed a fast, high-performance static site for a client project using Hugo, integrating Figma designs with custom CSS, JavaScript, and Tailwind CSS. Ensured mobile responsiveness and collaborated with other teams to deliver a visually polished and user-friendly solution.</description>
     </item>
     
     <item>
-      <title></title>
-      <link>http://localhost:1313/projects/mission-health/</link>
+      <title>YAML - from basics to advanced</title>
+      <link>https://1shubham7.netlify.app/blog/yaml/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/projects/mission-health/</guid>
-      <description></description>
+      <guid>https://1shubham7.netlify.app/blog/yaml/</guid>
+      <description>explaining YAML from basics to advanced · What is YAML? YAML (which stands for &amp;#39;YAML Ain&amp;#39;t Markup Language&amp;#39;) is a human-readable data serialization...</description>
+    </item>
+    
+    <item>
+      <title>CNCF Zero to Merge</title>
+      <link>https://1shubham7.netlify.app/experience/cncf-zero-to-merge/</link>
+      <pubDate>Wed, 16 Aug 2023 11:12:44 +0530</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/cncf-zero-to-merge/</guid>
+      <description>CNCF Zero to merge is an Incubator program that help you work with CNCF projects, understand large and complex codebases and contribute to them.</description>
+    </item>
+    
+    <item>
+      <title>Databases - the easy way</title>
+      <link>https://1shubham7.netlify.app/blog/database/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/database/</guid>
+      <description>Databases in the simplest yet most powerful way ever. Keeping in mind placements and development. · Databases: just a digital tool that stores and...</description>
+    </item>
+    
+    <item>
+      <title>Open-source Contributor (CNCF)</title>
+      <link>https://1shubham7.netlify.app/experience/cncf/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/cncf/</guid>
+      <description>Outline Actively contributed to multiple Cloud Native Computing Foundation (CNCF) projects for over 3 years, working across codebases, testing, and documentation. Collaborated closely with project maintainers to identify and fix critical issues, improve developer experience, and strengthen overall project quality. Contributions spanned engineering, documentation, and introducing projects to a wider audience through videos and presentations.
+ Fixed 13 critical issues in CNCF projects, including improving webhook-CLI consistency, standardizing image variable fields, creating less vulnerable production-level image, enhancing error logging and increasing test coverage; authored 13 Pull Requests that got merged.</description>
+    </item>
+    
+    <item>
+      <title>Terminator Terminal: Every Shortcut and Feature You Need to Know</title>
+      <link>https://1shubham7.netlify.app/blog/terminator/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/terminator/</guid>
+      <description>A complete cheat sheet for the Terminator terminal emulator covering all keyboard shortcuts, broadcast mode, layouts, plugins and launch options.</description>
+    </item>
+    
+    <item>
+      <title>GirlScript Summer of Code top 100 contributors</title>
+      <link>https://1shubham7.netlify.app/experience/gssoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/gssoc/</guid>
+      <description>Girlscript Summer Of Code is a three-month-long Open-Source Program conducted every summer by the Girlscript Foundation. With constant efforts, participants contribute to numerous projects under the extreme guidance of skilled mentors over these months.</description>
+    </item>
+    
+    <item>
+      <title>Some DevOps terms a beginner should know about</title>
+      <link>https://1shubham7.netlify.app/blog/devops/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/devops/</guid>
+      <description>Start your DevOps journey with these terms. · DevOps can be a bit confusing for beginners, that is because of its complex terminologies. Here are some...</description>
+    </item>
+    
+    <item>
+      <title>Technical Blogs on Hashnode</title>
+      <link>https://1shubham7.netlify.app/experience/hashnode/</link>
+      <pubDate>Wed, 16 Aug 2023 11:14:37 +0530</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/experience/hashnode/</guid>
+      <description>Hashnode is a free developer blogging platform that allows you to publish articles on your own domain and helps you stay connected with a global developer community.</description>
+    </item>
+    
+    <item>
+      <title>WTF is Vagrant</title>
+      <link>https://1shubham7.netlify.app/blog/vagrant/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/vagrant/</guid>
+      <description>Vagrant explained for absolute beginner. · So recently, I was setting up locally an open-source software, so to contribute to it (BTW it is called Zulip,...</description>
+    </item>
+    
+    <item>
+      <title>5 Mistakes to Avoid for cracking GSoC Proposal: Lessons from My GSoC&#39;23 Experience</title>
+      <link>https://1shubham7.netlify.app/blog/gsoc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/gsoc/</guid>
+      <description>Avoid these 5 mistakes to get selected in GSoC. · Let&amp;#39;s first start with a quick intro about what GSoC is : So, GSoC (Google Summer of Code) is an annual...</description>
+    </item>
+    
+    <item>
+      <title>Open-Source 101: The basic must-know terms for an open-source beginner</title>
+      <link>https://1shubham7.netlify.app/blog/open-source101/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/open-source101/</guid>
+      <description>The terms you should know before beginning your open-source journey · Contributing to open-source projects as a beginner can be a little overwhelming. We...</description>
+    </item>
+    
+    <item>
+      <title>Datatypes in Python</title>
+      <link>https://1shubham7.netlify.app/blog/python_datatypes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/python_datatypes/</guid>
+      <description>Datatypes in Python in simplest yet most effective way. · Python includes 6 types of built-in datatypes - Numeric datatype Boolean datatype Sequence...</description>
+    </item>
+    
+    <item>
+      <title>OSI Model - the easy way</title>
+      <link>https://1shubham7.netlify.app/blog/osi/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/osi/</guid>
+      <description>OSI Model - Straight to the point. · OSI (Open Systems Interconnection) model describes seven layers through which computer systems communicate over a...</description>
+    </item>
+    
+    <item>
+      <title>WTF is JSON</title>
+      <link>https://1shubham7.netlify.app/blog/npm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/npm/</guid>
+      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
+    </item>
+    
+    <item>
+      <title>WTF is JSON</title>
+      <link>https://1shubham7.netlify.app/blog/json/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/json/</guid>
+      <description>JSON Explained · We often come through JSON files during developing web applications. you must have noticed that the JSON files store data in the form of...</description>
+    </item>
+    
+    <item>
+      <title>Difference between SASS and SCSS</title>
+      <link>https://1shubham7.netlify.app/blog/sass/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://1shubham7.netlify.app/blog/sass/</guid>
+      <description>SASS vs SCSS, Differences and similarities. · You must have heard of SCSS or SASS, but do you know the full form of the two tools, how similar these two...</description>
     </item>
     
     

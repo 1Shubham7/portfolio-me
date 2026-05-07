@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Gin on Shubham Singh</title>
-    <link>http://localhost:1313/tags/gin/</link>
+    <link>https://1shubham7.netlify.app/tags/gin/</link>
     <description>Recent content in Gin on Shubham Singh</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://localhost:1313/tags/gin/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://1shubham7.netlify.app/tags/gin/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building a Golang backend system with JWT authentication</title>
-      <link>http://localhost:1313/blog/jwt/</link>
+      <link>https://1shubham7.netlify.app/blog/jwt/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/blog/jwt/</guid>
+      <guid>https://1shubham7.netlify.app/blog/jwt/</guid>
       <description>When creating a website&amp;#39;s backend, one very important term we get to hear is JWT authentication. JWT authentication is one of the most popular ways of securing APIs. JWT stands for JSON Web Token and it is an open standard that defines a way for transmitting information between parties as a JSON object and that too securely...</description>
     </item>
     
