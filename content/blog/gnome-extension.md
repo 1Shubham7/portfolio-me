@@ -75,6 +75,7 @@ It adds rounded corners to application windows.
 The difference is subtle, and honestly, you might not even notice it after a few days.
 
 It works especially well alongside Open Bar.
+
 ---
 
 ## [Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
