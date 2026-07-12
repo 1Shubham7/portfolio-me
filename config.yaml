@@ -65,7 +65,7 @@ params:
     - name: "youtube"
       url: "https://www.youtube.com/@pea-shooter17"
     - name: "cv"
-      url: "https://drive.google.com/file/d/1PJBOAeSZjNYeE1da-ICYh3Nll_l1Zaw0/view?usp=sharing"
+      url: "https://drive.google.com/drive/folders/1mRPog7EB6S5yGrWecFMQxaDnYqXC_reK"
 
   # text search
   fuseOpts:
