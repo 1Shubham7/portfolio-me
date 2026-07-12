@@ -62,6 +62,8 @@ params:
       url: "https://www.linkedin.com/in/1shubham7"
     - name: "twitter"
       url: "https://www.twitter.com/1shubham7"
+    - name: "youtube"
+      url: "https://www.youtube.com/@pea-shooter17"
     - name: "cv"
       url: "https://drive.google.com/file/d/1PJBOAeSZjNYeE1da-ICYh3Nll_l1Zaw0/view?usp=sharing"
 
