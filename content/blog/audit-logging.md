@@ -21,7 +21,7 @@ As that request moves through its lifecycle, it passes through up to four **stag
 
 ## The four stages
 
-#### 1. RequestReceived
+### RequestReceived
 
 Generated the moment the audit handler receives the request, before it's been processed or authorized.
 
@@ -183,15 +183,47 @@ kind: Policy
 omitStages:
   - "RequestReceived"
 rules:
-  # Drop noisy, low-value system traffic first
+  # Drop high-frequency system control plane identities
+  - level: None
+    users:
+      - "system:kube-controller-manager"
+      - "system:kube-scheduler"
+      - "system:apiserver"
+    verbs: ["get", "list", "watch"]
+
+  # Drop kube-proxy watches
   - level: None
     users: ["system:kube-proxy"]
     verbs: ["watch"]
 
+  # Always log node identity secret access - before the broad node drop rule
+  - level: Metadata
+    userGroups: ["system:nodes"]
+    verbs: ["get", "list", "watch"]
+    resources:
+      - group: ""
+        resources: ["secrets"]
+
+  # Drop node group reads (scoped to reads only - mutations still fall through)
   - level: None
     userGroups: ["system:nodes"]
     verbs: ["get", "list", "watch"]
 
+  # Always log secret reads at Metadata, before the kube-system drop below.
+  # Otherwise a kube-system service account reading Secrets - a common
+  # lateral-movement / privilege-escalation path - would go unaudited.
+  - level: Metadata
+    verbs: ["get", "list", "watch"]
+    resources:
+      - group: ""
+        resources: ["secrets"]
+
+  # Drop kube-system SA read traffic (ArgoCD, cert-manager, Cilium etc.)
+  - level: None
+    userGroups: ["system:serviceaccounts:kube-system"]
+    verbs: ["get", "list", "watch"]
+
+  # Drop health/metrics endpoints
   - level: None
     nonResourceURLs:
       - "/healthz*"
@@ -204,18 +236,24 @@ rules:
       - group: ""
         resources: ["secrets"]
 
-  # Full detail for the resources that actually matter for security review
+  # Full detail for resources that matter most for security review
   - level: RequestResponse
     resources:
       - group: "rbac.authorization.k8s.io"
       - group: "networking.k8s.io"
         resources: ["networkpolicies"]
       - group: ""
-        resources: ["pods/exec", "pods/attach"]
+        resources: ["pods/exec", "pods/attach", "pods/portforward"]
 
-  # Request body for general mutations elsewhere
+  # Request body for PV/PVC changes
   - level: Request
-    verbs: ["create", "update", "patch", "delete"]
+    resources:
+      - group: ""
+        resources: ["persistentvolumes", "persistentvolumeclaims"]
+
+  # Request body for general mutations
+  - level: Request
+    verbs: ["create", "update", "patch", "delete", "deletecollection"]
 
   # Catch-all
   - level: Metadata
@@ -245,11 +283,150 @@ There isn't one universal policy - what gets logged, and at what level, depends 
 **It depends on what's already noisy in your cluster:**
 - Health checks (`system:kube-probe`), kube-proxy watches, kubelet node status updates, and reconciler loops (ArgoCD, controller-manager, your GitOps tooling) account for a large fraction of total apiserver traffic. Filtering these to `None` early in the rule list is a good practice - without it, signals will get buried in noise.
 
-So what you should do is:
-1. `None` for known system/health noise, placed first
-2. `Metadata`- only, forced, for `secrets`.
-3. `RequestResponse` for RBAC objects, netpols, and `pods/exec`/`pods/attach`
-4. `Request` for general mutating verbs (`create`/`update`/`patch`/`delete`) on everything else
-5. `Metadata` catch all at the bottom
+So the shape you want, in order:
+1. `None` for known system/health noise, placed first - control-plane identities, kube-proxy watches, node reads, kube-system reconcile traffic, health/metrics URLs
+2. `Metadata` carve-outs for `secrets` **interleaved above** each of those drops, so noise filtering never blinds you to secret access
+3. `Metadata`- only, forced, for `secrets` on every remaining verb - this is what keeps bodies out of the log
+4. `RequestResponse` for RBAC objects, netpols, and `pods/exec`/`pods/attach`/`pods/portforward`
+5. `Request` for general mutating verbs (`create`/`update`/`patch`/`delete`/`deletecollection`) on everything else
+6. `Metadata` catch all at the bottom
 
 ---
+
+## Enabling it: editing the kube-apiserver static pod manifest
+
+`kube-apiserver` is **not** a normal Deployment you can `kubectl edit`. It's a **static pod** - the kubelet on each control-plane node watches a directory on disk (`/etc/kubernetes/manifests/`) and runs whatever pod manifests it finds there, directly, without the API server or scheduler being involved. So to turn auditing on, you edit files on the node, and the kubelet reacts.
+
+### Step 1 - put the policy file on the node
+
+Write your policy to each control-plane node:
+
+```bash
+sudo mkdir -p /etc/kubernetes
+sudo tee /etc/kubernetes/audit-policy.yaml > /dev/null <<'EOF'
+apiVersion: audit.k8s.io/v1
+kind: Policy
+omitStages:
+  - "RequestReceived"
+rules:
+  # ... your full policy from the section above, ordering intact ...
+  - level: Metadata
+EOF
+sudo chmod 600 /etc/kubernetes/audit-policy.yaml
+```
+
+### Step 2 - edit the static pod manifest
+
+Open `/etc/kubernetes/manifests/kube-apiserver.yaml` on the node and make three additions.
+
+**a) The flags**, added to the container's `command` list:
+
+```yaml
+    - --audit-policy-file=/etc/kubernetes/audit-policy.yaml
+    - --audit-log-path=/var/log/kubernetes/audit/audit.log
+    - --audit-log-maxage=30
+    - --audit-log-maxbackup=10
+    - --audit-log-maxsize=100
+```
+
+`--audit-policy-file` is the switch that turns auditing on; `--audit-log-path` is where events land, one JSON object per line. The three `maxage`/`maxbackup`/`maxsize` flags control log rotation (days retained / number of files kept / MB per file).
+
+**b) The volume mounts**, added to the apiserver container's `volumeMounts` - the apiserver runs in a container, so both the policy file and the log directory have to be mounted in from the host:
+
+```yaml
+    - name: audit-policy
+      mountPath: /etc/kubernetes/audit-policy.yaml
+      readOnly: true
+    - name: audit-log
+      mountPath: /var/log/kubernetes/audit
+      readOnly: false
+```
+
+**c) The host volumes** they refer to, added to the pod's `volumes`:
+
+```yaml
+  - name: audit-policy
+    hostPath:
+      path: /etc/kubernetes/audit-policy.yaml
+      type: File
+  - name: audit-log
+    hostPath:
+      path: /var/log/kubernetes/audit
+      type: DirectoryOrCreate
+```
+
+The policy is mounted read-only (the apiserver only reads it); the log directory is read-write (the apiserver writes and rotates logs there). Note it's the log **directory** that's mounted, not just the file - with rotation on, the apiserver writes the active log plus rotated backups side by side, so the whole directory has to be host-backed for them to survive.
+
+### Step 3 - the kubelet restarts the apiserver for you
+
+You don't restart anything by hand. The moment you save the manifest, the kubelet notices the file changed and recreates the apiserver pod with the new spec. Expect a few seconds where the apiserver is unavailable while it comes back - on a multi-control-plane cluster, do one node at a time so the other apiservers keep serving.
+
+A useful safety note: if you introduce a typo and the new apiserver manifest is invalid, the pod won't come back up. Keep a copy of the working manifest before you edit, and on an HA control plane change one node at a time so a mistake never takes out the whole control plane at once.
+
+### Step 4 - verify
+
+Once the pod is back:
+
+```bash
+# the flags actually made it into the running apiserver
+sudo grep audit /etc/kubernetes/manifests/kube-apiserver.yaml
+
+# events are landing
+sudo tail -f /var/log/kubernetes/audit/audit.log
+```
+
+Then repeat the whole thing on **every** control-plane node. Each apiserver audits only its own traffic, so a policy that's only on one node gives you a partial, misleading picture.
+
+---
+
+## What about GitOps? Can't ArgoCD just do this?
+
+The natural instinct on a GitOps cluster is to commit this and let ArgoCD reconcile it. It can't - and the reason is worth understanding, because it's the same reason the manual steps above exist at all.
+
+ArgoCD reconciles **API objects**: it diffs what's in Git against what's in the cluster's API and applies the difference. A static pod is not an API object. The kubelet reads `/etc/kubernetes/manifests/kube-apiserver.yaml` straight off the node's disk; the pod that shows up in `kubectl get pods` is a read-only *mirror* the kubelet publishes for visibility. You cannot edit it through the API, which means ArgoCD has nothing to reconcile against. It literally cannot see or touch the file that matters.
+
+So where *can* this be declarative? **At cluster creation, through your provisioner.** With Cluster API, the `KubeadmControlPlane` lets you declare the apiserver args, the extra volumes, and the policy file itself:
+
+```yaml
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+kind: KubeadmControlPlane
+spec:
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      apiServer:
+        extraArgs:
+          audit-policy-file: /etc/kubernetes/audit-policy.yaml
+          audit-log-path: /var/log/kubernetes/audit/audit.log
+          audit-log-maxage: "30"
+          audit-log-maxbackup: "10"
+          audit-log-maxsize: "100"
+        extraVolumes:
+          - name: audit-policy
+            hostPath: /etc/kubernetes/audit-policy.yaml
+            mountPath: /etc/kubernetes/audit-policy.yaml
+            readOnly: true
+            pathType: File
+          - name: audit-log
+            hostPath: /var/log/kubernetes/audit
+            mountPath: /var/log/kubernetes/audit
+            readOnly: false
+            pathType: DirectoryOrCreate
+    files:
+      - path: /etc/kubernetes/audit-policy.yaml
+        owner: "root:root"
+        permissions: "0600"
+        content: |
+          # your full policy, inlined verbatim
+          apiVersion: audit.k8s.io/v1
+          kind: Policy
+          omitStages: ["RequestReceived"]
+          rules:
+            # ...
+            - level: Metadata
+```
+
+The kubeadm bootstrap provider takes this and renders exactly the two on-disk artifacts from the manual walkthrough - the policy file and the patched static pod manifest - onto each control-plane node as it's bootstrapped. That's the declarative path, and it's the one to prefer.
+
+But notice **when** it applies: at bootstrap. kubeadm reads `clusterConfiguration` during `init`/`join`, when a control-plane node is first created. So this cleanly covers a cluster you're **building now**. For a cluster that **already exists**, editing the `KubeadmControlPlane` doesn't quietly patch the running apiservers in place - the way CAPI applies control-plane config changes is by **rolling the control-plane machines**, replacing each node with a freshly bootstrapped one that has the new config. If you're willing to roll the control plane, that's the clean route. If you're not - and on plenty of running clusters you aren't - then you're back to the manual method above: SSH to each existing control-plane node and edit its static pod manifest by hand.
+
+That's the honest shape of it: **declarative at creation via CAPI, manual on the node for anything already running.** There's no ArgoCD-shaped middle option, because the artifact in question lives one layer below where ArgoCD operates.
