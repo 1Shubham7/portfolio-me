@@ -4,7 +4,7 @@ description: "In simplest terms StatefulSets are Kubernetes component that is us
 dateString: October 2024
 draft: false
 tags: ["Kubernetes", "Statefulsets", "K8s", "DevOps"]
-weight: 5
+weight: 14
 cover:
     image: "blog/statefulsets.webp"
 ---

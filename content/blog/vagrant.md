@@ -4,7 +4,7 @@ description: "Vagrant explained for absolute beginner. · So recently, I was set
 dateString: May 2023
 draft: false
 tags: ["Vagrant", "DevOps", "Open-source"]
-weight: 16
+weight: 27
 cover:
     image: "blog/vagrant.avif"
 ---

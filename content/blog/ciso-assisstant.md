@@ -4,7 +4,7 @@ description: "Deploying CISO Assistant via Helm, creating your first superuser, 
 dateString: June 2026
 draft: false
 tags: ["Kubernetes", "DevOps", "Security", "Compliance", "GRC", "ISO27001"]
-weight: 1
+weight: 6
 cover:
     image: "/blog/ciso/ciso.png"
 ---

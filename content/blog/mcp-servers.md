@@ -4,7 +4,7 @@ description: "A breakdown of the Model Context Protocol - the problem it solves,
 dateString: July 2026
 draft: false
 tags: ["MCP", "AI", "DevOps"]
-weight: 1
+weight: 3
 cover:
     image: "/blog/mcp/mcp.png"
 ---

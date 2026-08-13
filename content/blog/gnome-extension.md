@@ -5,7 +5,7 @@ description: "A few GNOME extensions that genuinely improved my Ubuntu desktop e
 dateString: June 2026
 draft: false
 tags: ["Linux", "Ubuntu", "GNOME", "Extensions", "Desktop"]
-weight: 1
+weight: 7
 cover:
 image: "/blog/gnome-extensions/home-screen.png"
 -----------------------------------------------

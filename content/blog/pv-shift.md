@@ -4,7 +4,7 @@ description: "Why your pod is stuck in Pending, why it lands on the wrong node, 
 dateString: May 2026
 draft: false
 tags: ["Kubernetes", "OpenEBS", "DevOps", "Storage", "ZFS", "Helm"]
-weight: 1
+weight: 9
 cover:
     image: "/blog/pv-shift/k8s.png"
 ---

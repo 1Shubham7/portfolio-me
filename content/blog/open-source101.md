@@ -4,7 +4,7 @@ description: "The terms you should know before beginning your open-source journe
 dateString: September 2023
 draft: false
 tags: ["CNCF", "Golang", "React", "Open-source", "GitHub"]
-weight: 18
+weight: 25
 cover:
     image: "blog/open-source101.avif"
 ---

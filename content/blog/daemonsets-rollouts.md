@@ -4,7 +4,7 @@ description: "A breakdown of why DaemonSets using hostPort can get stuck in Pend
 dateString: July 2026
 draft: false
 tags: ["Kubernetes", "DevOps", "Networking"]
-weight: 1
+weight: 2
 cover:
     image: "/blog/daemonset-hostport/cover.png"
 ---

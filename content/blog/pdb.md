@@ -4,7 +4,7 @@ description: "What a PodDisruptionBudget actually does, the difference between v
 dateString: July 2026
 draft: false
 tags: ["Kubernetes", "DevOps", "Reliability"]
-weight: 2
+weight: 4
 cover:
     image: "/blog/pdb/pdb.png"
 ---

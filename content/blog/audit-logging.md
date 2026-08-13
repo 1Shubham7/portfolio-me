@@ -4,7 +4,7 @@ description: "A breakdown of how kube-apiserver audit events actually work - req
 dateString: June 2026
 draft: false
 tags: ["Kubernetes", "DevOps", "Security", "Compliance", "kube-apiserver", "SRE"]
-weight: 1
+weight: 5
 cover:
     image: "/blog/audit-logging/k8s-audit.png"
 ---

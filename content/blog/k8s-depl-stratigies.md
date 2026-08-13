@@ -4,7 +4,7 @@ description: "Kubernetes, or K8s, is an open-source container orchestration tech
 dateString: June 2024
 draft: false
 tags: ["Kubernetes", "Deployment", "DevOps"]
-weight: 7
+weight: 17
 cover:
     image: "blog/k8s-logo.webp"
 ---
