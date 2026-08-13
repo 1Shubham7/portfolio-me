@@ -375,58 +375,24 @@ sudo grep audit /etc/kubernetes/manifests/kube-apiserver.yaml
 sudo tail -f /var/log/kubernetes/audit/audit.log
 ```
 
-Then repeat the whole thing on **every** control-plane node. Each apiserver audits only its own traffic, so a policy that's only on one node gives you a partial, misleading picture.
+Then repeat the whole thing on **every** control-plane node. Each apiserver audits only its own traffic.
 
 ---
 
-## What about GitOps? Can't ArgoCD just do this?
+## Ending notes and Links
 
-The natural instinct on a GitOps cluster is to commit this and let ArgoCD reconcile it. It can't - and the reason is worth understanding, because it's the same reason the manual steps above exist at all.
+If you take away one thing from this post, make it the ordering rule: audit policy is evaluated top to bottom, first match wins, and every mistake I've seen in the wild is really an ordering mistake - a broad `None` rule swallowing requests a more specific rule below it was supposed to catch. Write the noise drops first, interleave the secret carve-outs above them, and keep the catch-all at the bottom.
 
-ArgoCD reconciles **API objects**: it diffs what's in Git against what's in the cluster's API and applies the difference. A static pod is not an API object. The kubelet reads `/etc/kubernetes/manifests/kube-apiserver.yaml` straight off the node's disk; the pod that shows up in `kubectl get pods` is a read-only *mirror* the kubelet publishes for visibility. You cannot edit it through the API, which means ArgoCD has nothing to reconcile against. It literally cannot see or touch the file that matters.
+Two smaller things worth repeating:
 
-So where *can* this be declarative? **At cluster creation, through your provisioner.** With Cluster API, the `KubeadmControlPlane` lets you declare the apiserver args, the extra volumes, and the policy file itself:
+- Audit logs on the node are only half the job. `maxage`/`maxbackup`/`maxsize` rotation means events eventually get deleted, and a compromised node means compromised logs. Ship them off the node (Fluent Bit, Promtail, whatever you already run) if you actually care about them as evidence.
+- Test policy changes on a dev cluster first. An invalid policy file keeps the apiserver from coming up, and a wrong-but-valid one silently logs the wrong things, which you only discover the day you need the log.
 
-```yaml
-apiVersion: controlplane.cluster.x-k8s.io/v1beta1
-kind: KubeadmControlPlane
-spec:
-  kubeadmConfigSpec:
-    clusterConfiguration:
-      apiServer:
-        extraArgs:
-          audit-policy-file: /etc/kubernetes/audit-policy.yaml
-          audit-log-path: /var/log/kubernetes/audit/audit.log
-          audit-log-maxage: "30"
-          audit-log-maxbackup: "10"
-          audit-log-maxsize: "100"
-        extraVolumes:
-          - name: audit-policy
-            hostPath: /etc/kubernetes/audit-policy.yaml
-            mountPath: /etc/kubernetes/audit-policy.yaml
-            readOnly: true
-            pathType: File
-          - name: audit-log
-            hostPath: /var/log/kubernetes/audit
-            mountPath: /var/log/kubernetes/audit
-            readOnly: false
-            pathType: DirectoryOrCreate
-    files:
-      - path: /etc/kubernetes/audit-policy.yaml
-        owner: "root:root"
-        permissions: "0600"
-        content: |
-          # your full policy, inlined verbatim
-          apiVersion: audit.k8s.io/v1
-          kind: Policy
-          omitStages: ["RequestReceived"]
-          rules:
-            # ...
-            - level: Metadata
-```
+Links:
 
-The kubeadm bootstrap provider takes this and renders exactly the two on-disk artifacts from the manual walkthrough - the policy file and the patched static pod manifest - onto each control-plane node as it's bootstrapped. That's the declarative path, and it's the one to prefer.
+- [Auditing - official Kubernetes docs](https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/)
+- [audit.k8s.io/v1 API reference](https://kubernetes.io/docs/reference/config-api/apiserver-audit.v1/) for every field a rule can filter on
+- [kube-apiserver flag reference](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/) for the rest of the `--audit-*` flags, including the webhook backend
+- [The GKE/GCE reference audit policy](https://github.com/kubernetes/kubernetes/blob/master/cluster/gce/gci/configure-helper.sh) - search for `audit-policy`, it's a good example of a battle-tested rule ordering
 
-But notice **when** it applies: at bootstrap. kubeadm reads `clusterConfiguration` during `init`/`join`, when a control-plane node is first created. So this cleanly covers a cluster you're **building now**. For a cluster that **already exists**, editing the `KubeadmControlPlane` doesn't quietly patch the running apiservers in place - the way CAPI applies control-plane config changes is by **rolling the control-plane machines**, replacing each node with a freshly bootstrapped one that has the new config. If you're willing to roll the control plane, that's the clean route. If you're not - and on plenty of running clusters you aren't - then you're back to the manual method above: SSH to each existing control-plane node and edit its static pod manifest by hand.
-
-That's the honest shape of it: **declarative at creation via CAPI, manual on the node for anything already running.** There's no ArgoCD-shaped middle option, because the artifact in question lives one layer below where ArgoCD operates.
+Thanks for your time.
