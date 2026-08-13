@@ -78,6 +78,79 @@ sequenceDiagram
 
 This whole exchange happens before you type a single message - it's why Claude Desktop shows a brief "connecting" state when it spawns a server.
 
+## From Claude to the MCP server: a full tool call, end to end
+
+The handshake explains how the client and server talk. What it doesn't explain is where the model fits in, and this is the part most MCP diagrams skip: **the model never talks to the MCP server. It never even knows MCP exists.**
+
+The model is an HTTP API. The host sends it a request containing the conversation plus a list of tool definitions, and gets back text and, sometimes, a request to call a tool. That's the entire interface. MCP lives on the other side of the host. The host is the bridge between two completely separate protocols: the LLM API on one side, JSON-RPC-over-stdio on the other.
+
+Here's what actually happens when you type "how many pods are running in kube-system?" into Claude Desktop with a Kubernetes MCP server connected:
+
+**1. The host translates MCP tools into API tool definitions.** At connection time the client already did `tools/list` and got back every tool with its name, description, and JSON Schema. The host converts these into the `tools` array of the LLM API request. From the model's point of view, an MCP tool is indistinguishable from any other tool - it's just a name, a description, and a schema.
+
+**2. The host sends your message plus the tool list to the model.** One HTTP request to the LLM API: the conversation so far, plus the tool definitions.
+
+**3. The model decides to call a tool.** It can't run anything itself. What it does is stop generating and return a response whose `stop_reason` is `tool_use`, containing a `tool_use` block:
+
+```json
+{
+  "stop_reason": "tool_use",
+  "content": [
+    { "type": "text", "text": "Let me check the pods in kube-system." },
+    {
+      "type": "tool_use",
+      "id": "toolu_01A09q90qw90lq917835lq9",
+      "name": "list_pods",
+      "input": { "namespace": "kube-system" }
+    }
+  ]
+}
+```
+
+This is where the tool description from your server earns its keep. The model picked `list_pods` and filled in `{"namespace": "kube-system"}` purely from the name, description, and schema. It has never seen the server's code.
+
+**4. The host routes the call to the right client.** The host may have five servers connected, each with its own client. It looks up which server owns `list_pods` and hands the call to that client. This is also where the "allow this tool to run?" popup happens - it's the host pausing before forwarding, not anything in the protocol.
+
+**5. The client sends `tools/call` over stdio.** Now, and only now, does MCP traffic happen: the JSON-RPC request from earlier in this post goes down the server's stdin, the server runs its handler (the actual `clientset.CoreV1().Pods(...)` call against your cluster), and writes the result to stdout.
+
+**6. The host feeds the result back to the model.** The tool result goes into the conversation as a new message containing a `tool_result` block whose `tool_use_id` matches the `id` from step 3, and the host makes a second HTTP request to the LLM API:
+
+```json
+{
+  "role": "user",
+  "content": [
+    {
+      "type": "tool_result",
+      "tool_use_id": "toolu_01A09q90qw90lq917835lq9",
+      "content": "{\"pods\": [{\"name\": \"coredns-5d78c9869d-xk2vp\", \"status\": \"Running\", ...}]}"
+    }
+  ]
+}
+```
+
+**7. The model writes the answer.** With the result now in its context, it generates "There are 12 pods running in kube-system..." and stops with `stop_reason: end_turn`. If it instead decides it needs more information - say, logs from one of those pods - it returns another `tool_use` block and the loop goes back to step 4. The host keeps looping until the model stops asking for tools.
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant H as Host (Claude Desktop)
+    participant M as Model (LLM API)
+    participant S as MCP Server
+    U->>H: "pods in kube-system?"
+    H->>M: conversation + tool definitions
+    M->>H: tool_use: list_pods
+    H->>S: tools/call (JSON-RPC over stdio)
+    S->>H: result: pod list
+    H->>M: conversation + tool_result
+    M->>H: "There are 12 pods..."
+    H->>U: answer
+```
+
+Two things fall out of this that are worth internalizing:
+
+- **Every tool call costs two model requests minimum**, and the entire conversation (including every previous tool result) is re-sent each time, because the LLM API is stateless. This is why returning trimmed-down results from your server matters so much - a bloated result gets paid for again on every subsequent request in the conversation.
+- **The security boundary is the host, full stop.** The model produces a request to call a tool; whether that call actually reaches your server is entirely the host's decision. The MCP server can't tell whether the call was approved by a human or fired automatically, and the model can't tell whether the call was executed or blocked - it only sees whatever comes back as the `tool_result`.
+
 ## Building one in Go
 
 The [official Go SDK](https://github.com/modelcontextprotocol/go-sdk) handles the protocol part - framing, the handshake, generating schemas - so a working server is less code than you'd expect. Here's the shape of it, using the Kubernetes server I built as the example.
