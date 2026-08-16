@@ -4,7 +4,7 @@ description: "JSON Explained · We often come through JSON files during developi
 dateString: May 2023
 draft: false
 tags: ["NPM", "Package Managers", "React", "NodeJS"]
-weight: 29
+weight: 30
 cover:
     image: "blog/npm.avif"
 ---

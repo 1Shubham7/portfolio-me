@@ -4,7 +4,7 @@ description: "Lessons from writing CiliumNetworkPolicies for the KubeAid-addons 
 dateString: August 2026
 draft: false
 tags: ["Kubernetes", "Cilium", "Networking", "Security", "DevOps", "SRE"]
-weight: 1
+weight: 2
 cover:
     image: "/blog/cnp/cnp-cover.png"
 ---

@@ -4,7 +4,7 @@ description: ""
 dateString: December 2023
 draft: false
 tags: ["Kubernetes", "Kyverno", "Kubernetes API"]
-weight: 18
+weight: 19
 cover:
     image: "blog/kyverno.png"
 ---

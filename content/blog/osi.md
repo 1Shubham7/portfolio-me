@@ -4,7 +4,7 @@ description: "OSI Model - Straight to the point. · OSI (Open Systems Interconne
 dateString: May 2023
 draft: false
 tags: ["Networking", "OSI Model"]
-weight: 28
+weight: 29
 cover:
     image: "blog/oci.jpeg"
 ---

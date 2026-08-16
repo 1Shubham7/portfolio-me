@@ -4,7 +4,7 @@ description: "How to backup and restore Redis on Kubernetes using RDB snapshots 
 dateString: June 2026
 draft: false
 tags: ["Redis", "Kubernetes", "DevOps", "Bitnami", "Storage"]
-weight: 8
+weight: 9
 cover:
     image: "/blog/redis-backup/redis.png"
 ---

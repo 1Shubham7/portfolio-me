@@ -4,7 +4,7 @@ description: "Datatypes in Python in simplest yet most effective way. · Python 
 dateString: October 2023
 draft: false
 tags: ["Python", "DevOps", "DSA", "Datatypes"]
-weight: 24
+weight: 25
 cover:
     image: "blog/python.png"
 ---

@@ -4,7 +4,7 @@ description: "Databases in the simplest yet most powerful way ever. Keeping in m
 dateString: October 2023
 draft: false
 tags: ["CNCF", "DevOps", "Open-source", "CI/CD"]
-weight: 23
+weight: 24
 cover:
     image: "blog/database.png"
 ---

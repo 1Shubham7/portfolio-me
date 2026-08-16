@@ -4,7 +4,7 @@ description: "A complete cheat sheet for the Terminator terminal emulator coveri
 dateString: April 2026
 draft: false
 tags: ["Linux", "Terminal", "Terminator", "Productivity", "Developer Tools"]
-weight: 12
+weight: 13
 cover:
     image: "blog/terminator.avif"
 ---
