@@ -5,6 +5,8 @@ dateString: August 2026
 draft: false
 tags: ["eBPF", "Linux", "Kubernetes", "Cilium", "Networking", "DevOps"]
 weight: 1
+cover:
+    image: "/blog/ebpf/ebpf-cover.png"
 ---
 
 I'm an SRE, a Certified Kubernetes Administrator, and I help maintain [KubeAid](https://KubeAid.io). For the past few months I've been writing a lot of CiliumNetworkPolicies (enough to write a whole post on [the ways they silently break](/blog/cnp-antipatterns/)), and every time I read Cilium's docs to figure out why a packet got dropped, I hit the same phrase: "eBPF-based". Cilium is eBPF-based networking. Policy enforcement happens in eBPF. Hubble reads flows from eBPF.
