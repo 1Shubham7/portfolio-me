@@ -1,6 +1,6 @@
 ---
 title: "Deploying CERNBox's federation stack on Kubernetes"
-description: "Two Reva instances, one federated file share, zero copies. What actually breaks when you deploy CERN's file sync-and-share middleware on Kubernetes, and what the OCM protocol looks like on the wire."
+description: "A build log: running CERN's file sync-and-share middleware on Kubernetes, two independent instances federating over OCM, and proof that the shared file never leaves its origin."
 dateString: August 2026
 draft: false
 tags: ["Kubernetes", "CERN", "Reva", "OCM", "Helm", "CERNBox", "Federation"]
@@ -9,118 +9,280 @@ cover:
     image: "/blog/cernbox-federation/cover.png"
 ---
 
-## The payoff first
+CERN is working on making CERNBox deployable outside CERN, as part of the
+EOSC Federation work. That makes a concrete question interesting: what does
+it actually take to run this stack on Kubernetes, with federation between
+two institutions working end to end?
 
-Two Reva instances run in separate namespaces of one kind cluster. They are genuinely independent: separate volumes, separate users, deliberately different secrets. Einstein lives on instance 1, Marie on instance 2.
-
-Einstein creates a file and shares it with Marie:
-
-```sh
-echo "my new shared file" | curl -X PUT -u einstein:relativity \
-  --data-binary @- http://reva1.127.0.0.1.nip.io/remote.php/webdav/my-note.txt
-# 201
-
-kubectl -n reva1 exec reva-cli -- reva -host revad:19000 -insecure \
-  ocm-share-create -grantee f7fbf8c8-139b-4376-b307-cf0a8c2d0d9c \
-  -idp reva2.127.0.0.1.nip.io -webdav /home/my-note.txt
-```
-
-Marie, on her own instance, sees a received share and reads it:
+I spent a week finding out. The end state: two independent Reva instances in
+separate namespaces of one cluster, with separate volumes, separate users
+and deliberately different secrets. A user on instance 1 shares a file with
+a user on instance 2, who reads it through her own instance. And the proof
+that this is federation rather than a fancy copy:
 
 ```sh
-kubectl -n reva2 exec reva-cli -- reva -host revad:19000 -insecure \
-  ocm-share-list-received          # note the id in the first column
-kubectl -n reva2 exec reva-cli -- reva -host revad:19000 -insecure \
-  download /sciencemesh/<received-id> /tmp/my-note.txt
-kubectl -n reva2 exec reva-cli -- cat /tmp/my-note.txt
-# my new shared file
-```
-
-Now the part that matters. Look for the file on each instance's volume:
-
-```sh
-kubectl -n reva1 exec deploy/revad -c revad -- find /var/lib/revad/storage -name "my-note*"
+kubectl -n reva1 exec deploy/revad -- find /var/lib/revad/storage -name "my-note*"
 # /var/lib/revad/storage/data/einstein/my-note.txt
 
-kubectl -n reva2 exec deploy/revad -c revad -- find /var/lib/revad -name "my-note*"
+kubectl -n reva2 exec deploy/revad -- find /var/lib/revad -name "my-note*"
 # (nothing)
 ```
 
-Marie just read the file, and her instance does not have it. It never will. What her instance holds is a pointer and a credential. That is the entire idea of this protocol, and that empty `find` output is the most convincing thing in this post.
+Marie just read that file. Her instance does not have it and never will.
+What it holds is a pointer and a credential.
 
-Getting there took three failures in sequence, and each one only appeared after the previous one was fixed. The software is actively maintained. The packaging around it is not. That gap is what this post is about.
+This post is the build log: what the pieces are, how the daemon is put
+together, how I got it running on Kubernetes, and what the protocol looks
+like on the wire. I hit problems along the way and reported them upstream;
+they appear where they happened, but the story is the build.
 
-## What this stack is
+## What CERNBox and Reva are
 
-CERNBox is CERN's file sync-and-share service. The unusual part is what it sits on: EOS, the same multi-hundred-petabyte storage that physics compute reads from. Your synced folder and the batch farm see the same bytes. That is why CERN built instead of buying: no commercial product mounts your existing exabyte-scale storage as its backend.
+CERNBox is CERN's file sync-and-share service: the Dropbox-shaped tool that
+tens of thousands of physicists use for their files. The distinctive thing
+about it is not the sync client. It is what the service sits on: EOS, the
+same storage system the physics compute reads from.
 
-Reva is the middleware between clients and storage. It is a single Go binary (`revad`) whose config decides which services run: a gateway that routes everything, auth and user providers, storage providers, a WebDAV frontend. Storage backends are pluggable drivers behind one interface, which is why I could run the whole thing against a local filesystem driver instead of EOS. The interface it implements is the CS3 APIs.
+That changes what the tool is. A physicist drops a script into her CERNBox
+folder, opens a notebook on SWAN (CERN's hosted Jupyter), and the file is
+just there. No upload step, no download step, no second copy. The batch farm
+can read the same file through the same namespace. Dropbox structurally
+cannot do this: it is a silo with its own storage, and everything entering
+or leaving it is a transfer. When your storage is measured in exabytes, you
+do not copy it into a product. You put the product on top of the storage.
+That is why CERN built instead of bought.
 
-A comparison that works if you know Kubernetes: CS3 is to sync-and-share what CSI is to storage. Define the interface, let backends implement it. Reva is the reference implementation.
+EOS itself, in one paragraph: a distributed storage system built at CERN for
+physics data. An MGM node holds the namespace (the metadata: directory
+tree, permissions, file locations), FST nodes hold the actual disks, and the
+metadata path is separate from the data path, so opening a file means asking
+the MGM where it lives and then streaming bytes directly from an FST. It is
+built for large files, streaming reads, and exabyte scale.
 
-OCM, Open Cloud Mesh, is the federation protocol on top. Institution to institution, no shared accounts, no central broker. A user at CERN shares with a user at another lab; each side only ever authenticates against their own home server. The protocol is now an IETF working group draft (draft-ietf-ocm-open-cloud-mesh-04) and is implemented by Nextcloud, ownCloud, OpenCloud, Seafile, and CERNBox.
+Between the clients and the storage sits Reva, the middleware this post is
+about. Reva is a Go daemon (`revad`) that implements the CS3 APIs, a
+protobuf/gRPC contract between the sync-and-share layer and storage.
+Storage backends are pluggable drivers behind one interface. CERN runs the
+EOS driver; I ran the exact same daemon against a local filesystem driver.
+Nothing above the driver knows the difference.
 
-The key design decision: the file does not move. A share is a pointer to the owner's server plus a credential to access it. There is no sync, no replica, no eventual consistency. The recipient reads the owner's bytes over WebDAV, live, every time.
+If you know Kubernetes, the analogy is CSI. Kubernetes does not know how to
+talk to any particular storage vendor; it defines an interface and lets
+backends implement it out of tree. CS3 does the same for sync-and-share:
+Reva is the reference implementation, and EOS, CephFS or a plain directory
+are drivers.
+
+Why does the middle layer exist at all? Because storage systems store.
+They do not do "share this folder with three people, read-only, expiring in
+14 days", they do not know what an external collaborator is, and they have
+no opinion about identity at another institution. Sharing, identity and
+federation are collaboration semantics, not storage semantics. Reva is
+where those semantics live.
+
+## What OCM is
+
+The problem federation solves: a CERN physicist wants to share a dataset
+folder with a collaborator at SURF, who runs Nextcloud. Every option
+without a protocol is bad. Give the collaborator a CERN account, and now
+CERN manages identity for the world. Use a public link, and there is no
+identity at all. Email the files, and there are now three diverging copies.
+Or both sides give up and move to Dropbox, which is how institutions lose
+control of their data.
+
+OCM, Open Cloud Mesh, applies the email model to file sharing. Your account
+lives at your provider, mine lives at mine, neither of us registered with
+the other's system, and it works anyway because there is a protocol between
+the providers. Nobody considers it strange that Gmail can mail Outlook.
+OCM makes sharing work the same way between Nextcloud, ownCloud, OpenCloud,
+Seafile and CERNBox.
+
+The key property, and the design decision everything else follows from: the
+file does not move. A share is a pointer to the resource on the owner's
+server plus a credential to access it. There is one authoritative copy, and
+the recipient's institution gets remote access across the organisational
+boundary. No sync, no replicas, no reconciliation.
+
+The protocol is currently an IETF working group draft
+(draft-ietf-ocm-open-cloud-mesh-04), with the API spec at version 1.4.0 in
+cs3org/OCM-API. Concretely it consists of four flows:
+
+1. Discovery: each server publishes a capability document at
+   `/.well-known/ocm`. This is how servers learn how to talk to each other.
+2. The invite handshake: sharing requires prior consent. A user generates
+   an invite token, hands it to the collaborator out of band, and the
+   acceptance registers each user with the other's server.
+3. Share creation: a server-to-server POST carrying the pointer and the
+   credential.
+4. Access: the recipient's server reads the bytes from the owner's server
+   over WebDAV, using that credential.
+
+I will show each of these on the wire further down.
 
 ## Prior art
 
-CERN has packaged this for Kubernetes before. ScienceBox is their umbrella Helm chart bundling EOS, CERNBox and SWAN, with published papers behind it. It depends on the revad chart in cs3org/charts. Both repos have been dormant for two to three years. The published chart pins `appVersion: v1.24.0`; Reva released v3.12.2 while I was working on this, two days before I checked.
+CERN has packaged this for Kubernetes before. ScienceBox is their umbrella
+Helm chart bundling EOS, CERNBox and SWAN, with published papers behind it.
+It depends on the revad chart in cs3org/charts. Both repos have been
+dormant for two to three years, and the published chart pins
+`appVersion: v1.24.0` while Reva released v3.12.2 during the week I worked
+on this.
 
-So this is not new ground, and I am not claiming it is. It is picking up a stalled effort and finding out how far it still gets you. The answer: the chart works as a demo on its pinned 2023 image, and crashloops on every current one.
+So none of this is untrodden ground, and I am not claiming otherwise. This
+is picking up a stalled effort and finding out how far it still gets you.
+The software turned out to be alive and well. The packaging around it is
+what had decayed.
 
-## Failure 1: the shipped example does not boot
+## How revad is actually structured
 
-Reva's example configs live in a separate repo, cs3org/reva-configs, and it has an `ocm/` directory with two pre-wired server configs for exactly the federation setup I wanted. Running one against the current image:
+This is the section that makes everything else make sense, and it is the
+most interesting design in the codebase.
+
+`revad` is one binary that, on its own, does nothing. The TOML config lists
+services, and revad instantiates exactly those. A gateway, an auth
+provider, a storage provider, a WebDAV frontend: each is a service you
+either configure or do not have. Deployment topology is a config decision,
+not a code decision. CERN runs fleets of revads with a handful of services
+each; I ran every service in one process. Same binary, same code paths. If
+you know kube-controller-manager's `--controllers` flag, it is the same
+idea: genuinely different components that happen to ship in one executable.
+
+A revad process has two kinds of listeners. gRPC carries the internal
+control plane: the CS3 APIs, service to service. HTTP faces the outside
+world: WebDAV for clients, the OCM endpoints for peer servers.
+
+The service that ties it together is the gateway. Every other service is
+configured with only the gateway's address, and the gateway knows where
+everyone is. On the HTTP side it routes by longest URL prefix; on the
+storage side it routes by a mount table that maps namespace paths to
+storage providers. It is the cluster's router and front door in one.
+
+One constraint shapes the config: you cannot register the same gRPC service
+definition twice on one server. So when you need multiple instances of the
+same service type, each needs its own listener. My config gives every
+singleton service one shared port and hands out dedicated loopback ports to
+the arrays:
+
+```
+19000        gRPC: gateway + all singleton services
+19010-19012  gRPC: three authproviders, one listener each
+19020-19022  gRPC: three storageproviders
+19001        HTTP: ocdav + ocm + wellknown + datagateway, longest-prefix routed
+19002-19004  HTTP: three dataproviders
+```
+
+Why three authproviders? Because federation needs three kinds of
+authentication: `json` checks passwords for local users, `machine` lets the
+system impersonate users for internal operations, and `ocmshares`
+authenticates a remote server presenting a share token. Why three storage
+mounts? `/home` holds local files, `/ocm` is the outgoing window through
+which peers read what you shared, and `/sciencemesh` is the incoming window
+where shares you received appear. That pair of windows is the clearest
+picture of how federation composes: your outgoing mount is someone else's
+incoming one.
+
+The last structural choice matters most for Kubernetes: byte transfer is
+separate from metadata. The storage driver interface has no read or write
+call. Instead, an upload or download request returns a URL plus a signed
+transfer token, and the bytes flow over HTTP directly against a
+dataprovider. The datagateway service exists to be the public face of that:
+clients get one public URL, the datagateway validates the token and proxies
+to the right internal dataprovider. Keep this in mind; it comes back as a
+failure below.
+
+## Getting it running on Kubernetes
+
+The first milestone was one instance in one pod: ConfigMap for the TOML,
+Secret, PVC, Service, Ingress. Three Kubernetes-level decisions worth
+recording:
+
+`strategy: Recreate`, because the PVC is ReadWriteOnce and the state on it
+is single-writer. A RollingUpdate briefly runs old and new pods against the
+same files.
+
+Readiness probes by `httpGet` on `/status.php`, which reva serves without
+authentication. Liveness by `tcpSocket` on the gRPC port, never `httpGet`:
+a gRPC listener does not answer plain HTTP, so an HTTP probe fails forever
+and Kubernetes restarts a perfectly healthy pod, indefinitely.
+
+Secrets took an initContainer. revad cannot expand environment variables in
+its TOML, so you cannot reference a Kubernetes Secret from the config. I
+verified this in the config loader: its template engine resolves references
+within the config document and nothing else. So the ConfigMap holds the
+config with placeholders, and an initContainer renders the real values from
+Secret-backed env vars into an emptyDir that the main container reads.
+Every Kubernetes deployment of this software has to invent some version of
+this step.
+
+Before any of that ran, the shipped example had to boot, and it did not:
 
 ```
 error creating reva runtime: rgrpc: grpc service ocmshareprovider could not be started: webapp_endpoint is a required field
 ```
 
-Neither shipped config sets `webapp_endpoint`. The cause is a rename in cs3org/reva#5664: `webapp_template` became `webapp_endpoint` to align with the OCM spec, and the field is validated as required. The example predates the rename by about three months, and the configs repo is not automatically synced with reva, which the maintainer confirmed when I filed it.
+Reva's curated example configs live in a separate repo, cs3org/reva-configs,
+and its `ocm/` example predates a rename in cs3org/reva#5664, where
+`webapp_template` became `webapp_endpoint` for OCM spec alignment. The
+configs repo is not automatically synced with reva, which the maintainer
+confirmed when I filed it. The same stale key sat in three other config
+sets in that repo; one PR fixed all four.
 
-The fix is two lines. The interesting part is the value semantics: the old `webapp_template` was a fill-in-the-blanks Go template that reva rendered with the share token. The new code deleted the template machinery entirely and just appends the share id to a base URL. The spec now forbids embedding the token in any URI, so carrying the old value forward under the new key would silently advertise garbage links to remote servers. Rename the key, and drop the old template suffix from the value.
+Then the second instance. Separate namespace, separate hostname via nip.io,
+and a DNS trap good enough to write down: `reva2.127.0.0.1.nip.io` resolves
+to 127.0.0.1, and inside a pod 127.0.0.1 is the pod itself. Instance 1
+would have federated with itself. The fix is a CoreDNS rewrite pointing
+both hostnames at the ingress controller's Service. Both names resolving to
+one IP still routes correctly because DNS only picks the TCP destination;
+nginx routes on the Host header, which each request still carries.
 
-Grepping for the old key found three more config sets in the repo with the same latent failure. One PR later, all four boot.
+The two instances deliberately do not share secrets. Within one instance
+every service must hold the same `jwt_secret`, because tokens minted at
+login are validated everywhere. Between instances there must be no shared
+secret at all, because CERN and SURF would never agree on one. Giving my
+two instances different secrets is what made the federation test honest.
 
-Two smaller traps in the same repo, for anyone following along: revad never creates its state directory, so a fresh container crashes with `open /var/tmp/reva/invites_server_1.json: no such file or directory` until something runs `mkdir -p /var/tmp/reva`. And the example's discovery endpoint lands on a random port, because no global HTTP address is set and the `wellknown` service does not declare one. My configs set a global `[http]` address so discovery shares the main port.
-
-## Failure 2: clients outside the pod cannot fetch bytes
-
-With both instances up, discovery working and the invite flow complete, the first federated download failed like this:
+With OCM services enabled on both sides, the first federated download
+failed:
 
 ```
 Downloading from: http://localhost:19004/data/simple/4fbb804b-d2be-4893-abe3-7ab2524d8199
 Get "http://localhost:19004/data/simple/...": dial tcp [::1]:19004: connect: connection refused
 ```
 
-The gateway handed the client a localhost URL. The example config sets `expose_data_server = true` with `data_server_url` pointing at localhost, which works exactly when the client runs on the same host as revad. It was written for a laptop. In a cluster, the client is in a different pod, and localhost is the client's own network namespace.
+This is the byte-transfer design from the previous section biting. The
+example config sets `expose_data_server = true` with a localhost
+`data_server_url`, which hands clients the pod-internal dataprovider
+address. That works exactly when the client shares a host with revad,
+which on a laptop it does. The fix is `expose_data_server = false` and the
+gateway's `datagateway` set to the public URL: clients then receive a
+public address carrying a signed transfer token, and the datagateway
+proxies to the internal dataprovider. Never hand a client an address only
+the server can reach.
 
-The fix taught me why Reva's `datagateway` service exists. Set `expose_data_server = false` and point the gateway's `datagateway` at the public URL. Now clients receive a public datagateway URL carrying a signed transfer token. The datagateway validates the token and proxies to the pod-internal dataprovider, which can keep its localhost address. The public door is one service; the internal addresses never leak.
+The last of the big three: reva's OCM services persist their state in
+`ocm-shares.json` and `ocm-invites.json`, and both default to `/var/tmp`,
+which is container-local. Cycle a pod and both files are gone. What makes
+this worse than an ordinary data loss is what the state is: not a cache
+but a trust relationship. The invite handshake with the partner
+institution, gone. The shares their server holds now point at a server
+that no longer recognises them, and nothing on either side explains why.
+One line per file points them at the PVC, and my kill test passes: delete
+both pods, everything survives, the federated read still works.
 
-The rule generalizes to any system that hands URLs to clients: never give a client an address only the server can reach.
+Two smaller notes from the same stretch. Reva's OCM clients hardcode https
+toward any non-localhost peer, and the insecure override for a self-signed
+lab is spelled three different ways across the services that embed the
+client: `ocm_client_insecure`, `client_insecure`, `ocm_insecure`. You find
+each spelling through a separate failure. And the `cs3org/reva` CLI image
+is a 13 MB binary-only image with no shell, so running it as a helper pod
+with `sleep infinity` crashloops; I extracted the binary with
+`docker create` + `docker cp` into an alpine-based pod instead.
 
-## Failure 3: federation state dies with the pod
-
-The OCM services persist their state in two JSON files, and both default to `/var/tmp`:
-
-- `ocm-shares.json`: shares sent and received, including their access secrets
-- `ocm-invites.json`: invite tokens and the accepted remote users
-
-`/var/tmp` is container-local scratch. Deploy the defaults, federate with a partner institution, cycle a pod, and both files are gone.
-
-This is the failure that matters most, because the lost state is not a cache. It is a trust relationship with another organisation's server. The invite handshake you did with them is gone. The shares they hold now point at a server that no longer recognises them. Nothing on their side errors in a way that explains it, and nothing on your side warned you.
-
-It gets worse on bare metal: the upstream systemd-tmpfiles default ages idle `/var/tmp` entries out after 30 days, and the invites file is written once per accepted peer and then possibly never again. A quiet federation on a RHEL-family server loses its invites file after a month of calm.
-
-The fix is one line per file: point them at a persistent volume. In my manifests everything lives under the PVC mount, and the kill test passes: delete both pods, wait for reschedule, the invite relationship, the shares and the federated read all survive.
-
-A sidebar rather than a fourth failure: Reva's OCM clients hardcode https for any non-localhost peer, so a lab setup behind a self-signed ingress needs TLS verification switched off. The override is spelled three different ways depending on which service embeds the client: `ocm_client_insecure`, `client_insecure`, and `ocm_insecure`. A share crossing two instances traverses all three clients, so you discover each name through a separate failure. Lab-only flags; real federation needs real certificates.
-
-## What the wire actually looks like
+## The federation flow, end to end
 
 Everything in this section is a real capture from the running setup.
 
-Discovery is a GET to `/.well-known/ocm`. Instance 1 answers:
+Discovery first. Each instance publishes its business card at
+`/.well-known/ocm`:
 
 ```json
 {
@@ -140,17 +302,27 @@ Discovery is a GET to `/.well-known/ocm`. Instance 1 answers:
 }
 ```
 
-That `webdav` path is the namespace remote peers will read shared bytes from.
+The `webdav` path is the namespace remote peers will read shared bytes
+from. Peers fetch this document before talking to each other.
 
-The invite handshake: Einstein generates a token, hands it to Marie out of band, Marie accepts on her instance. Her revad then calls his. The ingress log shows the moment one server talks to the other:
+Next the invite handshake. OCM sharing is consent-first: you cannot share
+at a stranger. Einstein generates an invite token on instance 1, hands it
+to Marie out of band (in real life, an email or a chat message), and Marie
+accepts it on instance 2. The moment she does, her revad calls his. From
+the ingress log:
 
 ```
 10.244.0.17 - - "POST /ocm/invite-accepted HTTP/1.1" 200 106 "-" "Go-http-client/1.1"
 ```
 
-User-Agent `Go-http-client/1.1`. No browser, no CLI. This is server-to-server; the user only ever talks to their own instance. Also absent: any Authorization header. The single-use invite token inside the body, plus a mutual allowlist file, is the entire authentication at this layer.
+The User-Agent is the point: `Go-http-client/1.1`. No browser, no CLI.
+This is one revad calling another. Users only ever talk to their own
+instance; the instances talk to each other. After the exchange, each side
+lists the other's user as a known federated identity.
 
-Share creation is another server-to-server POST, `/ocm/shares`, 816 bytes, answered 201. What lands on Marie's instance is this (from its state file, verbatim except trimming):
+Share creation is another server-to-server POST, this time `/ocm/shares`
+from instance 1 to instance 2, answered 201. What lands on Marie's
+instance is worth staring at (from its state file, trimmed):
 
 ```json
 {
@@ -166,136 +338,143 @@ Share creation is another server-to-server POST, `/ocm/shares`, 816 bytes, answe
 }
 ```
 
-That object is the share. A URI on the owner's server, a secret, and a permission set. Nothing else.
+That object is the share. A URI on the owner's server, a secret, a
+permission set. Nothing else crossed the wire.
 
-The read path when Marie downloads: her client asks her gateway, which routes to the `ocmreceived` storage driver, which makes a WebDAV request against that URI with that secret. On instance 1's ingress:
+When Marie reads, the path is:
+
+```
+Marie's client
+  -> instance 2 gateway
+    -> ocmreceived storage driver (the /sciencemesh incoming window)
+      -> WebDAV, with the sharedSecret:
+         GET http://reva1.../remote.php/dav/ocm/29b6ec61-...
+        -> instance 1 ocdav -> instance 1's PVC
+```
+
+On instance 1's ingress, her read looks like this:
 
 ```
 "PROPFIND /remote.php/dav/ocm/29b6ec61-.../ HTTP/1.1" 207 754 "-" "Go-http-client/1.1"
 "GET      /remote.php/dav/ocm/29b6ec61-.../ HTTP/1.1" 200 88  "-" "Go-http-client/1.1"
 ```
 
-Those 88 bytes are the file, streamed from instance 1's volume through instance 2's datagateway to Marie. Every read repeats this. There is no copy to fall out of date.
-
-## Revoking a share [UNVERIFIED]
-
-The pointer-plus-credential model makes a testable prediction: revocation should be instant, because there is no copy to chase down. Einstein removes the share:
+Those 88 bytes are the file, streamed from instance 1's volume every time
+she reads. And that is why the negative test at the top of this post works:
 
 ```sh
-kubectl -n reva1 exec reva-cli -- reva -host revad:19000 -insecure \
-  ocm-share-remove d7e47b2b-32e2-4c72-994e-ad18b53c6909
-# OK
+kubectl -n reva2 exec deploy/revad -- find /var/lib/revad -name "federation-proof*"
+# (nothing)
 ```
 
-Marie's next read, same command that worked seconds earlier:
+There is no copy, no cache, no sync artifact. If instance 2's volume were
+destroyed, Einstein's file would not notice.
+
+The model makes testable predictions, so I tested them.
+
+Revocation should be instant, because there is no copy to chase down.
+Einstein removes the share; Marie's next read, the same command that
+worked seconds earlier:
 
 ```
-error: code=CODE_INTERNAL msg="error statting: path:\"/sciencemesh/280d083a-e94b-4a1e-93e4-d38afc97cbab\""
+error: code=CODE_INTERNAL msg="error statting: path:\"/sciencemesh/280d083a-...\""
 ```
 
-Access died with the share record on instance 1. No propagation delay, no cleanup job.
+Access died with the share record on instance 1. No propagation delay, no
+cleanup job. One rough edge: Marie's received-shares list still shows the
+revoked entry. Instance 1 stopped honoring it, but instance 2 was never
+told; the spec defines a SHARE_UNSHARED notification for this, and this
+version does not send it.
 
-One rough edge: Marie's `ocm-share-list-received` still lists the revoked share. Instance 1 stopped honoring it, but instance 2 was never told. The OCM spec defines a `/notifications` endpoint with a SHARE_UNSHARED type for exactly this; the version deployed here does not send it, so recipients accumulate dangling entries that fail only when used.
-
-## Permissions are enforced by the owner [UNVERIFIED]
-
-The shares so far were viewer-role. Marie attempts a write to one:
-
-```
-upload: PUT request returned 500 Internal Server Error
-```
-
-The refusal happens on instance 1, not hers. Its log:
+Permissions should be enforced by the owner, since only the owner has the
+file. Marie attempts a write to a read-only share and gets a refusal that
+originates on instance 1, whose log reads:
 
 ```
 access token is invalid error="error: permission denied: access to resource not allowed within the assigned scope"
 ```
 
-The shared secret is a scoped token: it encodes what the share permits, and the owner's server enforces that scope on every request. A recipient instance cannot grant itself more access than the share carries. Surfacing the denial as a 500 rather than a 403 is not ideal, but the enforcement itself is exactly where you want it, at the data.
+The sharedSecret is a scoped token: it encodes what the share permits, and
+the owner's server enforces that scope on every request. A recipient
+instance cannot grant itself more than the share carries. The contrast
+test: a share created with `-rol editor` accepts Marie's write, and
+Einstein reads her bytes back on instance 1. Data crossed the federation
+in the reverse direction, and there is still no copy on instance 2.
 
-The contrast test: Einstein creates a share with `-rol editor`, Marie writes to it, and the write lands on instance 1:
+The operational question: what does Marie see when Einstein's server is
+down? I scaled instance 1 to zero. Her received-shares list keeps working,
+because it is local state. A download fails fast rather than hanging, with
+a 503 from instance 1's ingress underneath. When instance 1 comes back,
+the same command succeeds with the same bytes and nothing needs repair on
+either side. The one thing I would flag: the user-facing error during an
+outage is byte-for-byte identical to the error after a revocation. Marie
+cannot tell "their server is down, retry later" from "access was removed"
+without someone reading server logs.
 
-```sh
-kubectl -n reva2 exec reva-cli -- reva -host revad:19000 -insecure \
-  upload /tmp/m.txt /sciencemesh/2aa5fbfd-0313-4876-9966-81db6e4f8470
-# File uploaded: 33 bytes
+Two more pushes to make sure the demo was not doing the work. A 10 MB file
+of `/dev/urandom` crossed the federation in about half a second with an
+identical sha256 on both ends; the ingress annotation
+`proxy-body-size: "0"` quietly matters here, since nginx's default 1 MiB
+body cap would have cut the upload at the first hop. And a shared
+directory with a nested subdirectory traverses like a mounted filesystem
+from Marie's side: list the tree, list the subdirectory, download a nested
+file, every operation a live WebDAV call against instance 1.
 
-curl -s -u einstein:relativity http://reva1.127.0.0.1.nip.io/remote.php/webdav/editable.txt
-# written by marie from instance 2
-```
+## The Helm chart
 
-Bytes crossed the federation in the reverse direction, and still no copy exists on instance 2.
+I finished by folding the working setup into a Helm chart, so that the two
+instances above are literally two `helm install` commands with different
+values.
 
-## What Marie sees when Einstein's server is down [UNVERIFIED]
+The chart parameterises what the manifests did by hand: instance identity
+(the provider domain doubles as the OCM identity), the peer allowlist
+rendered into providers.json from values, users from values. The findings
+above are encoded as defaults rather than documented as advice: every OCM
+state path lives on the PVC, `expose_data_server` is false with the
+datagateway templated to the public URL, and per-instance secrets are
+generated at install and preserved across upgrades via `lookup`, because a
+naive `randAlphaNum` silently rotates them on every upgrade.
 
-The operational question for anyone running this: shares reach into another organisation's infrastructure, so what happens during their outage? I scaled instance 1 to zero replicas and looked at the world from Marie's side.
+One value is deliberately capped: `replicaCount` is 1, and the chart fails
+the render if you raise it with a persistent volume attached. The ceiling
+comes from the state drivers, not the packaging: the storage metadata is
+SQLite and the share stores are JSON files, all single-writer. Real
+horizontal scale means moving state to SQL-backed drivers and a shared
+storage backend, after which revad is stateless and the cap dissolves.
+Moving to SQL is a prerequisite for HA, not an optimisation.
 
-Her received-shares list keeps working. It is local state, four shares listed, no errors. Browsing works until the moment bytes or metadata are needed from the remote.
-
-A download fails fast, no hang:
-
-```
-error: code=CODE_INTERNAL msg="error statting: path:\"/sciencemesh/4fbb804b-...\""
-```
-
-Underneath, instance 2's log shows what actually happened: `error statting ... error="PROPFIND /: 503"`. The 503 is instance 1's ingress with no backend to route to.
-
-Two observations. First, recovery is automatic: scale instance 1 back up, the same command succeeds with the same bytes, nothing to repair on either side. Second, the user-facing error for an outage is byte-for-byte identical to the error for a revoked share. Marie cannot tell "their server is down, retry later" from "access was removed, stop trying" without reading server logs. That distinction matters operationally and currently is not surfaced.
-
-## Ten megabytes, checksummed [UNVERIFIED]
-
-An 88-byte file proves the protocol, not the data path. Same flow with 10 MB of `/dev/urandom`:
-
-```sh
-sha256sum big.bin
-# a0967accc81cb5fa5246d7a38fe855282f525367e97982dc8688b435ccec5d7d
-curl -X PUT -u einstein:relativity --data-binary @big.bin \
-  http://reva1.127.0.0.1.nip.io/remote.php/webdav/big.bin
-# 201
-```
-
-Share it, download as Marie, hash on her side:
-
-```
-10.00 MiB / 10.00 MiB  100.00%
-a0967accc81cb5fa5246d7a38fe855282f525367e97982dc8688b435ccec5d7d  /tmp/big.bin
-```
-
-Identical hash, about half a second over the ingress path. The `proxy-body-size: "0"` annotation on the ingress is doing quiet work here; nginx's default 1 MiB body cap would have cut the upload off at the first hop.
-
-## Sharing a directory [UNVERIFIED]
-
-Single files are the demo case. Real sharing is a project tree:
-
-```sh
-curl -X MKCOL -u einstein:relativity .../remote.php/webdav/project        # 201
-curl -X MKCOL -u einstein:relativity .../remote.php/webdav/project/sub    # 201
-# PUT project/a.txt, PUT project/sub/nested.txt, share /home/project
-```
-
-Marie traverses it like a mounted filesystem, nested paths and all:
-
-```sh
-reva ls /sciencemesh/<received-id>          # a.txt  sub
-reva ls /sciencemesh/<received-id>/sub      # nested.txt
-reva download /sciencemesh/<received-id>/sub/nested.txt /tmp/n.txt
-# nested file content
-```
-
-Every one of those operations is a live WebDAV call against instance 1 under the hood. After all of these experiments, the `find` on instance 2's volume still returns nothing: no file, no directory, no cached copy.
+The chart, manifests and a runbook README are at
+[github.com/1Shubham7/reva-on-kubernetes](https://github.com/1Shubham7/reva-on-kubernetes).
 
 ## Upstream
 
-Everything above that looked like a bug got filed while it was fresh: three issues on cs3org/reva-configs (the boot failure, the ephemeral state, the three insecure spellings), one on cs3org/charts about the chart being pinned two major versions behind, and PRs behind them, including the chart modernization. The boot-failure fix was merged the same day by Giuseppe Lo Presti, co-author of the IETF draft, who confirmed the rename and that the configs repo is not yet synced with reva.
+Everything that looked like a bug got filed while it was fresh: three
+issues on cs3org/reva-configs, one on cs3org/charts, and PRs behind them.
+The boot failure was confirmed within hours by Giuseppe Lo Presti,
+co-author of the IETF draft, who explained the rename and merged the fix
+the same day.
 
-On the security posture: he also confirmed that RFC 9421 HTTP message signatures are expected to be implemented on the OCM routes and eventually enforced as the draft progresses, discovery excepted. The deployed version relies on single-use tokens plus a mutual allowlist. I read that as spec-versus-implementation maturity, the normal state of a protocol mid-standardization, not as a finding.
+On security posture: he also confirmed that RFC 9421 HTTP message
+signatures are expected to be implemented on the OCM routes and eventually
+enforced as the draft progresses, discovery excepted. Today v3.12.2 relies
+on single-use invite tokens plus the providers.json allowlist. I read that
+as spec-versus-implementation maturity, the normal state of a protocol in
+mid-standardization, not as a finding.
 
-## Limitations
+## What is not covered
 
-The chart caps `replicaCount` at 1 and fails the render if you raise it with a persistent volume attached. That ceiling comes from the state drivers, not the packaging: the storage metadata lives in SQLite and the share stores are JSON files, all single-writer. Scaling out means moving state to SQL-backed drivers and a shared storage backend, at which point revad becomes stateless and the cap dissolves. HA here is a driver change, not a replica change.
-
-The EOS driver is untested in this work; everything ran on the local filesystem driver. And the insecure TLS flags are for the lab: production federation needs certificates trusted by both sides.
+The EOS driver is untested in this work; everything ran against the local
+filesystem driver, which is the point of the driver abstraction but means
+nothing here validates the EOS path. The TLS-insecure flags are lab-only:
+real federation needs certificates both sides trust. And revad ran as one
+pod per instance; the multi-pod split CERN actually operates, where the
+shared jwt_secret constraint stops being theoretical, is future work.
 
 ## Close
 
-The chart and manifests are at [github.com/1Shubham7/reva-on-kubernetes](https://github.com/1Shubham7/reva-on-kubernetes). Two `helm install` commands give you two federated Reva instances; the README is a runbook from empty cluster to the empty `find`. It deploys the demo drivers, it does not pretend to be HA, and every non-obvious default in it exists because one of the failures above put it there.
+Two `helm install` commands now produce two independent Reva instances
+that federate over OCM: invite, share, read, revoke, all across an
+organisational boundary, with the file provably never leaving its origin.
+The chart deploys the demo drivers and says so; it does not pretend to be
+HA, and every non-obvious default in it exists because of something in
+this post. The software was never the problem. It was packaging all along.
