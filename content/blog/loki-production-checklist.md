@@ -6,7 +6,7 @@ draft: false
 tags: ["Kubernetes", "Loki", "Grafana", "Logging", "Observability", "DevOps", "SRE"]
 weight: 2
 cover:
-    image: ""
+    image: "/blog/loki/loki-cover.png"
 ---
 
 Loki is easy to install and easy to get wrong. Most of the ways it goes wrong are quiet: queries return partial results with no error, objects are stored corrupted with a 200 response, a label filter matches nothing and looks like a broken pipeline. You find out weeks later, usually during an incident, which is exactly when you were relying on it.
