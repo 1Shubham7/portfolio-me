@@ -5,6 +5,8 @@ dateString: September 2026
 draft: false
 tags: ["Compliance", "Cyber Resilience Act", "Security", "Open Source", "SRE", "EU Regulation"]
 weight: 1
+cover:
+    image: "/blog/what-i-learned-reading-the-cyber-resilience-act/cover.png"
 ---
 
 ## Why I read the whole thing
