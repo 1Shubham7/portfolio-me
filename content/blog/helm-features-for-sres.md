@@ -388,7 +388,7 @@ metadata:
   name: {{ .Release.Name }}-smoke
   annotations:
     helm.sh/hook: test
-    helm.sh/hook-delete-policy: hook-succeeded
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 spec:
   restartPolicy: Never
   containers:
