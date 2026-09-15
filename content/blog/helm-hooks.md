@@ -106,8 +106,6 @@ So the sequence that bites is: the `pre-upgrade` migration runs and succeeds, th
 
 Two ways out. The one that works is making every migration that runs from a hook backward-compatible: expand first (add the column, add the table, backfill), ship the code that uses it, and contract (drop the old column) in a later release, once nothing old can come back. The other is a `pre-rollback` hook that runs the down migration, which almost nobody writes, because a down migration for anything that touched data is mostly fiction. Design for the first.
 
-[NEED: one line on a rollback that put the old app in front of a migrated schema, if there is one]
-
 ### `pre-upgrade` runs while the old pods are still serving
 
 Look at the step list again. The hook completes before the manifest is applied, which is before the new Deployment exists, which means the previous version handles traffic for the whole duration of the migration. The migration runs against a live database, under load, from code that does not know about the change being made under it.

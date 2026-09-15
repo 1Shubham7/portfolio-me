@@ -215,8 +215,6 @@ spec:
 
 The wrong version is not a no-op. The hash changes, Helm patches the Deployment, `kubectl get deploy -o yaml` shows the new annotation, and everything looks like it worked. But the Deployment's own annotations are not part of `spec.template`, so the controller sees no template change and creates no ReplicaSet. This is the most common shape of "I added the checksum and it still does not restart", and the quickest way to confirm it is `kubectl rollout history deploy/<name>`: if the revision number did not move, the template did not change.
 
-[NEED: one line on a checksum you found on the wrong object in a real chart, if there is one]
-
 ### It hashes the wrong thing
 
 The other widespread version of the pattern is this:

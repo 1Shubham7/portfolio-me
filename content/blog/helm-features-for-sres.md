@@ -81,8 +81,6 @@ helm upgrade api ./charts/api --version 2.0.0 --reset-then-reuse-values -f prod.
 
 `--reuse-values` in a GitOps flow means the values in git have stopped being the truth.
 
-[NEED: one line on a value that silently reverted on you after an upgrade, if there is one]
-
 ### 6. Reading the release record
 
 Guessing what is deployed from a values file in git, when the cluster may disagree.
@@ -222,8 +220,6 @@ spec:
 
 `$.Template.BasePath` is the current chart's path, so inside a library chart (item 18) hash the named template instead: `include "lib.configmap" . | sha256sum`. And anything in the ConfigMap that changes on every render, a timestamp or a `randAlphaNum`, rolls the Deployment on every upgrade.
 
-[NEED: one line on a config change that shipped and did not roll the pods, if there is one]
-
 ### 14. `.Capabilities.APIVersions.Has` and `semverCompare` on `.Capabilities.KubeVersion`
 
 A chart that emits a ServiceMonitor on a cluster without the Prometheus Operator fails the install with `no matches for kind`.
@@ -308,8 +304,6 @@ metadata:
 ```
 
 "Kept" means orphaned. Helm forgets about it, so an uninstall followed by an install under a different name leaves the old PVC behind for someone to find on a bill.
-
-[NEED: one line on a PVC you lost, or found orphaned, if there is one]
 
 ### 18. Library charts, `alias`, `condition`, `tags`, and `global`
 
