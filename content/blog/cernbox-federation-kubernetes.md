@@ -1,6 +1,6 @@
 ---
 title: "Deploying CERNBox's federation stack on Kubernetes"
-description: "A build log: running CERN's file sync-and-share middleware on Kubernetes, two independent instances federating over OCM, and proof that the shared file never leaves its origin."
+description: "Running CERN's file sync-and-share middleware on Kubernetes with OCM federation"
 dateString: August 2026
 draft: false
 tags: ["Kubernetes", "CERN", "Reva", "OCM", "Helm", "CERNBox", "Federation"]
