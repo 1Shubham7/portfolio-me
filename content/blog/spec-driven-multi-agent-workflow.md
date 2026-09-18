@@ -5,6 +5,8 @@ dateString: September 2026
 draft: false
 tags: ["Claude Code", "AI", "Agents", "Hooks", "Testing", "DevOps"]
 weight: 1
+cover:
+    image: "/blog/spec-driven-multi-agent-workflow/cover.png"
 ---
 
 I have been trying out spec-driven development with AI coding agents, and experimenting with different workflows around it. This post shows one workflow I designed and ran from start to finish with Claude Code. I think it came out very cool, mostly because of one idea: the agents are kept in line by what they are not allowed to see, and by a script they cannot argue with.
