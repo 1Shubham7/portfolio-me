@@ -107,3 +107,37 @@ Every value in `answers` is something you defined: an option key, a level index,
 TypeSafe quotes 70 to 500 ms end to end. Input costs $0.042 per million tokens and output is free. The request above used 392 input tokens, so a million calls like it cost about $16.50.
 
 Direct API access started as a waitlist; the launch post says TypeSafe is "bringing developers off the waitlist as quickly as we can." Two gateways carry the model in the meantime. [Vercel AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe) lists it as `typesafe-ai/jev` and exposes a TypeSafe-compatible base URL, so the official SDK works with a changed `baseURL` and a gateway key. [Cloudflare Workers AI](https://developers.cloudflare.com/ai/models/typesafe/jev/) lists it as `typesafe/jev`, a third-party model you call with `env.AI.run`. Both authenticate with the gateway's own credentials. There are also several community Go clients on GitHub, none of them official, and I have not vetted any of them.
+
+## Confidence, and the thresholds you put on it
+
+Every answer arrives with probabilities, and what you do with them is your code's job. That is the design pattern the whole model is built around: the model reports how sure it is, and a threshold you chose decides whether software acts on its own.
+
+Look at `department` in the response above. The top option has probability 0.85, but `confidence` says 0.78. They are different numbers on purpose. For a Choice with `n` options, the [confidence docs](https://docs.typesafe.ai/confidence) define confidence as how far the top probability sits above a uniform guess:
+
+```text
+confidence = (p_max - 1/n) / (1 - 1/n)
+           = (0.85 - 1/3) / (1 - 1/3)
+           = 0.775
+```
+
+So 0 means the model spread its probability evenly and 1 means it put everything on one option, regardless of how many options there were. Score has its own formula that penalises probability on distant levels more than on adjacent ones. Noul returns no `confidence` field at all, only the probability `p`; if you want a comparable number, the docs suggest `|2p - 1|`.
+
+The pattern on top of this is short. This is the branching from the example on the same page, with the comments shortened: a Choice named `action` decides whether the user wants to check a balance, approve a transfer or get support.
+
+```python
+action = response.answers["action"]
+
+if action.confidence < 0.5:
+    route_to_human(user_message)           # unsure: a human, or a full LLM
+elif action.choice == "check_balance":
+    show_balance(account_id)               # low stakes, a wrong screen is recoverable
+elif action.choice == "approve_transfer":
+    if action.confidence > 0.9:
+        confirm_then_execute(account_id)   # high stakes, high confidence
+    else:
+        ask_user_to_confirm(account_id)    # high stakes, moderate confidence
+```
+
+In TypeSafe's version 0.5 is the floor below which you do not guess, and 0.9 is the bar for the high-stakes action. Even above it, the function is called `confirm_then_execute`. The numbers are examples. The same docs use 0.6 and 0.85 in the confidence-gated routing pattern and 0.35, 0.70 and 0.85 in the guardrails cookbook, and the confidence page says outright that "the correct threshold values depend on your domain and the performance of the model for your use case."
+
+Two things follow from that. Thresholds belong to the action: in the snippet, reading an account balance and approving a transfer hang off the same Choice with different bars. And for each gate you have to decide which way it fails. Low confidence on "is this spam?" can fail towards the inbox. Low confidence on "should this page someone?" must not fail towards silence.
