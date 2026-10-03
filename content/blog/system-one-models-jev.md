@@ -316,3 +316,26 @@ Two practical limits. The hosted API's documented rate limits are 80 requests an
 ### Where it does not fit
 
 Anything that needs an explanation, a summary, generated text or multi-step reasoning. "Why is this pod crash-looping" is not a System One question. Neither is a postmortem.
+
+## Jev in front, an LLM and RAG behind
+
+A decision model does not replace your LLM. The architecture that makes sense is a pipeline, with the cheap model as a front-line filter and the expensive one behind it for the cases that need thought.
+
+```text
+alert fires
+  -> decision model: team, urgency, duplicate?
+       duplicate        -> attach to the open incident, stop
+       low urgency      -> ticket, stop
+       serious, or unsure
+         -> retrieve similar past incidents and runbooks
+         -> LLM drafts likely cause and next steps from what was retrieved
+         -> on-call engineer reads it with the page
+```
+
+Every alert pays for the first step, which costs a fraction of a cent. The LLM only runs on the ones a human was going to look at anyway, and by then a few seconds of generation is not what anyone is waiting on.
+
+The retrieval step is RAG. In one sentence: runbooks, postmortems and past incident channels are split into chunks, embedded and stored in a vector database, and at query time the chunks nearest the question go into the prompt for the LLM to answer from. Three refinements matter for ops data in particular. Hybrid search combines vectors with keyword search such as BM25, because embeddings are bad at exact strings like `OOMKilled`, an error code or a pod name, and those are what you search incidents by. Reranking takes the first few dozen hits and reorders them with a more careful model; TypeSafe's docs have a cookbook for using Jev itself there. Metadata filtering restricts retrieval by customer, cluster or service before similarity is considered, so one tenant's incident never lands in another's prompt.
+
+The escalation half is already a product feature in at least one place. Vercel's AI Gateway has "evaluation fallbacks": a condition such as `confidenceBelow: 0.6` on a question reruns the request against a full LLM. Its docs note that a triggered request bills both stages.
+
+There is a parallel between the two halves. RAG reduces hallucination and does not eliminate it: the model can still misread a retrieved runbook, or be handed the wrong one. A decision model eliminates fabrication and does not eliminate wrong answers. Neither is "always correct", and a pipeline built from both still needs the human at the end of it.
