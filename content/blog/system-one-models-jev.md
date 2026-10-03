@@ -141,3 +141,21 @@ elif action.choice == "approve_transfer":
 In TypeSafe's version 0.5 is the floor below which you do not guess, and 0.9 is the bar for the high-stakes action. Even above it, the function is called `confirm_then_execute`. The numbers are examples. The same docs use 0.6 and 0.85 in the confidence-gated routing pattern and 0.35, 0.70 and 0.85 in the guardrails cookbook, and the confidence page says outright that "the correct threshold values depend on your domain and the performance of the model for your use case."
 
 Two things follow from that. Thresholds belong to the action: in the snippet, reading an account balance and approving a transfer hang off the same Choice with different bars. And for each gate you have to decide which way it fails. Low confidence on "is this spam?" can fail towards the inbox. Low confidence on "should this page someone?" must not fail towards silence.
+
+## "Can't hallucinate", honestly
+
+TypeSafe's home page says "Zero Hallucinations" and the launch post says Jev "*can't* hallucinate". That is true in a narrow sense and worth getting exactly right.
+
+Jev cannot fabricate content. The output is always one of the answers you defined, so it cannot invent a team that does not exist or return a field your code does not expect. A whole class of failure is removed by construction.
+
+It can still be wrong. `"billing"` is a perfectly typed answer to a ticket that was about a bug. TypeSafe's own docs say this in one sentence: "Calibration is measured across groups of predictions; it does not guarantee that an individual answer is correct." There are three ways it goes wrong that matter in practice.
+
+The confidently wrong answer is the hardest to catch: clean, valid, incorrect, with 0.95 next to it. An LLM hallucination often gives itself away: the URL 404s, the function does not exist, the JSON does not parse. A wrong enum value looks exactly like a right one, and nothing downstream will raise an error.
+
+A Choice is also a forced choice. If none of your options fit, it still returns one of them, and the probabilities still sum to 1. The fix is in the docs for Choice: "Add an `other` or `none of the above` option when the list might not cover every input, so the model can say none of the others fit." Do that on every Choice whose inputs you do not control.
+
+Then there is calibration. Thresholds only work if the probabilities are honest: of all the answers given at 0.9, about nine in ten should be right. TypeSafe trains for that, on its data. Whether it holds on yours is an empirical question, and the outside numbers so far do not agree with each other. The usual measure is expected calibration error (ECE), the average gap between stated confidence and observed accuracy, where 0 is perfect. open-alternative-jev's README puts Jev at 0.144 on the typed-decisions benchmark, and says that figure is the benchmark authors' own run through TypeSafe's API on 18 September. Laya's README puts Jev at 0.246 without naming the dataset, and says its Jev figures are third-party numbers that Laya's authors never measured themselves. Neither figure is TypeSafe's, and both reach you through the README of a project that competes with Jev. Treat them as a reason to measure and nothing more. The check is cheap: label a few hundred of your own cases, bucket the answers by confidence, and compare each bucket's confidence to its accuracy.
+
+One more thing about the framing. The absence of fabrication is a property of bounded, typed output. It is not a property of "System 1" as a concept. Human System 1 is the part of us that answers "ten cents" to the bat-and-ball question, quickly and with total assurance. Fast intuition makes confident errors; that is most of what Kahneman's book is about.
+
+Jev can't make things up, but it can make wrong decisions, sometimes confidently.
