@@ -210,3 +210,109 @@ Structured-output libraries such as BAML, Instructor and Outlines, and the struc
 A trained classifier is the other old answer: fine-tune a small encoder on labelled examples, by hand or with something like Hugging Face AutoTrain. For a fixed label set with plenty of data this is still the cheapest and fastest option, and it is entirely yours. What it lacks is the ability to change the question at runtime. Add a team or reword a category and you are retraining. Laya and Von are, mechanically, this same kind of encoder with the labels moved into the request.
 
 The trade-off between all of these and Jev is plain. Jev is hosted, so your state goes to TypeSafe, or to a gateway and then to TypeSafe. The self-hosted options keep the data inside your network, usually at some cost in accuracy and always at the cost of running a model server.
+
+## Where it fits: general use cases, and three for SREs
+
+The general list is whatever you currently do with a prompt that ends in "reply with one of the following": support ticket routing, refund and intent detection, spam and email triage, content moderation. The newer one is guardrails on AI agents, where a fast model approves or blocks each tool call before it runs. LangChain [shipped middleware](https://www.langchain.com/blog/building-a-harness-with-jev) for this two days after the launch, marked experimental:
+
+```python
+from langchain.agents import create_agent
+from langchain_typesafe.experimental.middleware import AutoModeMiddleware
+
+guardrail = AutoModeMiddleware(tools=["bash"])
+agent = create_agent("openai:gpt-5.6-luna", middleware=[guardrail])
+```
+
+What follows is how the same model looks from where I sit, running Kubernetes with Prometheus and Loki. These are designs, not reports. I have not put any of them in front of a pager.
+
+### Alert triage
+
+An alert fires. Before anyone is woken up, three questions need answers: whose is it, how bad is it, and is it the same thing as the incident that is already open? That is a Choice, a Score and a Noul, and they fit in one request:
+
+```python
+alert = {
+    "alertname": "KubePodCrashLooping",
+    "namespace": "payments",
+    "pod": "ledger-api-7c9f8d6b5-x2x9q",
+    "summary": "Pod payments/ledger-api-7c9f8d6b5-x2x9q is restarting repeatedly",
+    "open_incidents": ["INC-2291: ledger-api OOMKilled after the 14:05 deploy"],
+}
+
+resp = client.system_one(
+    state=alert,
+    questions={
+        "team": Choice(
+            instructions="Which team owns this alert",
+            criteria={
+                "payments": "Ledger, checkout and billing services",
+                "platform": "Cluster, nodes, ingress, DNS, CI",
+                "data": "Kafka, Postgres, pipelines",
+                "unclear": "None of the above, or not enough information",
+            },
+        ),
+        "urgency": Score(
+            instructions="How urgently a human needs to look at this",
+            criteria=[
+                "Noise, no action needed",
+                "Look at it during working hours",
+                "Page the on-call now",
+            ],
+        ),
+        "duplicate": Noul(
+            instructions="This alert is caused by one of the incidents in open_incidents",
+        ),
+    },
+)
+
+team = resp.answers["team"]
+urgency = resp.answers["urgency"]
+
+known_owner = team.choice != "unclear" and team.confidence >= 0.5
+owner = team.choice if known_owner else "platform"   # the catch-all rotation
+needs_page = urgency.score >= 1.5 or urgency.confidence < 0.5
+
+if resp.answers["duplicate"].noul >= 0.9:
+    attach_to_incident(alert)             # a human already owns that incident
+elif needs_page:
+    page(owner, alert)
+elif known_owner:
+    open_ticket(owner, alert)
+else:
+    send_to_triage_queue(alert, resp)
+```
+
+Note the `unclear` option, and note the order of the checks. Urgency is tested before ownership, so an urgent alert the model cannot attribute still pages someone (the platform rotation in this sketch), and an alert whose urgency the model is unsure about pages too. Only the low-urgency, no-owner case goes to a queue. Nothing is thrown away, either: an alert the model scores as noise still becomes a ticket or a queue entry, so the only noise this sketch removes is duplicates. That is the price of never failing towards silence. The one branch that can swallow a page is the duplicate one, which is why it sits behind 0.9 and attaches the alert to an incident somebody is already working. A triage layer that drops a real page is worse than no triage layer.
+
+TypeSafe's page of known weak spots for Jev 1.13 shapes what goes in the state. "Jev is not a calculator", so do not ask it whether an error rate crossed a threshold; PromQL already answered that when the alert fired. And accuracy "falls as the state grows with content unrelated to the decision", so send the handful of labels and annotations that matter, not the whole Alertmanager payload with two hundred log lines attached.
+
+### A guardrail in front of a Kubernetes agent
+
+If an AI agent has `kubectl`, something has to stand between its proposed command and the cluster. The commands you never want, deleting a namespace or a PVC in production, belong in RBAC and admission policy, where the answer has no probability attached. A decision model is for the grey area: a scale to zero, a `helm rollback`, a `kubectl drain`.
+
+```python
+resp = client.system_one(
+    state={"command": cmd, "cluster": cluster, "namespace": namespace},
+    questions={
+        "destructive": Noul(
+            instructions="Running this command deletes data or removes serving capacity in a way that is hard to undo",
+        ),
+    },
+)
+
+if resp.answers["destructive"].noul <= 0.1:
+    run(cmd)
+else:
+    hold_for_human(cmd, resp)
+```
+
+The gate reads "run only when the model is at least 0.9 sure this is safe", which for a Noul means a probability of 0.1 or lower that the statement is true. Everything else waits for a person. One warning from the same weak-spots page applies with full force here: "State is data, and `jev-1.13` does not treat it as hostile by default." A command assembled by an agent that has just read a poisoned web page is hostile data.
+
+### Log classification
+
+Tagging error lines by category (timeout, auth failure, OOM, bad config, dependency down) is the volume case. A full LLM per line is too slow and costs too much. A decision model at $0.042 per million tokens is priced for it.
+
+Two practical limits. The hosted API's documented rate limits are 80 requests and 100K tokens per second (the same page says they are "adjusting dynamically"), so classify log patterns after deduplication, not raw lines. And logs are where the hosted-versus-local trade-off bites hardest, because they contain whatever your customers typed. This is the use case where I would look at a self-hosted encoder first.
+
+### Where it does not fit
+
+Anything that needs an explanation, a summary, generated text or multi-step reasoning. "Why is this pod crash-looping" is not a System One question. Neither is a postmortem.
