@@ -339,3 +339,19 @@ The retrieval step is RAG. In one sentence: runbooks, postmortems and past incid
 The escalation half is already a product feature in at least one place. Vercel's AI Gateway has "evaluation fallbacks": a condition such as `confidenceBelow: 0.6` on a question reruns the request against a full LLM. Its docs note that a triggered request bills both stages.
 
 There is a parallel between the two halves. RAG reduces hallucination and does not eliminate it: the model can still misread a retrieved runbook, or be handed the wrong one. A decision model eliminates fabrication and does not eliminate wrong answers. Neither is "always correct", and a pipeline built from both still needs the human at the end of it.
+
+## Limitations, and whose numbers these are
+
+The speed and cost figures are TypeSafe's own. The launch post claims 40x to 200x faster than frontier LLMs on System One shaped queries, and the home page says 193.6x faster and 444.6x cheaper. Those two headline numbers come from workflows TypeSafe wrote, and the post itself says "we expect that these are on the higher end of real world gains."
+
+Latency depends on where you are. From the same post: "our published evals are generally run from our laptops on the West Coast (this is where our service is currently based)." From India or Europe, add a round trip across an ocean to every call. Other people's numbers already differ from the brochure: Cloudflare's Clef announcement puts Jev's median at 524.1 ms across its benchmark runs, and Laya's README cites third-party measurements of 236 to 276 ms.
+
+TypeSafe publishes a list of [known weak spots for Jev 1.13](https://docs.typesafe.ai/model-jaggedness/jev-1.13), to its credit. Beyond the ones already mentioned: it reads instructions literally, it handles dates as text and not as ordered quantities, double negatives hurt it, and "the order of a Choice's options can affect the answer, and jev-1.13 leans toward the option that comes first." Shuffle your options and see whether the answer moves.
+
+It is text only, English first (other languages "are handled but not equally well"), limited to 64k tokens per request with 32k for the state plus the longest question, and a Choice takes at most 255 options.
+
+It is a closed model behind an alias. Your thresholds are tuned to one version's calibration, and `jev-latest` will move. Pin `jev-1.13.0`, and re-run your calibration check before you adopt the next one.
+
+Several of the alternatives' benchmarks are run by the project's own authors, and some of the Jev figures in those READMEs are copied from third parties and were never measured by the project quoting them. That applies to the results where Jev loses and to the ones where it wins.
+
+All of this is a snapshot from the first days of October 2026. Version numbers, pricing, access routes and project status in this space change weekly. Check each one before you depend on it.
