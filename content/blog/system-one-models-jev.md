@@ -355,3 +355,15 @@ It is a closed model behind an alias. Your thresholds are tuned to one version's
 Several of the alternatives' benchmarks are run by the project's own authors, and some of the Jev figures in those READMEs are copied from third parties and were never measured by the project quoting them. That applies to the results where Jev loses and to the ones where it wins.
 
 All of this is a snapshot from the first days of October 2026. Version numbers, pricing, access routes and project status in this space change weekly. Check each one before you depend on it.
+
+## When to use one, and when not to
+
+Two conditions decide this, and neither is about the model.
+
+The first is an escalation path. You can act on a threshold, and there is somewhere for the cases below it to go: a human queue, a confirmation prompt, a full LLM. Where a wrong answer is expensive and nothing stands behind the model, do not use one.
+
+The second is data. You have, or can label, a few hundred real examples to check accuracy and calibration against. Without them every threshold in your code is a number copied from someone else's docs.
+
+With both in place, a System One model is worth trying wherever code consumes the answer and you make the call often enough that seconds of latency or LLM pricing is the constraint. It stays the wrong tool when you need the reasoning behind the verdict, because it cannot tell you why, and when the input cannot leave your network and you are not prepared to run one of the open models.
+
+If you already have a prompt whose output goes straight into an `if`, that is the one to try it on. Keep the LLM call next to it for a week, compare the two on real traffic, and let the disagreements tell you where your threshold goes.
