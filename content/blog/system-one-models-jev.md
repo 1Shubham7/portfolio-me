@@ -159,3 +159,54 @@ Then there is calibration. Thresholds only work if the probabilities are honest:
 One more thing about the framing. The absence of fabrication is a property of bounded, typed output. It is not a property of "System 1" as a concept. Human System 1 is the part of us that answers "ten cents" to the bat-and-ball question, quickly and with total assurance. Fast intuition makes confident errors; that is most of what Kahneman's book is about.
 
 Jev can't make things up, but it can make wrong decisions, sometimes confidently.
+
+## The open-source alternatives
+
+Jev is closed, hosted and waitlisted, which is a reliable recipe for open reimplementations. [Pinggy's roundup](https://pinggy.io/blog/best_open_source_jev_alternatives_self_hosted_decision_models/) says the first ones appeared within about 24 hours of the launch, and by the time it was published on 23 September the list it cites was tracking more than a dozen. On 1 October Cloudflare [released its own](https://developers.cloudflare.com/changelog/post/2026-10-01-clef-workers-ai/) open-weight decision models, Clef and Clef-flash.
+
+The ones worth knowing about fall into three groups: encoder models with decision heads (Laya, Von), LLM backbones adapted for typed decisions (Kev, JevK5, Clef), and libraries that train nothing and read option probabilities straight off a frozen model's logits (SemIf, open-alternative-jev). jevos I cannot place: it is small enough for a laptop CPU, and its README does not say what it is built on. Every number in this table comes from the project's own README or announcement, and where that README is quoting someone else's measurement the cell says so.
+
+| Project | Runs where | License | Speaks Jev's API? | Size and hardware | Latency (their number) | Accuracy claim, and who ran it |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| Jev | TypeSafe's cloud, plus Vercel and Cloudflare gateways | Proprietary, closed weights | It is the API | None of yours | 70 to 500 ms (TypeSafe) | See the rows below: everyone benchmarks against it |
+| [Clef, Clef-flash](https://developers.cloudflare.com/changelog/post/2026-10-01-clef-workers-ai/) | Workers AI, or self-hosted from Hugging Face | Apache 2.0 | Yes: "follows the System One API" | 27B and 9B parameter models | 209.3 ms and 38.8 ms median, against 524.1 ms for Jev (Cloudflare, 43 runs) | A Clef model scores highest on 7 of 10 decision benchmarks (Cloudflare) |
+| [Laya](https://github.com/NandhaKishorM/laya) | Self-hosted; also on Vercel AI Gateway | Apache 2.0 | Yes: `laya-serve` exposes `POST /v1/systemone` | CPU or GPU; 421M parameters | 39.5 ms for one question on a Tesla T4 with the English checkpoint, 32.8 ms with the smaller multilingual one | 0.766 against Jev's 0.727 on typed-decisions with the fine-tuned `laya-typed-decisions` checkpoint; 0.362 with the base English one (authors; the Jev figure is third-party and Laya did not run it) |
+| [Kev](https://github.com/jaredpalmer/kev) | Self-hosted | Apache 2.0 | Yes: the TypeSafe Python SDK can point at it | 0.8B to 27B; the 27B needs an 80 GB GPU | 18.1 ms of model time for six questions, Kev-4B on an H100 | Kev-27B 0.851 against Jev's 0.857 on new sources (authors) |
+| [Von](https://github.com/wfzyx/von) | Self-hosted | Apache 2.0 | Yes: "a drop-in server and client" for the wire protocol | CPU, CUDA, ROCm or Apple MPS; 395M parameters | Raw p50 0.096 s on a 4-vCPU Xeon (OpenVINO), 0.023 s on an A10G; 0.34 s on CPU in the JevBench v1.4 table | Composite 27.5 against Jev's 63.3 on JevBench v1.4, and 0.279 against 0.367 on its sealed set (figures as given in Von's README) |
+| [JevK5](https://github.com/allebee/jevk5) | Self-hosted | Apache 2.0, code and weights | Accepts the `/v1/systemone` request shape | About 9 GB of GPU memory for the 4B model | p50 13.2 ms on an H100 | 33.1% against Jev's 36.7% on the 308 sealed decisions of JevBench v1.4, which the README describes as independent |
+| [jevos](https://github.com/feder-cr/jev) | Self-hosted | MIT | Yes for yes/no questions, which is all the README claims; the server also accepts Choice and Score and expands them into yes/no questions | Laptop CPU, about 1 GB of memory | 25 to 110 ms | 0.810 against Jev's 0.927 on 2,000 yes/no questions from unseen policies (jevos's README; the figure is for jevos-v2, and the current model is v3) |
+| [SemIf](https://github.com/TheoLeeCJ/SemIf-OpenJev) | Self-hosted | MIT | Not stated in the README | RTX 3090; CPU and Apple Silicon backends exist | 1.023 s median for 21 yes/no criteria | 0.845 agreement against Jev's 0.883 on 102 rows (authors, with the Jev figure read from TypeSafe's published records) |
+| [open-alternative-jev](https://github.com/ikermoel/open-alternative-jev) | In-process Python library | Apache 2.0 | No, and the README says so | CPU for small models, a GPU for large ones; Hugging Face Transformers or vLLM | 582 ms per case with a 27B model | 73.7% (author) against Jev's 72.7% (the benchmark authors' run) on the 400 cases of typed-decisions |
+
+Some notes the table cannot carry.
+
+The API compatibility column is the one I would look at first. Laya, Kev, Von, jevos and Clef all say they serve TypeSafe's own `/v1/systemone` contract (jevos promises unchanged client code only for yes/no questions), and the official SDK takes a base URL (a `base_url` argument, or `TYPESAFE_BASE_URL` in the environment). So a client written for Jev can be pointed at a pod in your own cluster by changing that URL; Cloudflare says Clef needs the model name changed as well. That makes the choice reversible in both directions: start on the hosted model and move in-house later, or prototype locally while you wait for an invite.
+
+Calibration is the column I left out, because the figures do not line up into a column. Most projects publish something:
+
+- Laya: an ECE of 0.081, after temperature scaling.
+- Kev: a fitted temperature shipped with every checkpoint, which the README says takes Kev-9B's calibration error from 0.103 to 0.041 on new sources.
+- SemIf: a temperature fitted per workload, with 0.208 falling to 0.069 on WANLI.
+- JevK5: ECE on JevBench's hard tier, between 0.054 and 0.126 depending on the version.
+- Von: a JevBench calibration score of 75.7 against Jev's 76.3, and a `von calibrate` command for refitting on your own labels.
+- open-alternative-jev: a raw ECE of 0.020 for its 27B run on typed-decisions, next to the 0.144 it quotes for Jev. The same README warns that the library is "not calibrated out of the box", and that fitting a temperature raised its hard-label ECE from 0.020 to 0.135.
+
+I found nothing on calibration in jevos's README or in Cloudflare's Clef announcement. These are different metrics on different data, and several are post-temperature figures, with the temperature fitted on the project's own data or on data the README does not describe. None of them tells you how the probabilities will behave on your tickets or your alerts.
+
+Read the accuracy column sideways. On typed-decisions, which open-alternative-jev's README calls "the benchmark the community uses", two open projects come out ahead of Jev: open-alternative-jev by a point and Laya by four. (I am assuming Laya's row is the same benchmark; it has the same name, the same 2,000 decisions and the same 0.727 for Jev.) Laya's lead comes with a caveat. It belongs to a fine-tuned checkpoint called `laya-typed-decisions`, and the same README puts Laya's base English checkpoint at 0.362 on the same decisions, half of Jev's score. jevos's chart has Laya at 0.489 on its yes/no set.
+
+On Kev's own suite Jev is ahead of Kev-27B by less than a point, of the 4B and 9B by about four, and of the 0.8B by twenty-one. On JevBench's sealed set it leads JevK5 by 3.6 points and Von by nearly nine, and Von's composite score is less than half of Jev's. On the yes/no set in jevos's README Jev is ahead of jevos by almost twelve. That is four of the benchmarks in the table, and for two of them (Kev's suite and jevos's yes/no set) the project being measured is the only source I have. Across them the open model lands anywhere from four points ahead to a long way behind, and one model, Laya, moves from 0.362 to 0.766 on the same decisions depending on which checkpoint you load.
+
+So I would not pick from this table. I would label a few hundred of my own cases and run them through Jev and two of the open models. The first is Kev, because its 27B model comes within a point of Jev on its own suite and the TypeSafe SDK can point at it. That figure needs an 80 GB GPU; the 4B and 9B are about four points back. The second is Laya, with the numbers above in mind: it is an encoder that runs on a CPU and serves `/v1/systemone`, so it is cheap to stand up, and what I would want to know is how far its base checkpoint gets on my labels before any fine-tuning. The same client and the same questions work against all three, so on the client side the comparison is a change of base URL.
+
+There is also [NanoJev](https://github.com/TianyuCodings/NanoJev), a 0.6B Qwen backbone with decision heads trained on four game environments (two ViZDoom tasks, a maze, Snake) and aimed at control loops. It is a different use from everything else in this post, and I mention it because it shows where the idea goes when a decision is one step in a loop and not one call in a request handler.
+
+### The older ways to get a typed answer
+
+None of this started in September. Two older approaches solve an overlapping problem.
+
+Structured-output libraries such as BAML, Instructor and Outlines, and the structured output modes that OpenAI and Gemini provide, make an LLM return JSON that matches a schema. That gives you type safety at parse time. It does not give you a decision engine: the model still generates token by token, and any confidence figure you extract comes from the underlying LLM's token probabilities, which nobody trained to be calibrated for your question.
+
+A trained classifier is the other old answer: fine-tune a small encoder on labelled examples, by hand or with something like Hugging Face AutoTrain. For a fixed label set with plenty of data this is still the cheapest and fastest option, and it is entirely yours. What it lacks is the ability to change the question at runtime. Add a team or reword a category and you are retraining. Laya and Von are, mechanically, this same kind of encoder with the labels moved into the request.
+
+The trade-off between all of these and Jev is plain. Jev is hosted, so your state goes to TypeSafe, or to a gateway and then to TypeSafe. The self-hosted options keep the data inside your network, usually at some cost in accuracy and always at the cost of running a model server.
