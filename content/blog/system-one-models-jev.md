@@ -5,6 +5,8 @@ dateString: October 2026
 draft: false
 tags: ["AI", "LLM", "Jev", "System One", "SRE", "RAG"]
 weight: 1
+cover:
+    image: "/blog/system-one-models-jev/cover.png"
 ---
 
 Most of your LLM calls are really decisions.
