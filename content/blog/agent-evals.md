@@ -450,3 +450,13 @@ The habits carry over from testing, and most of the mechanics change.
 
 The gate row is the one that takes getting used to. A test suite that is 98% green is broken. An eval suite at 98% may be the best run you have had, and the question is whether it is lower than last week's by more than chance.
 
+## Regression evals and capability evals
+
+Anthropic's post splits suites by the question they answer. A capability suite asks what the agent can do, and it is supposed to start with a low pass rate, full of tasks the agent struggles with. A regression suite asks whether the agent still handles everything it used to, and it should sit close to 100%.
+
+The word capability is now doing two jobs in this post, and they are different axes. Earlier it named a category, the diagnose-and-fix tasks, and that is what the `category` field in a task file records: the kind of behaviour the task tests. Here it names a suite, and a suite is a directory. Which directory a task file sits in says whether the agent is expected to pass it yet.
+
+In SRE terms, the regression suite is the set of incidents you already trust the agent with, and the capability suite is the set you would like to trust it with. They get different gates, so they stay separate numbers. Any drop in the regression suite blocks the merge, while a capability suite can sit at 40% and block nothing, since it is a target and a rise in it is what a good change looks like.
+
+Tasks move from one suite to the other, and the post's word for it is graduating. Take two tasks from earlier. Once the crash-loop task passes every trial, run after run, it has stopped measuring progress and started protecting it, so its file moves to the regression directory. Its `category` does not change. The escalation task, the NotReady node the agent has no access to fix, is a guardrail task by category, and it stays in the capability suite for as long as the agent sometimes pokes at it until the budget runs out.
+
