@@ -547,3 +547,45 @@ Each entry in `results` is the `Result` struct from the sketch, serialized as is
 
 JSONL because it appends safely, a run that dies halfway still leaves every finished trial on disk, `jq` and `grep` work on it, and two runs can be compared with a short script. It also keeps the option of buying later: if a hosted viewer earns its place, converting a file you own into its import format is a small job next to moving off a platform that held your only copy.
 
+## Pitfalls
+
+A harness produces numbers with decimal points, and that makes them look more trustworthy than they are.
+
+### Graders that are wrong
+
+A grader is code, or a prompt, and it can be wrong in both directions. `pod_ready` as sketched passes a pod that was Ready at one poll and gone by the next. A `deployment_invariants` that compared the whole pod template, and not the three fields it was told to keep, would fail the agent that fixed the problem by pointing the Deployment at a second, corrected ConfigMap, which is a valid fix. Both mistakes are silent, and both end up in the score.
+
+The check is to take a few dozen transcripts, label them pass or fail by hand, and compare with what the graders said. For an LLM judge this is the only evidence that it measures anything, and Anthropic's post asks for the same: model-based graders calibrated closely against human experts.
+
+### Tasks nobody could pass
+
+Before an agent's failure on a task means anything, the task has to be solvable and its graders have to accept a correct fix. That is the `reference` field in the task file, and the idea is Anthropic's. For the crash-loop task, `solve.sh` applies the corrected ConfigMap and deletes the pod. The harness runs it in place of the agent, and every grader has to pass. If one does not, the task is broken, and every agent failure recorded against it was noise. Run it again whenever the task version changes.
+
+### Small differences that are noise
+
+Fifty tasks, one trial each, 80% passing: the standard error on that number is the square root of 0.8 × 0.2 / 50, about 5.7 points, and a 95% interval is roughly 11 points either side. An 84% the next day is not an improvement you can claim.
+
+Anthropic's [statistical approach to model evals](https://www.anthropic.com/research/statistical-approach-to-model-evals) recommends reporting the standard error next to every score, and comparing two runs with paired differences so that variation in task difficulty cancels out. Paired, the question is per task: of the fifty, which passed yesterday and failed today, and which went the other way? If two flipped up and none flipped down, 84 against 80 is two tasks, and you can go and read their transcripts. So run more trials, and look at which tasks flipped before you look at the headline.
+
+### Harness failures counted against the agent
+
+An image pull times out. The model provider returns a 429. None of that is the agent, and it is the reason `PodReadyGrader` goes to the trouble of returning an error, and not a failed `Result`, when the API server was the problem. Give those trials their own status, retry them, keep them out of the pass rate, and track how often they happen. If that rate is high, fix the harness before reading anything into the scores.
+
+### A suite that has gone stale
+
+This happens in two ways. Tune a prompt against the same forty tasks for a month and you get a prompt that is good at those forty tasks. Keep a held-out set that you run rarely and never debug against, built from the same failure classes with different details. When the main suite improves and the held-out set does not, the improvement was memorisation.
+
+The other way is saturation, Anthropic's word for a suite the agent passes completely. At 100% a suite can still catch a change that made things worse, but it has lost the ability to show that one made things better. That is the point to graduate those tasks to the regression suite and write harder ones: a crash loop with two faults stacked, say, where fixing the ConfigMap exposes an image tag that does not exist.
+
+### Scores from two different exams
+
+Two scores are comparable only if you know what produced each: the model, the prompt, the tool definitions, the guardrail config, the task and its graders. That is what `versions` and `task_version` are doing in the JSONL record. When a task or a grader changes, bump the task version and re-run the baseline before comparing anything.
+
+### Habits
+
+Include tasks where the agent should not act. If every task rewards doing something, you end up building an agent that always does something. Anthropic's version: "One-sided evals create one-sided optimization." For an SRE agent that means tasks where the right move is to leave things alone and say why: pods restarting because a rollout is in progress, or a fix that would need a production change nobody approved.
+
+Every trial spends tokens and cluster time, and tasks multiplied by trials grows fast. So the suite that runs on pull requests is a small smoke suite, and it runs only when prompts, tools, guardrails or the model ID changed. The full suite, with many trials, runs nightly, which is also the run that catches a model alias moving underneath you.
+
+Start before the agent is good. Anthropic's post calls writing the eval ahead of the capability eval-driven development, and says "20-50 simple tasks drawn from real failures is a great start." Real failures keep arriving after that. When the agent gets a production incident wrong, that incident is the next task: reproduce the broken state as a fixture, write the success criteria, and add it to the capability suite. It is the same reflex as writing a regression test for a bug.
+
