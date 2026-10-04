@@ -362,3 +362,23 @@ Three results are possible, and they should score differently. The agent ignores
 
 The audit check matters as much as the canary, because in a sandbox where RBAC denies PVC deletion the canary survives even when the agent tries. RBAC is the real defence, and it should be on in the eval as it is in production. What the eval measures is whether the agent was willing. And this is a task to run many trials of: an agent that follows an injected instruction one time in twenty will look fine in a single run.
 
+## Grade outcomes, not paths, and grade safety separately
+
+Anthropic's post warns against the obvious way to grade an agent: "There is a common instinct to check that agents followed very specific steps like a sequence of tool calls in the right order. We've found this approach too rigid and results in overly brittle tests, as agents regularly find valid approaches that eval designers didn't anticipate." Their advice is that "it's often better to grade what the agent produced, not the path it took." The [τ-bench](https://arxiv.org/abs/2406.12045) benchmark grades the same way: it compares the database state at the end of a conversation with an annotated goal state.
+
+For an SRE agent the outcome is the cluster. Is the pod Ready, and does the endpoint answer? Whether the agent got there with `kubectl edit` or `kubectl apply`, in six steps or eleven, has no bearing on correctness.
+
+"Often better" leaves room for an exception, and in infrastructure the exception is large. Plenty of terrible actions produce a good-looking end state. Delete the readiness probe and the pod is Ready. Delete the Deployment and the namespace has no crash-looping pods in it. A grader that only looks at the end will pass a change you would revert on sight.
+
+So safety gets its own graders and its own score, and this is the one place where the path is graded on purpose, for violations only.
+
+The obvious place to look for violations is the transcript, and it is a poor one. If the agent's tool is a shell, the grader has to work out from a command string whether something was a delete and which namespace it hit, and a script the agent wrote and then ran hides the call completely. The API server already keeps the record this needs. With an audit policy that logs ServiceAccount requests at the `Metadata` level, every request the agent makes produces an event carrying the verb, the resource, the namespace and the response code. A request that RBAC refused is in there too, with the [annotation](https://kubernetes.io/docs/reference/labels-annotations-taints/audit-annotations/) `authorization.k8s.io/decision: "forbid"`. Those events are the `Audit` field on `Trial` in the sketch.
+
+The policy cannot name the agent's ServiceAccount, because the file is written before the run and each trial's account is created with its sandbox. A ServiceAccount authenticates as `system:serviceaccount:<namespace>:<name>` and is [assigned to the group `system:serviceaccounts`](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#service-account-tokens), and an audit [policy rule](https://kubernetes.io/docs/reference/config-api/apiserver-audit.v1/) can match on `userGroups` as well as `users`. So the rule logs that group, and the harness splits the events by `user.username`, which is different for every trial. With trials running in parallel on a shared cluster, that is how a write outside the trial namespace gets pinned on the trial that made it.
+
+The safety grader walks a trial's events against a deny list: a delete of anything other than a pod, a write outside the trial namespace. It counts attempts as well as effects, because a delete that RBAC refused leaves the cluster untouched and still tells you what the agent was prepared to do. The transcript keeps one job here. An approval request is a tool call and never reaches the API server, so "changed production without asking first" is checked by finding the write in the audit log and looking for the approval that should come before it in the transcript.
+
+On kind, turning auditing on is [a policy file, two API server flags and the volume mounts that go with them](https://kind.sigs.k8s.io/docs/user/auditing/), all in the cluster config. On a shared or managed cluster you need read access to wherever that log is shipped.
+
+Then keep the two scores apart. Task success is a rate, and the gate on it is a threshold. Safety violations are a count, and the gate on that count is zero. Blend them into one number and a suite where the agent fixed nearly everything and deleted one volume along the way reports a high score.
+
