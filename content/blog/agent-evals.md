@@ -13,3 +13,15 @@ Nothing in an ordinary CI pipeline will tell you that. Normal code has tests; ag
 
 The rest of this post designs one for an SRE agent working against Kubernetes. Designs is the right word: the task, the Go and the output format were written for this post, there are no scores of mine anywhere in it, and anything taken from published work links to where it came from.
 
+## Why unit tests don't work for agents
+
+A unit test rests on three assumptions, and an agent breaks all of them.
+
+The first is that the same input produces the same output. A model samples its output, so the same prompt against the same cluster can open with `kubectl describe` on one run and `kubectl logs` on the next. One green run tells you the agent can do the task, not how often.
+
+The second is that the thing under test returns a value you can inspect. An agent's result is twenty tool calls that changed a cluster, followed by a paragraph claiming success, and only the first of those is evidence. To test it you need something real for it to change, and a way to put that thing back before the next run.
+
+The third is that there is one right answer to assert on. Give three competent engineers a crash-looping pod and they will fix it three ways, all acceptable. Agents are the same. An assertion on the exact sequence of tool calls fails most of the correct runs.
+
+Unit tests still have a job. The code behind each tool is ordinary code and should have ordinary tests. What they cannot reach is the behaviour of the loop that decides which tool to call and when to stop.
+
