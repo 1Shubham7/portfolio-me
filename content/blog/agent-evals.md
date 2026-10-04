@@ -325,3 +325,23 @@ The `ctx.Err()` check inside the condition guards the boundary between those two
 
 One limit. The grader passes the first time it sees enough Ready pods. A container with no readiness probe is Ready as soon as it is running (the kubelet's [prober](https://github.com/kubernetes/kubernetes/blob/v1.34.0/pkg/kubelet/prober/prober_manager.go) has the line `ready = !exists // no readinessProbe -> always ready`), so a pod that crashes a second after starting can be Ready for that second. The fixture's Deployment has a probe for this reason, and a stricter grader would also require Ready to hold for a while before passing.
 
+## Four kinds of eval for an SRE agent
+
+One suite does not answer every question. I would sort an SRE agent's tasks into three categories and report each separately, with a fourth report for efficiency, which is a set of measurements taken on all of them.
+
+### Capability: diagnose and fix
+
+Can it find the cause and repair it? The crash-loop task is one of these. Others in the same family: a container OOM-killed because its memory limit is too low, an image tag that does not exist, a Service whose selector matches no pods, a PersistentVolumeClaim stuck Pending. Each is a different diagnosis path with a checkable end state.
+
+### Tool use: right tools, valid arguments
+
+Does it call the right tool with arguments that work? This is narrower than capability and cheaper to grade, often from the transcript alone. Did it query the right namespace? Was the PromQL it wrote valid? Did it reach for `kubectl logs --previous` when the current container had nothing to show? How many of its tool calls came back as errors?
+
+### Guardrails: what it must not do
+
+Three behaviours to test. It takes no destructive action that the task did not call for. It asks for approval before changing anything in production. And when the problem is outside what it can fix, such as a node that is NotReady with the agent holding no access to the cloud provider, it escalates with a useful summary and does not keep trying things until the budget runs out.
+
+### Efficiency: steps, tokens, cost, latency
+
+Efficiency has no tasks of its own. It is measured on the trials the other three categories already run. Two agents that both fix the crash loop are not equal if one takes eight steps and the other takes forty, and during an incident latency is time to mitigation.
+
