@@ -33,3 +33,15 @@ The closest things an SRE already has are CI and a chaos-engineering game day, a
 
 One naming trap. I wrote a whole post on the [agent harness](/blog/agent-harness/): the loop, tools, permissions and context management around the model. That is the thing under test here. The eval harness is a separate program that starts the agent harness, points it at a broken environment and scores what it does. When someone says "the harness" with no qualifier, ask which one they mean.
 
+## The vocabulary
+
+Five terms carry most of the conversation. They come from the same Anthropic post and I use them its way from here on. Restated for an agent that works on a cluster:
+
+- **Task**: one test, with fixed inputs and a definition of success. Here that is one broken environment and one definition of fixed.
+- **Trial**: one attempt at a task. In practice, one fresh namespace and one run of the agent inside it. You run several per task, because a single attempt by something that does not repeat itself tells you very little.
+- **Transcript**: the complete record of a trial, every model message, tool call and tool output. The post notes that people also say trace or trajectory, and they mean the same thing.
+- **Grader**: the logic that scores one aspect of a trial. "Is the pod Ready" is a grader. So is "did it delete anything", and a task normally carries several.
+- **Eval suite**: a collection of tasks that measure one capability or behaviour. On disk, a directory of task files.
+
+The glossary also defines the **outcome**: the state of the environment when the trial ends. Keep it apart from the transcript, which only holds what the agent did and said. An agent can write "the deployment is healthy" in its last message while the pod is still in back-off.
+
