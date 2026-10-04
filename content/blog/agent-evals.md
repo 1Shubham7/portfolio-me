@@ -589,3 +589,12 @@ Every trial spends tokens and cluster time, and tasks multiplied by trials grows
 
 Start before the agent is good. Anthropic's post calls writing the eval ahead of the capability eval-driven development, and says "20-50 simple tasks drawn from real failures is a great start." Real failures keep arriving after that. When the agent gets a production incident wrong, that incident is the next task: reproduce the broken state as a fixture, write the success criteria, and add it to the capability suite. It is the same reflex as writing a regression test for a bug.
 
+## Read the transcripts
+
+Everything above produces numbers, and the numbers are the smaller half of the value.
+
+A pass rate that dropped tells you to go and look. It cannot tell you whether the agent stopped reading a pod's events before acting, or a grader started rejecting a valid fix.
+
+So read them. The failures first, then a few of the passes, because a trial can pass for the wrong reason and only a person reading it will notice. Anthropic's post says they built tooling for viewing eval transcripts and "regularly take the time to read them."
+
+Metrics show that something changed; transcripts show why.
