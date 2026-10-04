@@ -436,3 +436,17 @@ The last one is a model version swap, which looks out of place in a list of regr
 
 So the suite's triggers have to be wider than "the code changed". Prompt files, tool definitions, guardrail config and the model ID all count as code here, and a scheduled run covers the changes that arrive from outside the repo.
 
+## Tests vs. evals
+
+The habits carry over from testing, and most of the mechanics change.
+
+| | Tests | Evals |
+| :-- | :-- | :-- |
+| Result | Pass or fail | A rate |
+| Runs | One, deterministic | Several trials per task |
+| What is checked | Exact output | The outcome, by a grader |
+| Gate | Any failure blocks the merge | A threshold, relative to a baseline |
+| Cost and speed | Milliseconds, close to free | Seconds to minutes per trial, and every trial costs tokens and compute |
+
+The gate row is the one that takes getting used to. A test suite that is 98% green is broken. An eval suite at 98% may be the best run you have had, and the question is whether it is lower than last week's by more than chance.
+
