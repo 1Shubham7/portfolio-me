@@ -477,3 +477,30 @@ Production monitoring is the SLO layer. It tells you what is happening with real
 
 Anthropic's post borrows the Swiss cheese model for the stack: "no single evaluation layer catches every issue."
 
+## The tools that exist, and the one OpenAI is shutting down
+
+Anything in quotation marks below is taken from the project's own README or docs as they stood on 4 October 2026. The rest is a summary of the same pages.
+
+| Tool | What it is | License and hosting | Owner |
+| :-- | :-- | :-- | :-- |
+| [DeepEval](https://github.com/confident-ai/deepeval) | "The LLM Evaluation Framework", "similar to Pytest but specialized for unit testing LLM apps" | Apache 2.0. A separate hosted platform, Confident AI, sits on top of it | Confident AI |
+| [promptfoo](https://www.promptfoo.dev/docs/intro/) | "an open-source CLI and library for evaluating and red-teaming LLM apps" | MIT. The docs say it "runs completely locally" | OpenAI |
+| [Braintrust](https://www.braintrust.dev/docs) | "the active observability platform for instrumenting, understanding, and improving agents" | Commercial and hosted. Self-hosting is ["only available on the Enterprise plan"](https://www.braintrust.dev/docs/admin/self-hosting) | Braintrust |
+| [LangSmith](https://docs.langchain.com/langsmith/home) | LangChain's observability and evaluation product. The docs say it "works with many frameworks and providers" | A hosted product. The docs offer "cloud, hybrid, or self-hosted" setups | LangChain |
+| [Arize Phoenix](https://github.com/Arize-ai/phoenix) | An "open-source AI observability platform designed for experimentation, evaluation, and troubleshooting", "built on top of OpenTelemetry" | Elastic License 2.0, self-hosted. Arize AX is the managed commercial product | Arize AI |
+| [Inspect](https://inspect.aisi.org.uk/) | "An open-source framework for large language model evaluations" | MIT | UK AI Security Institute (the docs also credit Meridian Labs) |
+
+promptfoo is driven by declarative config ("Define evals without writing code or working with heavy notebooks", per its docs) and has a red-teaming side, which is relevant if prompt injection is on your list. Its ownership changed this year. The founders [announced on 9 March 2026](https://www.promptfoo.dev/blog/promptfoo-joining-openai/) that OpenAI was acquiring the company, and the [README](https://github.com/promptfoo/promptfoo) now reads: "Promptfoo is now part of OpenAI. Promptfoo remains open source and MIT licensed."
+
+Braintrust, LangSmith and Phoenix are platforms more than runners. All three combine tracing of what an agent did with evaluation over datasets, and that is the part of the stack where a transcript viewer and a shared dashboard earn their keep. Phoenix can be self-hosted straight from its public repository, with the caveat that the Elastic License is not the same thing as MIT or Apache.
+
+For agent work, start with Inspect. Sandboxes are a first-class concept in it: its docs describe "a sandboxing system that supports running untrusted model code in Docker, Kubernetes, Modal, Proxmox, Vagrant, and other systems via an extension API".
+
+### OpenAI's hosted Evals
+
+OpenAI's [deprecations page](https://developers.openai.com/api/docs/deprecations) has three dated entries for the Evals platform. The deprecation was announced on 3 June 2026. Existing evals become read-only on 31 October 2026. The Evals dashboard and API are scheduled to shut down on 30 November 2026. The replacement OpenAI points to is Promptfoo, with a cookbook guide titled [Moving from OpenAI Evals to Promptfoo](https://developers.openai.com/cookbook/examples/evaluation/moving-from-openai-evals-to-promptfoo) that opens: "OpenAI is winding down the Evals product and recommends Promptfoo for continuing and extending your evaluation workflows."
+
+That entry is about the hosted product. The older open-source [openai/evals](https://github.com/openai/evals) repository is a different thing, MIT licensed. As of the same date its README carried no deprecation notice, though its first line still tells readers "You can now configure and run Evals directly in the OpenAI Dashboard", which is the product being shut down.
+
+The lesson reaches past OpenAI. A task suite is the part you cannot get back by signing up for a different product, so tasks and graders belong in your repo, in a format you can run without anyone's dashboard.
+
