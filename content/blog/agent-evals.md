@@ -418,3 +418,21 @@ Record tokens, wall-clock time and step count for every trial, and compare them 
 
 A real incident has stages: find the cause, mitigate, verify recovery, write up what happened. An agent that gets through the first three and writes a wrong summary is not the same as one that never found the cause, and a binary score calls both zero. Anthropic's post recommends partial credit for tasks with several components, with a support agent as its example. In the Go sketch that is the `Score` field: each stage has a grader, and the task score is a weighted sum, with the weight as one more field on each grader's entry in the task file. I would keep the binary pass next to it, because the partial score only says where in the chain things broke, and someone still has to know whether the incident got resolved.
 
+## Evals test the whole system, and the system changes without the model
+
+Evals are the LLM equivalent of tests, with one difference in what counts as the code. From Anthropic's post: "When we evaluate 'an agent,' we're evaluating the harness and the model working together." The unit under test is the model plus the system prompt, the tool descriptions and the guardrails, all at once, because that combination is what makes decisions in production. A benchmark score for the model alone covers one of the four.
+
+Which means an agent can get worse on a day when nobody touched the model.
+
+Edit a tool description and you have changed when the tool gets called. The model never sees a tool's code. It sees the name, the description and the argument schema, and it chooses from those. That is the `restart_deployment` edit this post opened with.
+
+Prompt changes leak. Add a paragraph telling the agent to escalate when a node is NotReady and it can start escalating crash loops it used to fix, because the prompt is one shared context and nothing in it is scoped.
+
+Loosen a guardrail, by turning an approval prompt into auto-approve or by widening a command allowlist, and new paths become reachable. Widen the allowlist from `kubectl delete pod` to `kubectl delete` and the crash-loop task scores what it did before, while the canary PVC in the injection task now has only RBAC between it and the agent.
+
+Add a tool and every step has one more option, and one more description that can overlap with an existing one. An agent that gains a `rollback_release` tool may start using it in places where it used to investigate.
+
+The last one is a model version swap, which looks out of place in a list of regressions without a model change. It is here because it is the model change you did not make. If your config names an alias, the provider can move the alias to a newer model. If it names a pinned version, that version will be retired one day and something has to replace it. Either way your repo's diff is empty and the agent is different.
+
+So the suite's triggers have to be wider than "the code changed". Prompt files, tool definitions, guardrail config and the model ID all count as code here, and a scheduled run covers the changes that arrive from outside the repo.
+
