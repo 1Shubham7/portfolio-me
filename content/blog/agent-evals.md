@@ -45,3 +45,19 @@ Five terms carry most of the conversation. They come from the same Anthropic pos
 
 The glossary also defines the **outcome**: the state of the environment when the trial ends. Keep it apart from the transcript, which only holds what the agent did and said. An agent can write "the deployment is healthy" in its last message while the pod is still in back-off.
 
+## What a harness is made of
+
+None of the parts is exotic, and most of the work is in the second one, the sandbox.
+
+The task suite comes first. Each task is a setup, a prompt and success criteria. The setup puts the environment into its broken state. The prompt is what the agent is told, and it should read like something an alert or a colleague would send. The success criteria say what must be true at the end. Tasks live in the repo as files and get reviewed like code.
+
+Every trial gets its own sandbox, fresh and isolated, which Anthropic's post treats as a requirement. Leftover state from one trial changes the next, and then failures are correlated for reasons that have nothing to do with the agent. For Kubernetes, a namespace per trial in a shared cluster is quick and cheap, but the trials share nodes and every cluster-scoped object. A throwaway cluster per trial, with something like kind, is clean and slower. Whichever you pick, the agent in each trial runs as a ServiceAccount created for that trial, with credentials scoped to the sandbox and nothing else.
+
+The agent runner starts the real agent in that sandbox: the same system prompt, tool definitions and guardrails that ship. It enforces step, time and token budgets. A trial that hits a budget is a failure, and it is recorded as its own kind of failure, because "looped until the step limit" and "confidently did the wrong thing" need different fixes.
+
+While the agent runs, the transcript recorder writes every model message, tool call, argument, tool output, timestamp and token count to disk as it happens, so that a crash still leaves a record. A Kubernetes agent leaves a second record that it does not get to write: the API server's [audit log](/blog/audit-logging/), which can hold an event for every request the agent's ServiceAccount made, including the ones RBAC refused. The harness keeps that next to the transcript, because it is the better evidence of what the agent tried to do to the cluster.
+
+Graders come in three kinds in Anthropic's post: code-based, model-based and human. A code-based grader checks something like cluster state. The post's comparison table lists these as fast, cheap, objective and reproducible, and gives their weakness as being brittle to valid variations. A model-based grader, the LLM-as-judge, handles what code cannot express, such as whether the agent's incident summary names the real root cause. It is flexible, non-deterministic, and costs money on every call. Human review is expensive and slow, and inside a harness its main job is checking the other two. I would start with code and add a judge only where a criterion cannot be written as a check.
+
+Last is the scorecard: pass rates, cost and step counts per task and per suite, printed next to the same numbers from a baseline, normally the last run on main, since the diff is what gets acted on.
+
