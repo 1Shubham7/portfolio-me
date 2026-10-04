@@ -61,3 +61,13 @@ Graders come in three kinds in Anthropic's post: code-based, model-based and hum
 
 Last is the scorecard: pass rates, cost and step counts per task and per suite, printed next to the same numbers from a baseline, normally the last run on main, since the diff is what gets acted on.
 
+## The pipeline, end to end
+
+```text
+tasks -> sandbox -> agent -> transcript -> graders -> scorecard -> CI gate
+```
+
+For every task, and for every trial of that task, the harness creates a sandbox, applies the setup and waits for the breakage to show. It hands the prompt to the agent and records until the agent stops or a budget runs out. Graders then look at the cluster and at the records, and the sandbox is destroyed.
+
+Everything up to and including the graders happens once per trial, so trials can run in parallel, as many as the cluster and the model provider's rate limits allow. The scorecard and the gate are the only steps that see the whole run: the first rolls every trial up and compares it with the baseline, and the second turns that comparison into a pass or a fail for the change.
+
