@@ -5,6 +5,8 @@ dateString: October 2026
 draft: false
 tags: ["AI", "Agents", "Evals", "SRE", "Kubernetes", "Go"]
 weight: 1
+cover:
+    image: "/blog/agent-evals/cover.png"
 ---
 
 Say you tidy up a tool description. The `restart_deployment` tool had four sentences explaining when to use it, and you cut them to one. No code changed. The unit tests pass, and the PR is a few lines of deleted prose. Meanwhile the agent that used to read a pod's events before touching anything now sometimes restarts first and looks afterwards.
