@@ -171,3 +171,157 @@ A few of those fields look past this one trial. `category` says which report the
 
 The budget numbers are placeholders. Pick yours from what a correct run needs, with some headroom.
 
+## A sketch in Go
+
+This is a sketch of the types such a harness needs, written for this post and trimmed for reading: the YAML loading, the registry that turns `type: pod_ready` into a grader, and the runner loop are left out. The Kubernetes calls are the real client-go, apimachinery and apiserver APIs.
+
+```go
+package eval
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"time"
+
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/wait"
+	auditv1 "k8s.io/apiserver/pkg/apis/audit/v1"
+	"k8s.io/client-go/kubernetes"
+)
+
+// Task is one test case: a broken environment, a prompt,
+// and a definition of fixed.
+type Task struct {
+	ID        string   `yaml:"id"`
+	Version   int      `yaml:"version"`
+	Category  string   `yaml:"category"`
+	Setup     Setup    `yaml:"setup"`
+	Prompt    string   `yaml:"prompt"`
+	Budget    Budget   `yaml:"budget"`
+	Graders   []Grader `yaml:"-"` // built from the task file's graders list
+	Reference string   `yaml:"reference"`
+}
+
+type Setup struct {
+	Manifests []string `yaml:"manifests"` // applied to the fresh namespace, in order
+	WaitFor   string   `yaml:"wait_for"`  // symptom that must be visible before the agent starts
+}
+
+type Budget struct {
+	MaxSteps  int           `yaml:"max_steps"`
+	MaxTokens int           `yaml:"max_tokens"`
+	Timeout   time.Duration `yaml:"timeout"`
+}
+
+// Trial is what a grader may look at: the cluster as the agent
+// left it, and the two records of how it got there.
+type Trial struct {
+	Task       *Task
+	Namespace  string
+	Client     kubernetes.Interface
+	Transcript []Step
+	Audit      []auditv1.Event // API server audit events for the agent's ServiceAccount
+}
+
+type Step struct {
+	Tool   string          `json:"tool"`
+	Args   json.RawMessage `json:"args"`
+	Output string          `json:"output"`
+}
+
+type Result struct {
+	Grader string  `json:"grader"`
+	Pass   bool    `json:"pass"`
+	Score  float64 `json:"score"` // 0 to 1, for partial credit
+	Detail string  `json:"detail"`
+}
+
+type Grader interface {
+	Name() string
+	// Grade returns an error only when the grader itself could not run.
+	// A wrong answer from the agent is a Result with Pass false.
+	Grade(ctx context.Context, t *Trial) (Result, error)
+}
+```
+
+The interface is small, and the comment on `Grade` is the part that matters. A grader has two ways to not pass: the agent failed, or the grader could not find out. If both come back as `Pass: false`, an API server hiccup shows up on the scorecard as the agent getting worse.
+
+`Client` is `kubernetes.Interface` and not a concrete clientset, so graders can be unit-tested against client-go's fake clientset with no cluster.
+
+Here is the grader for the first success criterion:
+
+```go
+// PodReadyGrader passes when at least Want pods matching Selector
+// are Ready before Timeout runs out.
+type PodReadyGrader struct {
+	Selector string
+	Want     int
+	Timeout  time.Duration
+}
+
+func (g PodReadyGrader) Name() string { return "pod_ready" }
+
+func (g PodReadyGrader) Grade(ctx context.Context, t *Trial) (Result, error) {
+	res := Result{Grader: g.Name()}
+	var apiErr error
+
+	err := wait.PollUntilContextTimeout(ctx, 2*time.Second, g.Timeout, true,
+		func(ctx context.Context) (bool, error) {
+			pods, err := t.Client.CoreV1().Pods(t.Namespace).List(ctx,
+				metav1.ListOptions{LabelSelector: g.Selector})
+			if err != nil {
+				// A call cut short by the poll's own deadline
+				// is not an API failure.
+				if ctx.Err() == nil {
+					apiErr = err
+				}
+				return false, nil // keep polling, the API server may come back
+			}
+			apiErr = nil
+
+			ready := 0
+			for i := range pods.Items {
+				if isReady(&pods.Items[i]) {
+					ready++
+				}
+			}
+			res.Detail = fmt.Sprintf("%d/%d pods ready", ready, g.Want)
+			return ready >= g.Want, nil
+		})
+
+	switch {
+	case err == nil:
+		res.Pass, res.Score = true, 1
+		return res, nil
+	case ctx.Err() != nil:
+		return res, ctx.Err() // the harness is shutting down
+	case apiErr != nil:
+		return res, fmt.Errorf("pod_ready: listing pods: %w", apiErr)
+	case wait.Interrupted(err):
+		return res, nil // timed out against a healthy API: the agent failed
+	default:
+		return res, fmt.Errorf("pod_ready: %w", err)
+	}
+}
+
+func isReady(p *corev1.Pod) bool {
+	if p.DeletionTimestamp != nil {
+		return false
+	}
+	for _, c := range p.Status.Conditions {
+		if c.Type == corev1.PodReady {
+			return c.Status == corev1.ConditionTrue
+		}
+	}
+	return false
+}
+```
+
+The `switch` at the end is the interface comment in practice. A timeout against a working API is the agent's failure and returns a `Result`. A timeout because the last list call that completed came back with an error is the harness's problem and returns an error.
+
+The `ctx.Err()` check inside the condition guards the boundary between those two. The poll hands its own deadline context to the condition, so if the two minutes run out while a `List` is in flight, that call fails with a context error. Recording it as an API failure would turn an agent that ran out of time into an infra error, and infra errors get retried.
+
+One limit. The grader passes the first time it sees enough Ready pods. A container with no readiness probe is Ready as soon as it is running (the kubelet's [prober](https://github.com/kubernetes/kubernetes/blob/v1.34.0/pkg/kubelet/prober/prober_manager.go) has the line `ready = !exists // no readinessProbe -> always ready`), so a pod that crashes a second after starting can be Ready for that second. The fixture's Deployment has a probe for this reason, and a stricter grader would also require Ready to hold for a while before passing.
+
