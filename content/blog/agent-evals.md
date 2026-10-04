@@ -25,3 +25,11 @@ The third is that there is one right answer to assert on. Give three competent e
 
 Unit tests still have a job. The code behind each tool is ordinary code and should have ordinary tests. What they cannot reach is the behaviour of the loop that decides which tool to call and when to stop.
 
+## What an eval harness is
+
+An eval harness runs the agent on tasks in resettable environments, records everything it does, grades the result automatically, and tracks the scores over time. Anthropic's [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents), published in January 2026, has the definition I would hand to someone new: "An evaluation harness is the infrastructure that runs evals end-to-end. It provides instructions and tools, runs tasks concurrently, records all the steps, grades outputs, and aggregates results."
+
+The closest things an SRE already has are CI and a chaos-engineering game day, and an eval harness is the two put together. From CI it takes the trigger and the gate: it runs unattended on every change that matters, and it can block a merge. From the game day it takes the scenario: you break an environment on purpose and watch how the responder handles it. Here the responder is the agent, and the debrief is done by code.
+
+One naming trap. I wrote a whole post on the [agent harness](/blog/agent-harness/): the loop, tools, permissions and context management around the model. That is the thing under test here. The eval harness is a separate program that starts the agent harness, points it at a broken environment and scores what it does. When someone says "the harness" with no qualifier, ask which one they mean.
+
