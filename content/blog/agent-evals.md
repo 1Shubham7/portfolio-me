@@ -460,3 +460,20 @@ In SRE terms, the regression suite is the set of incidents you already trust the
 
 Tasks move from one suite to the other, and the post's word for it is graduating. Take two tasks from earlier. Once the crash-loop task passes every trial, run after run, it has stopped measuring progress and started protecting it, so its file moves to the regression directory. Its `category` does not change. The escalation task, the NotReady node the agent has no access to fix, is a guardrail task by category, and it stays in the capability suite for as long as the agent sometimes pokes at it until the budget runs out.
 
+## The full stack: tool tests, evals, production monitoring
+
+Evals are the middle layer of three, and the three line up with what an SRE already runs for ordinary services.
+
+```text
+unit tests for tools  ->  evals for behaviour  ->  production monitoring
+unit tests            ->  staging              ->  SLOs
+```
+
+Unit tests cover the deterministic parts: the tool that wraps `kubectl` and parses its output, the guardrail's allowlist logic. They are fast and exact, and they know nothing about what the agent will decide to do with those tools.
+
+Evals are staging. The whole agent runs against a cluster that is safe to break, with `checkout-web` already crash-looping in it, and you find out how it behaves before a real service is on the receiving end.
+
+Production monitoring is the SLO layer. It tells you what is happening with real incidents, which no sandbox reproduces completely. For an agent I would watch how often it escalates, how often a human reverts or overrides what it did, and cost per incident.
+
+Anthropic's post borrows the Swiss cheese model for the stack: "no single evaluation layer catches every issue."
+
