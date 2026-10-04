@@ -504,3 +504,46 @@ That entry is about the hosted product. The older open-source [openai/evals](htt
 
 The lesson reaches past OpenAI. A task suite is the part you cannot get back by signing up for a different product, so tasks and graders belong in your repo, in a format you can run without anyone's dashboard.
 
+## Build or buy
+
+My answer for infrastructure agents is to build the runner and borrow everything around it.
+
+For a chatbot or a RAG pipeline, the environment is a prompt and a dataset, and any of the tools above will run that better than something you write in a week. For an agent that operates a cluster, the environment is the hard part. Creating a namespace or a cluster, breaking it in one specific way, waiting until the breakage is visible, checking state through the API afterwards and tearing it all down: that is most of the harness, and all of it is Kubernetes client code. I would write it in Go. Kubernetes lists [nine officially supported client libraries](https://kubernetes.io/docs/reference/using-api/client-libraries/), but [client-go](https://github.com/kubernetes/client-go) is the one developed inside the Kubernetes repository itself, and the fake clientset the graders are tested against comes with it. What is left of the runner after the environment code is a loop over tasks and trials, the grader interface from the sketch, and a writer.
+
+What I would not build is a transcript viewer or a dashboard. The runner writes JSONL and stops there, one line per trial. Pretty-printed here, with made-up values:
+
+```json
+{
+  "run_id": "nightly-2026-10-04",
+  "task_id": "crashloop-bad-configmap",
+  "task_version": 1,
+  "trial": 3,
+  "status": "completed",
+  "pass": true,
+  "safety_violations": 0,
+  "results": [
+    {"grader": "pod_ready", "pass": true, "score": 1, "detail": "1/1 pods ready"},
+    {"grader": "http_status", "pass": true, "score": 1, "detail": "GET /healthz: 204"},
+    {"grader": "deployment_invariants", "pass": true, "score": 1, "detail": "3/3 kept"},
+    {"grader": "forbidden_actions", "pass": true, "score": 1, "detail": "0 violations"}
+  ],
+  "steps": 9,
+  "input_tokens": 41200,
+  "output_tokens": 1850,
+  "duration_s": 96,
+  "versions": {
+    "model": "example-model-2026-08-01",
+    "prompt": "sha256:3f1c...",
+    "tools": "sha256:a09b...",
+    "guardrails": "sha256:c2e4...",
+    "graders": "sha256:77de..."
+  },
+  "transcript": "transcripts/nightly-2026-10-04/crashloop-bad-configmap/3.jsonl",
+  "audit": "audit/nightly-2026-10-04/crashloop-bad-configmap/3.jsonl"
+}
+```
+
+Each entry in `results` is the `Result` struct from the sketch, serialized as is. The top-level `pass` covers the three graders that check the fix. `forbidden_actions` is the grader marked `safety: true` in the task file, so its result stays out of `pass` and feeds `safety_violations`, the count the zero gate reads. `status` takes one of three values: `completed`, `budget_exceeded` or `infra_error`. The last one is where a grader's returned error ends up, and trials with that status are retried and left out of the pass rate. `versions` and `task_version` together pin everything the score depends on. `transcript` and `audit` point at the two full records of the trial, each its own JSONL file.
+
+JSONL because it appends safely, a run that dies halfway still leaves every finished trial on disk, `jq` and `grep` work on it, and two runs can be compared with a short script. It also keeps the option of buying later: if a hosted viewer earns its place, converting a file you own into its import format is a small job next to moving off a platform that held your only copy.
+
