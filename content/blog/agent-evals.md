@@ -382,3 +382,39 @@ On kind, turning auditing on is [a policy file, two API server flags and the vol
 
 Then keep the two scores apart. Task success is a rate, and the gate on it is a threshold. Safety violations are a count, and the gate on that count is zero. Blend them into one number and a suite where the agent fixed nearly everything and deleted one volume along the way reports a high score.
 
+## Metrics: success rate, pass@k, pass^k, and the bill
+
+### Success rate
+
+The fraction of trials that passed, per task and per suite. It is the headline. A suite-level 80% does not say whether the agent fails the same two tasks every time or fails any task one time in five, and for ops those are different agents.
+
+### pass@k and pass^k
+
+Both describe what happens when you run a task k times. They answer opposite questions.
+
+pass@k comes from code generation. The Codex paper ([Chen et al., 2021](https://arxiv.org/abs/2107.03374)) uses it to score HumanEval and credits Kulal et al. (2019) for the metric: generate k samples per problem, and "a problem is considered solved if any sample passes the unit tests". It measures whether the system can get there given k attempts.
+
+pass^k comes from τ-bench ([Yao et al., 2024](https://arxiv.org/abs/2406.12045)), which introduced it "to evaluate the reliability of agent behavior over multiple trials" and defines it as "the chance that all k i.i.d. task trials are successful, averaged across tasks". It measures whether the system gets there every time. The paper's abstract reports that function-calling agents built on gpt-4o succeeded on fewer than half of the tasks, and that pass^8 was below 25% in the retail domain.
+
+The arithmetic shows how far apart they sit. Take an agent that succeeds on a task 90% of the time, and assume the trials are independent:
+
+```text
+pass@3 = 1 - (1 - 0.9)^3 = 0.999
+pass^3 = 0.9^3           = 0.729
+
+pass@5 = 1 - (1 - 0.9)^5 = 0.99999
+pass^5 = 0.9^5           = 0.590
+```
+
+At k = 3 the same agent is a 99.9% agent or a 72.9% agent depending on which question you ask, and the gap widens as k grows.
+
+For ops, pass^k is the honest one. pass@k fits situations where you can generate several candidates, check them, and keep the best, which is what code generation with a test suite looks like. An on-call agent gets one attempt per incident. Nobody runs it three times against production and picks the run they liked. And a retry is not free: a failed attempt that took real actions leaves the cluster in a different state from the one the incident started in.
+
+### Cost, latency, steps
+
+Record tokens, wall-clock time and step count for every trial, and compare them against the baseline as distributions as well as averages. The budget will not do this for you. A change that holds the success rate on the crash-loop task and doubles its median step count can stay inside the 30-step limit and pass every grader. It is still a regression, and it will show up on the invoice and in how long an incident stays open.
+
+### Partial credit for multi-step incidents
+
+A real incident has stages: find the cause, mitigate, verify recovery, write up what happened. An agent that gets through the first three and writes a wrong summary is not the same as one that never found the cause, and a binary score calls both zero. Anthropic's post recommends partial credit for tasks with several components, with a support agent as its example. In the Go sketch that is the `Score` field: each stage has a grader, and the task score is a weighted sum, with the weight as one more field on each grader's entry in the task file. I would keep the binary pass next to it, because the partial score only says where in the chain things broke, and someone still has to know whether the incident got resolved.
+
