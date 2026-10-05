@@ -243,3 +243,27 @@ I first filed VictoriaTraces next to the tracing part of OpenObserve, which turn
 
 [OpenObserve](https://github.com/openobserve/openobserve) is one platform for logs, metrics and traces, written in Rust, storing Parquet on object storage, with an AGPL-3.0 open-source edition. The fair comparison for it is the three Victoria databases together, or Grafana's Loki, Mimir and Tempo together.
 
+## Everything else the project ships
+
+The three databases are the core. Around them, as of October 2026:
+
+**A Kubernetes operator.** The [VictoriaMetrics operator](https://docs.victoriametrics.com/operator/) manages custom resources for all of it: `VMSingle`, `VMCluster`, `VMAgent`, `VMAlert` and `VMAuth` for metrics, `VLSingle`, `VLCluster`, `VTSingle` and `VTCluster` for logs and traces. The part that matters for a migration is that, [by default](https://docs.victoriametrics.com/operator/integrations/prometheus/), it converts existing Prometheus Operator objects: a `ServiceMonitor` becomes a `VMServiceScrape`, a `PodMonitor` a `VMPodScrape`, a `PrometheusRule` a `VMRule`. Charts that ship a ServiceMonitor keep working.
+
+**Helm charts.** [One repository](https://docs.victoriametrics.com/helm/) (`https://victoriametrics.github.io/helm-charts/`, also published as OCI) holds charts for every component. `victoria-metrics-k8s-stack` is the counterpart of kube-prometheus-stack: the operator, a `VMSingle` or `VMCluster`, `VMAgent`, `VMAlert`, Alertmanager, Grafana, node-exporter and kube-state-metrics, with dashboards and recording rules taken from the kube-prometheus project.
+
+**An agent for logs.** [`vlagent`](https://docs.victoriametrics.com/victorialogs/vlagent/) discovers and collects pod logs on Kubernetes, buffers on disk when VictoriaLogs is unreachable, and can replicate to several VictoriaLogs instances.
+
+**Grafana datasources.** For metrics, Grafana's built-in Prometheus datasource works, and a separate VictoriaMetrics datasource plugin adds MetricsQL. VictoriaLogs has [its own datasource](https://grafana.com/grafana/plugins/victoriametrics-logs-datasource/) in the Grafana plugin catalogue. Traces go through Grafana's Jaeger or Tempo datasource.
+
+**A managed service.** [VictoriaMetrics Cloud](https://docs.victoriametrics.com/victoriametrics-cloud/) hosts VictoriaMetrics and VictoriaLogs deployments, with VictoriaTraces deployments marked as beta.
+
+**Anomaly detection.** [`vmanomaly`](https://docs.victoriametrics.com/anomaly-detection/) turns your metrics into an "anomaly score" series that you alert on. It is part of the Enterprise offering and needs a licence key.
+
+### What is open and what is Enterprise
+
+VictoriaMetrics, VictoriaLogs and VictoriaTraces are Apache 2.0, and that covers the cluster versions as well as single-node.
+
+The [Enterprise page](https://docs.victoriametrics.com/victoriametrics/enterprise/) lists what is held back, including downsampling, multiple retentions, automatic discovery of `vmstorage` nodes, `vmbackupmanager` for scheduled backups, `vmgateway` for advanced auth and rate limiting, mTLS between components, Kafka and Google PubSub integration, multi-tenant rules in `vmalert`, IP filtering in `vmauth`, FIPS builds, `vmanomaly`, and long-term-support release lines. Enterprise binaries need a licence key, and a trial key is available for evaluation.
+
+Of that list, the two that change an architecture decision are downsampling and per-tenant retention. A cluster shared by many tenants adds a third: the per-tenant rate limits in `vmgateway`.
+
