@@ -181,3 +181,33 @@ Thanos and Mimir keep long-term blocks in object storage. Capacity is whatever t
 
 The VictoriaMetrics FAQ argues its side with claims about how much recent data the other systems can lose when a component fails. Those are a vendor's claims about its competitors and I have not tested them.
 
+## VictoriaLogs: is it like Loki?
+
+It does the same job with the opposite indexing decision. VictoriaLogs was [announced on 22 June 2023](https://victoriametrics.com/blog/victorialogs-release/), reached v1.0.0 on 12 November 2024, and was at v1.53.0 when I wrote this. It now lives in [its own repository](https://github.com/VictoriaMetrics/VictoriaLogs) under Apache 2.0.
+
+Loki, in [its own words](https://grafana.com/docs/loki/latest/get-started/overview/), "does not index the contents of the logs, but only indexes metadata about your logs as a set of labels for each log stream". Lines are "compressed and stored in chunks in an object store", and searching for text means reading the chunks the labels selected. I went through what that does to label design in [the post on collectors and labels](/blog/log-collection-and-labels/).
+
+VictoriaLogs stores each field of a log entry as its own column and keeps a bloom filter per column in every block. The company's [post on the on-disk layout](https://victoriametrics.com/blog/victorialogs-internals-columnar-storage-on-disk/) describes a search like this: "when you search for `error`, VictoriaLogs asks each block's bloom filter first, skips every block that answers 'definitely not', and only then reads the actual values from the few blocks that answered 'maybe'."
+
+That makes high-cardinality fields ordinary fields. The [docs](https://docs.victoriametrics.com/victorialogs/) say it supports fields "such as `trace_id`, `user_id` and `ip`". In Loki those have to stay out of labels, and Loki's answer is [structured metadata](https://grafana.com/docs/loki/latest/get-started/labels/structured-metadata/).
+
+Stream fields still exist. A log stream is identified by a few fields that name the application instance, and the [key concepts page](https://docs.victoriametrics.com/victorialogs/keyconcepts/) is as firm as Loki's docs that `trace_id`, `user_id` and `ip` do not belong there. The cardinality rule did not go away. It applies to fewer fields.
+
+The biggest practical difference from Loki is where the data sits. Logs go to local disk in per-day partitions, directories named `YYYYMMDD` under `-storageDataPath`, and retention (seven days by default) removes whole days. There is no object storage backend, which is the same trade as on the metrics side.
+
+Queries are written in [LogsQL](https://docs.victoriametrics.com/victorialogs/logsql/):
+
+```text
+_time:5m error
+_time:5m {app="nginx"} error
+_time:5m error | stats count() errors
+```
+
+The first matches every entry from the last five minutes whose message contains the word `error`. The second narrows that to one stream, and the third counts.
+
+You do not need a new collector to try it. VictoriaLogs [accepts](https://docs.victoriametrics.com/victorialogs/data-ingestion/) Loki's push API, the Elasticsearch bulk API, OpenTelemetry, syslog and journald, and its docs list Fluent Bit, Vector, Alloy and the OpenTelemetry Collector among the shippers.
+
+It runs as one binary. In cluster mode the same binary acts as `vlinsert`, `vlselect` or `vlstorage`, depending on whether `-storageNode` is set. One thing the [cluster](https://docs.victoriametrics.com/victorialogs/cluster/) does not do: "`vlinsert` doesn't replicate incoming logs among `vlstorage` nodes". It shards them. The documented route to HA is two independent clusters with the shipper writing to both. Tenancy is an `(AccountID, ProjectID)` pair, as on the metrics side, carried in request headers.
+
+The project's headline numbers are "up to 30x less RAM and up to 15x less disk space than other solutions such as Elasticsearch and Grafana Loki", and its FAQ claims typical full-text queries run "up to 1000x faster than Grafana Loki". What I would test is narrower: one of my own Loki queries that greps a big namespace for a string that is not a label.
+
