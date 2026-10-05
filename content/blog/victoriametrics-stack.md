@@ -161,3 +161,23 @@ Back to the two replicas with a five-minute hole in one of them. Point both at t
 
 The condition is that both replicas write the *same* series, which the docs spell out as identical `external_labels`. The Prometheus Operator's `prometheus_replica` label breaks that by design, so it has to go: the operator leaves it off when `replicaExternalLabelName` is set to an empty string.
 
+## Keeping a year of metrics without a bucket
+
+My question after reading the Prometheus limits was the obvious one. If retention on Prometheus is bounded by local disk, and VictoriaMetrics also writes to local disk, what changed? There is no single trick. It makes a disk hold more, makes dropping old data cheap, and lets you add nodes.
+
+A disk holds more because of the compression in the storage engine. The docs put a number on it, "up to 7x less storage space is required compared to Prometheus, Thanos or Cortex", and the link behind that number goes to a benchmark on node-exporter metrics written by Valialkin. What you get depends on your data, and I would measure my own series before sizing volumes from a README.
+
+Retention is a flag. `-retentionPeriod` defaults to one month and takes values like `1y`. Data is "split in per-month partitions", and "data partitions outside the configured retention are deleted on the first day of the new month." A month's directory is removed whole, and only once the whole month is past retention, so a `1y` setting can have close to thirteen months on disk.
+
+When one disk is not enough, you add `vmstorage` nodes to the cluster. Existing data is not rebalanced onto a new node; the [FAQ](https://docs.victoriametrics.com/victoriametrics/faq/) says so, and explains that automatic rebalancing was left out because of what it costs in CPU, network and disk IO. Replication is opt-in. `-replicationFactor=N` on `vminsert` writes each sample to N distinct storage nodes, with `-dedup.minScrapeInterval=1ms` on `vmselect` so the copies collapse at query time. The docs are lukewarm about their own feature: "It is more cost-effective to offload the replication to underlying replicated durable storage", meaning replicated block volumes. When a storage node is down, `vminsert` re-routes new samples to the healthy nodes and `vmselect` marks responses as partial, unless it has been told the replication factor and enough copies remain.
+
+Object storage is for backups only, and queries never read from it. `vmbackup` works from an instant snapshot and uploads it to S3, GCS, Azure Blob or anything S3-compatible, incrementally when the destination already holds an earlier backup, and `vmrestore` reads it back.
+
+Downsampling (`-downsampling.period=30d:10m` keeps one sample per ten minutes for data older than 30 days) and retention filters (`-retentionFilter`, a different retention for a set of series or a tenant) are [Enterprise features](https://docs.victoriametrics.com/victoriametrics/enterprise/). In the open-source version, retention is one number for the whole database.
+
+### The trade against Thanos and Mimir
+
+Thanos and Mimir keep long-term blocks in object storage. Capacity is whatever the bucket grows to, and the price is the machinery in front of the bucket: store gateways to read blocks back, a compactor, usually caches. VictoriaMetrics keeps everything on block storage it reads directly. There is less to run, and capacity becomes your job: you size the volumes and decide when to add a node that old data will not move to.
+
+The VictoriaMetrics FAQ argues its side with claims about how much recent data the other systems can lose when a component fails. Those are a vendor's claims about its competitors and I have not tested them.
+
