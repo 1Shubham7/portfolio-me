@@ -37,3 +37,47 @@ Three well-known projects were built to be that other system, and each is a dist
 
 That complexity buys something real: long-term data in a bucket that never needs resizing. It is also a lot to operate if what you wanted was Prometheus with a longer memory.
 
+## "But we run Prometheus in a cluster"
+
+That was my first objection to "there is no clustering", and it comes from two different things sharing the word cluster.
+
+Running Prometheus on a Kubernetes cluster means its pod can be scheduled on any node and rescheduled when a node dies. It does not make Prometheus a clustered database. Set `replicas: 2` on a Prometheus Operator resource and you get what the [Prometheus FAQ](https://prometheus.io/docs/introduction/faq/) recommends for high availability: "run identical Prometheus servers on two or more separate machines." The operator's [HA docs](https://prometheus-operator.dev/docs/platform/high-availability/) describe the pair as instances with the same configuration, apart from one external label that tells them apart (`prometheus_replica` by default), which "scrape the same targets and evaluate the same rules".
+
+```text
+               targets
+              /       \
+    Prometheus A     Prometheus B
+         |                |
+      TSDB A           TSDB B
+```
+
+### Isn't that what PostgreSQL and Redis replicas are?
+
+It looks the same from a distance: a few pods, one of which can die. The difference is what flows between them.
+
+```text
+    writes
+      |
+      v
+   primary  ==== WAL stream ====>  standby
+```
+
+A PostgreSQL standby does not take the application's writes and build its own state. In the [docs'](https://www.postgresql.org/docs/current/warm-standby.html) words, "In standby mode, the server continuously applies WAL received from the primary server." There is one database state, produced by the primary, and the standby is a copy of it. A standby that restarts or falls behind carries on from the last WAL record it has, and replication slots exist so that the primary "does not remove WAL segments until they have been received by all standbys". [Redis](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/) has the same shape: the master keeps a replica updated by sending it "a stream of commands", and a replica that loses the link reconnects and tries to "obtain the part of the stream of commands it missed during the disconnection".
+
+Replication, then, means one node decides what the data is and the others receive it, including whatever they missed. An HA Prometheus pair has no stream. A and B each scrape, each write their own samples to their own TSDB, and neither knows the other exists. That is duplication. The Alertmanager deduplicates the identical alerts the pair sends, which is why paging still works. Nothing reconciles the data.
+
+### How two replicas drift
+
+Both replicas scrape a target every 15 seconds. At 12:05, A crashes and stays down for five minutes.
+
+```text
+A's TSDB:   12:00 ======= 12:05   [ gap ]   12:10 =======>
+B's TSDB:   12:00 =======================================>
+```
+
+When A comes back, B does not send it the missing five minutes, because no mechanism exists that could. A carries a hole in every series until that data ages out of retention. Put both replicas behind one Service as a Grafana datasource, and the same panel has a gap or not depending on which pod answered.
+
+The two differ even when nothing crashes. Each replica scrapes on its own schedule, and the operator docs warn that queries against each "may return slightly different results", recommending sticky sessions for dashboards.
+
+So something above the pair has to choose one copy or merge the two. Thanos does it at query time: its Querier is told which label marks a replica (`--query.replica-label`) and deduplicates across it. Cortex does it on the way in, with an HA tracker that "deduplicates incoming samples from redundant Prometheus servers".
+
