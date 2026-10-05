@@ -5,6 +5,8 @@ dateString: October 2026
 draft: false
 tags: ["VictoriaMetrics", "VictoriaLogs", "VictoriaTraces", "Prometheus", "Observability", "Kubernetes", "SRE"]
 weight: 1
+cover:
+    image: "/blog/victoriametrics-stack/cover.png"
 ---
 
 The Prometheus storage docs have two sentences that explain a whole category of software:
