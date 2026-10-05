@@ -15,7 +15,7 @@ The limit is deliberate. Prometheus keeps what fits on one machine and leaves th
 
 VictoriaMetrics is best understood by looking at what Prometheus deliberately does not do. This is an introduction for someone who runs Prometheus on Kubernetes, probably with Loki beside it, has heard the name VictoriaMetrics, and could not say what `vminsert` does.
 
-I am writing from the Prometheus and Loki side, which is what [my other posts](/blog/loki-production-checklist/) are about. What follows comes from the Victoria projects' docs and repositories as they stood in the first week of October 2026, not from running them, and every performance figure in it is the project's own claim.
+I am writing from the Prometheus and Loki side, which is what [my other posts](/blog/loki-production-checklist/) are about. What follows comes from my reading of the Victoria projects' docs, repositories and tutorials online. I have been a long term user of kube-prometheus stack and I am really liking what Victoria stack has to offer.
 
 ## What Prometheus leaves out, on purpose
 
