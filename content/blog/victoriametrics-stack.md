@@ -267,3 +267,37 @@ The [Enterprise page](https://docs.victoriametrics.com/victoriametrics/enterpris
 
 Of that list, the two that change an architecture decision are downsampling and per-tenant retention. A cluster shared by many tenants adds a third: the per-tenant rate limits in `vmgateway`.
 
+## Adopting it, and when it fits
+
+There are two ways in, and the first is small.
+
+Keep Prometheus and add a remote write. Run a single-node VictoriaMetrics and put this in the Prometheus config:
+
+```yaml
+remote_write:
+  - url: http://victoriametrics:8428/api/v1/write
+```
+
+Prometheus keeps scraping, alerting and serving its 15 days. VictoriaMetrics becomes the long-term store and, once several Prometheus servers write to it, the global view: one Grafana datasource over all of them. Nothing you run today has to change. `remote_write` only forwards samples from the moment it is switched on, so history already sitting in Prometheus's TSDB is a separate import: [`vmctl`](https://docs.victoriametrics.com/victoriametrics/vmctl/prometheus/) has a `prometheus` mode that reads a Prometheus snapshot and imports the samples from its blocks into VictoriaMetrics. With an HA pair, set the deduplication flag and remove the replica label, as in the section on the pieces.
+
+The second way is to replace Prometheus. `vmagent` scrapes, VictoriaMetrics stores, `vmalert` evaluates rules, and Alertmanager stays where it is. On Kubernetes that is the `victoria-metrics-k8s-stack` chart, with the operator translating your existing ServiceMonitors. The argument for going this far is that a scraper with no TSDB is a smaller thing to run in every cluster than a full Prometheus. That argument does not apply if you already run Prometheus in agent mode.
+
+Then there is the case the design fits best: many clusters and one backend. A `vmagent` runs in every cluster, they all push to one central multi-tenant VictoriaMetrics cluster, and each customer or environment is a tenant.
+
+```text
+vmagent (cluster A) \
+vmagent (cluster B)  -> vmauth -> vminsert -> vmstorage (N nodes)
+vmagent (cluster C) /                              ^
+                                                   |
+                         Grafana -> vmauth -> vmselect
+```
+
+Each agent authenticates to `vmauth`, which maps its credentials to a tenant path, so no cluster can write into another's tenant. Agents buffer locally through a backend outage, and one Grafana sits over everything. Tenants are numbers, so the mapping from customer to ID has to live somewhere. Tenants also share the cluster's capacity. Open-source `vmauth` can cap concurrent requests per user with `max_concurrent_requests`; per-tenant rate limits are in `vmgateway`, which is Enterprise, as is a different retention per tenant.
+
+### When something else is the better choice
+
+Stay on plain Prometheus if you have one cluster, two weeks of history is enough, and an HA pair with Alertmanager deduplication covers your alerting.
+
+Choose Thanos or Mimir if you want long-term data in object storage and would sooner run more components than manage disk capacity, or if you already operate one of them and it works. If you need downsampling without a licence, that narrows to Thanos: its compactor does it in the open-source project, and Mimir's [migration guide](https://grafana.com/docs/mimir/latest/set-up/migrate/migrate-from-thanos-or-prometheus/) lists Thanos's downsampling as a feature it does not support.
+
+The same reasoning carries to logs and traces. Loki and Tempo put the bulk of the data in a bucket; VictoriaLogs and VictoriaTraces put it on volumes you size. And VictoriaTraces has a version number that starts with zero.
