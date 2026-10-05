@@ -211,3 +211,35 @@ It runs as one binary. In cluster mode the same binary acts as `vlinsert`, `vlse
 
 The project's headline numbers are "up to 30x less RAM and up to 15x less disk space than other solutions such as Elasticsearch and Grafana Loki", and its FAQ claims typical full-text queries run "up to 1000x faster than Grafana Loki". What I would test is narrower: one of my own Loki queries that greps a big namespace for a string that is not a label.
 
+## VictoriaTraces: spans stored as log rows
+
+VictoriaTraces is the newest of the three and the least finished. Its first release, v0.1.0, is dated 28 July 2025. The latest at the time of writing is v0.12.0, from 29 September 2026, and the [README](https://github.com/VictoriaMetrics/VictoriaTraces) still says "This project is currently a work in progress", with a warning that on-disk data structures and API endpoints may change incompatibly.
+
+The [docs](https://docs.victoriametrics.com/victoriatraces/) give the design in two sentences: it "was initially built on top of VictoriaLogs", and it "receives trace spans in OTLP format, transforms them into structured logs". Each span becomes a row:
+
+- `service.name` and the span name become the stream fields.
+- Resource, scope and span attributes become ordinary fields, with a prefix for each kind.
+- A `duration` field is computed at ingestion, because the OTLP request does not carry one.
+
+Because the row lands in the VictoriaLogs engine, every attribute is searchable the way a log field is, and spans get per-day partitions and a seven-day default retention. Fetching one trace by its ID is the query a log store is not shaped for, so VictoriaTraces also keeps a separate index stream. A lookup by trace ID [reads the trace's start time from that index first](https://github.com/VictoriaMetrics/VictoriaTraces/issues/48), which tells it which partitions to scan.
+
+What it accepts and serves today:
+
+- **In:** OTLP only, over HTTP (`/insert/opentelemetry/v1/traces`) and gRPC. The ingestion docs list no Jaeger or Zipkin receivers.
+- **Out:** the Jaeger Query Service JSON API. Grafana's Jaeger datasource and the Jaeger UI both work against `/select/jaeger`. LogsQL works too, since spans are rows.
+- **Out, marked experimental:** the Tempo HTTP API, which is what gives you TraceQL. Grafana's Tempo datasource [needs v0.9.4 or later](https://docs.victoriametrics.com/victoriatraces/querying/grafana/), and the docs warn that some panels and TraceQL features may not behave as they do on Tempo itself.
+
+So calling it a drop-in replacement for Tempo is ahead of the facts. A backend for the Jaeger API, with Tempo compatibility in progress, is accurate.
+
+The [cluster](https://docs.victoriametrics.com/victoriatraces/cluster/) has three roles with familiar names: `vtinsert`, `vtselect` and `vtstorage`, with spans distributed by trace ID. Like VictoriaLogs, it has no built-in replication. Tenants are `AccountID` and `ProjectID` request headers.
+
+### Tempo, Jaeger and OpenObserve
+
+I first filed VictoriaTraces next to the tracing part of OpenObserve, which turned out to be the wrong shelf.
+
+[Tempo](https://grafana.com/docs/tempo/latest/introduction/architecture/) is the direct comparison. It is a trace database that stores Parquet blocks in object storage, accepts OTLP, Jaeger and Zipkin, and in microservices mode now puts a Kafka-compatible queue behind its distributor. The VictoriaTraces docs claim "up to 3.7x less RAM and up to 2.6x less CPU" than Tempo.
+
+[Jaeger](https://www.jaegertracing.io/docs/latest/storage/) is not a database. It "requires a persistent storage backend", such as Cassandra, Elasticsearch or OpenSearch. VictoriaTraces takes over the storage and the query API and leaves you the Jaeger UI.
+
+[OpenObserve](https://github.com/openobserve/openobserve) is one platform for logs, metrics and traces, written in Rust, storing Parquet on object storage, with an AGPL-3.0 open-source edition. The fair comparison for it is the three Victoria databases together, or Grafana's Loki, Mimir and Tempo together.
+
