@@ -81,3 +81,24 @@ The two differ even when nothing crashes. Each replica scrapes on its own schedu
 
 So something above the pair has to choose one copy or merge the two. Thanos does it at query time: its Querier is told which label marks a replica (`--query.replica-label`) and deduplicates across it. Cortex does it on the way in, with an HA tracker that "deduplicates incoming samples from redundant Prometheus servers".
 
+## Why VictoriaMetrics was built, and what is underneath it
+
+VictoriaMetrics was written by Aliaksandr Valialkin, the author of the Go HTTP library fasthttp and now co-founder and CTO of the company that carries the project's name. Its GitHub repository dates from September 2018, and the source was [released under the Apache 2.0 licence](https://valyala.medium.com/open-sourcing-victoriametrics-f31e34485c2b) on 22 May 2019.
+
+It started as the thing Prometheus's docs invite: a remote storage. Valialkin's [own write-up of the origin](https://medium.com/faun/victoriametrics-creating-the-best-remote-storage-for-prometheus-5d92d66787ac) says his team already ran ClickHouse for large event streams and first tried ClickHouse itself as the remote storage for Prometheus, before writing a database for that one job.
+
+The aim was a remote storage without the moving parts. The [single-node version](https://docs.victoriametrics.com/victoriametrics/single-server-victoriametrics/) is one binary configured with command-line flags, and it keeps everything under one directory, `-storageDataPath`. It needs no object store, no key-value store for a hash ring and no cache tier. When one node is not enough, a [cluster version](https://docs.victoriametrics.com/victoriametrics/cluster-victoriametrics/) splits the same engine into three services: `vminsert`, `vmselect` and `vmstorage`.
+
+### A MergeTree-like storage engine
+
+The ClickHouse influence shows in the storage engine, which the docs describe as "MergeTree-like", after ClickHouse's table engine. The company's posts on `vmstorage` [ingestion](https://victoriametrics.com/blog/vmstorage-how-it-handles-data-ingestion/) and [merging](https://victoriametrics.com/blog/vmstorage-retention-merging-deduplication/) fill in the details:
+
+- Every unique combination of metric name and sorted labels is assigned an internal ID, the TSID.
+- Incoming samples are buffered in memory and then written out as *parts*. The docs warn that samples still in the buffer are not available to queries "for up to a few seconds".
+- Small parts are merged into bigger ones in the background, the way an LSM tree compacts.
+- Parts are grouped into partitions, and a partition covers one calendar month.
+
+Inside a part, blocks are sorted by TSID, and timestamps and values go to separate files, each with its own compression.
+
+What that buys, according to the project's docs, is a database that uses "up to 7x less RAM than Prometheus, Thanos or Cortex when dealing with millions of unique time series".
+
