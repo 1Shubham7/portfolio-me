@@ -102,3 +102,62 @@ Inside a part, blocks are sorted by TSID, and timestamps and values go to separa
 
 What that buys, according to the project's docs, is a database that uses "up to 7x less RAM than Prometheus, Thanos or Cortex when dealing with millions of unique time series".
 
+## The pieces: Prometheus's jobs, one component each
+
+Prometheus bundles its four jobs into one process. VictoriaMetrics gives each to a separate component, and you run the ones you need.
+
+| Job | Prometheus | VictoriaMetrics |
+| :-- | :-- | :-- |
+| Scrape and collect | Built in | [`vmagent`](https://docs.victoriametrics.com/victoriametrics/vmagent/): scrapes, relabels, buffers to disk when the storage is unreachable, replicates or shards across several storages |
+| Store and query | Built-in TSDB | Single-node `victoria-metrics`, or the cluster: `vminsert`, `vmselect`, `vmstorage` |
+| Rules and alerts | Built in | [`vmalert`](https://docs.victoriametrics.com/victoriametrics/vmalert/), which sends alerts to an ordinary Alertmanager |
+| Auth, routing, tenants | No tenants | [`vmauth`](https://docs.victoriametrics.com/victoriametrics/vmauth/), an HTTP proxy that authorises, routes and load balances |
+| Query language | PromQL | [MetricsQL](https://docs.victoriametrics.com/victoriametrics/metricsql/), "backwards-compatible with PromQL" |
+| UI | Built-in web UI | vmui, plus Grafana as usual |
+| Backups and migration | TSDB snapshots | [`vmbackup`](https://docs.victoriametrics.com/victoriametrics/vmbackup/) and `vmrestore`, [`vmctl`](https://docs.victoriametrics.com/victoriametrics/vmctl/) |
+
+`vmagent`'s docs present it as a drop-in replacement for Prometheus as a scraper, and it forwards everything it collects over `remote_write`. If the storage is down it spools to `-remoteWrite.tmpDataPath` and catches up afterwards. The docs say it "uses much lower amounts of RAM, CPU, disk IO, and network bandwidth than Prometheus", which is at least plausible for a process that stores nothing and answers no queries. Prometheus has its own version of that: [agent mode](https://prometheus.io/docs/prometheus/latest/prometheus_agent/) (`--agent`) drops the TSDB, alerting and rule evaluation and only scrapes and forwards. The quoted sentence does not say which Prometheus it means, and I read it as the full server.
+
+In the cluster, `vminsert` and `vmselect` are stateless and `vmstorage` holds the data. The docs call it a shared-nothing architecture. `vminsert` picks a storage node for each series by consistent hashing over the metric name and labels, and `vmselect` asks every storage node and merges what comes back.
+
+`vmalert` runs Prometheus-format rules against a datasource URL, sends firing alerts to Alertmanager and writes recording-rule results back with remote write. It holds alert state in memory and can restore it after a restart from what it wrote.
+
+MetricsQL comes with a small warning. The page that says backwards-compatible also lists deliberate differences: `rate` and `increase` do not extrapolate, and they take the last sample before the lookbehind window into account. Your dashboards should load, and some panels can show slightly different numbers than Prometheus did.
+
+### Push as well as pull
+
+Prometheus pulls. VictoriaMetrics scrapes too, and it also accepts pushes in most formats you might already be emitting: Prometheus remote write, InfluxDB line protocol, Graphite, OpenTSDB, DataDog, OpenTelemetry, NewRelic, CSV and JSON lines. `vmagent` takes the same protocols and forwards them, so one agent can sit in front of a mixed estate.
+
+### Tenants in the URL
+
+The cluster version is multi-tenant, and the tenant is part of the path:
+
+```text
+write:  http://<vminsert>:8480/insert/<accountID>:<projectID>/prometheus/api/v1/write
+read:   http://<vmselect>:8481/select/<accountID>:<projectID>/prometheus/
+```
+
+Each ID is an arbitrary 32-bit integer, `projectID` defaults to 0 when left out, and a tenant is created the first time something writes to it. If you know Loki's `X-Scope-OrgID`, this is the same idea with numbers in the path where Loki has a string in a header.
+
+The path on its own is routing, not access control. Access control comes from putting `vmauth` in front: it maps a username or token to a URL prefix with the tenant in it, so a client never chooses its own tenant.
+
+```yaml
+users:
+  - username: "cluster-a"
+    password: "***"
+    url_prefix: "http://vminsert:8480/insert/1/prometheus/"
+  - username: "cluster-b"
+    password: "***"
+    url_prefix: "http://vminsert:8480/insert/2/prometheus/"
+```
+
+It is the same arrangement as [deriving the Loki tenant from basic auth](/blog/loki-production-checklist/) at the gateway.
+
+The docs call tenants "isolated", and that describes their data. The storage nodes are shared: "Data for all the tenants is evenly spread among available `vmstorage` nodes", and performance and resource usage depend "mostly on the total number of active time series in all the tenants". The docs' point there is that tenants are free to add. Mine is that one tenant's cardinality comes out of capacity everyone shares. A query normally addresses one tenant, and since v1.104.0 `vmselect` also has a `multitenant` endpoint that can query across them.
+
+### The HA pair, again
+
+Back to the two replicas with a five-minute hole in one of them. Point both at the same VictoriaMetrics, whether they are two Prometheus servers using `remote_write` or two `vmagent`s, and set `-dedup.minScrapeInterval` to the scrape interval: on the single-node binary, or on both `vmselect` and `vmstorage` in a cluster. VictoriaMetrics then "leaves a single raw sample with the biggest timestamp" for each series in each interval. While A is down, B's samples are the only ones arriving, and the stored series has no hole.
+
+The condition is that both replicas write the *same* series, which the docs spell out as identical `external_labels`. The Prometheus Operator's `prometheus_replica` label breaks that by design, so it has to go: the operator leaves it off when `replicaExternalLabelName` is set to an empty string.
+
