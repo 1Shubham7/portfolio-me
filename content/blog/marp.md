@@ -151,3 +151,30 @@ The image is `marpteam/marp-cli` on Docker Hub and `ghcr.io/marp-team/marp-cli` 
 
 One thing to set expectations on: **PPTX export is not an editable PowerPoint.** The README says a created PPTX "includes rendered Marp slide pages", and the editable-export section is more direct: the normal output "usually consists of pre-rendered background images". Each slide is a picture of the slide. It opens in PowerPoint and presents fine, but nobody is going to fix a typo in it. `--pptx-editable` is the experimental alternative. It needs LibreOffice Impress installed alongside the browser, drops presenter notes, and the README warns it may produce incomplete results with complex themes like `gaia`. If someone asks for "the PPTX so I can edit it", send them the Markdown.
 
+## Images, layouts, and the alt text
+
+Marpit overloads the alt text of a Markdown image. Keywords in there control size, filters, and backgrounds.
+
+```markdown
+![w:300](./img/logo.png)                 <!-- width 300px -->
+![width:200px height:30cm](./img/a.png)  <!-- any CSS length except vw/vh -->
+![blur:10px](./img/b.png)                <!-- CSS filter -->
+![brightness:.8 sepia:50%](./img/c.png)  <!-- filters stack -->
+```
+
+The filters are the CSS filter functions, `blur` through `sepia`. Omit the argument and you get a default.
+
+Add `bg` and the image becomes the slide background instead of an inline element:
+
+```markdown
+![bg](./img/photo.jpg)               <!-- cover, the default -->
+![bg contain](./img/diagram.png)     <!-- fit inside, no cropping -->
+![bg 150%](./img/texture.png)
+```
+
+Two `![bg]` images on one slide tile side by side; add `vertical` to stack them. `![bg left]` or `![bg right]` reserves half the slide for the image and squeezes the content into the other half, and `![bg right:40%]` sets the split. One line, and you have the "screenshot on one side, bullets on the other" slide without touching CSS. The simple background ignores filters; the multiple and split ones apply them.
+
+Marp Core adds two more things at this level. `# <!-- fit --> Some long title` scales a heading to the slide width, which is the fix for a title slide where the text wraps. And code blocks auto-scale horizontally to fit, so a wide snippet shrinks rather than overflowing. Horizontally only: a tall block still runs off the bottom.
+
+Fragmented lists hide in the bullet character. A list written with `*` is revealed one item at a time in the HTML presentation; one written with `-` appears all at once. Same for ordered lists: `1)` fragments, `1.` doesn't. In the deck above, "Things that paged" lands in one go and "Still open" builds up item by item. Marpit only emits a `data-marpit-fragment` attribute; the HTML runtime interprets it, so in the PDF both are plain lists.
+
