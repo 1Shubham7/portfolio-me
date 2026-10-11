@@ -272,3 +272,61 @@ VS Code needs its own pointer. Nothing in the extension's documentation mentions
 
 The setting takes a list of workspace-relative paths or URLs, and the preview reloads when you edit the CSS. Commit it with the repo so the next person's preview matches the CLI output. For HTML in slides, `markdown.marp.html` controls what the preview allows, and its default is the same known-safe allowlist Marp Core uses. In an untrusted workspace the extension ignores raw HTML entirely, whatever the setting says.
 
+## Rendering every deck in CI
+
+The last step is not building PDFs by hand. This job renders every deck on push and keeps the output as an artifact:
+
+```yaml
+# .github/workflows/slides.yml
+name: slides
+on:
+  push:
+    paths: ["talks/**"]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: talks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Render PDFs
+        run: npx @marp-team/marp-cli@latest --input-dir . --output out --pdf
+      - name: Render HTML
+        run: npx @marp-team/marp-cli@latest --input-dir . --output out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: slides
+          path: talks/out
+```
+
+GitHub's `ubuntu-latest` image ships Google Chrome, so there's no browser install step; Marp CLI finds it. `--input-dir .` walks the directory for Markdown files and `--output` mirrors the structure, so you get `talks/out/oncall-handover/deck.pdf` next to `deck.html`. The `run` steps execute in `talks/`, where `.marprc.yml` supplies the theme set and the local-files flag, same as on a laptop; the `uses:` step resolves its path from the repo root, hence `talks/out`.
+
+If you'd rather not depend on the runner's Chrome, swap the two render steps for the Docker image. Same working directory, same output path, so the upload step stays as it is. The PDF step becomes:
+
+```yaml
+      - name: Render PDFs
+        run: docker run --rm --init -v "$PWD":/home/marp/app/ -e LANG=C.UTF-8 -e MARP_USER="$(id -u):$(id -g)" marpteam/marp-cli --input-dir . --output out --pdf
+```
+
+and the HTML step is the same line without `--pdf`. `$PWD` is `talks/`, so the mount holds the decks, the theme, and the config file, and `out` lands inside it where the upload step looks. `MARP_USER` makes the container write as the runner's user; Docker Hub lists it as the fix for permission errors on Linux bind mounts.
+
+Publishing the HTML to GitHub Pages is the same job with `actions/upload-pages-artifact` and `actions/deploy-pages` in place of the artifact upload.
+
+## Ending notes and Links
+
+The "slides in git" part is true from the first `---`. The limitations are just as real: PPTX output is images unless you take the experimental route, you need a browser on whatever machine renders PDFs, and the layout vocabulary is what the theme gives you plus whatever `![bg right:40%]` can do. For the decks I actually maintain, that's been a trade worth making.
+
+Links:
+
+- [marp.app](https://marp.app/), the ecosystem overview
+- [Marpit documentation](https://marpit.marp.app/): [directives](https://marpit.marp.app/directives), [image syntax](https://marpit.marp.app/image-syntax), [theme CSS](https://marpit.marp.app/theme-css), [inline SVG slide](https://marpit.marp.app/inline-svg), and [fragmented lists](https://marpit.marp.app/fragmented-list)
+- [Marp Core](https://github.com/marp-team/marp-core), with the [Markdown extensions](https://github.com/marp-team/marp-core/blob/main/docs/markdown.md), [built-in themes](https://github.com/marp-team/marp-core/tree/main/themes), and [configuration](https://github.com/marp-team/marp-core/blob/main/docs/configuration.md)
+- [Marp CLI README](https://github.com/marp-team/marp-cli), the reference for every flag and config key used above
+- [marpteam/marp-cli on Docker Hub](https://hub.docker.com/r/marpteam/marp-cli)
+- [Marp for VS Code](https://github.com/marp-team/marp-vscode), for `markdown.marp.themes` and the export command
+- [yhatt/marp](https://github.com/yhatt/marp), the archived classic app, for the history and the closing note
