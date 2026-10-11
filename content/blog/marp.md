@@ -93,3 +93,32 @@ When you want a directive on one slide only, prefix it with an underscore. `<!--
 
 `header` and `footer` accept inline Markdown and inline images, so a logo in the footer is `footer: "![h:24](./assets/logo.svg) Platform team"`. They don't accept `![bg]`.
 
+## What Marpit actually produces
+
+Under the hood Marpit is a markdown-it pipeline. It splits the document on horizontal rules, renders each piece, and wraps it in a `<section>`. Directives become attributes and classes on that section. The theme CSS is rewritten so that every selector is scoped to the slide container, which is why a theme can say `h1 { ... }` without leaking into the page around it.
+
+```mermaid
+flowchart LR
+    MD["deck.md<br/>(CommonMark + directives)"] --> MI["Marpit<br/>markdown-it + theme CSS"]
+    CSS["theme.css<br/>/* @theme name */"] --> MI
+    MI --> HTML["HTML: one section element per slide<br/>+ scoped CSS"]
+    HTML --> CLI["Marp CLI"]
+    CLI --> OUT1["deck.html"]
+    CLI --> BR["headless Chrome / Edge / Firefox"]
+    BR --> OUT2["deck.pdf / deck.pptx / PNG"]
+```
+
+Each section is sized by the theme. The default is 1280x720 px, set with `width` and `height` on `section` in absolute units, and that same size becomes the PDF page size.
+
+A fixed-size slide still has to fit a browser window of any size, and Marpit manages that without JavaScript. With inline SVG mode on, which Marp Core enables, each section is wrapped like this:
+
+```html
+<svg data-marpit-svg viewBox="0 0 1280 720">
+  <foreignObject width="1280" height="720">
+    <section>...</section>
+  </foreignObject>
+</svg>
+```
+
+The `viewBox` fixes the slide's coordinate system, the SVG is sized to the viewport with CSS, and the browser scales the whole thing. Marpit calls this mode experimental because WebKit has a long-standing bug scaling HTML inside `foreignObject`, and leaves it off by default. Marp Core turns it on by default, and a few features depend on it: multiple and split backgrounds, and the auto-scaling of code blocks. If you ever build on raw Marpit and `![bg right]` does nothing, check that option first.
+
