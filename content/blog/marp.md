@@ -32,3 +32,50 @@ Marp Next is what everyone means by Marp today, and it's a rewrite into layers r
 
 The split matters because it explains a lot of behaviour. When a feature says "only works in inline SVG mode" or "the app must support this attribute", that's Marpit talking: it produces markup and leaves presentation behaviour to whatever consumes it.
 
+## A complete deck in one file
+
+Here's a small but complete deck.
+
+```markdown
+---
+marp: true
+theme: default
+paginate: true
+header: "Platform team"
+footer: "Internal, do not distribute"
+---
+
+<!-- _paginate: false -->
+<!-- _class: invert -->
+
+# On-call handover
+
+What changed this week, and what's still on fire
+
+---
+
+## Things that paged
+
+- Disk pressure on the metrics nodes
+- Cert renewal failed for the staging ingress
+
+---
+
+<!-- _backgroundColor: #fff8e1 -->
+
+## Still open
+
+* The disk alert has no runbook yet
+* Nobody owns the staging cert
+
+---
+
+![bg right:40%](./img/dashboard.png)
+
+## Next week
+
+Add the runbook, assign the cert, close this out.
+```
+
+The front-matter is YAML. `marp: true` tells the VS Code extension to treat this file as a deck instead of a normal Markdown document; the CLI converts whatever you hand it and doesn't need it. `---` on its own line starts a new slide. Everything else is a directive or an image with a special alt text.
+
