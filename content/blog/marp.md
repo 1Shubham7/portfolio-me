@@ -178,3 +178,58 @@ Marp Core adds two more things at this level. `# <!-- fit --> Some long title` s
 
 Fragmented lists hide in the bullet character. A list written with `*` is revealed one item at a time in the HTML presentation; one written with `-` appears all at once. Same for ordered lists: `1)` fragments, `1.` doesn't. In the deck above, "Things that paged" lands in one go and "Still open" builds up item by item. Marpit only emits a `data-marpit-fragment` attribute; the HTML runtime interprets it, so in the PDF both are plain lists.
 
+## Themes are plain CSS
+
+A Marp theme is a CSS file with one required comment:
+
+```css
+/* @theme sre */
+
+@import 'default';
+
+section {
+  font-family: "Inter", sans-serif;
+  padding: 60px;
+}
+
+section.lead {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+section::after {
+  content: attr(data-marpit-pagination) " / " attr(data-marpit-pagination-total);
+  font-size: 14px;
+}
+
+header, footer {
+  position: absolute;
+  font-size: 14px;
+  color: #666;
+}
+header { top: 20px; left: 60px; }
+footer { bottom: 20px; left: 60px; }
+```
+
+`@theme` is how Marpit registers the name you then use in `theme: sre`. The file name doesn't matter; the comment does. `@import 'default'` pulls in a built-in theme so you only override what you care about. Marp Core ships three: `default` (GitHub Markdown look), `gaia`, and `uncover`. All three support `class: invert`; `gaia` also has `lead` (centred content, for title slides) and `gaia`.
+
+`section` is the slide. `section::after` is where the page number goes, and the `content` has to include `attr(data-marpit-pagination)` or Marpit drops the declaration. Marpit gives `header` and `footer` no styling of their own, but `default` does, so the rules above are overriding its positions rather than filling a gap.
+
+Look at the `section.lead` rule above. `class` is a local directive, so `<!-- _class: lead -->` applies that layout to one slide, and `class: lead` in the front-matter applies it everywhere. You can stack them: `<!-- _class: lead invert -->`. Define a handful of layout classes in the theme (`lead`, `two-col`, `quote`, whatever your decks keep needing) and a slide picks one with a comment. That's the whole "reusable component" story: a CSS class and a one-line directive, no templating.
+
+For a one-off tweak, Markdown can carry CSS directly. A `<style>` block anywhere in the deck is merged into the theme and doesn't appear in the output. `<style scoped>` applies to the slide it's on and nothing else:
+
+```markdown
+---
+
+<style scoped>
+section { font-size: 20px; }
+</style>
+
+## The dense slide everyone warned you about
+```
+
+The rule I use: if a `<style>` block shows up in a second deck, it moves into the theme.
+
