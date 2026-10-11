@@ -233,3 +233,42 @@ section { font-size: 20px; }
 
 The rule I use: if a `<style>` block shows up in a second deck, it moves into the theme.
 
+## One theme, many decks
+
+Here's the layout that has kept my decks from turning into a pile of copy-pasted CSS:
+
+```
+talks/
+├── .marprc.yml
+├── themes/
+│   └── sre.css
+├── assets/
+│   └── logo.svg
+├── oncall-handover/
+│   ├── deck.md
+│   └── img/
+└── postmortem-template/
+    ├── deck.md
+    └── img/
+```
+
+One theme, one shared assets directory, and one directory per deck with its own images. The theme gets registered from a config file so nobody has to remember the flags:
+
+```yaml
+# .marprc.yml
+themeSet: ./themes
+allowLocalFiles: true
+```
+
+Marp CLI picks up `.marprc` (JSON or YAML), `marp.config.js`, `.mjs`, `.cjs`, `.ts`, or a `marp` key in `package.json` from the current directory, and `--config-file` points at a specific one. Every flag has a config key, `themeSet` for `--theme-set` and so on, and `pdf: true` makes PDF the default output. With the file in place, `npx @marp-team/marp-cli@latest oncall-handover/deck.md --pdf` from `talks/` finds `sre` without being told where it is.
+
+VS Code needs its own pointer. Nothing in the extension's documentation mentions the CLI's config file; what it has is a setting of its own, in `.vscode/settings.json`:
+
+```json
+{
+  "markdown.marp.themes": ["./themes/sre.css"]
+}
+```
+
+The setting takes a list of workspace-relative paths or URLs, and the preview reloads when you edit the CSS. Commit it with the repo so the next person's preview matches the CLI output. For HTML in slides, `markdown.marp.html` controls what the preview allows, and its default is the same known-safe allowlist Marp Core uses. In an untrusted workspace the extension ignores raw HTML entirely, whatever the setting says.
+
