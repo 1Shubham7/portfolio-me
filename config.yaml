@@ -38,9 +38,9 @@ params:
     enabled: true
     title: "Shubham Singh"
     subtitle: |
-      Hi there 👋, I'm Shubham. I'm an SRE at Obmondo, running Kubernetes clusters and building developer tools, and I write about open source, cloud native things and AI here. I'm a Certified Kubernetes Administrator and a graduated LFX mentee with CNCF KubeEdge, and I've been contributing to open source and the cloud native ecosystem for about three years.
+      Hi there 👋, I'm Shubham. I'm an SRE at Obmondo, running Kubernetes clusters and building dev tools, and I write about open source, cloud native things and AI here. I'm a Certified Kubernetes Administrator and a graduated LFX mentee with CNCF KubeEdge, and I've been contributing to open source for about 3 years.
 
-      I love talking about open source, cloud native, Kubernetes, AI and compliance, so you'll find me at various tech conferences and on YouTube. Over the last two years I've also helped organisations build and audit infrastructure against global security and compliance standards, so expect opinions on compliance here too.
+      I love talking about open source, cloud native, AI and compliance, so you'll find me at various tech conferences and on YouTube. Over the last two years I've also helped organisations build and audit infra against global security and compliance standards, so expect opinions on compliance here too.
     imageUrl: "home/shubham.jpeg"
     imageWidth: 250
     imageHeight: 250
