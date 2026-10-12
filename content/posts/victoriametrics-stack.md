@@ -17,7 +17,7 @@ The limit is deliberate. Prometheus keeps what fits on one machine and leaves th
 
 VictoriaMetrics is best understood by looking at what Prometheus deliberately does not do. This is an introduction for someone who runs Prometheus on Kubernetes, probably with Loki beside it, has heard the name VictoriaMetrics, and could not say what `vminsert` does.
 
-I am writing from the Prometheus and Loki side, which is what [my other posts](/blog/loki-production-checklist/) are about. What follows comes from my reading of the Victoria projects' docs, repositories and tutorials online. I have been a long term user of kube-prometheus stack and I am really liking what Victoria stack has to offer.
+I am writing from the Prometheus and Loki side, which is what [my other posts](/loki-production-checklist/) are about. What follows comes from my reading of the Victoria projects' docs, repositories and tutorials online. I have been a long term user of kube-prometheus stack and I am really liking what Victoria stack has to offer.
 
 ## What Prometheus leaves out, on purpose
 
@@ -153,7 +153,7 @@ users:
     url_prefix: "http://vminsert:8480/insert/2/prometheus/"
 ```
 
-It is the same arrangement as [deriving the Loki tenant from basic auth](/blog/loki-production-checklist/) at the gateway.
+It is the same arrangement as [deriving the Loki tenant from basic auth](/loki-production-checklist/) at the gateway.
 
 The docs call tenants "isolated", and that describes their data. The storage nodes are shared: "Data for all the tenants is evenly spread among available `vmstorage` nodes", and performance and resource usage depend "mostly on the total number of active time series in all the tenants". The docs' point there is that tenants are free to add. Mine is that one tenant's cardinality comes out of capacity everyone shares. A query normally addresses one tenant, and since v1.104.0 `vmselect` also has a `multitenant` endpoint that can query across them.
 
@@ -187,7 +187,7 @@ The VictoriaMetrics FAQ argues its side with claims about how much recent data t
 
 It does the same job with the opposite indexing decision. VictoriaLogs was [announced on 22 June 2023](https://victoriametrics.com/blog/victorialogs-release/), reached v1.0.0 on 12 November 2024, and was at v1.53.0 when I wrote this. It now lives in [its own repository](https://github.com/VictoriaMetrics/VictoriaLogs) under Apache 2.0.
 
-Loki, in [its own words](https://grafana.com/docs/loki/latest/get-started/overview/), "does not index the contents of the logs, but only indexes metadata about your logs as a set of labels for each log stream". Lines are "compressed and stored in chunks in an object store", and searching for text means reading the chunks the labels selected. I went through what that does to label design in [the post on collectors and labels](/blog/log-collection-and-labels/).
+Loki, in [its own words](https://grafana.com/docs/loki/latest/get-started/overview/), "does not index the contents of the logs, but only indexes metadata about your logs as a set of labels for each log stream". Lines are "compressed and stored in chunks in an object store", and searching for text means reading the chunks the labels selected. I went through what that does to label design in [the post on collectors and labels](/log-collection-and-labels/).
 
 VictoriaLogs stores each field of a log entry as its own column and keeps a bloom filter per column in every block. The company's [post on the on-disk layout](https://victoriametrics.com/blog/victorialogs-internals-columnar-storage-on-disk/) describes a search like this: "when you search for `error`, VictoriaLogs asks each block's bloom filter first, skips every block that answers 'definitely not', and only then reads the actual values from the few blocks that answered 'maybe'."
 
