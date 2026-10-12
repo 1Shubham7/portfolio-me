@@ -13,14 +13,18 @@ menu:
       name: Experience
       url: /experience
       weight: 20
-    - identifier: blog
-      name: Blog
-      url: /blog
+    - identifier: posts
+      name: Posts
+      url: /posts
       weight: 30
     - identifier: search
       name: Search
       url: /search
       weight: 60
+
+# posts live at the site root, e.g. /helm-hooks/, the list page stays at /posts/
+permalinks:
+  posts: /:filename/
 
 params:
   # theme
