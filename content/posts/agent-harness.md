@@ -41,7 +41,7 @@ Then the word grew a discipline. In February 2026 Mitchell Hashimoto described h
 
 "Everything that isn't the model" is honest but not actionable. Here is what that everything decomposes into. This is the consensus list, the primitives that Anthropic's SDK docs, LangChain, Osmani, and [codecentric](https://www.codecentric.de/en/knowledge-hub/blog/loop-harness-context-engineering-explained) all name independently.
 
-- **The agent loop.** Gather context, take action, verify, repeat. This is the skeleton everything else hangs off, and it's what my [previous post](/blog/claude-code-loops) was about: loop engineering sits on top of harness engineering, because the loop is one primitive among many.
+- **The agent loop.** Gather context, take action, verify, repeat. This is the skeleton everything else hangs off, and it's what my [previous post](/claude-code-loops/) was about: loop engineering sits on top of harness engineering, because the loop is one primitive among many.
 - **The system prompt.** The standing instructions that shape every turn. In a product like Claude Code this is thousands of words you never see.
 - **Tool definitions and execution.** Not just describing tools to the model, but actually running them, handling their failures, and deciding how much of a 40,000-line command output gets fed back.
 - **Context management.** The window fills up. Compaction summarizes the conversation so far and continues in a fresh window, and how well that works determines whether long tasks survive.
