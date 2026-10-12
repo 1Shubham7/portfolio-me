@@ -37,7 +37,8 @@ params:
   profileMode:
     enabled: true
     title: "Shubham Singh"
-    subtitle: Hi there 👋! This is Shubham, an engineer with a passion for technology and cloud native. I am a CKA and currently working as a SRE at Obmondo. I am a LFX graduated mentee (Term 2, 2024), and have previously worked with companies like GeeksforGeeks and Hooman Digital. I am Linux Foundation Scholar, Microsoft Learn Student Ambassador and KubeCon'24 and OpenSourceSummit'25 Speaker. I have been actively contributing to the CNCF ecosystem for about three years now. 
+    subtitle: |
+      Hi there 👋, I'm Shubham. I'm an SRE at Obmondo, running Kubernetes clusters and building developer tools, and I write about cloud native things here. I'm a Certified Kubernetes Administrator and a graduated LFX mentee with CNCF KubeEdge, and I've been contributing to open source for about three years (Kyverno, ArgoCD, kgateway, KubeEdge).
     imageUrl: "home/shubham.jpeg"
     imageWidth: 250
     imageHeight: 250
