@@ -4,3 +4,15 @@
 
 [build.environment]
   HUGO_VERSION = "0.123.8"
+
+# Posts moved from /blog/<slug>/ to /<slug>/ and the list page to /posts/.
+# Netlify serves an existing file (e.g. images under /blog/) before applying these.
+[[redirects]]
+  from = "/blog/"
+  to = "/posts/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/:splat"
+  status = 301
