@@ -9,7 +9,7 @@ cover:
     image: "/blog/ebpf/ebpf-cover.png"
 ---
 
-I'm an SRE, a Certified Kubernetes Administrator, and I help maintain [KubeAid](https://KubeAid.io). For the past few months I've been writing a lot of CiliumNetworkPolicies (enough to write a whole post on [the ways they silently break](/blog/cnp-antipatterns/)), and every time I read Cilium's docs to figure out why a packet got dropped, I hit the same phrase: "eBPF-based". Cilium is eBPF-based networking. Policy enforcement happens in eBPF. Hubble reads flows from eBPF.
+I'm an SRE, a Certified Kubernetes Administrator, and I help maintain [KubeAid](https://KubeAid.io). For the past few months I've been writing a lot of CiliumNetworkPolicies (enough to write a whole post on [the ways they silently break](/cnp-antipatterns/)), and every time I read Cilium's docs to figure out why a packet got dropped, I hit the same phrase: "eBPF-based". Cilium is eBPF-based networking. Policy enforcement happens in eBPF. Hubble reads flows from eBPF.
 
 I was nodding along at that phrase without actually knowing what it meant. Which eventually got annoying, so I sat down and learned what eBPF is, and this post is the write-up I wish I'd found on day one. If you know Linux basics and Kubernetes but have never touched kernel programming, this is for you.
 
@@ -199,7 +199,7 @@ This is where I started, so let's close the loop. Everything Cilium does is thes
 
 **The datapath.** Cilium is a CNI that replaces the iptables chains and kube-proxy with eBPF programs attached at the tc hooks on every pod's veth pair, plus XDP and tc on the host NICs. When a pod sends a packet to a Service ClusterIP, the eBPF program at its veth looks the Service up in a BPF hash map, picks a backend, and rewrites the destination right there. One map lookup, instead of the kernel walking a chain of iptables rules that grows with every Service you add. For the programmers reading: O(1) per packet instead of O(n), with n being your rule count. And when a Service changes, Cilium's userspace agent just updates map entries, which is the "config flows in through maps" pattern from earlier, instead of resyncing rule chains.
 
-**Policy.** Cilium derives a security identity from each pod's labels and stores IP-to-identity mappings in eBPF maps. When a packet crosses a veth hook, the program resolves source and destination identities from those maps, then does one more lookup in the policy map keyed on (source identity, destination identity, port, protocol). Allow or drop is the result of a hash lookup, not a rule scan. When I wrote about [CiliumNetworkPolicy anti-patterns](/blog/cnp-antipatterns/), nearly every trap on the list came down to what ends up in those maps versus what you assumed ends up in them.
+**Policy.** Cilium derives a security identity from each pod's labels and stores IP-to-identity mappings in eBPF maps. When a packet crosses a veth hook, the program resolves source and destination identities from those maps, then does one more lookup in the policy map keyed on (source identity, destination identity, port, protocol). Allow or drop is the result of a hash lookup, not a rule scan. When I wrote about [CiliumNetworkPolicy anti-patterns](/cnp-antipatterns/), nearly every trap on the list came down to what ends up in those maps versus what you assumed ends up in them.
 
 **Observability.** Hubble, Cilium's flow observability layer, is almost a free lunch mechanically. The eBPF programs already sit on every packet path making forwarding and policy decisions, so exporting what they saw is a matter of pushing events through a ring buffer to userspace. No sidecar, no packet capture, no extra hop in the datapath.
 
@@ -214,6 +214,6 @@ eBPF stopped being an intimidating phrase for me the moment it became three conc
 - [github.com/libbpf/libbpf-bootstrap](https://github.com/libbpf/libbpf-bootstrap) - scaffold for real libbpf programs
 - [docs.cilium.io](https://docs.cilium.io/) - see the eBPF datapath section
 - [Brendan Gregg's BPF page](https://www.brendangregg.com/bpf-performance-tools-book.html) - the deep end, for tracing and performance work
-- [My CiliumNetworkPolicy anti-patterns post](/blog/cnp-antipatterns/) - where this rabbit hole started
+- [My CiliumNetworkPolicy anti-patterns post](/cnp-antipatterns/) - where this rabbit hole started
 
 Thanks for your time.
