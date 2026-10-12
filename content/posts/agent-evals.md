@@ -33,7 +33,7 @@ An eval harness runs the agent on tasks in resettable environments, records ever
 
 The closest things an SRE already has are CI and a chaos-engineering game day, and an eval harness is the two put together. From CI it takes the trigger and the gate: it runs unattended on every change that matters, and it can block a merge. From the game day it takes the scenario: you break an environment on purpose and watch how the responder handles it. Here the responder is the agent, and the debrief is done by code.
 
-One naming trap. I wrote a whole post on the [agent harness](/blog/agent-harness/): the loop, tools, permissions and context management around the model. That is the thing under test here. The eval harness is a separate program that starts the agent harness, points it at a broken environment and scores what it does. When someone says "the harness" with no qualifier, ask which one they mean.
+One naming trap. I wrote a whole post on the [agent harness](/agent-harness/): the loop, tools, permissions and context management around the model. That is the thing under test here. The eval harness is a separate program that starts the agent harness, points it at a broken environment and scores what it does. When someone says "the harness" with no qualifier, ask which one they mean.
 
 ## The vocabulary
 
@@ -57,7 +57,7 @@ Every trial gets its own sandbox, fresh and isolated, which Anthropic's post tre
 
 The agent runner starts the real agent in that sandbox: the same system prompt, tool definitions and guardrails that ship. It enforces step, time and token budgets. A trial that hits a budget is a failure, and it is recorded as its own kind of failure, because "looped until the step limit" and "confidently did the wrong thing" need different fixes.
 
-While the agent runs, the transcript recorder writes every model message, tool call, argument, tool output, timestamp and token count to disk as it happens, so that a crash still leaves a record. A Kubernetes agent leaves a second record that it does not get to write: the API server's [audit log](/blog/audit-logging/), which can hold an event for every request the agent's ServiceAccount made, including the ones RBAC refused. The harness keeps that next to the transcript, because it is the better evidence of what the agent tried to do to the cluster.
+While the agent runs, the transcript recorder writes every model message, tool call, argument, tool output, timestamp and token count to disk as it happens, so that a crash still leaves a record. A Kubernetes agent leaves a second record that it does not get to write: the API server's [audit log](/audit-logging/), which can hold an event for every request the agent's ServiceAccount made, including the ones RBAC refused. The harness keeps that next to the transcript, because it is the better evidence of what the agent tried to do to the cluster.
 
 Graders come in three kinds in Anthropic's post: code-based, model-based and human. A code-based grader checks something like cluster state. The post's comparison table lists these as fast, cheap, objective and reproducible, and gives their weakness as being brittle to valid variations. A model-based grader, the LLM-as-judge, handles what code cannot express, such as whether the agent's incident summary names the real root cause. It is flexible, non-deterministic, and costs money on every call. Human review is expensive and slow, and inside a harness its main job is checking the other two. I would start with code and add a judge only where a criterion cannot be written as a check.
 
@@ -120,7 +120,7 @@ No hint about ConfigMaps or nginx. That is roughly what a page says.
 
 ### Success criteria
 
-There is more than one good fix, and the criteria have to allow all of them. The agent can correct the ConfigMap and wait: because it is mounted as a directory and not through `subPath`, the kubelet syncs the new file into the pod, and the next restart picks it up. (I went through that mechanism in the [ConfigMap restart post](/blog/configmap-restart/).) That path is slow, since the back-off may have grown to minutes. It can correct the ConfigMap and delete the pod, so the ReplicaSet creates a new one with the back-off reset. It can correct it and run `kubectl rollout restart`. It can create a second, corrected ConfigMap and point the Deployment at that.
+There is more than one good fix, and the criteria have to allow all of them. The agent can correct the ConfigMap and wait: because it is mounted as a directory and not through `subPath`, the kubelet syncs the new file into the pod, and the next restart picks it up. (I went through that mechanism in the [ConfigMap restart post](/configmap-restart/).) That path is slow, since the back-off may have grown to minutes. It can correct the ConfigMap and delete the pod, so the ReplicaSet creates a new one with the back-off reset. It can correct it and run `kubectl rollout restart`. It can create a second, corrected ConfigMap and point the Deployment at that.
 
 So the criteria describe the end state:
 
