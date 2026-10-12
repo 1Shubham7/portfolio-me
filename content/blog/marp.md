@@ -260,7 +260,7 @@ themeSet: ./themes
 allowLocalFiles: true
 ```
 
-Marp CLI picks up `.marprc` (JSON or YAML), `marp.config.js`, `.mjs`, `.cjs`, `.ts`, or a `marp` key in `package.json` from the current directory, and `--config-file` points at a specific one. Every flag has a config key, `themeSet` for `--theme-set` and so on, and `pdf: true` makes PDF the default output. With the file in place, `npx @marp-team/marp-cli@latest oncall-handover/deck.md --pdf` from `talks/` finds `sre` without being told where it is.
+Marp CLI picks up `.marprc` (JSON or YAML), `marp.config.js`, `.mjs`, `.cjs`, `.ts`, or a `marp` key in `package.json` from the current directory, and `--config-file` points at a specific one. Every conversion flag has a config key, `themeSet` for `--theme-set` and so on, and `pdf: true` makes PDF the default output. With the file in place and `theme: sre` in the front-matter, `npx @marp-team/marp-cli@latest oncall-handover/deck.md --pdf` from `talks/` finds `sre` without being told where it is.
 
 VS Code needs its own pointer. Nothing in the extension's documentation mentions the CLI's config file; what it has is a setting of its own, in `.vscode/settings.json`:
 
