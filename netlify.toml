@@ -16,3 +16,9 @@
   from = "/blog/*"
   to = "/:splat"
   status = 301
+
+# The experience section was removed; send old links to the home page.
+[[redirects]]
+  from = "/experience/*"
+  to = "/"
+  status = 301
