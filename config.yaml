@@ -9,10 +9,6 @@ menu:
       name: Home
       url: /
       weight: 10
-    - identifier: experience
-      name: Experience
-      url: /experience
-      weight: 20
     - identifier: posts
       name: Posts
       url: /posts
