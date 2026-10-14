@@ -194,3 +194,19 @@ A short interval across many clusters hits provider rate limits. Every reconcile
 
 The Ingress controller has to publish an address. ExternalDNS reads `status.loadBalancer.ingress`, and if the controller never writes it, there is no target and nothing is created, and the only trace is a debug line saying the endpoint has no targets. With Traefik's Ingress provider, set `providers.kubernetesIngress.ingressEndpoint.publishedService` to the `namespace/name` of Traefik's own LoadBalancer Service so its address is copied into every Ingress it serves. ingress-nginx has `--publish-service` for the same job. The `target` annotation is the fallback. And the `traefik-proxy` source, which reads IngressRoute CRDs rather than Ingresses, requires the `target` annotation on every IngressRoute, because those objects carry no load balancer status to read.
 
+## Debugging
+
+The logs first. At `info` you see what was created and updated; the reason a record was skipped is at `debug`, as above.
+
+`--dry-run` prints the full plan and changes nothing. It is the right way to onboard an existing zone or to preview what a switch to `sync` would delete. One caveat from the v0.22.0 notes: dry-run does not prevent changes on the ns1 and Alibaba Cloud providers.
+
+Then ask the authoritative server directly:
+
+```bash
+dig +short app.example.com @<one of the zone's nameservers>
+```
+
+If the record is there and your laptop cannot resolve it, it is TTL and caching, not ExternalDNS. If it is not there, go back to the logs.
+
+With the CRD source, `kubectl get dnsendpoints -A` shows what you asked for, which is a quicker check than reading the provider's dashboard.
+
