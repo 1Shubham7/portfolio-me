@@ -131,3 +131,38 @@ spec:
 
 It needs `--source=crd` and the CRD installed from `config/crd/standard/dnsendpoints.externaldns.k8s.io.yaml` in the repo. By default ExternalDNS only manages A, AAAA, and CNAME; an NS or SRV endpoint is ignored until you add it with `--managed-record-types`.
 
+## The TXT record is the ownership model
+
+With `--registry=txt`, which is the default, ExternalDNS writes a companion TXT record next to every record it creates. The TXT holds something like:
+
+```
+"heritage=external-dns,external-dns/owner=hetzner-prod,external-dns/resource=ingress/default/app"
+```
+
+The owner is your `--txt-owner-id`. The TXT name has carried the record type as a prefix since v0.12, v0.16 wrote both the bare name and the prefixed one, and since v0.18 the prefixed name is the only form written. So the registry record for an A record at `app.example.com` is `a-app.example.com`, and for a CNAME it is `cname-app.example.com`. The prefix exists so that an A and an AAAA at the same name can each have their own registry record, and it also gets around the rule that a CNAME cannot share its name with any other record, which made a TXT at the bare name impossible for CNAMEs. `--txt-prefix` and `--txt-suffix` add your own string on top, and the docs are explicit that you should not change them after deployment, because the existing registry records become orphaned and the metadata is lost.
+
+Every reconcile does the same thing. Build the desired records from the sources, list the zone from the provider, read the TXT records to attach an owner to each existing record, then compare.
+
+```mermaid
+flowchart TD
+    S[Sources: Ingress, Service, CRD] --> D[Desired records]
+    P[Provider zone] --> R[Read TXT registry, attach owner to each record]
+    D --> C{Name already in zone?}
+    R --> C
+    C -- no --> CR[Create record + TXT]
+    C -- yes, owner matches --> U[Update if target changed, delete if resource gone and policy=sync]
+    C -- yes, owner differs or no TXT --> SK[Skip, debug log: owner id does not match]
+```
+
+What happens if I create `app.example.com` in the Cloudflare dashboard first and then add an Ingress for it? ExternalDNS sees the record, finds no TXT with its owner ID, and does nothing. It will not overwrite or delete it, and it will not adopt it either. The plan code is specific about this: updates and deletes are filtered down to records with a matching owner, and a create for a name that already has an unowned record is dropped. The message it logs is `Skipping endpoint ... because owner id does not match for one or more items to create`, and it only logs at debug level, so at the default log level the record just quietly never changes. If an Ingress is "not getting its record", start by running with `--log-level=debug`.
+
+To hand a manual record over, delete it at the provider and let the next reconcile recreate it with its TXT. There is a `--migrate-from-txt-owner` flag for moving records between owner IDs, but the docs warn that combined with `policy=sync` in a shared zone it can delete records another cluster still owns. For a handful of records, delete and recreate is less exciting.
+
+Three rules fall out of this.
+
+The TXT records are the registry. Delete one by hand and ExternalDNS stops managing that record, with no error, until you also delete the record and let it be recreated.
+
+Every cluster that writes to the same zone needs its own `--txt-owner-id`. The default value is literally `default`, so two clusters that both skip the flag share an owner, and each one treats the other's records as its own to correct or delete. The README asks for a value that is unique and does not change for the lifetime of the cluster. A region plus an environment name is enough.
+
+And the ownership check protects records, not names. Nothing stops a developer in a second cluster from putting `app.example.com` on their Ingress. ExternalDNS there will skip it as unowned, log at debug, and the developer will wonder why DNS is broken. Scoping each cluster's token and `--domain-filter` to its own zone or subdomain is what prevents the collision; the registry only makes it harmless.
+
