@@ -216,3 +216,21 @@ Some names should only resolve inside the VPN. The pattern is two ExternalDNS De
 
 The filter also applies to DNSEndpoint objects, so a CRD record has to carry the matching annotation or the CRD source ignores it.
 
+## Ending notes and Links
+
+With ExternalDNS and cert-manager on the same Ingress, the manifest at the top of this post is the entire change for a new service: the host in `spec.rules`, the host in `spec.tls`, the issuer annotation. ExternalDNS writes the A record, cert-manager gets the certificate, and the pull request is the only place anyone touched anything. That is the version of GitOps that actually holds up, where the DNS zone is just another thing the cluster reconciles.
+
+The ownership model is what makes that safe to run unattended. If there is one thing to settle before the first record exists, it is the owner ID. The filters and the policy can be changed later; the README asks that the owner ID never is.
+
+Links:
+
+- [ExternalDNS on GitHub](https://github.com/kubernetes-sigs/external-dns), the README with the provider list and the note on webhook providers
+- [Annotations](https://kubernetes-sigs.github.io/external-dns/latest/docs/annotations/annotations/), for `hostname`, `target`, `ttl`, `alias`, and the prefix change
+- [Flags](https://kubernetes-sigs.github.io/external-dns/latest/docs/flags/), the full list with defaults
+- [TXT registry](https://kubernetes-sigs.github.io/external-dns/latest/docs/registry/txt/), the record format, `--txt-prefix`, and the owner migration warning
+- [Ingress source](https://kubernetes-sigs.github.io/external-dns/latest/docs/sources/ingress/) and [Service source](https://kubernetes-sigs.github.io/external-dns/latest/docs/sources/service/), for how hostnames and targets are derived
+- [DNSEndpoint CRD](https://kubernetes-sigs.github.io/external-dns/latest/docs/sources/crd/)
+- [Cloudflare tutorial](https://kubernetes-sigs.github.io/external-dns/latest/docs/tutorials/cloudflare/) and [RFC2136 tutorial](https://kubernetes-sigs.github.io/external-dns/latest/docs/tutorials/rfc2136/)
+- [v0.22.0 release notes](https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.22.0), for the annotation prefix and `--policy` changes
+- [plan.go](https://github.com/kubernetes-sigs/external-dns/blob/master/plan/plan.go), where the owner check lives
+- [Traefik Kubernetes Ingress provider](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-ingress/) for `publishedService`, and [ingress-nginx CLI arguments](https://kubernetes.github.io/ingress-nginx/user-guide/cli-arguments/) for `--publish-service`
