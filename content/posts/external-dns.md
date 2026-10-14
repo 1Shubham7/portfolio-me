@@ -94,3 +94,40 @@ The Cloudflare tutorial's example token has Zone Read and DNS Edit on all zones.
 
 Cloudflare, Route53, Google Cloud DNS, Azure DNS, RFC2136, PowerDNS and a dozen others are in-tree. Newer providers, Hetzner DNS included, are webhook providers: a separate container that speaks ExternalDNS's provider API on one side and the vendor's API on the other. The README says the maintainers have not reviewed those providers and you use them at your own risk. That is not a reason to avoid them, but it is a reason to read the webhook's issue tracker before putting it in front of production DNS.
 
+## A or CNAME: the target decides
+
+I also wanted to know where to choose between an A record and a CNAME. You don't. ExternalDNS takes the target from `status.loadBalancer.ingress` on the Ingress or Service, and the shape of the target decides the type. An IPv4 address becomes an A record, an IPv6 address an AAAA, and anything else a CNAME. A Hetzner load balancer or MetalLB puts an IP in status, so you get an A record. An AWS ELB puts a hostname there, so you get a CNAME. On Route53 that CNAME is turned into an ALIAS record instead, unless you pass `--aws-prefer-cname`, and the `external-dns.kubernetes.io/alias` annotation controls it per resource.
+
+You can override the target entirely:
+
+```yaml
+external-dns.kubernetes.io/target: 203.0.113.10
+```
+
+Same rule applies: an IP gives an A record, a hostname gives a CNAME. This is the escape hatch when the Ingress controller does not publish an address into status, or when you want every name to point at a fixed front door regardless of what the controller reports.
+
+For Cloudflare there is one more annotation, `external-dns.kubernetes.io/cloudflare-proxied: "true"`, which turns the orange cloud on for that record. The `--cloudflare-proxied` flag sets the default for all of them.
+
+The only place you write a record type by hand is the DNSEndpoint CRD. It exists for records that have no Kubernetes resource behind them, and it goes through the same ownership registry as everything else:
+
+```yaml
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: legacy-mail
+spec:
+  endpoints:
+    - dnsName: mail.example.com
+      recordType: A
+      recordTTL: 300
+      targets:
+        - 198.51.100.25
+    - dnsName: www.example.com
+      recordType: CNAME
+      recordTTL: 300
+      targets:
+        - example.com
+```
+
+It needs `--source=crd` and the CRD installed from `config/crd/standard/dnsendpoints.externaldns.k8s.io.yaml` in the repo. By default ExternalDNS only manages A, AAAA, and CNAME; an NS or SRV endpoint is ignored until you add it with `--managed-record-types`.
+
