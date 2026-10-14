@@ -174,3 +174,15 @@ Sync is the correct end state, because a stale record pointing at a load balance
 
 The order that works: start on `upsert-only` with `--dry-run` and read what it would do, drop `--dry-run` once the planned changes look right, and switch to `sync` only after the owner ID, the domain filter, and the token scope are settled. The flag is cheap to flip. The records are not cheap to recreate from memory.
 
+## When the DNS provider has no API
+
+ExternalDNS, including every webhook provider, needs something to call. A registrar that only offers a web form is a dead end, and adapters that script the dashboard break the day the dashboard changes.
+
+The usual fix is to move DNS hosting and keep the registrar. Point the nameservers at Cloudflare, Route53, or Hetzner DNS and run ExternalDNS there.
+
+If the root zone has to stay where it is, delegate a subdomain. Add NS records at the old provider for `k8s.example.com` pointing at the new host's nameservers, create the `k8s.example.com` zone there, and run ExternalDNS with `--domain-filter=k8s.example.com`. One manual change, done once, and everything under that subdomain is automated. Most providers let you add NS records from the dashboard even with no API.
+
+If the authoritative server is yours, BIND or anything else that accepts RFC 2136 dynamic updates, the in-tree `rfc2136` provider sends DNS UPDATE messages signed with a TSIG key. No REST API, just the DNS protocol. It needs `--rfc2136-axfr` so it can transfer the zone to list and delete records, and the docs say it was developed for and tested with BIND, with Microsoft DNS workable but not tested.
+
+And sometimes the honest answer is to skip ExternalDNS. One manual wildcard, `*.example.com` pointing at the ingress controller's load balancer, makes every hostname resolve to Traefik, which routes by Host header from there. If the load balancer IP is fixed, as it usually is on Hetzner, that record never goes stale. The cost is that every name points at the same place, including typos, and a Service that needs its own load balancer gets nothing.
+
