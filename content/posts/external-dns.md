@@ -210,3 +210,9 @@ If the record is there and your laptop cannot resolve it, it is TTL and caching,
 
 With the CRD source, `kubectl get dnsendpoints -A` shows what you asked for, which is a quicker check than reading the provider's dashboard.
 
+## Two instances for split-horizon
+
+Some names should only resolve inside the VPN. The pattern is two ExternalDNS Deployments, each with its own provider, zone, and owner ID, and a filter that splits the resources between them. `--annotation-filter` takes label selector syntax against annotations, so one instance runs with `--annotation-filter=dns=public` and the other with `--annotation-filter=dns=internal`, and every Ingress declares which side it is on. `--ingress-class` does the same split by class name and can be repeated, which fits when the public and internal ingress controllers are already separate.
+
+The filter also applies to DNSEndpoint objects, so a CRD record has to carry the matching annotation or the CRD source ignores it.
+
