@@ -186,3 +186,11 @@ If the authoritative server is yours, BIND or anything else that accepts RFC 213
 
 And sometimes the honest answer is to skip ExternalDNS. One manual wildcard, `*.example.com` pointing at the ingress controller's load balancer, makes every hostname resolve to Traefik, which routes by Host header from there. If the load balancer IP is fixed, as it usually is on Hetzner, that record never goes stale. The cost is that every name points at the same place, including typos, and a Service that needs its own load balancer gets nothing.
 
+## Things that bite
+
+ExternalDNS is slow on purpose. `--interval` defaults to one minute, and that is before the record's TTL and whatever your resolver has cached. `--events` adds a reconcile whenever a watched resource changes, rate-limited by `--min-event-sync-interval` at five seconds, so a new Ingress is picked up in seconds rather than a minute. The interval loop keeps running alongside it.
+
+A short interval across many clusters hits provider rate limits. Every reconcile lists the zone. Cloudflare's provider pages through records at 100 per request by default, and `--cloudflare-dns-records-per-page` goes up to 5000.
+
+The Ingress controller has to publish an address. ExternalDNS reads `status.loadBalancer.ingress`, and if the controller never writes it, there is no target and nothing is created, and the only trace is a debug line saying the endpoint has no targets. With Traefik's Ingress provider, set `providers.kubernetesIngress.ingressEndpoint.publishedService` to the `namespace/name` of Traefik's own LoadBalancer Service so its address is copied into every Ingress it serves. ingress-nginx has `--publish-service` for the same job. The `target` annotation is the fallback. And the `traefik-proxy` source, which reads IngressRoute CRDs rather than Ingresses, requires the `target` annotation on every IngressRoute, because those objects carry no load balancer status to read.
+
