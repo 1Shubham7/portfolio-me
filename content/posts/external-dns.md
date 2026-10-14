@@ -11,3 +11,56 @@ cover:
 
 Exposing a service from a cluster ends with the same manual step every time: someone opens the DNS provider's dashboard and points a name at the load balancer. The Ingress is in git, the certificate is in git, the record is in a browser tab. ExternalDNS is the kubernetes-sigs controller that moves that last step into the cluster. The setup is one Deployment. The part that deserves real attention is how it decides which records it is allowed to touch, because that is the only thing standing between you and a sync loop that empties a zone.
 
+## What it watches and where the hostname comes from
+
+ExternalDNS is not a DNS server. It reads Kubernetes resources, works out which DNS names they want, and calls a provider's API to make the zone match. The resources it reads are called sources, chosen with `--source`, and the list is long: `service`, `ingress`, the Gateway API routes (`gateway-httproute`, `gateway-grpcroute`, `gateway-tlsroute`, `gateway-tcproute`, `gateway-udproute`), `istio-gateway` and `istio-virtualservice`, `traefik-proxy` for Traefik's IngressRoute CRDs, `crd` for a DNSEndpoint object you write by hand, plus Contour, Gloo, Kong, OpenShift routes, and a few more.
+
+For an Ingress you do not have to annotate anything. The source walks `spec.rules[].host` and `spec.tls[].hosts` and takes every non-empty name it finds.
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: app.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app
+                port:
+                  number: 80
+  tls:
+    - hosts: [app.example.com]
+      secretName: app-tls
+```
+
+A Service of type LoadBalancer has no host field, so the name goes in an annotation:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mqtt
+  annotations:
+    external-dns.kubernetes.io/hostname: mqtt.example.com
+    external-dns.kubernetes.io/ttl: "120"
+spec:
+  type: LoadBalancer
+  selector:
+    app: mqtt
+  ports:
+    - port: 1883
+```
+
+The same annotation works on an Ingress when you want names beyond the ones in the rules, and it takes a comma-separated list.
+
+One thing to check before copying from an older tutorial: the prefix. Every release before v0.22.0 used `external-dns.alpha.kubernetes.io/`. From v0.22.0 the default is `external-dns.kubernetes.io/`, with no fallback, and the release notes say outright that this change can delete all your DNS records, since an instance running `--policy=sync` stops seeing the old annotations and concludes the records are no longer wanted. If you upgrade with the old prefix in place, pass `--enable-legacy-annotation-prefix` so both are read, or set `--annotation-prefix=external-dns.alpha.kubernetes.io/` to keep the old one, then migrate the manifests.
+
