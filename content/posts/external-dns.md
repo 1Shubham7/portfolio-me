@@ -166,3 +166,11 @@ Every cluster that writes to the same zone needs its own `--txt-owner-id`. The d
 
 And the ownership check protects records, not names. Nothing stops a developer in a second cluster from putting `app.example.com` on their Ingress. ExternalDNS there will skip it as unowned, log at debug, and the developer will wonder why DNS is broken. Scoping each cluster's token and `--domain-filter` to its own zone or subdomain is what prevents the collision; the registry only makes it harmless.
 
+## Before you turn on sync
+
+`--policy=upsert-only` creates and updates records and never deletes anything. `--policy=sync` also deletes a record when the resource behind it disappears. `create-only` is the third option, for the rare case where you want a record written once and never touched again.
+
+Sync is the correct end state, because a stale record pointing at a load balancer that no longer exists is the exact problem the tool is for. It is also the setting that deletes things. Under ArgoCD with automated pruning, deleting an Ingress from git prunes the Ingress, and ExternalDNS deletes the record a minute later. That is the behaviour you asked for. The same chain runs when the prune is a mistake: a wrong branch, or a values file that templated zero Ingresses. Both produce an empty desired state and, with sync, a zone with every owned record removed.
+
+The order that works: start on `upsert-only` with `--dry-run` and read what it would do, drop `--dry-run` once the planned changes look right, and switch to `sync` only after the owner ID, the domain filter, and the token scope are settled. The flag is cheap to flip. The records are not cheap to recreate from memory.
+
