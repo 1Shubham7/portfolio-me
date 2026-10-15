@@ -275,3 +275,27 @@ The window between the AWS call and the status write is still open. Close it wit
 
 **Two controllers write the same field.** Each one sets the field to its own value, each write is an event for the other, and the two alternate forever. The symptom is a steady stream of updates on an object that nobody edits. The rule is one owner per field. `kubectl get -o yaml --show-managed-fields` shows the manager for each field. That is the fastest way to find the second writer.
 
+## Ending notes and Links
+
+One design choice explains most of this post: the handler adds the key to the queue, never the object. Because the key carries no state, the reconcile must read the cache and accept any state it finds there. So the reconcile must be idempotent. An idempotent reconcile lets the queue merge events, retry with backoff, and resend everything after a restart. Every rule in this post about when the key goes back on the queue follows from that one choice.
+
+If you read the sources, read them in this order:
+
+1. The Kubernetes docs page on controllers, for the model.
+2. The sample-controller, for the raw client-go pieces.
+3. The controller-runtime godoc for `reconcile` and `controller`, for the `Result` rules.
+4. One real reconciler, start to finish.
+
+Links:
+
+- [Controllers](https://kubernetes.io/docs/concepts/architecture/controller/) in the Kubernetes docs, for the control loop and the Job controller example
+- [API concepts](https://kubernetes.io/docs/reference/using-api/api-concepts/), for `resourceVersion`, watch bookmarks, and `410 Gone`
+- [Finalizers](https://kubernetes.io/docs/concepts/overview/working-with-objects/finalizers/), [Owners and dependents](https://kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/), and [Garbage collection](https://kubernetes.io/docs/concepts/architecture/garbage-collection/)
+- [Status subresource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#status-subresource) in the CRD docs
+- client-go [tools/cache](https://pkg.go.dev/k8s.io/client-go@v0.35.0/tools/cache) for `Reflector`, `RealFIFO`, `DeltaFIFO`, `Indexer`, and `SharedInformer`, and [util/workqueue](https://pkg.go.dev/k8s.io/client-go@v0.35.0/util/workqueue) for the queue and the default rate limiter
+- [sample-controller](https://github.com/kubernetes/sample-controller) and its [controller-client-go.md](https://github.com/kubernetes/sample-controller/blob/master/docs/controller-client-go.md), the diagram of the raw pieces
+- controller-runtime v0.23.0 godoc for [reconcile](https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.23.0/pkg/reconcile), [controller](https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.23.0/pkg/controller), [builder](https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.23.0/pkg/builder), [handler](https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.23.0/pkg/handler), and [manager](https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.23.0/pkg/manager)
+- [controller.go](https://github.com/kubernetes-sigs/controller-runtime/blob/v0.23.0/pkg/internal/controller/controller.go) in controller-runtime, where the `Result` and error rules live, and the [controller-runtime FAQ](https://github.com/kubernetes-sigs/controller-runtime/blob/main/FAQ.md) for the stale cache answer
+- [The Kubebuilder Book](https://book.kubebuilder.io/), and its page on [finalizers](https://book.kubebuilder.io/reference/using-finalizers)
+- [deployment_controller.go](https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/deployment/deployment_controller.go), for the ReplicaSet handlers that cause a Deployment reconcile
+- [KubeProvisioner](https://github.com/1Shubham7/KubeProvisioner), if you want to see what this looks like in real code
