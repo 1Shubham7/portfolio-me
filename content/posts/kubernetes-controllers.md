@@ -201,3 +201,17 @@ Leader election solves a different problem: two replicas of the same binary. Wit
 
 The client-go `leaderelection` godoc adds one caution. The implementation does not guarantee that only one client acts as leader. It relies on local timestamps and on the lease duration. Make sure your reconcile is idempotent even with leader election on.
 
+## Status, finalizers, and owner references
+
+Status is the controller's own record of the world. The spec is what the user wants. The status is the controller's last observation. KubeProvisioner's `Ec2Instance` status holds `InstanceID`, `State`, `PublicIP`, `PrivateIP`, `PublicDNS`, `PrivateDNS`, and `LaunchTime`. The README shows three of them, `State`, `PublicIP`, and `InstanceID`, as columns in `kubectl get ec2instances -w`.
+
+When you enable the status subresource on a CRD, the object gets a separate `/status` endpoint. With the subresource on, a `PUT`, `POST`, or `PATCH` to the main endpoint ignores changes to the status stanza. A `PUT` to `/status` ignores changes to everything except the status stanza. `metadata.generation` increments for all changes except changes to `.metadata` or `.status`, so a status write does not change the generation.
+
+RBAC treats a subresource as its own resource name. The kubebuilder markers in KubeProvisioner grant `ec2instances/status` with `get;update;patch` in a separate rule from `ec2instances`. That split lets you give a user write access to the spec and no write access to the status.
+
+A finalizer is a string in `metadata.finalizers` that says "do not let this object disappear until I have cleaned up". When you delete an object with a finalizer, the API server sets `metadata.deletionTimestamp`, returns `202 Accepted`, and keeps the object. The delete is now an update. The controller sees the update, does its cleanup, removes its finalizer, and writes the object. When the list is empty, the API server removes the object. Once the timestamp exists, nobody can add a new finalizer, and nobody can bring the object back.
+
+KubeProvisioner uses the finalizer `ec2instance.compute.cloud.com`, and the controller appends it on the first reconcile. When the object has a `DeletionTimestamp`, the controller calls `deleteEc2Instance`, then `controllerutil.RemoveFinalizer`, then `r.Update`. If the AWS call fails, the controller returns the error and the finalizer stays. The object then stays too, and the next reconcile tries again. The Kubernetes docs ask for a qualified name with a slash, such as `example.com/finalizer-name`. Use that form in a new controller.
+
+Owner references are the other cleanup path, for objects inside the cluster. A ReplicaSet carries an `ownerReferences` entry that points at its Deployment, and each Pod points at its ReplicaSet. When you delete the owner, the garbage collector deletes the dependents, in the background by default. The reference with `controller: true` marks the one controller that manages the object. `controllerutil.SetControllerReference` writes that entry for you. Owner references do not cross namespaces, and the docs say that the garbage collector treats an invalid cross-namespace reference as absent.
+
