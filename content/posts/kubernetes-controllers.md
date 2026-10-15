@@ -191,3 +191,13 @@ The reconcile reads the cache again instead of the event payload. There are thre
 
 The key only identifies the object. The cache holds the current state.
 
+## Workers and concurrency
+
+`MaxConcurrentReconciles` sets the number of workers for one controller. It defaults to 1. On `Start`, the controller launches that many goroutines, and each one loops on `processNextWorkItem`. A comment in `Start`, above that loop, states one rule: the worker never calls the reconcile handler concurrently for the same object.
+
+That guarantee comes from the queue, not from the controller. The queue keeps a set of keys in process. The queue does not give a key in that set to a second worker. If the same key arrives while a worker holds it, the queue waits, then hands the key out again after `Done`. So two reconciles for `default/web` never overlap. Reconciles for `default/web` and `default/api` run in parallel when you have two workers.
+
+Leader election solves a different problem: two replicas of the same binary. Without it, both replicas run the controller, and both write to the API server. The controller-runtime manager takes `LeaderElection: true` and a `LeaderElectionID`, and uses a Lease object as the lock by default. Only the replica that holds the lease starts the controllers. If the leader loses the lease, `Start` returns, and the godoc says the binary must exit at once. KubeProvisioner creates its manager with `LeaderElectionID: "c56fc483.cloud.com"`, and its `--leader-elect` flag defaults to false.
+
+The client-go `leaderelection` godoc adds one caution. The implementation does not guarantee that only one client acts as leader. It relies on local timestamps and on the lease duration. Make sure your reconcile is idempotent even with leader election on.
+
