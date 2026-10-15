@@ -130,3 +130,64 @@ flowchart LR
     W -- writes --> A
 ```
 
+## From event to queue
+
+The event handler is short on purpose. It does not pass the object to the controller. It computes the key, `namespace/name`, and adds that string to the queue. The object stays in the cache.
+
+This is what a raw client-go handler and worker look like. The in-tree Deployment controller and the sample-controller use a similar shape.
+
+```go
+informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
+	AddFunc: func(obj interface{}) {
+		if key, err := cache.MetaNamespaceKeyFunc(obj); err == nil {
+			queue.Add(key)
+		}
+	},
+	UpdateFunc: func(_, newObj interface{}) {
+		if key, err := cache.MetaNamespaceKeyFunc(newObj); err == nil {
+			queue.Add(key)
+		}
+	},
+	DeleteFunc: func(obj interface{}) {
+		// obj can be a DeletedFinalStateUnknown tombstone. This key func handles both.
+		if key, err := cache.DeletionHandlingMetaNamespaceKeyFunc(obj); err == nil {
+			queue.Add(key)
+		}
+	},
+})
+
+// One worker. Run as many of these as you want in parallel.
+for {
+	key, shutdown := queue.Get()
+	if shutdown {
+		return
+	}
+	if err := sync(key); err != nil { // sync reads the object from the indexer by key
+		queue.AddRateLimited(key)
+	} else {
+		queue.Forget(key)
+	}
+	queue.Done(key)
+}
+```
+
+The queue is `k8s.io/client-go/util/workqueue`. Its godoc lists four properties. Three of them matter here.
+
+- It is fair. Keys come out in the order in which they enter.
+- It is stingy. If the handler adds a key several times before a worker takes it, the worker processes it once. Two workers never process one key at the same time.
+- It accepts a key that a worker already holds. The queue marks that key dirty and adds it back when the worker calls `Done`.
+
+The second property removes the duplicates. Ten quick edits to one object produce ten events and one reconcile.
+
+The rate limiting is a separate layer. A worker calls `AddRateLimited` after a failure instead of `Add`. The default limiter in client-go v0.35.0 takes the larger of two delays. One is a per-key exponential backoff that starts at 5 ms, doubles on each failure, and stops at 1000 s. The other is an overall token bucket at 10 per second with a burst of 100. `Forget` resets the backoff counter.
+
+In controller-runtime v0.23.0, the default queue is not the client-go queue. The default is a priority queue that controller-runtime provides. That queue keeps the per-key exponential backoff, 5 ms to 1000 s, and drops the token bucket. Set `UsePriorityQueue: false` in `controller.Options` to get the client-go queue back. Both queues remove duplicates, and both give one key to one worker at a time.
+
+The reconcile reads the cache again instead of the event payload. There are three reasons.
+
+- The payload can be older than the cache, because the informer may apply more deltas before the handler runs.
+- The queue merges several events, so the payload is one of several states.
+- The handler may add the key again while the reconcile runs.
+
+The key only identifies the object. The cache holds the current state.
+
