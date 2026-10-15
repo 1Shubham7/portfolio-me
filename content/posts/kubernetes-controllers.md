@@ -257,3 +257,21 @@ The kubebuilder scaffold puts the types in `api/v1` and a reconciler in `interna
 
 If you want to see what this looks like in real code, the EC2 reconciler in [KubeProvisioner](https://github.com/1Shubham7/KubeProvisioner) is about 100 lines. It is a learning-grade operator, not a product. It has three CRDs in the group `compute.cloud.com/v1`: `Ec2Instance`, `S3Bucket`, and `SqsQueue`. It uses controller-runtime v0.23.0 and client-go v0.35.0, and the README installs it with the Helm chart in `./dist/chart`. The reconcile, the finalizer, the status writes, and the `Result` values are all in `internal/controller/ec2instance_controller.go`.
 
+## Things that bite
+
+**The cache is stale right after a write.** You call `r.Update`, return, and the next reconcile starts before the informer has received the new version. `r.Get` returns the old object.
+
+The controller-runtime FAQ gives two defences. Use deterministic names for objects you create, so the API server rejects the duplicate. When that is not possible, keep a record of each write. Check that record on the next reconcile. Write the controller as if the cache is correct but a little behind, because that is what it is.
+
+**Your own status update is an event.** Every `r.Status().Update` that changes something sends an update through the informer, and the handler adds your key to the queue again. One extra reconcile per write is fine when the reconcile is idempotent. A reconcile that writes a changing value on every reconcile, for example a timestamp, never stops.
+
+Write the status only when a field changes. Or filter updates with `predicate.GenerationChangedPredicate`. That predicate drops updates where `metadata.generation` has the same value.
+
+**`Requeue: true` together with a returned error.** The error takes priority: the controller ignores the `Result` and adds the key with rate limiting. It also logs a warning: `RequeueAfter and Requeue will always be ignored if the error is non-nil`. KubeProvisioner's delete path returns `ctrl.Result{Requeue: true}, err`, and the behaviour is the same as `ctrl.Result{}, err`. Version 0.23.0 of controller-runtime deprecates the field. Return an empty `Result` with the error.
+
+**Create calls are not idempotent.** A reconcile can run twice for one object. The process can stop after it creates an external resource and before it records the ID. KubeProvisioner checks `Status.InstanceID` before it creates an instance. A second reconcile with a recorded ID does not create a second instance. That reconcile calls `checkEC2InstanceExists` to confirm that the instance still exists in AWS.
+
+The window between the AWS call and the status write is still open. Close it with an idempotency token on the create call. As an alternative, add a tag when you create the instance. Then search for the tag before you create a new one.
+
+**Two controllers write the same field.** Each one sets the field to its own value, each write is an event for the other, and the two alternate forever. The symptom is a steady stream of updates on an object that nobody edits. The rule is one owner per field. `kubectl get -o yaml --show-managed-fields` shows the manager for each field. That is the fastest way to find the second writer.
+
