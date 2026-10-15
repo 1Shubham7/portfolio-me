@@ -215,3 +215,26 @@ KubeProvisioner uses the finalizer `ec2instance.compute.cloud.com`, and the cont
 
 Owner references are the other cleanup path, for objects inside the cluster. A ReplicaSet carries an `ownerReferences` entry that points at its Deployment, and each Pod points at its ReplicaSet. When you delete the owner, the garbage collector deletes the dependents, in the background by default. The reference with `controller: true` marks the one controller that manages the object. `controllerutil.SetControllerReference` writes that entry for you. Owner references do not cross namespaces, and the docs say that the garbage collector treats an invalid cross-namespace reference as absent.
 
+## Watching more than your own kind
+
+A controller for one kind usually has to run a reconcile when a related kind changes. The Deployment controller has to react when one of its ReplicaSets changes, or a rollout would stall. In kube-controller-manager, `NewDeploymentController` registers handlers on three informers: Deployments, ReplicaSets, and Pods. The ReplicaSet handlers read the controller reference on the ReplicaSet, resolve the Deployment, and add the Deployment's key to the queue. The reconcile for the Deployment then reads its ReplicaSets from the cache.
+
+The controller-runtime builder gives you the same thing.
+
+```go
+func (r *WidgetReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	return ctrl.NewControllerManagedBy(mgr).
+		For(&examplev1.Widget{}).
+		Owns(&appsv1.Deployment{}).
+		Watches(&corev1.ConfigMap{}, handler.EnqueueRequestsFromMapFunc(r.widgetsForConfigMap)).
+		WithOptions(controller.Options{MaxConcurrentReconciles: 4}).
+		Complete(r)
+}
+```
+
+`For` is the root kind. The godoc says it is the same as a `Watches` on that kind with `handler.EnqueueRequestForObject`, which adds the key of the object in the event. `Owns` watches a kind that your controller creates. Its default handler is `EnqueueRequestForOwner` with `OnlyControllerOwner`, so a change to a Deployment adds the key of the Widget named in the controller reference.
+
+`Watches` takes any handler. `EnqueueRequestsFromMapFunc` runs your function on the object and adds every key it returns. That is how a ConfigMap change causes a reconcile for each Widget that reads it.
+
+All controllers in one manager share one cache. The manager holds one informer per kind, and each controller adds its handlers to that informer. If three controllers watch Pods, there is one watch on Pods and one copy of each Pod in memory. An `Owns` on a common kind adds a handler, not a second watch. The client-go godoc notes that the informer delivers events to one handler in order, but it does not coordinate between different handlers.
+
