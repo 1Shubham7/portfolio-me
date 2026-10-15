@@ -238,3 +238,22 @@ func (r *WidgetReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 All controllers in one manager share one cache. The manager holds one informer per kind, and each controller adds its handlers to that informer. If three controllers watch Pods, there is one watch on Pods and one copy of each Pod in memory. An `Owns` on a common kind adds a handler, not a second watch. The client-go godoc notes that the informer delivers events to one handler in order, but it does not coordinate between different handlers.
 
+## What controller-runtime hides from you
+
+Each piece of the raw client-go controller maps to one piece of what kubebuilder scaffolds. This table lets you read in either direction.
+
+| Raw client-go | controller-runtime / kubebuilder |
+| :-- | :-- |
+| Reflector, FIFO, Indexer, together as a `SharedIndexInformer` | The manager's `cache.Cache`, one informer per kind, started on first use |
+| A lister or `indexer.GetByKey` | `r.Get` and `r.List` through the manager's client |
+| `cache.ResourceEventHandlerFuncs` plus `MetaNamespaceKeyFunc` | `For`, `Owns`, `Watches` with a `handler.EventHandler` |
+| `workqueue.NewTypedRateLimitingQueue` | The controller's queue: `priorityqueue` by default in v0.23.0, or the client-go queue with `UsePriorityQueue: false` |
+| `for i := 0; i < workers; i++ { go worker() }` | `MaxConcurrentReconciles` |
+| `syncHandler(key)` and `handleErr` | `Reconcile(ctx, req)` and the `Result` and error rules above |
+| `cache.WaitForCacheSync` before the workers start | The manager waits for the caches before it starts a controller |
+| `tools/leaderelection` set up by hand | `ctrl.Options{LeaderElection: true, LeaderElectionID: ...}` |
+
+The kubebuilder scaffold puts the types in `api/v1` and a reconciler in `internal/controller`. The `cmd/main.go` file creates the manager and calls `SetupWithManager` for each reconciler. The RBAC rules come from the `+kubebuilder:rbac` markers above `Reconcile`.
+
+If you want to see what this looks like in real code, the EC2 reconciler in [KubeProvisioner](https://github.com/1Shubham7/KubeProvisioner) is about 100 lines. It is a learning-grade operator, not a product. It has three CRDs in the group `compute.cloud.com/v1`: `Ec2Instance`, `S3Bucket`, and `SqsQueue`. It uses controller-runtime v0.23.0 and client-go v0.35.0, and the README installs it with the Helm chart in `./dist/chart`. The reconcile, the finalizer, the status writes, and the `Result` values are all in `internal/controller/ec2instance_controller.go`.
+
