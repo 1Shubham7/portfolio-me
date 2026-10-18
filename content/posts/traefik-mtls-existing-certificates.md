@@ -283,3 +283,38 @@ openssl s_client -connect prometheus.example.com:443 -servername prometheus.exam
 
 Every CA in `secretNames` should be in that list by its CN. Run it after every change to the bundle, and whenever the CA behind the bundle changes.
 
+## The bundle is a snapshot
+
+Everything above worked for a long time. This is how it stopped working without anyone noticing.
+
+One environment, a different cluster from the one whose CA volume failed but in the same month, moved its servers to a newly deployed Puppet server with a fresh CA, generated 2025-12-11. A few days later that cluster's Traefik CA Secret was created by hand, from a copy of the old CA bundle instead of the new one. As servers re-enrolled and received certificates from the new CA, every `remote_write` from every one of them was refused during the handshake. The Prometheus agent did not crash. `systemctl` showed `active (running)`. It buffered into its WAL, retried, and logged only at WARN:
+
+```
+level=WARN source=queue_manager.go:2076 msg="Failed to send batch, retrying"
+  component=remote url=https://prometheus.example.com/api/v1/write
+  err="Post \"...\": remote error: tls: unknown certificate authority"
+```
+
+The alert that should have caught it, a per-host "not reporting" rule, had been designed to stop firing after 24 hours. A permanent fault therefore looked like a transient one. Nobody noticed for about seven months.
+
+What found it was the `s_client` check from the previous section, run from one of the servers:
+
+```
+Acceptable client certificate CA names
+CN = "Puppet CA generated on puppet.old.example.com at 2023-07-25 07:04:20 +0000"
+CN = Puppet Root CA: 13e4c8854385f4
+```
+
+The CA with the December 2025 timestamp was not there. That is why a Puppet CA's CN carrying its generation time is so useful: the list told me which CA Traefik trusted and roughly when it was generated, from a server that could not see the Secret. SHA-256 fingerprints of the agent's `ca.pem`, the Puppet server's `/etc/puppetlabs/puppetserver/ca/ca_crt.pem` and the certificate in the Traefik Secret confirmed it. To list what a bundle holds:
+
+```bash
+kubectl -n traefik get secret puppetca-cert -o jsonpath='{.data.ca\.crt}' | base64 -d \
+  | openssl crl2pkcs7 -nocrl -certfile /dev/stdin | openssl pkcs7 -print_certs -noout
+```
+
+The fix was additive: append the new CA chain to the bundle and re-create the Secret, keeping the old CAs so servers still on old certificates keep working. Traefik's CRD provider runs an informer on Secrets, so the edit was a configuration event and the new bundle was live without a restart.
+
+Go's server-side verification uses the CA pool as the roots and whatever the client sent after its leaf as intermediates. The Puppet agent sends only the leaf. So the leaf's direct issuer, the signing CA, has to be in the bundle itself, as a trust anchor; a bundle holding only the self-signed root above it fails with the same `unknown certificate authority`, because nothing in the handshake connects the leaf to that root. For a two-certificate CA, put both in.
+
+The bundle is still a hand-made snapshot of a file that lives on another machine and changes without telling anyone. The right shape, which I have not built yet, is a small job that reads the live CA file from the Puppet server and reconciles the Secret, plus an alert when the fingerprint in the Secret differs from the live CA's. Until then, regenerating a Puppet CA means updating the Traefik Secret on every cluster that trusts it, with the `s_client` check as the acceptance test.
+
