@@ -61,3 +61,75 @@ spec:
 
 That last field in the manifest has moved under me since I wrote it. The docs now mark `trustForwardHeader` deprecated, to be removed in the next major version. The recommended shape is `forwardedHeaders.trustedIPs` on the entrypoint, so Traefik strips `X-Forwarded-*` headers from anyone not on that list, and then `trustForwardHeader: true` on the middleware anyway. Unset, you get a startup warning and a legacy behaviour where some forwarded headers are removed and others, `X-Forwarded-Prefix` among them, go through untouched. Set it explicitly either way, and keep the auth service a ClusterIP Service with no Ingress of its own: the whole scheme rests on `X-Forwarded-Host` and `X-Forwarded-Uri` describing the real request, so nothing but Traefik should write them.
 
+## One annotation per Ingress
+
+A Middleware from the Kubernetes CRD provider is referenced by Traefik's internal name for it: namespace and name joined with a hyphen, followed by `@kubernetescrd`. The Ingress annotation takes a comma-separated list of those. The real Prometheus Ingress, sanitised:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-k8s
+  namespace: monitoring
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-traefik-forward-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: prometheus.ops.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-k8s
+                port:
+                  name: web
+  tls:
+    - hosts:
+        - prometheus.ops.example.com
+      secretName: prometheus-tls
+```
+
+The doubled `traefik-traefik-` is not a typo: namespace `traefik`, middleware `traefik-forward-auth`. The Ingress lives in `monitoring` and references a Middleware in `traefik`, and nothing has to be enabled for that; the namespace is simply part of the name the Ingress provider passes through.
+
+The Traefik dashboard, exposed through a Service on port 9000, chains the auth middleware in front of a redirect to `/dashboard/`:
+
+```yaml
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-traefik-forward-auth@kubernetescrd,traefik-traefik-dashboard-redirect@kubernetescrd
+```
+
+Middlewares run in the order the router declares them, so here the auth check comes first. An `ipAllowList` goes before it if blocked networks should never see a login page; a `stripPrefix` or a redirect goes after, so it only runs for requests that passed.
+
+On an IngressRoute the same middleware is attached by name and namespace:
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: whoami-auth
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`whoami-auth.ops.example.com`)
+      kind: Rule
+      middlewares:
+        - name: traefik-forward-auth
+          namespace: traefik
+      services:
+        - name: whoami
+          port: 80
+```
+
+`namespace` can be omitted when the Middleware is in the IngressRoute's own namespace; otherwise the CRD provider's `allowCrossNamespace` option, default `false` and IngressRoute-only, has to be on.
+
+For apps installed from a chart, Graylog and OpenCost in my case, the annotation goes into the chart's `ingress.annotations` and nothing else changes. The whoami page at `whoami-auth.ops.example.com` is the permanent canary on both environments: after a login it prints the request headers it received, so `X-Forwarded-User: someone@example.com` on that page proves the login, the cookie and the header pass-through in one look.
+
