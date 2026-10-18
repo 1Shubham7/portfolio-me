@@ -1,7 +1,7 @@
 ---
 title: "Separating Public and Internal Traffic with Multiple Traefik Instances"
 description: "Why I run two Traefik instances per cluster instead of one Traefik with an auth middleware: how the IngressClass flag keeps them apart, the Helm values for each, how the internal one is reached over a mesh VPN, and the three-tier variant with an IP allow-list in the middle."
-dateString: October 2026
+dateString: June 2026
 draft: false
 tags: ["Kubernetes", "Traefik", "Ingress", "Networking", "DevOps", "SRE"]
 weight: 2
@@ -40,10 +40,6 @@ Both instances come from `traefik/traefik` 41.6.0 (Traefik v3.7.13), both live i
 The internal instance is the simpler of the two, so it goes first:
 
 ```yaml
-# Second, ClusterIP-only Traefik instance that serves the private admin ingresses
-# (ingressClassName: traefik-internal). No hostPort / NodePort / LoadBalancer:
-# reachable only in-cluster and over the mesh via the traefik-internal ClusterIP
-# Service.
 fullnameOverride: traefik-internal
 instanceLabelOverride: traefik-internal
 deployment:
@@ -211,8 +207,6 @@ spec:
 `tlsStore.default.defaultCertificate.secretName` in the public values above renders a `TLSStore` named `default` in the `traefik` namespace, holding the certificate Traefik serves when no Ingress certificate matches the SNI. Only the store named `default` is used, and the docs are specific that you cannot have two of them in different namespaces. So the store is one object, rendered by the public release, and the internal instance reads it through its own CRD provider, which the chart enables by default; that is why the internal values file can leave `tlsStore` out. If both releases set `tlsStore.default`, the second `helm install` fails, because Helm refuses to take over an object that belongs to another release. Argo CD's chart values that put it on the internal instance look like this; since the hostname is under the wildcard, the issuer annotation and the `tls` block can go:
 
 ```yaml
-# Layout of the argo-cd chart I run. Current charts use a single
-# server.ingress.hostname and a boolean tls; check your values.yaml.
 server:
   ingress:
     enabled: true
@@ -236,8 +230,6 @@ What differs is the Service and one Middleware. Public is a `LoadBalancer` with 
 Private also publishes a second Service, because its main Service is a `LoadBalancer` and the mesh resource needs a ClusterIP:
 
 ```yaml
-# Ports are opt-in per Service via expose.<name>: expose web and websecure
-# on the internal ClusterIP Service too, keep default for the LoadBalancer.
 service:
   additionalServices:
     internal:
@@ -383,23 +375,8 @@ spec:
 
 **If you run this under Argo CD, expect drift that is not yours.** My Applications carry `ignoreDifferences` for the Service's `/spec/clusterIP` and `/spec/clusterIPs`, the Deployment's checksum annotations, the ClusterRole's `/rules`, the ClusterRoleBinding's `/subjects`, the dashboard IngressRoute's `/spec` and the PodDisruptionBudget's `/spec`. None of it is a problem; all of it shows OutOfSync until you tell Argo CD to ignore it.
 
-## Ending notes and links
+## Ending notes
 
 The whole pattern is one flag and one Service type. `--providers.kubernetesingress.ingressclass` gives each instance its own set of Ingresses, and `service.spec.type: ClusterIP` gives one of them no way in from the internet. Everything else here is plumbing around those two lines. If you have admin UIs behind an auth middleware on a public Traefik today, the second instance is an afternoon's work, and the Ingresses move over one `ingressClassName` at a time.
 
-Links:
-
-- [Traefik Kubernetes Ingress provider](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-ingress/): `ingressClass`, `publishedService`
-- [Traefik Kubernetes CRD provider](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-crd/): its own `ingressClass`
-- [EntryPoints](https://doc.traefik.io/traefik/reference/install-configuration/entrypoints/): `http.middlewares`, PROXY protocol
-- [Ingress annotations](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/ingress/)
-- [IPAllowList middleware](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/ipallowlist/) and the [v2 to v3 migration notes](https://doc.traefik.io/traefik/migrate/v2-to-v3-details/)
-- [TLSStore CRD](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/tls/tlsstore/)
-- [traefik-helm-chart v41.6.0](https://github.com/traefik/traefik-helm-chart/tree/v41.6.0)
-- `shouldProcessIngress` in the [Ingress provider](https://github.com/traefik/traefik/blob/v3.7/pkg/provider/kubernetes/ingress/kubernetes.go) and the [CRD provider](https://github.com/traefik/traefik/blob/v3.7/pkg/provider/kubernetes/crd/kubernetes.go)
-- [Kubernetes Ingress concepts](https://kubernetes.io/docs/concepts/services-networking/ingress/#default-ingress-class): the default IngressClass rule
-- [argoproj/argo-cd issue 1704](https://github.com/argoproj/argo-cd/issues/1704) and [`health_ingress.go` in gitops-engine](https://github.com/argoproj/gitops-engine/blob/master/pkg/health/health_ingress.go)
-- [Hetzner cloud controller manager annotations](https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/main/internal/annotation/load_balancer.go)
-- [NetBird Kubernetes operator](https://github.com/netbirdio/kubernetes-operator) and its [API reference](https://github.com/netbirdio/kubernetes-operator/blob/main/docs/api-reference.md)
-
-Thanks for your time.
+Thanks for your time :)
