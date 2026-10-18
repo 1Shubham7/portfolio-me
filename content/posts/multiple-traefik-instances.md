@@ -377,3 +377,9 @@ spec:
 
 `kubectl get ingress` shows which instance picked each one up. `CLASS` is what you asked for; `ADDRESS` is what `publishedService` copied from that instance's Service: the load balancer IP on the public one, empty on the internal one. Empty on the public one means it did not claim the Ingress or has no published Service. If both show the same address, or the public one flickers between the load balancer IP and empty, both instances are claiming both Ingresses and one is missing its `ingressclass` flag. From a mesh peer, `curl -k https://whoami.internal.example.com` returns the whoami page; from anywhere else the name should not resolve. The `-k` is because neither walkthrough file sets `tlsStore` yet, so you get Traefik's generated certificate. The dashboard on the 8080 port-forward lists the routers that instance loaded, which for the Ingresses is only its own.
 
+## Things that bite
+
+**The chart defaults `isDefaultClass` to true, so the second release you install is a second default unless you turn it off.** The API server then refuses every new Ingress without an `ingressClassName`, cluster-wide. Run `kubectl get ingressclass -o yaml` and look for `ingressclass.kubernetes.io/is-default-class: "true"` on more than one object.
+
+**If you run this under Argo CD, expect drift that is not yours.** My Applications carry `ignoreDifferences` for the Service's `/spec/clusterIP` and `/spec/clusterIPs`, the Deployment's checksum annotations, the ClusterRole's `/rules`, the ClusterRoleBinding's `/subjects`, the dashboard IngressRoute's `/spec` and the PodDisruptionBudget's `/spec`. None of it is a problem; all of it shows OutOfSync until you tell Argo CD to ignore it.
+
