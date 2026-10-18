@@ -227,3 +227,51 @@ server:
           - argocd.example.com
 ```
 
+## Three tiers: public, protected, private
+
+One environment I run has needed a middle tier since July: hostnames that must be reachable from the office network, but from nowhere else. That cluster runs three instances, `traefik-public`, `traefik-protected` and `traefik-private`, from the same chart, three values files, all in `traefik`. Each has `nameOverride` and `instanceLabelOverride` set to its own name, two replicas, access logs on, PROXY protocol on both entrypoints, its own `providers.kubernetesIngress.ingressClass`, `publishedService.enabled: true` and `allowExternalNameServices: true`. All three also carry the same `tlsStore.default`, which only works because Argo CD renders the chart and applies the objects itself; nothing checks release ownership, and the Applications just pick up a `SharedResourceWarning` condition naming the other owner. With plain `helm install` the second release would fail, so set it in one file.
+
+What differs is the Service and one Middleware. Public is a `LoadBalancer` with a public IP (`load-balancer.hetzner.cloud/disable-public-network: "false"`), class `traefik-public`, requests of 33m CPU and 333Mi memory, limits of 100m and 1000Mi. Protected is the same shape with class `traefik-protected`, plus an IP allow-list on its routes. Private is a `LoadBalancer` with the public network disabled and `use-private-ip: "true"`, class `traefik-private`, and the largest resources of the three (requests 111m and 700Mi, limits 333m and 2.4Gi), because it carries most of the hostnames. Private is also the one with `ingressClass.isDefaultClass: true`: most workloads on that cluster are internal, so an Ingress that forgets its class should land on the private network, not the internet. That default should exist on exactly one instance. Kubernetes lets you create a second, but from then on the admission controller rejects every new Ingress without an `ingressClassName`, so the first symptom is an `apply` failing on an Ingress that has nothing to do with Traefik.
+
+Private also publishes a second Service, because its main Service is a `LoadBalancer` and the mesh resource needs a ClusterIP:
+
+```yaml
+# Ports are opt-in per Service via expose.<name>: expose web and websecure
+# on the internal ClusterIP Service too, keep default for the LoadBalancer.
+service:
+  additionalServices:
+    internal:
+      enabled: true
+      spec:
+        type: ClusterIP
+ports:
+  web:
+    expose:
+      default: true
+      internal: true
+  websecure:
+    expose:
+      default: true
+      internal: true
+```
+
+The extra Service is named `<fullname>-internal`. The allow-list is a Middleware in the `traefik` namespace. Traefik v3 renamed `IPWhiteList` to `IPAllowList` with no change to the configuration, so use the new name:
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: office
+  namespace: traefik
+spec:
+  ipAllowList:
+    sourceRange:
+      - 198.51.100.0/24
+```
+
+Behind a load balancer with PROXY protocol, the source IP Traefik checks is the real client, which is why the PROXY protocol setup above has to be right before this middleware means anything.
+
+There are two ways to attach it. The way I run in production is per Ingress, with the annotation `traefik.ingress.kubernetes.io/router.middlewares: traefik-office@kubernetescrd`; CRD middlewares are referenced as `<namespace>-<name>@kubernetescrd`. The other way, which the entrypoints docs describe and I have not run in production, is `ports.websecure.http.middlewares: ["traefik-office@kubernetescrd"]` in the protected instance's values, which renders the equivalent of `--entrypoints.websecure.http.middlewares=traefik-office@kubernetescrd` and prepends the middleware to every router on that entrypoint. For a protected tier that is the better shape: it turns the allow-list from a policy back into something closer to a boundary, since no Ingress on that instance can forget it. Set it on `web` too if the protected instance answers plain HTTP.
+
+Is a third tier worth it? Only when there is a real population of hostnames that must be reachable from a fixed set of networks but not by everyone. Two instances cover most clusters I run. The protected tier earns its place on one.
+
