@@ -275,3 +275,105 @@ There are two ways to attach it. The way I run in production is per Ingress, wit
 
 Is a third tier worth it? Only when there is a real population of hostnames that must be reachable from a fixed set of networks but not by everyone. Two instances cover most clusters I run. The protected tier earns its place on one.
 
+## Set it up yourself
+
+The minimum is a namespace, the chart repo, and two installs.
+
+```bash
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+kubectl create namespace traefik
+
+helm install traefik traefik/traefik -n traefik --version 41.6.0 -f values-public.yaml
+helm install traefik-internal traefik/traefik -n traefik --version 41.6.0 -f values-internal.yaml
+```
+
+`values-internal.yaml` is the internal file above, plus `ingressRoute.dashboard.enabled: true` if you want the dashboard check at the end. For `values-public.yaml` on a cloud cluster, the minimum is the class and the published service:
+
+```yaml
+instanceLabelOverride: traefik
+deployment:
+  replicas: 2
+ingressClass:
+  enabled: true
+  name: traefik
+  isDefaultClass: true
+providers:
+  kubernetesIngress:
+    ingressClass: traefik
+    publishedService:
+      enabled: true
+```
+
+Then a test workload and one Ingress per class:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami
+  template:
+    metadata:
+      labels:
+        app: whoami
+    spec:
+      containers:
+        - name: whoami
+          image: traefik/whoami
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami
+spec:
+  selector:
+    app: whoami
+  ports:
+    - port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami-public
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: whoami.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami-internal
+spec:
+  ingressClassName: traefik-internal
+  rules:
+    - host: whoami.internal.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80
+```
+
+`kubectl get ingress` shows which instance picked each one up. `CLASS` is what you asked for; `ADDRESS` is what `publishedService` copied from that instance's Service: the load balancer IP on the public one, empty on the internal one. Empty on the public one means it did not claim the Ingress or has no published Service. If both show the same address, or the public one flickers between the load balancer IP and empty, both instances are claiming both Ingresses and one is missing its `ingressclass` flag. From a mesh peer, `curl -k https://whoami.internal.example.com` returns the whoami page; from anywhere else the name should not resolve. The `-k` is because neither walkthrough file sets `tlsStore` yet, so you get Traefik's generated certificate. The dashboard on the 8080 port-forward lists the routers that instance loaded, which for the Ingresses is only its own.
+
