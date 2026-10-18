@@ -341,3 +341,11 @@ Open `https://whoami-auth.ops.example.com/`. You should get the Keycloak login, 
 
 Then RBAC. Apply the `sso-rbac-developer` ClusterRole and ClusterRoleBinding from above, trimmed to the whoami URL, set `enableRBAC: true`, upgrade, and reload. In a bound group the page is unchanged. Remove yourself from the group in Keycloak, delete the `_forward_auth` cookie for that host (the groups live in the cookie), reload, and after the new login the same URL answers `Not Authorized`.
 
+## Things that bite
+
+**A login is per hostname.** The cookie is set for the host in `X-Forwarded-Host`, so Prometheus and Alertmanager are two logins, each good for 12 hours unless `LIFETIME` says otherwise. `COOKIE_DOMAIN` is the fix if that matters.
+
+**Non-browser clients get a 401, or a redirect they cannot use.** The service looks at the `Accept` header: `text/html`, or a first entry of `*/*`, gets the 302 to Keycloak; `application/json` gets a 401 with a JSON body; no `Accept` at all, or anything else, gets a plain 401 saying `Authentication expired. Reload page to re-authenticate.` So Alertmanager's own webhook, which sends no `Accept`, and a Grafana datasource, which does not ask for HTML, get a 401 and no way through, while `curl`, which sends `Accept: */*`, gets the 302 and nowhere to put the cookie. Point in-cluster clients at the Service directly; the middleware is for humans.
+
+**Whoever can write ClusterRoles can grant access.** Anyone who can create a ClusterRole and a ClusterRoleBinding can write themselves into any hostname. On the clusters I run those objects are plain YAML in the cluster's Git config repository, applied by Argo CD, so the people who can grant access are the people who can merge to that repository, the same people who can change anything else about the cluster. The chart's own ClusterRole also grants `impersonate` on users and groups and `create` and `update` on Secrets and ConfigMaps, for impersonation and in-cluster session storage. If you use neither, trim it.
+
