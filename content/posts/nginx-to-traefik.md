@@ -252,3 +252,10 @@ Four more things from running Traefik that the procedure had no reason to mentio
 
 **On bare metal, the pods own the ports.** With no cloud load balancer I run Traefik as a DaemonSet with hostPort 80 and 443, and the chart's default rolling update, surge one and zero unavailable, cannot work there: the new pod cannot bind a port the old pod still holds. `updateStrategy.rollingUpdate.maxSurge: 0, maxUnavailable: 1` deletes the old pod first.
 
+## Ending notes
+
+The retired controller is not a crisis as long as the plan is not a rewrite. A second controller reading the same Ingress objects, an IP you can curl before anyone resolves it, one DNS change, one IngressClass you refuse to let Helm delete, and the annotation work moved off the critical path: that is the whole method, and it is the shape of the chart's own example.
+
+Once you are on Traefik, a few things become easy that were awkward before. A second Traefik instance from the same chart, on a ClusterIP Service with its own IngressClass, keeps admin UIs off the public IP; that is [how I run a public and an internal instance per cluster](https://1shubham7.blog/multiple-traefik-instances/). Servers that already hold a client certificate from a CA you control can authenticate with it instead of a token, through one TLSOption and the `passTLSClientCert` middleware; that is the [mTLS post](https://1shubham7.blog/traefik-mtls-existing-certificates/). And apps with no login of their own get Keycloak in front of them with the `forwardAuth` middleware, down to per-URL authorisation from Keycloak groups, in the [forward-auth post](https://1shubham7.blog/traefik-forward-auth-sso/). None of those need an Ingress rewritten either.
+
+Thanks for your time :)
