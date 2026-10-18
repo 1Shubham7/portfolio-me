@@ -167,3 +167,76 @@ solvers:
 
 Leaving it unset is worse than leaving it on `nginx`. The docs say that with no class, "all ingress controllers installed in your cluster will serve traffic for the challenge solver", which during a migration is a solver Ingress with two owners. ExternalDNS needs a change only if it runs with `--ingress-class=nginx`.
 
+## Convert at your own pace
+
+The cluster now runs Traefik only, every Ingress is unchanged, and the pressure is off. What remains is moving nginx-class Ingresses to Traefik's own class and middlewares, and a variant of the inventory filter lists what is left:
+
+```bash
+kubectl get ingress -A -o json | jq -r '
+  .items[]
+  | select(any((.metadata.annotations // {}) | keys[]; startswith("nginx.ingress.kubernetes.io/")))
+  | "\(.metadata.namespace)/\(.metadata.name)"'
+```
+
+Converting means setting `ingressClassName: traefik`, at which point the standard provider takes the Ingress and ignores the nginx annotations, and adding Traefik's equivalents. Middlewares are CRD objects, usually in the application's namespace, attached with the annotation `traefik.ingress.kubernetes.io/router.middlewares` whose value is `<namespace>-<name>@kubernetescrd`, comma-separated for several. Five translations cover most inventories.
+
+**`ssl-redirect` and `force-ssl-redirect`** become nothing. The entrypoint redirection in the values file redirects every request on port 80, so the annotation is deleted. The reference notes the flip side, "Cannot opt-out per route if enabled globally"; a host that must answer plain HTTP needs an entrypoint without the redirect.
+
+**`whitelist-source-range`** becomes an `ipAllowList` middleware, which Traefik v3 renamed from `IPWhiteList` with no other change:
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: office
+spec:
+  ipAllowList:
+    sourceRange:
+      - 198.51.100.0/24
+```
+
+By default it checks the remote address of the connection, so behind a load balancer the source IP is right only with PROXY protocol on; otherwise add `ipStrategy.depth` to read `X-Forwarded-For`.
+
+**`auth-type: basic` with `auth-secret`** becomes a `basicAuth` middleware pointing at the same Secret. The CRD provider accepts any generic Secret with exactly one key and reads it as `htpasswd` lines, so the `auth` key ingress-nginx asked for works as it is; a `kubernetes.io/basic-auth` Secret with `username` and `password` works too.
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: admin-users
+spec:
+  basicAuth:
+    secret: basic-auth
+```
+
+**`proxy-body-size`** becomes a `buffering` middleware with `maxRequestBodyBytes`, in bytes, so `50m` is `52428800`, and a request over it gets a 413. The default is the trap. Traefik's own is 0, which the docs define as unlimited, while the NGINX provider carries `proxyBodySize: 1048576` to match nginx's 1m. So an Ingress on the nginx class is capped at 1 MiB whether it says so or not, and the same Ingress on the traefik class is uncapped until you add the middleware.
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: body-50m
+spec:
+  buffering:
+    maxRequestBodyBytes: 52428800
+```
+
+**`rewrite-target`** becomes `replacePathRegex`. The nginx idiom of `path: /api(/|$)(.*)` with `rewrite-target: /$2` and `use-regex` is a plain `/api` prefix path plus:
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-api
+spec:
+  replacePathRegex:
+    regex: "^/api/(.*)"
+    replacement: "/${1}"
+```
+
+The docs prefer `${1}` to `$1` because `$1x` is read as a group named `1x`. The original path reaches the backend in an `X-Replaced-Path` header.
+
+Snippets are the residue. Whatever a `configuration-snippet` did that is not in the provider's directive list has to be reproduced as a Traefik middleware (`headers` covers most `add_header` and `proxy_set_header` cases), as a plugin, or in the application. Two more things change when an Ingress leaves the nginx class. An `ExternalName` backend works under the NGINX provider, where `disableSvcExternalName` defaults to false, and stops under the standard one until `providers.kubernetesIngress.allowExternalNameServices: true`. Custom error pages come from `customHTTPErrors` and `defaultBackendService` on the NGINX provider, and from an `errors` middleware once converted.
+
+When the filter prints nothing, set `kubernetesIngressNGINX.enabled: false`, delete the `nginx` IngressClass, and it is over. The August write-up left the provider on afterwards to keep rollback cheap, which costs nothing.
+
