@@ -383,3 +383,23 @@ spec:
 
 **If you run this under Argo CD, expect drift that is not yours.** My Applications carry `ignoreDifferences` for the Service's `/spec/clusterIP` and `/spec/clusterIPs`, the Deployment's checksum annotations, the ClusterRole's `/rules`, the ClusterRoleBinding's `/subjects`, the dashboard IngressRoute's `/spec` and the PodDisruptionBudget's `/spec`. None of it is a problem; all of it shows OutOfSync until you tell Argo CD to ignore it.
 
+## Ending notes and links
+
+The whole pattern is one flag and one Service type. `--providers.kubernetesingress.ingressclass` gives each instance its own set of Ingresses, and `service.spec.type: ClusterIP` gives one of them no way in from the internet. Everything else here is plumbing around those two lines. If you have admin UIs behind an auth middleware on a public Traefik today, the second instance is an afternoon's work, and the Ingresses move over one `ingressClassName` at a time.
+
+Links:
+
+- [Traefik Kubernetes Ingress provider](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-ingress/): `ingressClass`, `publishedService`
+- [Traefik Kubernetes CRD provider](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-crd/): its own `ingressClass`
+- [EntryPoints](https://doc.traefik.io/traefik/reference/install-configuration/entrypoints/): `http.middlewares`, PROXY protocol
+- [Ingress annotations](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/ingress/)
+- [IPAllowList middleware](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/ipallowlist/) and the [v2 to v3 migration notes](https://doc.traefik.io/traefik/migrate/v2-to-v3-details/)
+- [TLSStore CRD](https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/tls/tlsstore/)
+- [traefik-helm-chart v41.6.0](https://github.com/traefik/traefik-helm-chart/tree/v41.6.0)
+- `shouldProcessIngress` in the [Ingress provider](https://github.com/traefik/traefik/blob/v3.7/pkg/provider/kubernetes/ingress/kubernetes.go) and the [CRD provider](https://github.com/traefik/traefik/blob/v3.7/pkg/provider/kubernetes/crd/kubernetes.go)
+- [Kubernetes Ingress concepts](https://kubernetes.io/docs/concepts/services-networking/ingress/#default-ingress-class): the default IngressClass rule
+- [argoproj/argo-cd issue 1704](https://github.com/argoproj/argo-cd/issues/1704) and [`health_ingress.go` in gitops-engine](https://github.com/argoproj/gitops-engine/blob/master/pkg/health/health_ingress.go)
+- [Hetzner cloud controller manager annotations](https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/main/internal/annotation/load_balancer.go)
+- [NetBird Kubernetes operator](https://github.com/netbirdio/kubernetes-operator) and its [API reference](https://github.com/netbirdio/kubernetes-operator/blob/main/docs/api-reference.md)
+
+Thanks for your time.
