@@ -33,3 +33,105 @@ The deprecated `kubernetes.io/ingress.class` annotation still works through the 
 
 Everything above is about Ingress objects. IngressRoute CRDs have their own copy of the flag, `--providers.kubernetescrd.ingressclass` (`providers.kubernetesCRD.ingressClass` in the chart), with the same rule: empty means every IngressRoute with no class or with class `traefik`. Both of my values files leave it empty, so an IngressRoute with no class is loaded by both instances, and one of them has a public address. If you use IngressRoute for anything that must stay internal, set the flag on each instance and put `spec.ingressClassName` on the route; the field arrived in v3.7, and the `kubernetes.io/ingress.class` annotation now logs a deprecation warning. The chart adds the class to its own dashboard IngressRoute when the value is set. Middlewares and TLSStores are not filtered by class at all, which is what lets one `default` TLSStore and one `office` Middleware serve every instance further down.
 
+## Two releases of one chart
+
+Both instances come from `traefik/traefik` 41.6.0 (Traefik v3.7.13), both live in the `traefik` namespace, as two Helm releases named `traefik` and `traefik-internal`. I deploy them as two Argo CD Applications pointing at the same chart with different values files, but nothing below depends on Argo CD.
+
+The internal instance is the simpler of the two, so it goes first:
+
+```yaml
+# Second, ClusterIP-only Traefik instance that serves the private admin ingresses
+# (ingressClassName: traefik-internal). No hostPort / NodePort / LoadBalancer:
+# reachable only in-cluster and over the mesh via the traefik-internal ClusterIP
+# Service.
+fullnameOverride: traefik-internal
+instanceLabelOverride: traefik-internal
+deployment:
+  kind: Deployment
+  replicas: 2
+service:
+  spec:
+    type: ClusterIP
+  additionalServices: {}
+ingressClass:
+  enabled: true
+  name: traefik-internal
+  isDefaultClass: false
+additionalArguments:
+  - '--providers.kubernetesingress.ingressclass=traefik-internal'
+  - '--entrypoints.websecure.http.tls'
+  - '--metrics.prometheus=true'
+```
+
+`fullnameOverride` pins the Deployment, Service and ServiceAccount to the name `traefik-internal`, and the ClusterRole and ClusterRoleBinding to `traefik-internal-traefik`, since the chart suffixes those two with the namespace. They would not collide without it, because every one of those names derives from the release name, so two releases in one namespace already get distinct Deployments, ClusterRoles and IngressClasses. The override is there because something outside the chart depends on the Service being called exactly that, which the next section gets to. `instanceLabelOverride` does the same for the `app.kubernetes.io/instance` label, which the chart would otherwise set to `traefik-internal-traefik`; the metrics carry that label, so it is the name I want to type in Prometheus.
+
+`service.spec.type: ClusterIP` is the actual isolation. The chart's default is `LoadBalancer`; with ClusterIP there is no NodePort, hostPort or cloud load balancer, so the only way in is from inside the cluster or from something routed into the pod network.
+
+`ingressClass.name` creates the IngressClass this instance answers to (unset, it falls back to the fullname), and `isDefaultClass: false` keeps an Ingress with no class from landing here by accident. The `ingressclass` flag ties the provider to that class; `providers.kubernetesIngress.ingressClass` renders the same flag, and I use `additionalArguments` only so the arguments that define the instance sit together.
+
+The public instance on my bare-metal clusters has no cloud load balancer to hide behind, so it runs as a DaemonSet with hostPorts and a failover IP:
+
+```yaml
+instanceLabelOverride: traefik
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+# DaemonSet + hostPort: delete old pod before starting new.
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 0
+    maxUnavailable: 1
+deployment:
+  kind: DaemonSet
+ports:
+  web:
+    hostPort: 80
+    expose:
+      default: true
+  websecure:
+    hostPort: 443
+    expose:
+      default: true
+tlsStore:
+  default:
+    defaultCertificate:
+      secretName: wildcard-example-com
+service:
+  enabled: true
+  spec:
+    type: NodePort
+    externalIPs:
+      - 203.0.113.10
+additionalArguments:
+  - "--providers.kubernetesingress.ingressclass=traefik"
+  - "--entrypoints.websecure.http.tls"
+  - "--metrics.prometheus=true"
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: true
+  kubernetesIngress:
+    publishedService:
+      enabled: true
+podDisruptionBudget:
+  enabled: false
+```
+
+A single failover IP is moved between nodes by a small controller that talks to the hosting provider's API, and the cluster's wildcard DNS record is a CNAME to that IP's name. The IP can land on a control-plane node, hence the toleration. `externalIPs` on the NodePort Service makes kube-proxy accept traffic for that IP on every node, but it is not what ends up in Ingress status: for a NodePort Service, `publishedService` copies the nodes' external IPs, and nodes joined with kubeadm often have no `ExternalIP` in `status.addresses` at all. So on bare metal the `ADDRESS` column of a public Ingress can be empty while traffic flows fine, and the same two fixes as for the internal instance apply.
+
+The chart's default rolling update is `maxSurge: 1, maxUnavailable: 0`. With hostPort that cannot work: the new pod cannot bind port 80 while the old pod still holds it, so the old one has to go first. A PodDisruptionBudget on a DaemonSet with one pod per node adds nothing, so it is off. On one cluster the same DaemonSet carries a third entrypoint for a git server's SSH, which is just another port:
+
+```yaml
+ports:
+  gitea-ssh:
+    port: 2222
+    hostPort: 2222
+    protocol: TCP
+    expose:
+      default: true
+```
+
+The dashboard is not exposed on either instance. My values leave `ingressRoute.dashboard.enabled` at its default of `false`, and with `api.insecure` unset the API is only served through a router, so there is nothing to port-forward to. If you want it, set `ingressRoute.dashboard.enabled: true` and port-forward the `traefik` entrypoint, which on chart 41.6.0 is 8080 (`ports.traefik.port`): `kubectl -n traefik port-forward <pod> 8080:8080`, then `http://localhost:8080/dashboard/`.
+
