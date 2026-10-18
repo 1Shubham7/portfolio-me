@@ -187,3 +187,43 @@ service:
 
 Both sides, because the Hetzner default for `uses-proxyprotocol` is `false`. Set the Traefik side only and every connection is rejected, since Traefik waits for a PROXY header the load balancer never sends; cert-manager's HTTP-01 challenges are connections too, so no certificate on that instance is issued or renewed until the annotation is fixed. The Traefik docs are blunt about the reverse case: configure PROXY protocol on both sides or you have opened a request forgery hole. They also prefer `proxyProtocol.trustedIPs` with the load balancer's addresses over `proxyProtocol.insecure`, which trusts every incoming connection. The values above use `insecure`; if your provider documents the addresses its load balancers connect from, `trustedIPs` is the tighter choice.
 
+## TLS: one wildcard, served by every instance, from DNS-01
+
+Let's Encrypt cannot complete an HTTP-01 challenge against a Traefik it cannot reach, and it cannot issue a wildcard over HTTP-01 at all; wildcards always need DNS-01. So every cluster gets one wildcard certificate from cert-manager through the DNS provider's API, and each instance serves it as its default:
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-example-com
+  namespace: traefik
+spec:
+  secretName: wildcard-example-com
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  dnsNames:
+    - "*.example.com"
+    - "example.com"
+```
+
+`tlsStore.default.defaultCertificate.secretName` in the public values above renders a `TLSStore` named `default` in the `traefik` namespace, holding the certificate Traefik serves when no Ingress certificate matches the SNI. Only the store named `default` is used, and the docs are specific that you cannot have two of them in different namespaces. So the store is one object, rendered by the public release, and the internal instance reads it through its own CRD provider, which the chart enables by default; that is why the internal values file can leave `tlsStore` out. If both releases set `tlsStore.default`, the second `helm install` fails, because Helm refuses to take over an object that belongs to another release. Argo CD's chart values that put it on the internal instance look like this; since the hostname is under the wildcard, the issuer annotation and the `tls` block can go:
+
+```yaml
+# Layout of the argo-cd chart I run. Current charts use a single
+# server.ingress.hostname and a boolean tls; check your values.yaml.
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik-internal
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - argocd.example.com
+    tls:
+      - secretName: argocd-ssl
+        hosts:
+          - argocd.example.com
+```
+
