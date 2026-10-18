@@ -9,7 +9,7 @@ cover:
     image: "/blog/traefik-mtls-existing-certificates/traefik-mtls-existing-certificates.png"
 ---
 
-Every Linux server I manage ships metrics to a Prometheus in a Kubernetes cluster and calls a Go API in the same cluster. Both endpoints sit behind Traefik on a public hostname. The usual answer to how a server proves who it is to endpoints like these is a token per host, written into a config file by configuration management, stored somewhere central, rotated when someone remembers. The token is a second identity for a machine that already has one.
+Every Linux server I manage ships metrics to a Prometheus in a Kubernetes cluster and calls a API in the same cluster. Both endpoints sit behind Traefik on a public hostname. The usual answer to how a server proves who it is to endpoints like these is a token per host, written into a config file by configuration management, stored somewhere central, rotated when someone remembers. The token is a second identity for a machine that already has one.
 
 It already has one because every one of those servers runs a Puppet (OpenVox) agent, and the Puppet CA signed a certificate for each host the day it enrolled. The subject is the host's certname. The key never leaves the machine. Issuing that certificate, putting it on the disk and keeping it current is already part of how the fleet is managed, for reasons that have nothing to do with my API. The hard parts of mTLS already belong to something else.
 
