@@ -349,3 +349,8 @@ Then RBAC. Apply the `sso-rbac-developer` ClusterRole and ClusterRoleBinding fro
 
 **Whoever can write ClusterRoles can grant access.** Anyone who can create a ClusterRole and a ClusterRoleBinding can write themselves into any hostname. On the clusters I run those objects are plain YAML in the cluster's Git config repository, applied by Argo CD, so the people who can grant access are the people who can merge to that repository, the same people who can change anything else about the cluster. The chart's own ClusterRole also grants `impersonate` on users and groups and `create` and `update` on Secrets and ConfigMaps, for impersonation and in-cluster session storage. If you use neither, trim it.
 
+## Ending notes
+
+The integration is one Middleware, one Deployment and one Keycloak client, then one annotation per Ingress. Authorisation on top is a ClusterRole of URL patterns bound to a Keycloak group, in Git next to the Ingress it protects. Start with whoami. Once `X-Forwarded-User` shows up on that page, every other app is the same annotation, one more redirect URI, and a line in a role.
+
+Thanks for your time :)
