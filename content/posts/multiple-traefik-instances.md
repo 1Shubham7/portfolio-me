@@ -135,3 +135,36 @@ ports:
 
 The dashboard is not exposed on either instance. My values leave `ingressRoute.dashboard.enabled` at its default of `false`, and with `api.insecure` unset the API is only served through a router, so there is nothing to port-forward to. If you want it, set `ingressRoute.dashboard.enabled: true` and port-forward the `traefik` entrypoint, which on chart 41.6.0 is 8080 (`ports.traefik.port`): `kubectl -n traefik port-forward <pod> 8080:8080`, then `http://localhost:8080/dashboard/`.
 
+## Reaching the instance that has no address
+
+A ClusterIP Service is reachable from inside the cluster and from anything with a route into it, and nothing else. In my case the route is NetBird, an open-source WireGuard mesh. A NetBird operator in the cluster runs a routing peer (a `NetworkRouter`) and publishes chosen Services as `NetworkResource` objects:
+
+```yaml
+apiVersion: netbird.io/v1alpha1
+kind: NetworkResource
+metadata:
+  name: traefik-internal
+  namespace: traefik
+spec:
+  networkRouterRef:
+    name: my-cluster
+    namespace: netbird
+  serviceRef:
+    name: traefik-internal
+  groups:
+    - name: cluster-admins
+```
+
+The operator publishes the Service under a mesh DNS zone, so for peers in the right group `argocd.example.com` resolves to the internal Traefik's ClusterIP and the request arrives on its `websecure` entrypoint with TLS. The resource names the Service, which is the reason for `fullnameOverride`: the comment in my values file says to keep the Service called exactly `traefik-internal` so the existing `NetworkResource` keeps resolving, because renaming it breaks mesh access to the cluster. The name is a contract with something outside the chart, so write that down next to the override. The resource also only accepts a ClusterIP Service, which is why the internal instance has no other Service type; point it at a LoadBalancer or NodePort Service and it goes Ready False with "Referenced Service is not of type ClusterIP." and nothing else complains.
+
+Nothing here is specific to NetBird. Tailscale's operator does the same job, and so does a plain WireGuard peer with a route into the pod CIDR. On a cloud cluster you do not even need a mesh: keep `type: LoadBalancer` and ask the cloud for an internal one, `service.beta.kubernetes.io/azure-load-balancer-internal: "true"` on Azure (on AWS the load balancer controller already defaults `aws-load-balancer-scheme` to `internal`), the Hetzner form in the three-tier section below. Your VPN into the provider's private network is then the boundary.
+
+The three ways I run a public or internal instance, side by side:
+
+| | Bare metal, public | Cloud, public | Internal |
+| :-- | :-- | :-- | :-- |
+| Workload | DaemonSet, hostPort 80/443 | Deployment, 2 replicas | Deployment, 2 replicas |
+| Service | NodePort with `externalIPs` set to a failover IP | LoadBalancer, PROXY protocol on | ClusterIP, or an internal LoadBalancer |
+| Client IP | Direct | From the PROXY header | Direct (mesh peer IP) |
+| How traffic arrives | DNS CNAME to the failover IP | DNS to the LB IP | Mesh DNS to the ClusterIP |
+
