@@ -225,3 +225,37 @@ Splitting on `=` gives `Subject`, `"CN`, `web01.acme"`, and the third part with 
 
 From there the API lower-cases the certname, splits it into hostname and customer id, and compares it with the certname the request is about, taken from the path or the query. Header missing, unparsable or not matching: 401. A caller already authenticated with an admin JWT skips the check, which is how the browser UI works on the same hostname. One exception is encoded in the names: a certname beginning with `puppetserver-` is a Puppet server and may act for any host of its own customer, because it is what enrols them. The comparison is where the two-label certname earns its keep: a server from customer A, presenting a perfectly valid certificate from customer A's CA and asking about a host of customer B, is refused by the second label of its own CN.
 
+## Three clients that present it
+
+The central Prometheus has remote-write receive enabled. Each server runs Prometheus with the `--agent` flag, which the docs describe as disabling querying, alerting and local storage in favour of a WAL that forwards to `remote_write`. The Puppet manifest points the TLS client at the host certificate through the facts:
+
+```puppet
+remote_write_configs => [{
+  url        => "https://${prometheus_server}/api/v1/write",
+  tls_config => {
+    cert_file => $facts['hostcert'],
+    key_file  => $facts['hostprivkey'],
+  },
+}],
+```
+
+That renders to `remote_write[].tls_config.cert_file` and `key_file`, the fields Prometheus documents as the certificate and key for client certificate authentication to the server. The agent presents the bare leaf, no chain, because that is what the hostcert file contains.
+
+The small Go CLI on each host does the same with two environment variables Puppet writes into `/etc/default/<cli>`:
+
+```go
+cert, err := tls.LoadX509KeyPair(os.Getenv("PUPPETCERT"), os.Getenv("PUPPETPRIVKEY"))
+if err != nil {
+	return nil, err
+}
+client := &http.Client{
+	Transport: &http.Transport{
+		TLSClientConfig: &tls.Config{Certificates: []tls.Certificate{cert}},
+	},
+}
+```
+
+`LoadX509KeyPair` reads PEM files and will take intermediates after the leaf if the file has them; Puppet's does not, so this client also sends the leaf alone.
+
+Not every client is a host. The central Alertmanager posts to a webhook behind the same kind of TLS option, with a certificate the same Puppet CA issued to a certname of its own, mounted from a Kubernetes Secret as `tls.crt` and `tls.key` and wired in through `webhook_configs[].http_config.tls_config.cert_file` and `key_file`, which Alertmanager documents in the same words as Prometheus. An identity for a service, issued by the CA that identifies the servers, is just another certname, and the tenant check treats it like one.
+
