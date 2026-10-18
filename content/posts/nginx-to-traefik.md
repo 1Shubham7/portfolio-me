@@ -240,3 +240,15 @@ Snippets are the residue. Whatever a `configuration-snippet` did that is not in 
 
 When the filter prints nothing, set `kubernetesIngressNGINX.enabled: false`, delete the `nginx` IngressClass, and it is over. The August write-up left the provider on afterwards to keep rollback cheap, which costs nothing.
 
+## What I would tell a first-time Traefik operator
+
+Four more things from running Traefik that the procedure had no reason to mention.
+
+**PROXY protocol on both sides or on neither.** Set `--entrypoints.websecure.proxyprotocol=true` on Traefik because you want client IPs behind a cloud load balancer, and the load balancer has to send the header. On Hetzner Cloud that is the Service annotation `load-balancer.hetzner.cloud/uses-proxyprotocol: "true"`, and its default is off. Traefik side only, and every connection is rejected while Traefik waits for a header that never comes, cert-manager's HTTP-01 challenges included.
+
+**Learn the middleware reference format once.** With a middleware called `forward-auth` in namespace `traefik`, the reference is `traefik-forward-auth@kubernetescrd`, and the doubled prefix trips everyone the first time. Traefik v3.7.11 added a `safeNaming` provider option that changes the separator to an underscore, `traefik_forward-auth@kubernetescrd`; it is off by default and warns at startup until set either way, and a reference in the wrong form is not resolved, so the router is silently not created.
+
+**Secrets behind TLS stores and TLS options hot-reload.** Rotating the default certificate, or adding a CA to a client-certificate option, needs no restart.
+
+**On bare metal, the pods own the ports.** With no cloud load balancer I run Traefik as a DaemonSet with hostPort 80 and 443, and the chart's default rolling update, surge one and zero unavailable, cannot work there: the new pod cannot bind a port the old pod still holds. `updateStrategy.rollingUpdate.maxSurge: 0, maxUnavailable: 1` deletes the old pod first.
+
