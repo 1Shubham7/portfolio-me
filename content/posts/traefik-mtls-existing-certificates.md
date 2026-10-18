@@ -324,3 +324,8 @@ Traefik has no revocation check for client certificates. Its OCSP support is sta
 
 The header is only as trustworthy as the path to the backend. The chain and `aliasHeadersStrategy` apply to traffic that passes through Traefik. A pod that can reach the backend Service directly can set any header it likes, so the backend should only accept connections from Traefik, which in practice means a NetworkPolicy on the application's namespace.
 
+## Ending notes
+
+To someone handing API tokens to a fleet of servers: the fleet almost certainly has certificates already, and the agent that put them there already does the work that makes mTLS hard. Traefik's side is one Secret, one TLSOption, one annotation and one middleware chain, and `clientAuthType` is the only decision that needs thought: `RequireAndVerifyClientCert` where only servers call, `VerifyClientCertIfGiven` where a browser also has to get through. Then treat the CA bundle as the piece of state it is, and check `Acceptable client certificate CA names` whenever the CA behind it changes.
+
+Thanks for your time :)
