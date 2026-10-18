@@ -181,3 +181,80 @@ Keycloak compares redirect URIs with exact, case-sensitive string matching, and 
 
 For authorisation the token has to carry the user's groups: a protocol mapper on the client of type Group Membership, token claim name `groups`, Full group path off. Its help text: include the full path to the group, `/top/level1/level2`, or just the group name; it defaults to on. Off, a user in the `sre` group gets `"groups": ["sre"]` in the token, the bare name the ClusterRoleBindings below use.
 
+## Who may see what
+
+Once everybody with a Keycloak account can log in, the question is which of them should see the Traefik dashboard. With `--enable-rbac` the auth service watches Kubernetes ClusterRoles and ClusterRoleBindings and allows a request only when the user, or one of their groups, is bound to a role with a matching rule. The real objects, sanitised:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sso-rbac-developer
+rules:
+  - nonResourceURLs:
+      - ~^https?://whoami-auth\.ops\.example\.com/
+      - ~^https?://prometheus\.ops\.example\.com/
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sso-rbac-developer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sso-rbac-developer
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: developers
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sso-rbac-sre
+rules:
+  - nonResourceURLs:
+      - ~^https?://whoami-auth\.ops\.example\.com/
+      - ~^https?://traefik\.ops\.example\.com/
+      - ~^https?://prometheus\.ops\.example\.com/
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sso-rbac-sre
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sso-rbac-sre
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: sre
+```
+
+Developers see whoami and Prometheus. SREs also get the Traefik dashboard. A `kind: User` subject with `name: someone@example.com` grants one person the same way; the user's name on this side is the email from the token.
+
+These are real Kubernetes objects, and the API server evaluates the bindings like any other. They grant nothing there, though: an API request path is `/api/v1/...` or `/healthz`, and Kubernetes matches a `nonResourceURLs` entry by exact string or a trailing `*`, so an entry that starts with `~^https?://` can never match one. That holds even if your API server authenticates against the same Keycloak and knows a group called `developers`. What the objects are is a typed, validated, GitOps-friendly place to keep URL grants next to the Ingress they protect.
+
+How the service evaluates them, from `internal/authorization/rbac/rbac.go`: it keeps the ClusterRoleBindings whose subjects match, a `User` whose name equals the user's or a `Group` that is one of the user's groups, looks up each one's `roleRef.name` as a ClusterRole, and allows the request on the first rule where both the verb and a URL match. An entry in `nonResourceURLs` is interpreted by its first character. A `~` prefix means the rest is a regular expression matched against `scheme://host/path` with the query string dropped; it is not anchored for you, hence the `^` in mine, and the trailing `/` means any path on that host. An entry starting with `/` is a path-only wildcard match, kept for backward compatibility. Anything else is a full-URL wildcard match, and `ENABLE_V3_URL_PATTERN_MATCHING` governs those: on, a single `*` matches within one path segment and `**` across segments; off, only a trailing `*` means anything. The `~` form does not depend on the flag; I set it anyway.
+
+The verb is compared case-insensitively against the request's method, and `*` matches any. The method is the real one, copied from `X-Forwarded-Method` before the check, so `verbs: [get]` covers GETs and nothing else, and an app that POSTs from the browser needs `post` in the list or a `*`. Mine get away with `get` because the RBAC middleware only fronts read-only UIs: the Prometheus UI, the whoami canary and, on one cluster, the Traefik dashboard. Graylog and OpenCost both POST from the browser and I have not tested either behind RBAC; they sit behind the authentication-only middleware from the two-instance setup below.
+
+An authenticated user with no matching rule gets a 401 with the body `Not Authorized`, straight from `http.Error` in `internal/handlers/server.go`. I had it in my notes as a 404 for a long time; the code says 401. The reason is in the pod logs, but not at the default `warn` level, because the denial is logged at info:
+
+```
+user someone@example.com is not authorized to `GET` in https://traefik.ops.example.com/dashboard/
+```
+
+One level further down, at debug, the line before it prints the user and the group list the check ran with. `LOG_LEVEL` is the chart's `traefikForwardAuth.logLevel` value; I set it to `debug` while onboarding a new app and back to `warn` after.
+
+That group list is where `GROUP_CLAIM_PREFIX` matters. Before the check, the service prefixes every group from the token with that value and adds `system:authenticated`. The default prefix is `oidc:`, so with Keycloak's bare group names the service looks for a binding to `oidc:sre`, your binding says `sre`, and every SRE is denied with a debug line showing `groups: [system:authenticated oidc:sre]`. An empty prefix makes both sides the same string; keeping the default and writing `oidc:sre` in the bindings works just as well.
+
+### Rolling RBAC out one hostname at a time
+
+Turning on RBAC for every Ingress at once closes every one of them until its role exists. On one environment I avoided that by running two instances of the service from the same chart and the same Keycloak client: a release `traefik-forward-auth` with `enableRBAC: false`, where any logged-in user gets in, and `traefik-forward-auth-rbac` with `enableRBAC: true`, each with its own Middleware pointing at its own Service. An Ingress chooses by the middleware name it carries, so moving a hostname is a one-line change and the hostnames still on the open middleware keep working. Both serve `/_oauth` on the protected host, so the redirect URIs do not change.
+
