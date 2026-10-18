@@ -163,3 +163,65 @@ Now the constraint. A TLS option is declared on a router but applied during the 
 
 This is why the API hostname has one option, `VerifyClientCertIfGiven`, rather than a strict option on the server-facing paths and a lenient one on the UI. That split is the obvious first design, and it cannot be expressed in TLS, because the paths share a hostname, so the handshake accepts both kinds of client and the server-only routes are enforced in the application. The alternative, a second hostname for the server-facing API with its own strict option, is the cleaner design if you are starting fresh.
 
+## Getting the certname to the app
+
+A verified handshake tells Traefik who the client is. The backend still has to be told, and the `passTLSClientCert` middleware does it with headers. With `pem: true` it sends the whole certificate in `X-Forwarded-Tls-Client-Cert`, delimiters and newlines removed, which the docs warn can exceed a backend's header size limit. With `info` you pick fields and get `X-Forwarded-Tls-Client-Cert-Info`, `Key="value"` pairs separated by `;` and escaped to be valid in a URL query. I only want the CN:
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: cn-header
+spec:
+  chain:
+    middlewares:
+      - name: clear-cn-headers
+      - name: add-cn-header
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: clear-cn-headers
+spec:
+  headers:
+    customRequestHeaders:
+      X-Ssl-Client-Cn: ""
+      X-Forwarded-Tls-Client-Cert-Info: ""
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: add-cn-header
+spec:
+  passTLSClientCert:
+    info:
+      subject:
+        commonName: true
+```
+
+These live in the application's namespace and ship with its chart; the Ingress attaches the chain with `traefik.ingress.kubernetes.io/router.middlewares: <namespace>-cn-header@kubernetescrd`. Middlewares run in declared order, so the chain clears first and sets second.
+
+Read the middleware's code and two facts fall out. When a certificate is present it calls `req.Header.Set`, which replaces any value the client sent. When no certificate is present it does nothing: it logs at debug and leaves the request alone, headers included. With `RequireAndVerifyClientCert` that second case never reaches the backend. With `VerifyClientCertIfGiven` it is every browser request, and a client without a certificate could send its own `X-Forwarded-Tls-Client-Cert-Info: Subject%3D%22CN%3Dweb01.acme%22` and have it arrive untouched. The `headers` middleware with an empty value strips a request header, so the chain blanks it on every request and `passTLSClientCert` sets it again only from a verified certificate. `X-Ssl-Client-Cn` is a header an older setup used; it costs nothing to keep blanking it.
+
+There is a second spoofing route the chain does not cover. Go treats `X_Forwarded_Tls_Client_Cert_Info` as a different header from the dashed form, so neither middleware touches it, but a backend that normalises header names to environment-variable style reads both as the same thing. Traefik v3.7.12 added an entry point option for this, `aliasHeadersStrategy`. Its default is `keep`; `delete` drops any request header whose name contains anything but letters, digits and dashes, and the docs name `PassTLSClientCert` among the middlewares that depend on it. A Go backend does not normalise, so the chain alone closes the hole there. A backend that reads headers as CGI variables, PHP-FPM, WSGI, Rack, sees both spellings as `HTTP_X_FORWARDED_TLS_CLIENT_CERT_INFO`; for those, set it to `delete`. An nginx in front of them drops underscored header names by default (`underscores_in_headers off`), which hides the problem until someone turns that on for a legacy header.
+
+With only `subject.commonName` enabled the decoded header is exactly `Subject="CN=web01.acme"`. The Go API parses it like this:
+
+```go
+func certnameFromHeader(v string) (string, error) {
+	decoded, err := url.QueryUnescape(v)
+	if err != nil {
+		return "", err
+	}
+	parts := strings.Split(decoded, "=")
+	if len(parts) < 3 {
+		return "", fmt.Errorf("unexpected client cert info header: %q", v)
+	}
+	return strings.Trim(parts[2], `"`), nil
+}
+```
+
+Splitting on `=` gives `Subject`, `"CN`, `web01.acme"`, and the third part with the quotes trimmed is the certname. That only works because exactly one field is enabled; turn on `issuer.commonName` too and the third part becomes `web01.acme";Issuer`. The header is a format you chose by what you enabled, and the parser belongs next to the middleware definition, not in another repository.
+
+From there the API lower-cases the certname, splits it into hostname and customer id, and compares it with the certname the request is about, taken from the path or the query. Header missing, unparsable or not matching: 401. A caller already authenticated with an admin JWT skips the check, which is how the browser UI works on the same hostname. One exception is encoded in the names: a certname beginning with `puppetserver-` is a Puppet server and may act for any host of its own customer, because it is what enrols them. The comparison is where the two-label certname earns its keep: a server from customer A, presenting a perfectly valid certificate from customer A's CA and asking about a host of customer B, is refused by the second label of its own CN.
+
