@@ -102,3 +102,64 @@ The Prometheus remote-write endpoint is only ever called by servers. A connectio
 
 The `secretNames` list is longer than one entry on purpose. Each customer environment has its own Puppet server and so its own CA, one Secret each. Two of the entries are my own CA twice over in time: in December 2025 a storage failure destroyed my Puppet server's CA volume, a new CA was generated, and a new Secret went in next to the old one so that, in the words of the commit, agents not yet re-issued keep working. Two months later the same thing happened on another cluster. The list is the union of every CA any live server might present. Removing an entry is a deliberate step once no client uses it, and nothing in Traefik will tell you when that is.
 
+## Attaching it: an annotation or a field
+
+On a plain Ingress, the option is one annotation. CRD objects are referenced from an Ingress as `<namespace>-<name>@kubernetescrd`:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus
+  namespace: monitoring
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.options: traefik-prometheus-client-cert@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: prometheus.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus
+                port:
+                  name: web
+  tls:
+    - hosts:
+        - prometheus.example.com
+      secretName: prometheus-example-com-tls
+```
+
+On an IngressRoute it is a field, `spec.tls.options` with `name` and `namespace`. When the namespace is omitted Traefik looks in the IngressRoute's own namespace, and when it is a different one the CRD provider needs `allowCrossNamespace: true`, which is off by default. I run both forms.
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`prometheus.example.com`)
+      kind: Rule
+      services:
+        - name: prometheus
+          port: web
+  tls:
+    secretName: prometheus-example-com-tls
+    options:
+      name: prometheus-client-cert
+      namespace: traefik
+```
+
+Now the constraint. A TLS option is declared on a router but applied during the handshake, when Traefik knows nothing about the request except the SNI server name. So the option is not attached to the route; it is attached to every hostname in the router's `Host` rule, and the Ingress docs say so: options are mapped to the host names of the rules. Two routers on the same entry point serving the same hostname with different options is a conflict, and the documented behaviour is that both mappings are discarded and the hostname falls back to the TLS option named `default`. A `default` with no `clientAuth` has no client certificate requirement, so the hostname silently stops asking for one. `core.strictTLSOptions` makes the conflict a hard failure instead, the routers are not built, which is louder and safer. Either way: every router on a hostname references the same option, and `default` is at least as strict as anything that might fall back to it.
+
+This is why the API hostname has one option, `VerifyClientCertIfGiven`, rather than a strict option on the server-facing paths and a lenient one on the UI. That split is the obvious first design, and it cannot be expressed in TLS, because the paths share a hostname, so the handshake accepts both kinds of client and the server-only routes are enforced in the application. The alternative, a second hostname for the server-facing API with its own strict option, is the cleaner design if you are starting fresh.
+
