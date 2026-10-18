@@ -259,3 +259,27 @@ client := &http.Client{
 
 Not every client is a host. The central Alertmanager posts to a webhook behind the same kind of TLS option, with a certificate the same Puppet CA issued to a certname of its own, mounted from a Kubernetes Secret as `tls.crt` and `tls.key` and wired in through `webhook_configs[].http_config.tls_config.cert_file` and `key_file`, which Alertmanager documents in the same words as Prometheus. An identity for a service, issued by the CA that identifies the servers, is just another certname, and the tenant check treats it like one.
 
+## Set it up yourself
+
+In this order: create the CA Secret in Traefik's namespace with `ca.crt`, apply the TLSOption (or put it under the chart's `tlsOptions` and let the chart render it), add `router.tls` and `router.tls.options` to the Ingress or the `tls.options` block to the IngressRoute, and apply the three Middlewares in the application's namespace with the chain attached through `router.middlewares`.
+
+Then, from any managed host, with nothing installed beyond what Puppet already put there:
+
+```bash
+curl --cert "$(puppet config print hostcert)" --key "$(puppet config print hostprivkey)" \
+  https://prometheus.example.com/-/ready
+```
+
+Drop `--cert` and `--key` and the same request against a `RequireAndVerifyClientCert` hostname should fail in the handshake, not with an HTTP status. Against the `VerifyClientCertIfGiven` hostname it should connect, and the application should answer 401 to anything that needed a certname.
+
+To see the identity arriving, point the Ingress at `traefik/whoami` for a minute. It echoes request headers: with the certificate, `X-Forwarded-Tls-Client-Cert-Info` carries the escaped `Subject` string; without it, on the API hostname where a bare request gets through the handshake, no such header, which is the clear step doing its job.
+
+The last check needs no cluster access at all. During the handshake the server announces which CAs it will accept client certificates from, and `openssl s_client` prints the list:
+
+```bash
+openssl s_client -connect prometheus.example.com:443 -servername prometheus.example.com </dev/null 2>&1 \
+  | grep -A20 "Acceptable client certificate CA names"
+```
+
+Every CA in `secretNames` should be in that list by its CN. Run it after every change to the bundle, and whenever the CA behind the bundle changes.
+
