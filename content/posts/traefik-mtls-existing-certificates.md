@@ -318,3 +318,9 @@ Go's server-side verification uses the CA pool as the roots and whatever the cli
 
 The bundle is still a hand-made snapshot of a file that lives on another machine and changes without telling anyone. The right shape, which I have not built yet, is a small job that reads the live CA file from the Puppet server and reconciles the Secret, plus an alert when the fingerprint in the Secret differs from the live CA's. Until then, regenerating a Puppet CA means updating the Traefik Secret on every cluster that trusts it, with the `s_client` check as the acceptance test.
 
+## Honest limits
+
+Traefik has no revocation check for client certificates. Its OCSP support is stapling for the certificates it serves, and the TLS options reference has no field for a CRL or an OCSP responder. A community plugin checks a CRL file, but out of the box a revoked certificate is accepted until it expires or its CA leaves `secretNames`, and with five-year certificates that is a long window. Revocation here means removing the CA, which logs out every server it issued, or a deny list by certname in the application. If you need it per certificate, use a CA that issues short-lived certificates and let expiry do the work.
+
+The header is only as trustworthy as the path to the backend. The chain and `aliasHeadersStrategy` apply to traffic that passes through Traefik. A pod that can reach the backend Service directly can set any header it likes, so the backend should only accept connections from Traefik, which in practice means a NetworkPolicy on the application's namespace.
+
