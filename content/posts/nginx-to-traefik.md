@@ -31,3 +31,139 @@ Regex paths deserve their own test. Two forum threads from January 2026, both on
 
 The provider translates Ingress annotations. It does not translate the controller. Everything ingress-nginx did through its ConfigMap, body size, proxy timeouts, `use-proxy-protocol`, HSTS, ciphers, access log format, has to be set again on Traefik's side, some of it as `kubernetesIngressNGINX` options with nginx-flavoured names (`proxyBodySize`, `proxyReadTimeout`, `customHTTPErrors`), the rest as entrypoint, TLS option and access log settings. Traefik's [migration guide](https://doc.traefik.io/traefik/migrate/nginx-to-traefik/) has that mapping as its step zero. Two defaults differ in ways nothing in the cluster reports. ingress-nginx redirects HTTP to HTTPS with a 308 for any Ingress that has TLS; Traefik redirects nothing unless the entrypoint says so, and one [production write-up](https://dev.to/pavel-hostim/migrating-a-production-cluster-off-ingress-nginx-to-traefik-v3-19ij) from August 2026 found that out from monitoring after the cutover: "Every app in the cluster answered on port 80 in cleartext." The same post met the second: a hostname with no certificate of its own gets Traefik's generated self-signed certificate, and "Nothing in the control plane reports an error; the failure is a browser warning." Both are one values key each, in the values file below.
 
+## The order that works
+
+This assumes ingress-nginx installed by its Helm chart as release `ingress-nginx` in namespace `ingress-nginx`, exposed by a `LoadBalancer` Service, with cert-manager issuing certificates and ExternalDNS writing records. Adjust the names; the order does not change.
+
+### Take inventory
+
+Before installing anything, find out which annotations you actually have:
+
+```bash
+kubectl get ingress -A -o json | jq -r '
+  [.items[].metadata.annotations // {} | keys[] | select(startswith("nginx.ingress.kubernetes.io/"))]
+  | group_by(.) | map("\(length)\t\(.[0])") | .[]' | sort -rn
+```
+
+One line per distinct annotation with a count. Check each against the reference page, and dump the ingress-nginx ConfigMap (`kubectl -n ingress-nginx get configmap ingress-nginx-controller -o yaml`) for the global settings that need a home on the Traefik side.
+
+### Install Traefik next to nginx
+
+Traefik gets its own namespace, its own `LoadBalancer` Service and so its own public IP. This is the values file I run on cloud clusters, with the NGINX provider and the default certificate added:
+
+```yaml
+ports:
+  web:
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
+  websecure:
+    http:
+      tls:
+        enabled: true
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: true
+  kubernetesIngress:
+    publishedService:
+      enabled: true
+  kubernetesIngressNGINX:
+    enabled: true
+    publishService:
+      enabled: false
+additionalArguments:
+  - "--providers.kubernetesingress.ingressclass=traefik"
+  - "--metrics.prometheus=true"
+metrics:
+  prometheus:
+    serviceMonitor:
+      enabled: true
+accessLog:
+  enabled: true
+tlsStore:
+  default:
+    defaultCertificate:
+      secretName: wildcard-example-com
+deployment:
+  replicas: 2
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+```
+
+```bash
+helm repo add traefik https://traefik.github.io/charts
+helm install traefik traefik/traefik -n traefik --create-namespace --version 41.6.0 -f values.yaml
+```
+
+Three of those lines are the migration. `ports.web.redirections` is the HTTP to HTTPS redirect nginx did for you. `tlsStore.default.defaultCertificate` is what any hostname without a Secret of its own gets served instead of the self-signed one; it points at a wildcard from cert-manager, which has to be DNS-01, since Let's Encrypt will not issue wildcards over HTTP-01. And the `ingressclass` argument pins Traefik's standard Ingress provider to the `traefik` class, so the two providers in this one process never both claim an Ingress; the provider docs warn that otherwise the NGINX provider "may lead to duplicated routers if you are also using the standard Kubernetes Ingress provider". Two unpinned controllers fight over Ingress status on every reconcile, and a migration has two by design. From here, an Ingress with `ingressClassName: nginx` is served by nginx and by Traefik's NGINX provider, an Ingress with `ingressClassName: traefik` by Traefik's standard provider, and nothing twice by Traefik.
+
+### Decide who writes the status
+
+Every Ingress has a `status.loadBalancer.ingress` field, and both controllers want their Service's address in it: ingress-nginx through `--publish-service`, Traefik's NGINX provider through `publishService`. If both write, the migration guide says, "Each controller overwrites the other in a tight reconciliation loop, with no error reported in the logs", while "Routing itself is not affected." The damage is in whatever reads the field. ExternalDNS does: its [Ingress source](https://kubernetes-sigs.github.io/external-dns/latest/docs/sources/ingress/) walks `status.loadBalancer.ingress`, "adding each non-empty `ip` and `hostname`", so a status holding both addresses is two A records for every hostname, and a status that flaps is records that flap.
+
+So `publishService.enabled: false` on the NGINX provider, the chart's default, spelled out in the values above anyway. nginx stays the only writer, ExternalDNS changes nothing, and Traefik is reachable only by its IP, which is what verification needs. The guide's alternative, a transitional IngressClass for nginx so the controllers never share an Ingress, means editing every Ingress, the thing this approach avoids.
+
+The standard provider has the same switch under a different spelling, `publishedService`, and there it stays on. Without it the status of every traefik-class Ingress is empty, `kubectl get ingress` shows no ADDRESS, and Argo CD marks every application behind them Progressing forever, since its Ingress health check is that one field having an entry (argoproj/argo-cd issue 1704).
+
+### Verify through Traefik's own address
+
+The hostnames still resolve to nginx. Tell curl where to connect instead:
+
+```bash
+TRAEFIK_IP=$(kubectl -n traefik get svc traefik -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+curl -sS -o /dev/null -w '%{http_code} %{redirect_url}\n' \
+  --resolve app.example.com:443:$TRAEFIK_IP https://app.example.com/
+```
+
+Do not add `-k`. The Secrets named in each Ingress's `spec.tls` are read by both controllers, so Traefik should present the same Let's Encrypt certificate nginx does, and a verification failure means a host that fell through to the default certificate, which is a finding. Loop over every host in the inventory, then exercise the annotations with notes: an `auth-url` login, a `proxy-body-size` upload, a `whitelist-source-range` from outside it, every `use-regex` path, a websocket. HTTP-01 challenges do not go through Traefik in this phase; Let's Encrypt connects to whatever DNS says, which is still nginx, so cert-manager keeps renewing through nginx and Traefik serves the resulting Secrets.
+
+Then open the dashboard. The chart does not expose it (`ingressRoute.dashboard.enabled` is `false`); set it to `true`, `kubectl -n traefik port-forward deploy/traefik 8080:8080`, open `http://localhost:8080/dashboard/`. The HTTP routers page lists every router Traefik built and the provider each came from. A host curl could not reach is either missing from that list, which points at the IngressClass, or present with a rule you did not expect, which points at the annotation reference. It is the first place I look when an Ingress does not route, before any log.
+
+### Move DNS
+
+Lower the TTLs a day before. Then point the records at Traefik's IP and watch the access logs on both sides until nginx goes quiet. The guide's advice is to "keep NGINX running for at least 24-48 hours before uninstalling", because some resolvers ignore TTLs, and a rollback in that window is the record pointed back.
+
+How the records move depends on who writes them. Hand-managed: change them. Written by ExternalDNS from Ingress status: the guide suggests leaving Traefik's `publishService` off and pointing nginx's own publishing at Traefik's Service with `controller.publishService.pathOverride: traefik/traefik`, so nginx writes Traefik's address into every status and ExternalDNS follows; removing the override is the rollback. If your load balancer lets you move an IP between Services, that is the third way, and the one the August write-up used with a MetalLB address.
+
+### Keep the `nginx` IngressClass, then remove nginx
+
+This is the step that bites, and the chart's example says so in full: "When uninstalling the NGINX Ingress Controller helm chart, it removes the `nginx` IngressClass. Traefik needs this IngressClass to detect and serve Ingress resources that use `ingressClassName: nginx`. Before uninstalling NGINX, it's recommended to ensure that an IngressClass like this will stay:"
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: nginx
+spec:
+  controller: k8s.io/ingress-nginx
+```
+
+The provider finds the Ingresses through the IngressClass's `spec.controller`, so with the object gone, every Ingress that says `ingressClassName: nginx` stops routing the moment `helm uninstall` returns. Under GitOps, put that manifest in the repository as a resource of its own. Under plain Helm, add `helm.sh/resource-policy: keep` to the IngressClass through `helm upgrade --reuse-values`; the guide is specific that `kubectl annotate` on the live object does not do it, because Helm consults its own release record, not the cluster.
+
+Then, in this order:
+
+```bash
+kubectl delete validatingwebhookconfiguration ingress-nginx-admission
+helm uninstall ingress-nginx -n ingress-nginx
+kubectl get ingressclass nginx
+```
+
+The webhook goes first. ingress-nginx registers a validating admission webhook for Ingress objects with `failurePolicy: Fail`, so once its pods are gone the webhook rejects every Ingress create and update in the cluster. The August write-up puts it in one line: delete the namespace and orphan the webhook, and "every Ingress and certificate change in the cluster stops working." If the last command prints the class, the Ingresses are still served, now by Traefik alone. Set `publishService.enabled: true` on the NGINX provider at this point: ADDRESS fills in with Traefik's IP and ExternalDNS has one target per host.
+
+### Move cert-manager off the `nginx` name
+
+Nothing breaks yet, because the solver Ingresses cert-manager creates still say `ingressClassName: nginx` and Traefik serves them. That holds only while the `nginx` IngressClass exists, and the next phase ends by deleting it. cert-manager's [HTTP-01 solver](https://cert-manager.io/docs/configuration/acme/http01/) picks the controller with `solvers[].http01.ingress.ingressClassName`, the field the docs recommend over the older `class`. Change it on every Issuer and ClusterIssuer:
+
+```yaml
+solvers:
+  - http01:
+      ingress:
+        ingressClassName: traefik
+```
+
+Leaving it unset is worse than leaving it on `nginx`. The docs say that with no class, "all ingress controllers installed in your cluster will serve traffic for the challenge solver", which during a migration is a solver Ingress with two owners. ExternalDNS needs a change only if it runs with `--ingress-class=nginx`.
+
