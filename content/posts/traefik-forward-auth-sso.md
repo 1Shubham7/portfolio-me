@@ -258,3 +258,86 @@ That group list is where `GROUP_CLAIM_PREFIX` matters. Before the check, the ser
 
 Turning on RBAC for every Ingress at once closes every one of them until its role exists. On one environment I avoided that by running two instances of the service from the same chart and the same Keycloak client: a release `traefik-forward-auth` with `enableRBAC: false`, where any logged-in user gets in, and `traefik-forward-auth-rbac` with `enableRBAC: true`, each with its own Middleware pointing at its own Service. An Ingress chooses by the middleware name it carries, so moving a hostname is a one-line change and the hostnames still on the open middleware keep working. Both serve `/_oauth` on the protected host, so the redirect URIs do not change.
 
+## Set it up yourself
+
+Whoami first, so every step has something to look at.
+
+In Keycloak: the client, the Group Membership mapper and the `sre` and `developers` groups from the sections above, with `https://whoami-auth.ops.example.com/_oauth` as the only redirect URI for now. Copy the secret from the Credentials tab and put yourself in one of the groups.
+
+Then the cluster:
+
+```bash
+helm repo add mesosphere-staging https://mesosphere.github.io/charts/staging
+helm repo update
+kubectl -n traefik create secret generic traefik-forward-auth-keycloak \
+  --from-literal=client-secret='<from the Credentials tab>'
+helm install traefik-forward-auth mesosphere-staging/traefik-forward-auth \
+  -n traefik --version 0.3.10 -f values.yaml
+```
+
+Use the values above with `enableRBAC: false` for now. Apply the Middleware from the first section, then whoami and its Ingress:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami
+  template:
+    metadata:
+      labels:
+        app: whoami
+    spec:
+      containers:
+        - name: whoami
+          image: traefik/whoami
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami
+  namespace: default
+spec:
+  selector:
+    app: whoami
+  ports:
+    - port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami-auth
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-traefik-forward-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: whoami-auth.ops.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - whoami-auth.ops.example.com
+      secretName: whoami-auth-tls
+```
+
+Open `https://whoami-auth.ops.example.com/`. You should get the Keycloak login, then the whoami page with `X-Forwarded-User: <your email>` among the headers. An invalid redirect URI error from Keycloak means the entry in Valid redirect URIs does not match `X-Forwarded-Host` exactly. The whoami page with no `X-Forwarded-User` means the middleware is not attached: check `kubectl -n traefik get middleware` and the exact string in the annotation.
+
+Then RBAC. Apply the `sso-rbac-developer` ClusterRole and ClusterRoleBinding from above, trimmed to the whoami URL, set `enableRBAC: true`, upgrade, and reload. In a bound group the page is unchanged. Remove yourself from the group in Keycloak, delete the `_forward_auth` cookie for that host (the groups live in the cookie), reload, and after the new login the same URL answers `Not Authorized`.
+
