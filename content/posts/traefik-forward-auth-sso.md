@@ -164,3 +164,20 @@ replicaCount: 1
 
 `oidcUri` has to be the issuer URL, the one that serves `/.well-known/openid-configuration`; the service uses discovery. The session cookie is called `_forward_auth`, lives for 43200 seconds (12 hours) by default, and is marked Secure unless you set `INSECURE_COOKIE`.
 
+## The Keycloak client and the callback
+
+On the Keycloak side there is one client in the realm, Client ID `traefik-forward-auth`, with Client authentication on and Standard flow enabled. Keycloak's docs call that a confidential client; it gets a Credentials tab with a generated secret, which goes in the Kubernetes Secret:
+
+```bash
+kubectl -n traefik create secret generic traefik-forward-auth-keycloak \
+  --from-literal=client-secret='<from the Credentials tab>'
+```
+
+In my repos that object is a SealedSecret, so the ciphertext sits in Git next to the chart values and Argo CD applies both. Any OIDC provider works in Keycloak's place; nothing in the service is Keycloak-specific.
+
+The part that catches people is the redirect URI. I do not set `AUTH_HOST` and the auth service has no Ingress of its own, so the OIDC callback is served on every protected hostname under the service's callback path, `/_oauth` by default. A login that starts on `prometheus.ops.example.com` comes back to `https://prometheus.ops.example.com/_oauth`; Traefik runs the middleware on that request like any other, the auth service recognises its own path, exchanges the code for a token, sets the cookie and sends the browser back where it was going. So every protected hostname is a redirect URI Keycloak has to accept.
+
+Keycloak compares redirect URIs with exact, case-sensitive string matching, and the only wildcard it understands is a trailing `*`. There is no `https://*.ops.example.com/_oauth`; a `*` in the host part is a literal character and matches nothing. So Valid redirect URIs is one entry per hostname, and adding an app to SSO is two commits: the annotation on the Ingress and the entry in Keycloak. If the list bothers you, `AUTH_HOST` is the alternative: every login returns to one hostname and one redirect URI, with `COOKIE_DOMAIN` set so the cookie covers the apps. I have not needed it.
+
+For authorisation the token has to carry the user's groups: a protocol mapper on the client of type Group Membership, token claim name `groups`, Full group path off. Its help text: include the full path to the group, `/top/level1/level2`, or just the group name; it defaults to on. Off, a user in the `sre` group gets `"groups": ["sre"]` in the token, the bare name the ClusterRoleBindings below use.
+
