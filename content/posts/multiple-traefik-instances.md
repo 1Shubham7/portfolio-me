@@ -168,3 +168,22 @@ The three ways I run a public or internal instance, side by side:
 | Client IP | Direct | From the PROXY header | Direct (mesh peer IP) |
 | How traffic arrives | DNS CNAME to the failover IP | DNS to the LB IP | Mesh DNS to the ClusterIP |
 
+## The cloud variant and PROXY protocol
+
+On a cluster on Hetzner Cloud with the cloud controller manager, the public instance is a Deployment with two replicas behind a `LoadBalancer` Service. Without help Traefik sees the load balancer's IP as the client. The fix on both sides is PROXY protocol:
+
+```yaml
+additionalArguments:
+  - "--entrypoints.web.proxyprotocol=true"
+  - "--entrypoints.web.proxyprotocol.insecure=true"
+  - "--entrypoints.websecure.proxyprotocol=true"
+  - "--entrypoints.websecure.proxyprotocol.insecure=true"
+service:
+  annotations:
+    load-balancer.hetzner.cloud/network-zone: eu-central
+    load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
+    load-balancer.hetzner.cloud/use-private-ip: "true"
+```
+
+Both sides, because the Hetzner default for `uses-proxyprotocol` is `false`. Set the Traefik side only and every connection is rejected, since Traefik waits for a PROXY header the load balancer never sends; cert-manager's HTTP-01 challenges are connections too, so no certificate on that instance is issued or renewed until the annotation is fixed. The Traefik docs are blunt about the reverse case: configure PROXY protocol on both sides or you have opened a request forgery hole. They also prefer `proxyProtocol.trustedIPs` with the load balancer's addresses over `proxyProtocol.insecure`, which trusts every incoming connection. The values above use `insecure`; if your provider documents the addresses its load balancers connect from, `trustedIPs` is the tighter choice.
+
