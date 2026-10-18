@@ -17,3 +17,28 @@ So the servers authenticate with that certificate. Traefik trusts the Puppet CA,
 
 Puppet is the CA here because it is what I run. Anything that already issues a certificate per host fits the same shape: step-ca, Vault PKI, SPIFFE, Teleport host certificates, a corporate PKI. If a key pair and a CA-signed certificate are already on every machine for some other reason, this post applies.
 
+## The certificate is already on the disk
+
+A Puppet agent keeps its credentials under `/etc/puppetlabs/puppet/ssl`. Three settings name the files, and `puppet config print` resolves them:
+
+```
+$ puppet config print hostcert hostprivkey localcacert
+hostcert = /etc/puppetlabs/puppet/ssl/certs/web01.acme.pem
+hostprivkey = /etc/puppetlabs/puppet/ssl/private_keys/web01.acme.pem
+localcacert = /etc/puppetlabs/puppet/ssl/certs/ca.pem
+```
+
+The certificate itself:
+
+```
+$ openssl x509 -in /etc/puppetlabs/puppet/ssl/certs/web01.acme.pem -noout -subject -issuer -dates
+subject=CN = web01.acme
+issuer=CN = "Puppet CA generated on puppet at 2025-12-11 12:31:33 +0000"
+notBefore=Dec 23 06:47:41 2025 GMT
+notAfter=Dec 23 06:47:41 2030 GMT
+```
+
+Two things in that output carry the whole design. The CN is the certname, and in my environments the certname is deliberately two labels, `<hostname>.<customer-id>`, so the certificate says not just which machine is calling but which tenant it belongs to. And the issuer is a CA I control, whose CN is a timestamp of when it was generated. That timestamp matters later.
+
+The certificates are five-year. In one environment the CA is a two-certificate chain, a signing CA under a self-signed `Puppet Root CA: <id>`. Custom facts `hostcert`, `hostprivkey` and `localcacert` return the corresponding `Puppet[:setting]`, so a manifest that configures a client never hard-codes a path.
+
