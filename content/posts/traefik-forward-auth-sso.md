@@ -21,23 +21,7 @@ A forwardAuth middleware makes Traefik send a sub-request to an address of your 
 
 The sub-request carries the original request's details as headers: `X-Forwarded-Method`, `X-Forwarded-Proto`, `X-Forwarded-Host`, `X-Forwarded-Uri` and `X-Forwarded-For`. By default it also carries every header the client sent, cookies included, which is how the auth service finds its own session cookie. It is a GET unless `preserveRequestMethod` is on, and it has no body unless `forwardBody` is on, which the docs warn breaks streaming.
 
-```
-browser      -> Traefik       GET https://prometheus.ops.example.com/graph
-Traefik      -> auth service  GET http://traefik-forward-auth:4181/
-                              X-Forwarded-Host: prometheus.ops.example.com
-                              X-Forwarded-Uri: /graph
-                              X-Forwarded-Proto: https
-                              X-Forwarded-Method: GET
-                              Cookie: (whatever the browser sent)
-
-no valid session cookie:      auth service answers 302 to Keycloak
-                              Traefik returns that 302 to the browser
-
-valid session cookie:         auth service answers 200, X-Forwarded-User: someone@example.com
-                              Traefik forwards the original request to Prometheus with that header
-```
-
-The last line is `authResponseHeaders` at work: headers named there are copied from the auth service's response onto the request that reaches the app, replacing any the client sent under the same name. The app learns who the user is without ever talking to Keycloak.
+When the auth service answers 200, `authResponseHeaders` does the rest: headers named there, `X-Forwarded-User` in my case, are copied from the auth service's response onto the request that reaches the app, replacing any the client sent under the same name. The app learns who the user is without ever talking to Keycloak.
 
 The middleware I run:
 
