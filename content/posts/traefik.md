@@ -239,3 +239,17 @@ The mechanism is one flag. Each instance owns an IngressClass, `--providers.kube
 
 On the clusters I run, most have exactly that pair, public and internal. One production cluster runs three, public, private and protected, each on its own Hetzner load balancer.
 
+## What else are we actually using Traefik for?
+
+A quick tour of the parts that only made sense once the questions above were answered.
+
+**mTLS with certificates that already exist.** Every server we manage already holds a certificate Puppet issued it. Instead of handing those servers API tokens, Traefik authenticates them with that certificate: a TLSOption with `clientAuth.clientAuthType: RequireAndVerifyClientCert` and the Puppet CA in `clientAuth.secretNames` makes step 6 run in both directions, so the client signs too. Then a chain of middlewares strips any client-supplied `X-Forwarded-Tls-Client-Cert-Info` header, so nobody can forge an identity, and `passTLSClientCert` adds the verified certificate's details as a header the application reads. The [mTLS post](https://1shubham7.blog/traefik-mtls-existing-certificates/) has the Secret, the TLSOption and the middlewares.
+
+**A JWT plugin through Yaegi.** Traefik plugins are Go source, interpreted at runtime by Yaegi, declared once in the static configuration under `experimental.plugins` and then used like any other middleware. We run a fork of a JWT plugin that verifies a token from a cookie and passes the user and customer IDs on as headers, so each customer's Grafana shows only that customer's data without Grafana knowing anything about the token. That is a post of its own which I have not written yet.
+
+**forwardAuth with Keycloak.** For tools with no login of their own, a forwardAuth middleware asks an auth service backed by Keycloak whether each request is allowed, sends unknown browsers to log in, and lets the rest through with a 2xx. One annotation per Ingress is the whole integration, written up in [the forwardAuth post](https://1shubham7.blog/traefik-forward-auth-sso/).
+
+**Git over SSH.** SSH is not HTTP, so it goes through a dedicated entrypoint on its own port and an IngressRouteTCP with a `HostSNI(`*`)` rule, which is the form a non-TLS TCP router needs. TCP routers are checked before HTTP routers on a shared entrypoint, but a separate entrypoint keeps it simple.
+
+**IngressRoute where priority matters, ServersTransport for legacy backends.** The handful of routes where longest-rule-wins is the wrong order are IngressRoutes with an explicit `priority`. And the legacy backends that need Traefik to talk to them in a particular way, HTTPS with their own CA or a specific server name, get a ServersTransport. Each is a few lines, and each was a mystery until I knew which stage of the request it belonged to.
+
