@@ -170,3 +170,58 @@ The providers are the interesting half of the static side. `kubernetesIngress` r
 
 On Gateway API: Traefik v3 implements it for real. The provider stopped being experimental in v3.1, the current docs state support for the Standard channel at v1.6.3, with HTTPRoute, GRPCRoute and TLSRoute, plus TCPRoute from the Experimental channel. You enable it with `providers.kubernetesGateway` and install the Gateway API CRDs yourself. It is one more provider in the same process, not a different product, which makes it a migration you can do one route at a time.
 
+## What actually happens in a TLS handshake?
+
+This is the section I wanted to write, because it is the one I was most wrong about. I knew that cert-manager put a certificate in a Secret and Traefik served it. I could not have told you which part of that was public, which part was secret, or where the key that encrypts the actual traffic comes from. The answer to the last one is the surprising one.
+
+There are three different keys involved, and keeping them apart is most of the understanding:
+
+| Thing | Who has it | What it is for |
+| :-- | :-- | :-- |
+| Certificate | Public, sent to every client | Carries the server's public key, the hostnames it is valid for (the SANs), and a CA's signature over all of that |
+| Private key | Only the server, in the Secret's `tls.key` | Signs. Proves to the client that the server holds the key that matches the certificate |
+| Session key | Both ends of one connection, nobody else | Symmetric key that encrypts the application data. Fresh per connection |
+
+The certificate is public. Anyone can download it with `openssl s_client`. It proves nothing on its own; what proves something is a signature made with the private key, which the certificate lets the client verify.
+
+Here is a first TLS 1.3 connection to `grafana.example.com`, step by step, as RFC 8446 describes it.
+
+1. **TCP handshake.** SYN, SYN-ACK, ACK. One round trip before TLS says a word.
+2. **ClientHello.** The client sends the TLS versions and cipher suites it supports, the server name it wants (`grafana.example.com`, the SNI extension), and a `key_share`: its half of a Diffie-Hellman exchange, already computed. In TLS 1.2 the client had to wait to learn which group the server wanted. In 1.3 the set of groups is small enough that the client just guesses and sends its share in the first message.
+3. **ServerHello.** The server picks a cipher suite and sends its own `key_share`. At this moment both sides have what they need to compute the shared secret, and everything after the ServerHello is encrypted with keys derived from it.
+4. **Diffie-Hellman.** Each side combines its own private value with the other's public share and arrives at the same secret. Nobody sent that secret over the wire. An observer who captured both key shares cannot compute it.
+5. **Certificate.** The server sends its certificate chain. Encrypted, since we are past the ServerHello, which is one of the quiet improvements in 1.3: a passive observer no longer sees which certificate you got.
+6. **CertificateVerify.** The server signs a hash of the entire handshake so far using its private key. This is the only thing the private key does in the whole connection. The client verifies the signature with the public key from the certificate, and if it checks out, the party on the other end holds the private key for `grafana.example.com`.
+7. **Finished.** A MAC over the transcript, proving both sides saw the same handshake and nobody tampered with it.
+8. **Client verification.** The client checks that the certificate's SANs include the name it asked for, that the chain leads to a CA it trusts, and that the dates are valid. Then it sends its own Finished.
+9. **Application data.** HTTP, encrypted with the session key, which came out of step 4.
+
+The insight that fixed my model is in steps 4 and 6. The certificate proves identity. The session key comes from Diffie-Hellman, and the certificate's key plays no part in computing it. This is why the handshake has forward secrecy: if someone records the traffic today and steals the private key next year, they can forge a server, but they cannot decrypt the recording, because the session key was never derived from the private key. In older TLS with RSA key exchange the client encrypted the secret with the certificate's public key and the private key decrypted it, so a stolen key exposed every past session. TLS 1.3 removed that mode entirely.
+
+The second connection is a different story at each layer. Within one connection there is no second handshake at all; HTTP keep-alive and HTTP/2 multiplexing mean the browser sends dozens of requests over the one TLS session it already has. When it does open a new connection, the server has usually handed it a session ticket after the first handshake, a PSK the client can present in its next ClientHello. With a PSK, the server skips Certificate and CertificateVerify; the RFC is explicit that a server authenticating with a PSK sends neither. Identity was proven the first time, and the ticket is the receipt. A fresh Diffie-Hellman exchange usually still happens alongside the PSK, so resumed connections keep forward secrecy.
+
+Then there is 0-RTT. With a PSK in hand, the client is allowed to send application data in its very first flight, before the server has replied at all. That saves a round trip, and it comes with two costs the RFC spells out: the early data is not forward secret, since it is encrypted only under keys derived from the PSK, and there is no guarantee against replay. An attacker who captures the first flight can send it again, and the server will process it twice. For a GET that is harmless. For a POST that moves money it is not, and the usual answer is to allow only idempotent requests over early data, or to leave it off.
+
+Now back to Traefik, where every step above shows up as a field I had been copying.
+
+SNI picks the certificate. In step 2 the client named the host, and Traefik uses that name to choose which certificate to present. Router rules have nothing to do with it; `Host()` is evaluated after the handshake is done. If no certificate matches the name, Traefik falls back to a default certificate, the self-signed one you get on a fresh install, unless `sniStrict` is on, in which case it refuses the connection. That is why a wrong hostname gets a certificate warning rather than a 404: the handshake failed before any router ran.
+
+Termination versus passthrough is the question of who does steps 3 through 8. With termination, the normal case, Traefik does the handshake, holds the private key, and talks plain HTTP (or HTTPS over a ServersTransport) to the pod. With passthrough, on an IngressRouteTCP with `tls.passthrough: true`, Traefik reads the SNI from the ClientHello, which is unencrypted, picks a backend, and hands the raw bytes through. The backend holds the key and does the handshake. You lose everything that needs to see the request, every HTTP middleware included, and you keep the backend's end-to-end encryption.
+
+TLSOption is where the handshake parameters live, and the one named `default` applies to every router that does not name another:
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: TLSOption
+metadata:
+  name: default
+  namespace: traefik
+spec:
+  minVersion: VersionTLS12
+  sniStrict: true
+```
+
+`minVersion` sets the floor from step 2. Cipher suites are configurable for 1.2 and not for 1.3, where the docs say every supported suite is safe. `clientAuth` turns the handshake mutual, covered below. And `disableSessionTickets` does what it says: every client does a full handshake, steps 5 and 6 included, every time.
+
+And the reason we run cert-manager rather than Traefik's built-in ACME. Traefik can get its own certificates from Let's Encrypt, and on a single Docker host it is the right tool. The catch is storage: the resolver writes everything to a file, `acme.json`, and the docs say plainly that running multiple Traefik instances with Let's Encrypt enabled is not supported, pointing to Traefik Enterprise or a certificate controller like cert-manager instead. `acme.json` is local to one process, and two replicas would have two of them. cert-manager puts the certificate in a Secret, every replica reads the same Secret, and the certificate resolver stays out of the static configuration entirely.
+
