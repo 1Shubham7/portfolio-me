@@ -79,3 +79,66 @@ A few more things bypass it even from outside. The Kubernetes API server has its
 
 The practical consequence is that a Middleware on Traefik protects exactly one thing: requests that came in through Traefik. An IP allow-list on an Ingress does nothing for a pod that can reach the backend Service directly, so anything that relies on Traefik for authentication needs a NetworkPolicy on the backend too.
 
+## What actually happens to a request inside Traefik?
+
+Traefik has four building blocks and every request passes through them in the same order. I had used all four for a year without being able to name that order.
+
+An **entrypoint** is a named listening socket. `web` on `:80` and `websecure` on `:443` are the conventional pair, and the address syntax allows `/tcp` or `/udp` on the end. Things that belong to the socket live here: the redirect from `web` to `websecure` is an entrypoint option, and so is PROXY protocol, with a list of trusted IPs for the load balancer in front.
+
+A **router** is a match rule attached to one or more entrypoints. The rule is an expression, `Host(`grafana.example.com`) && PathPrefix(`/api`)` and so on, and the router carries the TLS settings for the route. When several routers could match a request, priority decides, and the default priority is the length of the rule string. Longer rules win. That is a decent heuristic, since a more specific rule is usually a longer one, but it is only a heuristic, and a `HostRegexp` can outrank a plain `Host` it was never meant to beat. The `priority` field overrides it; `0` means "use the default", and negative values are allowed.
+
+A **middleware** is a piece of request processing that runs between the router and the backend: redirects, header rewrites, IP allow-lists, forwardAuth, plugins. They are reusable, so one `office-only` middleware can hang off twenty routers. A `chain` middleware groups several into one name, which is how the mTLS header handling further down is attached with a single reference.
+
+A **service** is the backend pool. In Kubernetes this is where Traefik does something ingress-nginx users do not expect: since v3.1 it watches EndpointSlices and sends traffic to the pod IPs directly, doing its own load balancing, rather than handing the request to the ClusterIP and letting kube-proxy pick. There is a `nativeLB` option to go through the Service instead, off by default. How Traefik connects to those pods is a separate object, a **ServersTransport**: whether to speak TLS to the backend, which CAs to trust, which server name to send, whether to skip verification, and the dial and response-header timeouts. Every service uses `default@internal` unless told otherwise.
+
+Here is the IngressRoute form of a route with a middleware, which shows all four in one object:
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: office-only
+  namespace: monitoring
+spec:
+  ipAllowList:
+    sourceRange:
+      - 203.0.113.0/24
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`grafana.example.com`)
+      kind: Rule
+      middlewares:
+        - name: office-only
+      services:
+        - name: grafana
+          port: 3000
+  tls:
+    secretName: grafana-tls
+```
+
+With a plain Ingress the same middleware is attached with an annotation, `traefik.ingress.kubernetes.io/router.middlewares: monitoring-office-only@kubernetescrd`. That `@kubernetescrd` suffix comes up again in the next question.
+
+```mermaid
+flowchart LR
+    C[Client] --> LB[Load balancer or hostPort]
+    LB --> EP[Entrypoint websecure :443]
+    EP --> R{Router rule matches?}
+    R -- no --> NF[404 from Traefik]
+    R -- yes --> MW[Middlewares, in order]
+    MW -- rejected --> RJ[403, 401 or redirect, app never sees it]
+    MW -- passed --> SVC[Service: pick a pod IP]
+    SVC --> POD[Pod]
+```
+
+Two things in that diagram took me too long to internalise. If no router matches, the 404 comes from Traefik, not from your app. The docs are explicit: an unmatched request is a `404`, a `503` means a router matched but the service had no healthy servers, and a `502` means the upstream errored. The status code tells you which stage failed. And a middleware rejection ends the request right there. With forwardAuth, a 2xx from the auth server lets the original request through; anything else, and the auth server's response is what the client gets. The application never sees a request it was not allowed to see.
+
+The dashboard shows all of this live. Enable `api.dashboard`, route a hostname to the `api@internal` service, and you get the routers, middlewares and services Traefik currently holds. Each name carries the provider that created it: `monitoring-office-only@kubernetescrd` came from a Middleware CRD, a name ending in `@kubernetes` came from a plain Ingress, `@file` from a file. When a route is missing or a middleware is not applied, the dashboard is the first place I look now, because it shows what Traefik built rather than what I think I wrote.
+
