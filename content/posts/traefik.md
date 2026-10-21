@@ -75,7 +75,7 @@ Traefik sees north-south traffic, and only the part of it that arrives at Traefi
 
 East-west traffic, pod to pod, never touches it. When the API pod calls the database Service, the request goes to a ClusterIP, kube-proxy or the CNI rewrites it to a pod IP, and it goes straight there. Traefik is not in that path and has no idea it happened. The same is true for a pod calling another pod's Service on port 80, which trips people up because it looks like HTTP traffic that "should" go through the ingress. It does not. A pod in the cluster that opens `grafana.monitoring.svc:3000` is this kind of caller, and the allow-list on Grafana's Ingress has no opinion about it.
 
-A few more things bypass it even from outside. The Kubernetes API server has its own endpoint and its own port, and `kubectl` never goes near an ingress controller. An app with its own Service of type LoadBalancer or NodePort has its own door; an MQTT broker usually ends up this way. And host-level access, SSH to a node or an exporter on a host port, is the node's business, not the cluster's.
+A few more things bypass it even from outside. The Kubernetes API server has its own endpoint and its own port, and `kubectl` never goes near an ingress controller. An app with its own Service of type LoadBalancer or NodePort has its own door; an MQTT broker, say. And host-level access, SSH to a node or an exporter on a host port, is the node's business, not the cluster's.
 
 The practical consequence is that a Middleware on Traefik protects exactly one thing: requests that came in through Traefik. Anything that relies on Traefik for authentication needs a NetworkPolicy on the backend too, or the allow-list is decoration for anyone already inside the cluster.
 
