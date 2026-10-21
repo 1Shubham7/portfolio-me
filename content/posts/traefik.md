@@ -13,7 +13,7 @@ For about a year, Traefik was the thing I copied. A new app needed a hostname, s
 
 Then I had to explain our setup to someone outside the team, and I could not get past the YAML. I could say what each object was called. I could not say what happened to a request between the load balancer and the pod, why one change to Traefik needed a rollout and another did not, or what the certificate in the Secret was actually for during the handshake.
 
-So I went back and asked the questions I should have asked at the start. This post is those questions, in the order I asked them. If you have ever copied a Middleware without reading what it does, this is for you.
+So I went back and asked the questions I should have asked at the start. This post is those questions, in the order I asked them.
 
 ## Is Traefik just a reverse proxy like NGINX?
 
