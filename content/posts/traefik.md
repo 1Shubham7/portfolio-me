@@ -142,3 +142,31 @@ Two things in that diagram took me too long to internalise. If no router matches
 
 The dashboard shows all of this live. Enable `api.dashboard`, route a hostname to the `api@internal` service, and you get the routers, middlewares and services Traefik currently holds. Each name carries the provider that created it: `monitoring-office-only@kubernetescrd` came from a Middleware CRD, a name ending in `@kubernetes` came from a plain Ingress, `@file` from a file. When a route is missing or a middleware is not applied, the dashboard is the first place I look now, because it shows what Traefik built rather than what I think I wrote.
 
+## Why do some changes need a restart and others don't?
+
+Because Traefik has two kinds of configuration and reads them at different times.
+
+**Static configuration** is read once, at startup. The current docs call it install configuration, which is a better name. It holds the entrypoints, the providers to watch, certificate resolvers for ACME, the API and dashboard switch, metrics and tracing, and plugin declarations. Change any of these and you are restarting the process. It can come from a file, from command-line arguments, or from environment variables, and the docs say those three are mutually exclusive and checked in that order.
+
+**Dynamic configuration** is everything the providers feed in while Traefik runs: routers, middlewares, services, TLS options, certificates. This is the part that hot-reloads. Apply an Ingress and the route exists seconds later. Edit a TLSOption and the next handshake uses it. Rotate a CA bundle in a Secret and the next client certificate is checked against the new bundle, no restart.
+
+In Kubernetes the split is visible in the pod. The Helm chart turns its values into container arguments, so the static configuration is literally `args`:
+
+```yaml
+providers:
+  kubernetesCRD:
+    enabled: true
+  kubernetesIngress:
+    enabled: true
+    ingressClass: traefik-public
+additionalArguments:
+  - "--entrypoints.websecure.http.tls"
+  - "--entrypoints.web.proxyprotocol.trustedips=10.0.0.0/8"
+```
+
+renders into `--providers.kubernetescrd`, `--providers.kubernetesingress.ingressclass=traefik-public`, the `additionalArguments` lines verbatim, and the `--entrypoints.<name>.address` flags the chart generates from `ports`. Change a value and Helm changes the pod spec, which rolls the Deployment. That is the restart. On a Deployment with two replicas it is uneventful. On a DaemonSet with hostPorts it is not, because a new pod cannot bind a port the old pod still holds, so the old one has to go first.
+
+The providers are the interesting half of the static side. `kubernetesIngress` reads standard Ingress objects. `kubernetesCRD` reads Traefik's own IngressRoute, Middleware, TLSOption and friends. `kubernetesGateway` reads Gateway API resources. There is also `file`, `docker`, and a list of others. Several run at the same time in the same process, and every object is namespaced by the provider that produced it, which is where `@kubernetescrd` and `@file` come from. A middleware defined in a file can be referenced from an Ingress as `name@file`, and the Kubernetes namespace field is ignored in that cross-provider form.
+
+On Gateway API: Traefik v3 implements it for real. The provider stopped being experimental in v3.1, the current docs state support for the Standard channel at v1.6.3, with HTTPRoute, GRPCRoute and TLSRoute, plus TCPRoute from the Experimental channel. You enable it with `providers.kubernetesGateway` and install the Gateway API CRDs yourself. It is one more provider in the same process, not a different product, which makes it a migration you can do one route at a time.
+
