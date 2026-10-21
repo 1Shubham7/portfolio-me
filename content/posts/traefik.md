@@ -249,9 +249,9 @@ A quick tour of the parts that only made sense once the questions above were ans
 
 **forwardAuth with Keycloak.** For tools with no login of their own, a forwardAuth middleware asks an auth service backed by Keycloak whether each request is allowed, sends unknown browsers to log in, and lets the rest through with a 2xx. One annotation per Ingress is the whole integration, written up in [the forwardAuth post](https://1shubham7.blog/traefik-forward-auth-sso/).
 
-**Git over SSH.** SSH is not HTTP, so it goes through a dedicated entrypoint on its own port and an IngressRouteTCP with a `HostSNI(`*`)` rule, which is the form a non-TLS TCP router needs. TCP routers are checked before HTTP routers on a shared entrypoint, but a separate entrypoint keeps it simple.
+**Git over SSH.** SSH is not HTTP, so it goes through the dedicated `:2222` entrypoint from the third question and an IngressRouteTCP with a `HostSNI(`*`)` rule, which is the form a non-TLS TCP router needs. TCP routers are checked before HTTP routers on a shared entrypoint, but a separate entrypoint keeps it simple.
 
-**IngressRoute where priority matters, ServersTransport for legacy backends.** The handful of routes where longest-rule-wins is the wrong order are IngressRoutes with an explicit `priority`. And the legacy backends that need Traefik to talk to them in a particular way, HTTPS with their own CA or a specific server name, get a ServersTransport. Each is a few lines, and each was a mystery until I knew which stage of the request it belonged to.
+**IngressRoute where priority matters, ServersTransport for legacy backends.** The handful of routes where longest-rule-wins is the wrong order are IngressRoutes with an explicit `priority`. And the legacy backends get a ServersTransport, which is where Traefik is told whether to speak HTTPS to a backend, which CA to trust and which server name to send. Each is a few lines, and each was a mystery until I knew which stage of the request it belonged to.
 
 ## Ending notes
 
