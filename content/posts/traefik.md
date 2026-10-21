@@ -48,7 +48,7 @@ server {
 }
 ```
 
-Then `nginx -t && nginx -s reload`. Certbot's packaged timer runs `certbot renew` on a schedule, and you add a deploy hook so NGINX reloads when a renewal lands. When the container is recreated and comes up on a different IP, or when you scale it to two, you edit the upstream and reload again.
+Then `nginx -t && nginx -s reload`. Certbot's packaged renewal job runs `certbot renew` on a schedule, and you add a deploy hook so NGINX reloads when a renewal lands. When the container is recreated and comes up on a different IP, or when you scale it to two, you edit the upstream and reload again.
 
 With Traefik on the same host, the per-app configuration is two labels on the container:
 
@@ -61,7 +61,7 @@ services:
       traefik.http.routers.blog.tls.certresolver: le
 ```
 
-The certificate resolver named `le` and the redirect from port 80 to 443 are set once on the Traefik instance, not per app. Traefik sees the container start through the Docker socket, reads the labels, picks the container's exposed port, requests a certificate, and starts routing. Recreate the container and the new IP is picked up. Scale it and both replicas get traffic. Remove it and the route goes away.
+The certificate resolver named `le` and the redirect from port 80 to 443 are set once on the Traefik instance, not per app. Traefik sees the container start through the Docker socket, reads the labels, picks the first port the image exposes, requests a certificate, and starts routing. Recreate the container and the new IP is picked up. Scale it and both replicas get traffic. Remove it and the route goes away.
 
 Now the honest part. In Kubernetes the gap is much smaller than this example suggests, because ingress-nginx does exactly the wrapping I just described by hand. It watches Ingress objects, renders an `nginx.conf` from a template, and reloads NGINX when the config changes; it even skips the reload when only the endpoints behind an upstream change, by pushing the new list into a Lua handler inside NGINX. And cert-manager takes care of certificates for either controller: it talks to Let's Encrypt, stores the certificate and key in a Secret, and renews before expiry. In a cluster, both tools give you declarative routing and automatic certificates.
 
