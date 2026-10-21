@@ -225,3 +225,17 @@ spec:
 
 And the reason we run cert-manager rather than Traefik's built-in ACME. Traefik can get its own certificates from Let's Encrypt, and on a single Docker host it is the right tool. The catch is storage: the resolver writes everything to a file, `acme.json`, and the docs say plainly that running multiple Traefik instances with Let's Encrypt enabled is not supported, pointing to Traefik Enterprise or a certificate controller like cert-manager instead. `acme.json` is local to one process, and two replicas would have two of them. cert-manager puts the certificate in a Secret, every replica reads the same Secret, and the certificate resolver stays out of the static configuration entirely.
 
+## Why do we run more than one Traefik in a cluster?
+
+This one arrives in two framings, and the answer is the same.
+
+The first is "how can two Traefiks both use 443?" A port is taken per IP, not per cluster. Each Traefik instance has its own Service, and a Service of type LoadBalancer gets its own external IP, so the public instance listens on 443 at one address and the internal instance listens on 443 at another. DNS decides which door a hostname goes to. The exception is hostPort: when Traefik binds 443 on the node itself, only one instance per node can have it. On the cluster where the public Traefik is a DaemonSet on hostPort 80 and 443, the internal one sits behind a ClusterIP Service and is reached over a NetBird VPN.
+
+The second is "they both reach the same pods anyway, so what does the second one add?" It is about who can start a connection, not where it ends. Both instances can route to the same admin UI. Only one of them has an address the internet can reach. Internal UIs sit on the instance that is reachable only over the VPN, and the public instance has no router for them at all. Not a router with a middleware in front. No router.
+
+That distinction is the whole argument. A forgotten middleware on the public instance is an exposure; on the internal one it is reachable only by people already on the VPN. A CVE in an admin tool matters less when the tool is not on a public IP to begin with. Each instance gets configuration tuned for its audience. A traffic spike on the public side cannot starve the internal side. The two upgrade independently. And internal hostnames never appear in a public certificate's SAN list or a public DNS zone.
+
+The mechanism is one flag. Each instance owns an IngressClass, `--providers.kubernetesingress.ingressclass=<name>`, and from then on that provider ignores every Ingress whose class is not its own. An Ingress chooses its door by setting `ingressClassName`. I wrote up [the full setup, values files included](https://1shubham7.blog/multiple-traefik-instances/) separately.
+
+On the clusters I run, most have exactly that pair, public and internal. One production cluster runs three, public, private and protected, each on its own Hetzner load balancer.
+
