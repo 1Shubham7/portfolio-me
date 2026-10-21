@@ -243,7 +243,7 @@ On the clusters I run, most have exactly that pair, public and internal. One pro
 
 A quick tour of the parts that only made sense once the questions above were answered.
 
-**mTLS with certificates that already exist.** Every server we manage already holds a certificate Puppet issued it. Instead of handing those servers API tokens, Traefik authenticates them with that certificate: a TLSOption with `clientAuth.clientAuthType: RequireAndVerifyClientCert` and the Puppet CA in `clientAuth.secretNames` makes step 6 run in both directions, so the client signs too. Then a chain of middlewares strips any client-supplied `X-Forwarded-Tls-Client-Cert-Info` header, so nobody can forge an identity, and `passTLSClientCert` adds the verified certificate's details as a header the application reads. The [mTLS post](https://1shubham7.blog/traefik-mtls-existing-certificates/) has the Secret, the TLSOption and the middlewares.
+**mTLS with certificates that already exist.** Every server we manage already holds a certificate Puppet issued it. Instead of handing those servers API tokens, Traefik authenticates them with that certificate: a TLSOption with `clientAuth.clientAuthType: RequireAndVerifyClientCert` and the Puppet CA in `clientAuth.secretNames` makes steps 5 and 6 run in both directions, so the client sends a certificate and signs too. Then a chain of middlewares strips any client-supplied `X-Forwarded-Tls-Client-Cert-Info` header, so nobody can forge an identity, and `passTLSClientCert` adds the verified certificate's details as a header the application reads. The [mTLS post](https://1shubham7.blog/traefik-mtls-existing-certificates/) has the Secret, the TLSOption and the middlewares.
 
 **A JWT plugin through Yaegi.** Traefik plugins are Go source, interpreted at runtime by Yaegi, declared once in the static configuration under `experimental.plugins` and then used like any other middleware. We run a fork of a JWT plugin that verifies a token from a cookie and passes the user and customer IDs on as headers, so each customer's Grafana shows only that customer's data without Grafana knowing anything about the token. That is a post of its own which I have not written yet.
 
@@ -251,7 +251,7 @@ A quick tour of the parts that only made sense once the questions above were ans
 
 **Git over SSH.** SSH is not HTTP, so it goes through the dedicated `:2222` entrypoint from the third question and an IngressRouteTCP with a `HostSNI(`*`)` rule, which is the form a non-TLS TCP router needs. TCP routers are checked before HTTP routers on a shared entrypoint, but a separate entrypoint keeps it simple.
 
-**IngressRoute where priority matters, ServersTransport for legacy backends.** The handful of routes where longest-rule-wins is the wrong order are IngressRoutes with an explicit `priority`. And the legacy backends get a ServersTransport, which is where Traefik is told whether to speak HTTPS to a backend, which CA to trust and which server name to send. Each is a few lines, and each was a mystery until I knew which stage of the request it belonged to.
+**IngressRoute where priority matters, ServersTransport for legacy backends.** The routes where longest-rule-wins is the wrong order are IngressRoutes with an explicit `priority`. And the legacy backends get a ServersTransport, which is where Traefik is told whether to speak HTTPS to a backend, which CA to trust and which server name to send. Each is a few lines, and each was a mystery until I knew which stage of the request it belonged to.
 
 ## Ending notes
 
