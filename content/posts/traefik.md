@@ -253,3 +253,10 @@ A quick tour of the parts that only made sense once the questions above were ans
 
 **IngressRoute where priority matters, ServersTransport for legacy backends.** The handful of routes where longest-rule-wins is the wrong order are IngressRoutes with an explicit `priority`. And the legacy backends that need Traefik to talk to them in a particular way, HTTPS with their own CA or a specific server name, get a ServersTransport. Each is a few lines, and each was a mystery until I knew which stage of the request it belonged to.
 
+## Ending notes
+
+None of what I learned changed the YAML. The Ingresses look the same as they did a year ago. What changed is that I can read one and say what will happen: which entrypoint catches it, which router wins and why, which middleware can reject it, which pod IPs it can land on, and which certificate the client is shown before any of that runs. For me the TLS question did the most work, because half the Traefik fields I had been copying turned out to be handshake parameters with a Traefik name on them.
+
+If you are a year into running Traefik by pattern-matching, start with the dashboard and a request that returned a status you did not expect. The code tells you which of the four stages produced it, and the rest of the questions follow from there.
+
+Thanks for your time :)
