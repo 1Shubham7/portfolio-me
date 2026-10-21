@@ -67,3 +67,15 @@ Now the honest part. In Kubernetes the gap is much smaller than this example sug
 
 What remains is a difference in design. ingress-nginx is a reload-based proxy with an automation layer wrapped around it. Traefik is dynamic from the ground up; nothing in it works by regenerating a file. For most workloads you will not feel that day to day. It shows up in the edges: how often routes change, what a bad config does, how the provider model composes. Those are the next questions.
 
+## Does all traffic in the cluster go through Traefik?
+
+No, and I had this wrong for longer than I like to admit.
+
+Traefik sees north-south traffic, and only the part of it that arrives at Traefik's own address. On a cloud cluster that is the load balancer in front of its Service. On one of our clusters it is the hostPort the DaemonSet binds on every node. Everything that reaches those ports goes through Traefik: web UIs, APIs, and the TCP traffic we route on purpose, like Git over SSH. Everything that does not reach those ports does not.
+
+East-west traffic, pod to pod, never touches it. When the API pod calls the database Service, the request goes to a ClusterIP, kube-proxy or the CNI rewrites it to a pod IP, and it goes straight there. Traefik is not in that path and has no idea it happened. The same is true for a pod calling another pod's Service on port 80, which trips people up because it looks like HTTP traffic that "should" go through the ingress. It does not. Ingress is for traffic entering the cluster.
+
+A few more things bypass it even from outside. The Kubernetes API server has its own endpoint and its own port, and `kubectl` never goes near an ingress controller. An app with its own Service of type LoadBalancer or NodePort has its own door; an MQTT broker usually ends up this way. And host-level access, SSH to a node or an exporter on a host port, is the node's business, not the cluster's.
+
+The practical consequence is that a Middleware on Traefik protects exactly one thing: requests that came in through Traefik. An IP allow-list on an Ingress does nothing for a pod that can reach the backend Service directly, so anything that relies on Traefik for authentication needs a NetworkPolicy on the backend too.
+
