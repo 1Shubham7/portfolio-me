@@ -181,3 +181,5 @@ Two caveats with pointing it at a single file. Your block no longer inherits the
 Run the tests as root. The timer runs logrotate as root, and a `-d` as your own user sees a different world: it may not be able to read the state file or the logs, and its decisions will differ from the ones the timer makes.
 
 ## The sharp edges
+
+Everything above is the comfortable part. These are the five things that surprised me, and all of them are variations on one theme: logrotate makes one decision per run, and the schedule is a floor on how many runs you get, not a ceiling.
