@@ -163,3 +163,7 @@ Drop either file in `/etc/logrotate.d/myapp`, owned by root and not group- or wo
 ## Testing it without rotating anything
 
 `-d` is the dry run. It reads the real configuration and the real state file, prints every decision it would make, and changes nothing: no rename, no script, no state file update. In the source `-d` falls through to the same log level as `-v`, so you get the verbose output for free. It also opens with a warning that debug mode does nothing except print debug messages, which is the behaviour you asked for, so ignore it.
+
+```bash
+sudo logrotate -d /etc/logrotate.conf
+```
