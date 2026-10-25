@@ -64,3 +64,8 @@ Mostly yes, which is why the previous question was a mystery to me for so long.
 On Debian and Ubuntu the package has priority `important`, so a standard install includes it, and rsyslog recommends it, so a box that logs to `/var/log/syslog` almost certainly has it. The RHEL family (RHEL, Rocky, Alma, Fedora) ships it with the timer enabled by the distro's systemd preset when the package is installed, and rsyslog recommends it there as well. openSUSE and SLES ship the timer; I have not checked a fresh install, so run the check below. Arch is the odd one out: logrotate is in `core` but not in the `base` metapackage, so a fresh Arch install does not have it unless you add it; once you do, the package ships the `timers.target.wants` symlink, so the timer is enabled without a separate step.
 
 The check is the same everywhere:
+
+```bash
+systemctl is-enabled logrotate.timer
+systemctl is-active logrotate.timer
+```
