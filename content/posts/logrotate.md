@@ -22,3 +22,5 @@ Rotation is the four verbs in the title. Rename the current file to an archive n
 One thing I had wrong: logrotate is not a daemon. It is a program that runs, reads its configuration, compares every configured log against its rule and against a state file, does whatever is due, and exits. Nothing watches the file in between runs. That has consequences for every question below.
 
 ## What runs it, and when?
+
+For most of its life the answer was a script in `/etc/cron.daily`. The upstream project still ships one in its `examples` directory: it runs `/usr/sbin/logrotate /etc/logrotate.conf`, and if the exit code is non-zero it writes a line to syslog through `logger`. That is the whole thing.
