@@ -102,3 +102,5 @@ What happens to the live file is the decision that depends on the application. `
 Two small ones belong in nearly every rule, and both rules later in this post carry them. `missingok` means a missing log is skipped silently instead of being reported as an error, which is the difference between a clean run and a failed unit on a server where the application has not written its first line yet. `notifempty` skips rotation when the file is empty, which otherwise produces a stack of zero-byte archives.
 
 The last decision is whether something has to be told. `postrotate` through `endscript` wraps a shell snippet that runs after the rename and before compression. This is where you tell the application to reopen its file. With a glob like `/var/log/myapp/*.log`, the script runs once per matched file unless you add `sharedscripts`, in which case it runs once for the whole pattern, which is what you want when the script restarts or signals a single process.
+
+## What is in the state file?
