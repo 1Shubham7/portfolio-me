@@ -86,3 +86,5 @@ rpm -qf /etc/logrotate.d/rsyslog
 Why ownership matters comes up under the sharp edges. The short version is that both package managers treat these as configuration files, so if you edit one by hand, the next upgrade either prompts you or leaves the new version beside yours with a `.dpkg-dist` or `.rpmnew` suffix, and you now have two files to reason about.
 
 ## What do the directives actually mean?
+
+The man page lists a lot of them. These are the ones that show up in nearly every rule, grouped by the decision each one makes.
