@@ -203,3 +203,5 @@ The refusal is deliberate. Overwriting would silently destroy the earlier archiv
 ## Ending notes
 
 Most of what surprised me reduces to two facts. logrotate runs and exits, with the state file as its only memory, so every run decides from scratch. And the timer promises at least one run a day, not exactly one. Hold both while reading a rule and the sharp edges stop being separate surprises. A second run in the same day is not a freak event, it is something `Persistent=true` is there to produce, and a rule has to be able to name what it rotates when that happens. Every rule that survives both facts is a rule you will not hear about again.
+
+If you have a server you inherited and have never looked, `sudo logrotate -d /etc/logrotate.conf` is ten seconds and tells you more than this post did.
