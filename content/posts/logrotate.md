@@ -104,3 +104,5 @@ Two small ones belong in nearly every rule, and both rules later in this post ca
 The last decision is whether something has to be told. `postrotate` through `endscript` wraps a shell snippet that runs after the rename and before compression. This is where you tell the application to reopen its file. With a glob like `/var/log/myapp/*.log`, the script runs once per matched file unless you add `sharedscripts`, in which case it runs once for the whole pattern, which is what you want when the script restarts or signals a single process.
 
 ## What is in the state file?
+
+The thing that makes `daily` possible. Since logrotate is not a daemon, it needs to remember when it last rotated each file, and it keeps that in a plain text file: a version line, then one line per log path with the timestamp of its last rotation, unpadded, which looks like this:
