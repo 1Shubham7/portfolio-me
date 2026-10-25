@@ -191,3 +191,5 @@ Everything above is the comfortable part. These are the five things that surpris
 ```
 error: destination /var/log/myapp/app.log-20261025.gz already exists, skipping rotation
 ```
+
+The refusal is deliberate. Overwriting would silently destroy the earlier archive, and the source does the check against the compressed name before it touches anything. The error is logrotate telling you that the rule and the schedule do not fit together. The fix is to make the archive name unique within a day while keeping it sortable, which is what the `dateformat -%Y%m%d-%s` in both rules above does: `%s` is seconds since the epoch, so `app.log-20261025-1792910954.gz` cannot collide with the next run's name, and because the date comes first and the epoch has been ten digits since September 2001 (the man page's "clock must be set past Sep 9th 2001" note is about exactly that), the names still sort by time, so `rotate` and `maxage` delete the right files. `%H` is the lighter version if one name per hour is enough.
