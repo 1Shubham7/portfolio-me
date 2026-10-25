@@ -71,3 +71,5 @@ systemctl is-active logrotate.timer
 ```
 
 ## Where does the configuration live?
+
+Two places, and the split is the thing to understand.
