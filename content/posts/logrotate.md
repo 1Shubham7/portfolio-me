@@ -169,3 +169,5 @@ sudo logrotate -d /etc/logrotate.conf
 ```
 
 The output names each log and says whether it needs rotating, with the reason when it does not. The reasons are specific enough to settle most questions: below the `size` threshold, rotated less than a day or a week ago, empty with `notifempty` set, smaller than `minsize`. If the rule is new you will see it being given a state entry and then skipped, as described above.
+
+`-f` forces a rotation whether or not it is due, and `-d -f` shows what a forced rotation would do. `-v` on a real run prints the same narration while actually doing the work. If you want to force a real rotation of just your rule without updating the system's state file, give it a scratch one:
