@@ -16,3 +16,5 @@ Recently I sat down and read it properly, the man page first and then the source
 ## What is it actually doing, and why does a log need rotating?
 
 A log file that nothing ever rotates grows until the disk is full. Before it gets there it becomes useless in a quieter way: a multi-gigabyte text file takes forever to `grep`, `less` struggles with it, and anything that ships logs elsewhere has to reread or tail one enormous file. And you cannot just delete it. A process that has the file open keeps the inode alive, so `rm` on a live log frees nothing; `df` does not move until the process closes the descriptor. I wrote about that in [the storage section of the Linux concepts post](https://1shubham7.blog/linux-concepts/), and logrotate is the tool that exists so you never have to do it by hand.
+
+Rotation is the four verbs in the title. Rename the current file to an archive name and start a fresh one (rotate). Gzip the archives, usually one cycle later (compress). Delete archives beyond a count or an age (prune). Do it again on a schedule (repeat).
