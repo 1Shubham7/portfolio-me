@@ -110,3 +110,5 @@ The thing that makes `daily` possible. Since logrotate is not a daemon, it needs
 ```
 "/var/log/myapp/app.log" 2026-10-25-6:49:14
 ```
+
+Where that file is depends on who built the package. The upstream default is `/var/lib/logrotate.status`, which is what Arch uses. Debian and Ubuntu configure it as `/var/lib/logrotate/status`. The RHEL family configures it as `/var/lib/logrotate/logrotate.status`. `logrotate -d` prints the path it reads from before it starts on the logs, so you do not have to remember which is which.
