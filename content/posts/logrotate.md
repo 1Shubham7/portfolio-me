@@ -82,3 +82,5 @@ Two places, and the split is the thing to understand.
 dpkg -S /etc/logrotate.d/rsyslog
 rpm -qf /etc/logrotate.d/rsyslog
 ```
+
+Why ownership matters comes up under the sharp edges. The short version is that both package managers treat these as configuration files, so if you edit one by hand, the next upgrade either prompts you or leaves the new version beside yours with a `.dpkg-dist` or `.rpmnew` suffix, and you now have two files to reason about.
