@@ -26,3 +26,17 @@ One thing I had wrong: logrotate is not a daemon. It is a program that runs, rea
 For most of its life the answer was a script in `/etc/cron.daily`. The upstream project still ships one in its `examples` directory: it runs `/usr/sbin/logrotate /etc/logrotate.conf`, and if the exit code is non-zero it writes a line to syslog through `logger`. That is the whole thing.
 
 On a systemd distro today the answer is a timer. The package drops two units: `logrotate.service`, which is a oneshot that runs the same command, and `logrotate.timer`, which decides when. The timer upstream ships looks like this, and both Debian and the RHEL family install it unchanged:
+
+```ini
+[Unit]
+Description=Daily rotation of log files
+Documentation=man:logrotate(8) man:logrotate.conf(5)
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
