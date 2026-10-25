@@ -116,3 +116,5 @@ Where that file is depends on who built the package. The upstream default is `/v
 Two things follow from how this file is used. First, a log that has no entry yet is given one with the current time, so the first run after you add a `daily` rule records a timestamp and does not rotate. The file rotates the next day. The man page's note on `-f` is about exactly this: forcing is useful after adding new entries. Second, the state file is updated at the end of every real run, even a run that hit errors. A `-d` run does not touch it.
 
 ## Writing a rule for your own application
+
+Say the app writes to `/var/log/myapp/app.log` as user `myapp`. The first decision is whether the application can reopen its log file on a signal, because that decides which of two shapes the rule takes.
