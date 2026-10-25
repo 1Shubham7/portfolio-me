@@ -161,3 +161,5 @@ No `create`, because the original file is never renamed; no `delaycompress`, bec
 Drop either file in `/etc/logrotate.d/myapp`, owned by root and not group- or world-writable, since logrotate refuses configuration with loose permissions. The log directory gets a similar check: if it is writable by a group other than root, or by everyone, logrotate running as root refuses to rotate in it and tells you to set the `su` directive. `su myapp myapp` in the block makes it do the work as that user, which the man page recommends anyway for any directory a non-privileged user controls.
 
 ## Testing it without rotating anything
+
+`-d` is the dry run. It reads the real configuration and the real state file, prints every decision it would make, and changes nothing: no rename, no script, no state file update. In the source `-d` falls through to the same log level as `-v`, so you get the verbose output for free. It also opens with a warning that debug mode does nothing except print debug messages, which is the behaviour you asked for, so ignore it.
