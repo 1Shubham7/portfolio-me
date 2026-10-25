@@ -179,3 +179,5 @@ sudo logrotate -f -v -s /tmp/myapp.state /etc/logrotate.d/myapp
 Two caveats with pointing it at a single file. Your block no longer inherits the globals from `/etc/logrotate.conf`, so if your rule relies on a `compress` or `su` set there, the test diverges from the real run; the two rules above are self-contained for that reason. And a forced run really does rotate: it creates an archive with today's date, which matters for the last section.
 
 Run the tests as root. The timer runs logrotate as root, and a `-d` as your own user sees a different world: it may not be able to read the state file or the logs, and its decisions will differ from the ones the timer makes.
+
+## The sharp edges
