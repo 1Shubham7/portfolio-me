@@ -167,3 +167,5 @@ Drop either file in `/etc/logrotate.d/myapp`, owned by root and not group- or wo
 ```bash
 sudo logrotate -d /etc/logrotate.conf
 ```
+
+The output names each log and says whether it needs rotating, with the reason when it does not. The reasons are specific enough to settle most questions: below the `size` threshold, rotated less than a day or a week ago, empty with `notifempty` set, smaller than `minsize`. If the rule is new you will see it being given a state entry and then skipped, as described above.
