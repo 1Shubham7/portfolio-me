@@ -159,3 +159,5 @@ If the application cannot reopen its log, `copytruncate`:
 No `create`, because the original file is never renamed; no `delaycompress`, because the application never writes to the copy. It is simpler and it works for anything. The costs are below.
 
 Drop either file in `/etc/logrotate.d/myapp`, owned by root and not group- or world-writable, since logrotate refuses configuration with loose permissions. The log directory gets a similar check: if it is writable by a group other than root, or by everyone, logrotate running as root refuses to rotate in it and tells you to set the `su` directive. `su myapp myapp` in the block makes it do the work as that user, which the man page recommends anyway for any directory a non-privileged user controls.
+
+## Testing it without rotating anything
