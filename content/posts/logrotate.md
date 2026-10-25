@@ -58,3 +58,5 @@ journalctl -u logrotate.service
 `list-timers` gives you the next and last trigger times in one row; `status` on the service shows the exit code of the last run; `journalctl` shows what logrotate printed, which on a healthy run is nothing. Debian still installs `/etc/cron.daily/logrotate` too, but it carries a patch that makes the script exit immediately when systemd is running, so the timer is the only thing that fires.
 
 ## Does it come installed?
+
+Mostly yes, which is why the previous question was a mystery to me for so long.
