@@ -46,3 +46,11 @@ If you have only used cron, a timer is two units instead of one line. The timer 
 `OnCalendar=daily` is shorthand for midnight, local time. `RandomizedDelaySec=1h` adds a random delay of up to an hour, picked fresh each time, so a fleet of machines does not all gzip their logs at 00:00:00. `Persistent=true` is the one that matters most. systemd stores the time of the last trigger on disk, under `/var/lib/systemd/timers/`, and when the timer starts it checks whether a scheduled run was missed while it was inactive. If the machine was off or rebooting at midnight, the run fires shortly after boot instead of being skipped. Without that line a server rebooted at the wrong moment would just not rotate that day.
 
 The commands to inspect all of this:
+
+```bash
+systemctl list-timers logrotate.timer
+systemctl status logrotate.timer
+systemctl cat logrotate.timer
+systemctl status logrotate.service
+journalctl -u logrotate.service
+```
