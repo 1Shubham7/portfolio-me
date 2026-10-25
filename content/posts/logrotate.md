@@ -187,3 +187,7 @@ Everything above is the comfortable part. These are the five things that surpris
 **`size` has no memory.** People read `size 10M` as "rotate daily, but only if it is over 10M". It means "on every run, rotate if the file is over 10M", full stop. The man page says it directly: logrotate will not touch a log more than once a day unless the criterion is size and it is being run more than once a day, or `-f` is used. `maxsize` has the same property for the early-rotation half of its behaviour. So a `size` rule's real behaviour depends entirely on how often logrotate runs, and nothing promises that is once. The timer promises at least one run a day, and `Persistent=true` exists precisely so a reboot does not cost you one. A forced run by hand after editing the rule is a second run in the same calendar day, and so is the timer catching up after a reboot.
 
 **`dateext` can only make one name per day.** With the default `dateformat -%Y%m%d`, the archive name for a given day is fixed: `app.log-20261025.gz`. On the second run in a day, a `size` rule that is still over the threshold wants to create a file that already exists. logrotate does not overwrite it. It skips that log with an error and moves on:
+
+```
+error: destination /var/log/myapp/app.log-20261025.gz already exists, skipping rotation
+```
