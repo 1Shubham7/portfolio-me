@@ -140,3 +140,5 @@ If it can (most servers do this on `SIGHUP` or `SIGUSR1`, and a unit with an `Ex
 ```
 
 The sequence on a run where rotation is due is not the order the directives are written in. The previous run's archive, still uncompressed, is gzipped first; that is where `delaycompress` actually does its work. Then each matched file is renamed, `app.log` becomes `app.log-20261025-1792910954`, a new empty `app.log` is created with the given owner and mode, and the `postrotate` script runs once for the whole pattern so the application closes the old inode and opens the new name. The file renamed this run stays uncompressed until the next run, which covers the gap between the rename and the application acting on the reload. Without the reload, the process keeps writing to the renamed file forever and the new `app.log` stays empty, which is the classic symptom of a `create` rule with no `postrotate`.
+
+If the application cannot reopen its log, `copytruncate`:
