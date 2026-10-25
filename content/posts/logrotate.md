@@ -69,3 +69,5 @@ The check is the same everywhere:
 systemctl is-enabled logrotate.timer
 systemctl is-active logrotate.timer
 ```
+
+## Where does the configuration live?
