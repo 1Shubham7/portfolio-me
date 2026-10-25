@@ -75,3 +75,5 @@ systemctl is-active logrotate.timer
 Two places, and the split is the thing to understand.
 
 `/etc/logrotate.conf` is the global file. It sets defaults for every log, then includes a directory. The upstream example is short: `weekly`, `rotate 4`, `create`, `dateext`, `compress` commented out, and `include /etc/logrotate.d`. Distros tweak it. Debian carries a patch that removes `dateext` from the default, which is why rotated files on Debian end in `.1` and `.2.gz` while the same files on Rocky end in a date.
+
+`/etc/logrotate.d/` is where packages drop their own rules. Install nginx and you get `/etc/logrotate.d/nginx`; install rsyslog and you get `/etc/logrotate.d/rsyslog`. Each file is one or more blocks of the form `path { directives }`, and because the directory is included from the main file, every block inherits the global defaults and overrides what it needs to. The file belongs to the package that installed it, which you can confirm:
