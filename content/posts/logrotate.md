@@ -40,3 +40,5 @@ Persistent=true
 [Install]
 WantedBy=timers.target
 ```
+
+If you have only used cron, a timer is two units instead of one line. The timer unit owns the schedule and nothing else. The service unit owns the command, the user it runs as, its environment, and in this case a list of hardening options that keep logrotate away from kernel tunables and the hostname. The two are paired by name: `logrotate.timer` activates `logrotate.service` unless told otherwise. What you gain over cron is that the run is a real unit, so its output goes to the journal, `systemctl status` tells you whether the last run failed, and you get the two `[Timer]` lines after `OnCalendar`, which a crontab line cannot express.
