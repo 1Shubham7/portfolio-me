@@ -155,3 +155,5 @@ If the application cannot reopen its log, `copytruncate`:
     copytruncate
 }
 ```
+
+No `create`, because the original file is never renamed; no `delaycompress`, because the application never writes to the copy. It is simpler and it works for anything. The costs are below.
