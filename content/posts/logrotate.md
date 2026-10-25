@@ -120,3 +120,21 @@ Two things follow from how this file is used. First, a log that has no entry yet
 Say the app writes to `/var/log/myapp/app.log` as user `myapp`. The first decision is whether the application can reopen its log file on a signal, because that decides which of two shapes the rule takes.
 
 If it can (most servers do this on `SIGHUP` or `SIGUSR1`, and a unit with an `ExecReload` can be told through `systemctl reload`), use `create` and tell it to reopen:
+
+```
+/var/log/myapp/*.log {
+    daily
+    rotate 14
+    missingok
+    notifempty
+    compress
+    delaycompress
+    dateext
+    dateformat -%Y%m%d-%s
+    create 0640 myapp myapp
+    sharedscripts
+    postrotate
+        systemctl reload myapp.service
+    endscript
+}
+```
