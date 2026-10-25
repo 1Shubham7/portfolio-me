@@ -114,3 +114,5 @@ The thing that makes `daily` possible. Since logrotate is not a daemon, it needs
 Where that file is depends on who built the package. The upstream default is `/var/lib/logrotate.status`, which is what Arch uses. Debian and Ubuntu configure it as `/var/lib/logrotate/status`. The RHEL family configures it as `/var/lib/logrotate/logrotate.status`. `logrotate -d` prints the path it reads from before it starts on the logs, so you do not have to remember which is which.
 
 Two things follow from how this file is used. First, a log that has no entry yet is given one with the current time, so the first run after you add a `daily` rule records a timestamp and does not rotate. The file rotates the next day. The man page's note on `-f` is about exactly this: forcing is useful after adding new entries. Second, the state file is updated at the end of every real run, even a run that hit errors. A `-d` run does not touch it.
+
+## Writing a rule for your own application
