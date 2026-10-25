@@ -106,3 +106,7 @@ The last decision is whether something has to be told. `postrotate` through `end
 ## What is in the state file?
 
 The thing that makes `daily` possible. Since logrotate is not a daemon, it needs to remember when it last rotated each file, and it keeps that in a plain text file: a version line, then one line per log path with the timestamp of its last rotation, unpadded, which looks like this:
+
+```
+"/var/log/myapp/app.log" 2026-10-25-6:49:14
+```
