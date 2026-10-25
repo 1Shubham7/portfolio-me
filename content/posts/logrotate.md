@@ -183,3 +183,5 @@ Run the tests as root. The timer runs logrotate as root, and a `-d` as your own 
 ## The sharp edges
 
 Everything above is the comfortable part. These are the five things that surprised me, and all of them are variations on one theme: logrotate makes one decision per run, and the schedule is a floor on how many runs you get, not a ceiling.
+
+**`size` has no memory.** People read `size 10M` as "rotate daily, but only if it is over 10M". It means "on every run, rotate if the file is over 10M", full stop. The man page says it directly: logrotate will not touch a log more than once a day unless the criterion is size and it is being run more than once a day, or `-f` is used. `maxsize` has the same property for the early-rotation half of its behaviour. So a `size` rule's real behaviour depends entirely on how often logrotate runs, and nothing promises that is once. The timer promises at least one run a day, and `Persistent=true` exists precisely so a reboot does not cost you one. A forced run by hand after editing the rule is a second run in the same calendar day, and so is the timer catching up after a reboot.
