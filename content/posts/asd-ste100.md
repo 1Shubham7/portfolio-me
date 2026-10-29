@@ -119,3 +119,5 @@ Full STE:
 80% STE:
 
 > At 14:02 UTC we deployed a new version of the API service with a wrong connection pool setting. The service opened far more database connections than before, the database got close to its connection limit, and users started seeing errors. The on-call engineer traced it to the deployment and rolled it back at 14:19 UTC. Error rates returned to normal within a minute.
+
+Three dictionary rules show up in the full STE version. "Close to its connection limit" is out, because "close" is only a verb; it has to be "near". "Error rates fell" is out, because "fall" only means move down by gravity; the approved word for a number going down is "decrease". And "performed a rollback" is a nominalisation with an unapproved verb in front of it, so it becomes "did a rollback" or just "rolled back", depending on whether you treat "roll back" as a technical verb of your own. The 80% version keeps "close" and "returned to normal" because nobody reading a postmortem will misread them, and that is the whole point of the dial: full STE is optimised for a reader who might, and your colleagues mostly will not.
