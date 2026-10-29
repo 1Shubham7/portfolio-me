@@ -197,3 +197,5 @@ Do not drop a fact to make a sentence shorter; split the sentence instead.
 The last line is in both for the reason above: left to itself, a model under a length rule shortens by deleting, and the thing it deletes is the detail you asked for.
 
 ## Ending notes
+
+The thing that stuck with me is that none of this is new. The question "how do you write so that nobody can misread you" was answered in the 1980s by people whose readers had a torque wrench in the other hand, and the answer was not a tone or a tip but a list: these words, these meanings, this many per sentence, one instruction at a time. The models have read that answer. All the prompt does is point at it.
