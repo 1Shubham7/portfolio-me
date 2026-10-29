@@ -86,3 +86,5 @@ One sentence of 38 words became three of 7, 8 and 8. The 80% version gets back a
 ### A runbook step: drain a node
 
 The typical answer:
+
+> Before performing maintenance on a node, it is generally recommended to first cordon the node in order to prevent any new pods from being scheduled onto it, after which you can proceed to drain it, which will gracefully evict the existing workloads, ensuring they are rescheduled elsewhere in the cluster. Once the maintenance has been completed, don't forget to uncordon the node so that it can once again accept workloads.
