@@ -164,3 +164,5 @@ The verb rules are the other place. No "-ing" forms outside technical nouns mean
 This is why Karpathy's 80% is the practical setting and not a joke. Tell a model "80% of the way to ASD-STE100" and it keeps the sentence limits, the active voice, the one-meaning habit and the hedge removal, and it stops policing "test" and "close". I cannot tell you what the 20% it gives back is in any precise sense, because the model cannot either. In practice it reads as: STE rules, English dictionary.
 
 ## What it is bad at, and what "STE-style" is not
+
+Three honest limits.
