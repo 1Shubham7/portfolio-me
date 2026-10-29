@@ -140,3 +140,13 @@ livenessProbe:
 ```
 
 Full STE:
+
+```yaml
+# The kubelet calls /healthz every 10 seconds. After 3 failures it restarts the container.
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  periodSeconds: 10
+  failureThreshold: 3
+```
