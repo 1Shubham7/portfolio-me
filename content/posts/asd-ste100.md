@@ -16,3 +16,5 @@ Then at the start of this month Andrej Karpathy [posted on X](https://x.com/karp
 ## What is it?
 
 ASD-STE100 is Simplified Technical English, a controlled language. A controlled language is a subset of a natural language with fewer words and stricter grammar, built so that a reader who is not fluent, or who is tired, or who is halfway up a wing, cannot read a sentence two ways.
+
+The standard has two parts.
