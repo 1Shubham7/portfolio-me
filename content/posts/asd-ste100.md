@@ -138,3 +138,5 @@ livenessProbe:
   periodSeconds: 10
   failureThreshold: 3
 ```
+
+Full STE:
