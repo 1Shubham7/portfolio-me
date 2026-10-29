@@ -125,3 +125,5 @@ Three dictionary rules show up in the full STE version. "Close to its connection
 The incident is made up and the times are there to give it a shape, nothing more.
 
 ### A config comment
+
+The typical answer, as a comment a model will happily put above a probe:
