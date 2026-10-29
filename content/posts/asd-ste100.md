@@ -33,3 +33,5 @@ The second part is a set of 53 writing rules. The ones that do most of the work:
 - Do not leave out words to make a sentence shorter. Articles and verbs stay.
 
 Hold those in your head while reading an average LLM answer and you can see every rule it breaks in the first sentence.
+
+## Where did it come from?
