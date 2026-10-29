@@ -113,3 +113,5 @@ The typical answer:
 > At approximately 14:02 UTC, a deployment was rolled out which inadvertently introduced a misconfiguration in the service's connection pool settings, leading to a situation where the number of upstream connections was significantly higher than anticipated, and as a result, the database became close to its connection limit, causing elevated error rates for end users. The issue was identified by the on-call engineer and a rollback was performed, after which error rates fell back to normal levels.
 
 Full STE:
+
+> At 14:02 UTC we deployed a new version of the API service. The new version had an incorrect connection pool configuration. The service opened many more database connections than before. The database was near its connection limit. Users got errors. The on-call engineer found the cause. We did a rollback of the deployment at 14:19 UTC. The error rate decreased to its usual level.
