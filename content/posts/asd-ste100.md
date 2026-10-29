@@ -57,7 +57,7 @@ The second is what the rules forbid, because the list of things STE forbids is a
 - Hedges. "Essentially", "generally speaking", "it's worth noting", "may opt to". There is no approved word for most of them and the one-meaning rule kills the rest.
 - Padding. "In order to" becomes "to". "In scenarios where it isn't" becomes "if it fails". The 20-word limit does this on its own.
 - Synonyms for variety. Models are trained on prose that rotates "container", "workload" and "the running process" to avoid repetition. STE uses one word for one thing, every time, which is what you want in a runbook.
-- Nominalisations. "Perform a restart of" becomes "restart". "Make a determination" becomes "decide".
+- Nominalisations. "Make a comparison of the two readings" becomes "compare the two readings". That one is the dictionary's own example under "comparison", which is not approved as a noun because "compare" is approved as a verb.
 - Passive voice. "The container will be restarted by the kubelet" becomes "the kubelet restarts the container", and now the sentence says who does it.
 - Multi-clause sentences. One instruction per sentence means the "and then, provided that, unless" chains get broken into steps, and steps are what a reader at 3 a.m. can follow.
 
