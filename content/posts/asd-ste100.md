@@ -43,3 +43,5 @@ AECMA merged into ASD (the Aerospace, Security and Defence Industries Associatio
 Getting a copy is a form on [asd-ste100.org](https://asd-ste100.org/) that asks who you are and what you will use it for, and the PDF follows. ASD's distribution log for the previous issue showed that most of the people requesting it were outside aerospace and defence.
 
 ## Why does naming it in a prompt work?
+
+Karpathy's reasoning, from the post:
