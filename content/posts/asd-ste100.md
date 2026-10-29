@@ -60,3 +60,5 @@ The second is what the rules forbid, because the list of things STE forbids is a
 - Nominalisations. "Perform a restart of" becomes "restart". "Make a determination" becomes "decide".
 - Passive voice. "The container will be restarted by the kubelet" becomes "the kubelet restarts the container", and now the sentence says who does it.
 - Multi-clause sentences. One instruction per sentence means the "and then, provided that, unless" chains get broken into steps, and steps are what a reader at 3 a.m. can follow.
+
+Naming the standard gets all of that in ten characters of prompt. I have not found a cheaper editing pass.
