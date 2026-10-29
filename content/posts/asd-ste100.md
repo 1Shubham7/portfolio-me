@@ -127,3 +127,14 @@ The incident is made up and the times are there to give it a shape, nothing more
 ### A config comment
 
 The typical answer, as a comment a model will happily put above a probe:
+
+```yaml
+# This liveness probe is configured to periodically check the health endpoint
+# in order to ensure that the container is still responsive and healthy.
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  periodSeconds: 10
+  failureThreshold: 3
+```
