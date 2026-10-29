@@ -62,3 +62,5 @@ The second is what the rules forbid, because the list of things STE forbids is a
 - Multi-clause sentences. One instruction per sentence means the "and then, provided that, unless" chains get broken into steps, and steps are what a reader at 3 a.m. can follow.
 
 Naming the standard gets all of that in ten characters of prompt. I have not found a cheaper editing pass.
+
+## The same text three ways
