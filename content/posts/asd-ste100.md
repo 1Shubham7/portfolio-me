@@ -107,3 +107,5 @@ Full STE:
 Full STE did something here that I did not expect: it forced "one instruction per sentence", so the explanation of what each step does became its own short sentence after the imperative, which is the exact shape of a good runbook. It also refused "gracefully", "ensuring", and "don't forget", none of which carry an instruction. The 80% version adds the commands and the flags, which are technical, and keeps the tone of someone who has run this before.
 
 ### An incident write-up paragraph
+
+The typical answer:
