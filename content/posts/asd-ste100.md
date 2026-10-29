@@ -111,3 +111,5 @@ Full STE did something here that I did not expect: it forced "one instruction pe
 The typical answer:
 
 > At approximately 14:02 UTC, a deployment was rolled out which inadvertently introduced a misconfiguration in the service's connection pool settings, leading to a situation where the number of upstream connections was significantly higher than anticipated, and as a result, the database became close to its connection limit, causing elevated error rates for end users. The issue was identified by the on-call engineer and a rollback was performed, after which error rates fell back to normal levels.
+
+Full STE:
