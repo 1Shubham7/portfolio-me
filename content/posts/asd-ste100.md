@@ -66,3 +66,5 @@ Naming the standard gets all of that in ten characters of prompt. I have not fou
 ## The same text three ways
 
 Every example below is the same explanation written three times: the kind of paragraph a model produces with no style instruction, the same content in full STE, and the "80% of the way to ASD-STE100" setting Karpathy mentions. The first version in each set is illustrative. I wrote it to show the pattern, it is not a quote from a specific model run; if you have used these tools you will recognise it anyway. The STE versions are mine, written against the rules, and I would not call them certified compliant. More on that under limits.
+
+### A liveness probe
