@@ -96,3 +96,5 @@ Full STE:
 > 3. Wait until the drain is complete.
 > 4. Do the maintenance.
 > 5. Uncordon the node. New pods can start on the node again.
+
+80% STE:
