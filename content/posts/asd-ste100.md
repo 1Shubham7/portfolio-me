@@ -8,3 +8,5 @@ weight: 2
 cover:
     image: "/blog/asd-ste100/asd-ste100.png"
 ---
+
+Ask a model what a liveness probe is and you get a paragraph. Somewhere in the middle of it is the answer, wrapped in "essentially", "in order to", "it's worth noting", and a closing sentence that restates the opening one. I had got used to reading past that. Everyone who uses these tools daily has, the same way you stop seeing the ads on a page.
