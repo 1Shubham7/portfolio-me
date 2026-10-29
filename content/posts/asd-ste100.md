@@ -156,3 +156,5 @@ There is no 80% version because the STE one is already what a human would write.
 ## Where full STE fights you
 
 The dictionary was written for aircraft, and some of its choices are strange in a terminal.
+
+"Test" as a noun only is the one I hit first. "Test the fix" is out; "do a test of the fix" is in. That is correct STE and I will never write it. "Begin" and "commence" are gone in favour of "start", which I agree with. "Accessible" is not approved, the replacement is the noun "access", so "the endpoint is accessible from the VPN" has to become something like "you can get access to the endpoint from the VPN". The three-word limit on noun clusters hits almost every Kubernetes object name: "horizontal pod autoscaler target" is four, "cluster API server certificate rotation" is five, and the rule wants you to split them with a preposition even when the cluster is the actual name of the thing. You are allowed to declare these as technical nouns, which is the escape hatch, but then you are the one deciding what counts, and a model asked for full STE does not always make the same call you would.
