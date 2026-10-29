@@ -168,3 +168,5 @@ This is why Karpathy's 80% is the practical setting and not a joke. Tell a model
 Three honest limits.
 
 STE was built for procedures and descriptions. It has nothing to say about an argument, an opinion, a tradeoff, or a story. Ask for a design review in full STE and you get a list of facts with the reasoning squeezed out, because "I think X because Y, although Z" is three clauses and a hedge. ASD's own front matter answers "Can STE be used alone?" with "No": it is meant to sit beside a style guide and the conventions of your field. Fine for a runbook. Wrong for the paragraph explaining why the runbook exists.
+
+It reads robotic. The short-sentence, one-word-one-meaning style has a sound, and the sound is a manual. For a runbook that is a feature. For a message to a human, two paragraphs of it and they will ask what is wrong with you. I have started using it for the text I read, not the text I send.
