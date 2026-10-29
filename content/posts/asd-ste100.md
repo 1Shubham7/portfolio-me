@@ -82,3 +82,5 @@ Full STE:
 > A liveness probe checks whether a container is still working. The kubelet runs it on a fixed interval, and if it fails more than the threshold, the kubelet restarts the container. The pod stays where it is; only the container restarts.
 
 One sentence of 38 words became three of 7, 8 and 8. The 80% version gets back a "whether", a compound sentence, and one clarifying detail that full STE would make you spell out as a separate instruction. That last sentence is the one I would actually want in a doc.
+
+### A runbook step: drain a node
