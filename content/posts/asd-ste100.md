@@ -166,3 +166,5 @@ This is why Karpathy's 80% is the practical setting and not a joke. Tell a model
 ## What it is bad at, and what "STE-style" is not
 
 Three honest limits.
+
+STE was built for procedures and descriptions. It has nothing to say about an argument, an opinion, a tradeoff, or a story. Ask for a design review in full STE and you get a list of facts with the reasoning squeezed out, because "I think X because Y, although Z" is three clauses and a hedge. ASD's own front matter answers "Can STE be used alone?" with "No": it is meant to sit beside a style guide and the conventions of your field. Fine for a runbook. Wrong for the paragraph explaining why the runbook exists.
