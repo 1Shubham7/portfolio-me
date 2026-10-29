@@ -186,3 +186,10 @@ Do not drop a fact to make a sentence shorter; split the sentence instead.
 ```
 
 The 80% version, which is the one I reach for by default:
+
+```
+Write about 80% of the way to ASD-STE100 Simplified Technical English.
+Keep the short sentences, active voice, one meaning per word, and no hedges or filler.
+Normal English vocabulary is fine; do not restrict yourself to the STE dictionary.
+Do not drop a fact to make a sentence shorter; split the sentence instead.
+```
