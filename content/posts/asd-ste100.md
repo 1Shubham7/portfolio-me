@@ -35,3 +35,5 @@ The second part is a set of 53 writing rules. The ones that do most of the work:
 Hold those in your head while reading an average LLM answer and you can see every rule it breaks in the first sentence.
 
 ## Where did it come from?
+
+The original users were aircraft mechanics. In the early 1980s the European airlines asked AECMA, the European aerospace industry association, to look at the English in maintenance manuals, because a large share of the people maintaining their fleets did not speak English as a first language and a misread step on an aircraft is not a documentation problem. In 1983 AECMA decided to write its own controlled English instead of adopting an existing one, and the first AECMA Simplified English guide came out in the middle of that decade. The ATA specification for maintenance manuals has required it since 1986, so if you have ever seen a page of an aircraft maintenance manual, you have seen STE.
