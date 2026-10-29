@@ -47,3 +47,5 @@ Getting a copy is a form on [asd-ste100.org](https://asd-ste100.org/) that asks 
 Karpathy's reasoning, from the post:
 
 > Writing. Something I've had success with: Ask your LLM to explain something in ASD-STE100, it's a controlled language specification originally developed for aerospace maintenance documentation. LLMs well-versed in this language and it comes with heavy constraints on clean writing style that I often find a lot more readable. Sometimes I've tried to soften it a bit e.g. ask for "80% of the way to ASD-STE100" because the spec is quite stringent.
+
+Two things make this work and neither is magic.
