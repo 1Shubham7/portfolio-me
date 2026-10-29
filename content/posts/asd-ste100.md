@@ -70,3 +70,5 @@ Every example below is the same explanation written three times: the kind of par
 ### A liveness probe
 
 The typical answer:
+
+> A liveness probe is essentially a mechanism that Kubernetes leverages in order to ascertain whether a container is still functioning as expected, and in scenarios where it isn't, the kubelet may opt to restart it.
