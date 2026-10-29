@@ -162,3 +162,5 @@ The dictionary was written for aircraft, and some of its choices are strange in 
 The verb rules are the other place. No "-ing" forms outside technical nouns means no "while the pod is terminating", no "after draining the node". No continuous or perfect tenses means "has been evicted" is out and "was evicted" is in, and sometimes the perfect was carrying meaning. Models asked for full STE also start dropping things rather than finding an approved way to say them, which is a quiet failure: the sentence is compliant and shorter and now missing a detail.
 
 This is why Karpathy's 80% is the practical setting and not a joke. Tell a model "80% of the way to ASD-STE100" and it keeps the sentence limits, the active voice, the one-meaning habit and the hedge removal, and it stops policing "test" and "close". I cannot tell you what the 20% it gives back is in any precise sense, because the model cannot either. In practice it reads as: STE rules, English dictionary.
+
+## What it is bad at, and what "STE-style" is not
