@@ -1,6 +1,6 @@
 ---
 title: "Your LLM Writes Too Much: How ASD-STE100 Makes It Speak a Controlled Language"
-description: "ASD-STE100 is a forty-year-old aerospace standard for writing maintenance manuals that nobody can misread: one meaning per word, twenty words per sentence, one instruction per sentence. The models already know it. Naming it in a prompt is the cheapest editing pass there is, and asking for 80% of it is the setting that actually works."
+description: "ASD-STE100 is a forty-year-old aerospace standard for writing maintenance manuals that nobody can misread, the models already know it, and naming it in a prompt at about 80% strength is the cheapest editing pass there is."
 dateString: October 2026
 draft: false
 tags: ["LLM", "Writing", "Technical Writing", "DevOps", "SRE"]
@@ -173,9 +173,9 @@ It reads robotic. The short-sentence, one-word-one-meaning style has a sound, an
 
 And a model writing "in ASD-STE100" is approximating it. Compliance means every word in the text is either in the approved dictionary, or a technical noun or verb you have declared, used as the approved part of speech with the approved meaning. A model does not have the dictionary open; it has a strong statistical memory of what STE text looks like. It will get "start" right and "test" wrong, it will sometimes let a "-ing" through, and it will not tell you. The STE versions in this post are mine, written against the rules, and I would still not put them through a checker and expect zero findings. If you actually need compliant STE, because a contract or S1000D says so, there are real checkers: Boeing's Simplified English Checker, HyperSTE from Etteplan, Congree, and TechScribe's term checker, among others. ASD does not endorse or certify any of them, and their critics point out that a checker can pass text that is not grammatical. For the rest of us, "STE-style" is the right name for what we are getting, and it is still a big improvement.
 
-## The prompt I use
+## A prompt to start from
 
-The full version, for runbooks, procedures and anything I will read while something is broken:
+The full version, for runbooks, procedures and anything you will read while something is broken:
 
 ```
 Write the answer in ASD-STE100 Simplified Technical English.
@@ -185,7 +185,7 @@ No hedges and no filler. Use my technical names (Kubernetes objects, commands, f
 Do not drop a fact to make a sentence shorter; split the sentence instead.
 ```
 
-The 80% version, which is the one I reach for by default:
+The 80% version, which is the one to default to:
 
 ```
 Write about 80% of the way to ASD-STE100 Simplified Technical English.
@@ -193,6 +193,8 @@ Keep the short sentences, active voice, one meaning per word, and no hedges or f
 Normal English vocabulary is fine; do not restrict yourself to the STE dictionary.
 Do not drop a fact to make a sentence shorter; split the sentence instead.
 ```
+
+[NEED: run both prompts at least once and edit them to what you actually use; if they are already what you use, retitle this section back to "The prompt I use"]
 
 The last line is in both for the reason above: left to itself, a model under a length rule shortens by deleting, and the thing it deletes is the detail you asked for.
 
