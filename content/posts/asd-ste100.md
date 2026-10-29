@@ -154,3 +154,5 @@ livenessProbe:
 There is no 80% version because the STE one is already what a human would write. The comment went from restating the keys below it to saying the one thing the keys do not: what happens when it fails.
 
 ## Where full STE fights you
+
+The dictionary was written for aircraft, and some of its choices are strange in a terminal.
