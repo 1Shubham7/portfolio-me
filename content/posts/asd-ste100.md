@@ -78,3 +78,5 @@ Full STE:
 > A liveness probe checks if a container works. The kubelet runs the probe at a set interval. If the probe fails, the kubelet restarts the container.
 
 80% STE:
+
+> A liveness probe checks whether a container is still working. The kubelet runs it on a fixed interval, and if it fails more than the threshold, the kubelet restarts the container. The pod stays where it is; only the container restarts.
