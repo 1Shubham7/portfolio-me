@@ -65,7 +65,7 @@ Naming the standard gets all of that in ten characters of prompt. I have not fou
 
 ## The same text three ways
 
-Every example below is the same explanation written three times: the kind of paragraph a model produces with no style instruction, the same content in full STE, and the "80% of the way to ASD-STE100" setting Karpathy mentions. The first version in each set is illustrative. I wrote it to show the pattern, it is not a quote from a specific model run; if you have used these tools you will recognise it anyway. The STE versions are mine, written against the rules, and I would not call them certified compliant. More on that under limits.
+Every example below is the same explanation written three times: the kind of paragraph a model produces with no style instruction, the same content in full STE, and the "80% of the way to ASD-STE100" setting Karpathy mentions. The first version in each set is illustrative. I wrote it to show the pattern, it is not a quote from a specific model run; if you have used these tools you will recognise it anyway. The STE versions are mine, written against the rules with the dictionary open, and I would still not call them certified compliant. More on that under limits.
 
 ### A liveness probe
 
@@ -75,13 +75,13 @@ The typical answer:
 
 Full STE:
 
-> A liveness probe checks if a container works. The kubelet runs the probe at a set interval. If the probe fails, the kubelet restarts the container.
+> A liveness probe makes sure that a container operates correctly. The kubelet sends the probe to the container at set intervals. If the probe fails, the kubelet restarts the container.
 
 80% STE:
 
 > A liveness probe checks whether a container is still working. The kubelet runs it on a fixed interval, and if it fails more than the threshold, the kubelet restarts the container. The pod stays where it is; only the container restarts.
 
-One sentence of 38 words became three of 7, 8 and 8. The 80% version gets back a "whether", a compound sentence, and one clarifying detail that full STE would make you spell out as a separate instruction. That last sentence is the one I would actually want in a doc.
+One sentence of 35 words became three of 10, 11 and 9. Two dictionary calls are visible in the full version. "Makes sure" is there because "check" is approved only as a noun, and "operates" is there because "work" and "run" are not approved as verbs at all. "Fails" is my own technical verb: the dictionary wants "if ... not" instead, but Kubernetes documents a probe as succeeding or failing and I am not going to rename that. The 80% version gets back "checks" and "working", a compound sentence, and one clarifying detail that full STE would make you spell out as a separate instruction. That last sentence is the one I would actually want in a doc.
 
 ### A runbook step: drain a node
 
@@ -92,8 +92,8 @@ The typical answer:
 Full STE:
 
 > 1. Cordon the node. New pods cannot start on the node.
-> 2. Drain the node. The pods on the node stop and start on other nodes.
-> 3. Wait until the drain is complete.
+> 2. Drain the node. The pods on the node stop. New pods start on other nodes.
+> 3. Wait until the drain is completed.
 > 4. Do the maintenance.
 > 5. Uncordon the node. New pods can start on the node again.
 
@@ -114,7 +114,7 @@ The typical answer:
 
 Full STE:
 
-> At 14:02 UTC we deployed a new version of the API service. The new version had an incorrect connection pool configuration. The service opened many more database connections than before. The database was near its connection limit. Users got errors. The on-call engineer found the cause. We did a rollback of the deployment at 14:19 UTC. The error rate decreased to its usual level.
+> At 14:02 UTC we deployed a new version of the API service. The new version had an incorrect connection pool configuration. The service made many more database connections than before. The database was near its connection limit. Some requests from users had errors. The on-call engineer found the cause. We did a rollback of the deployment at 14:19 UTC. The error rate decreased to its usual level.
 
 80% STE:
 
@@ -142,7 +142,7 @@ livenessProbe:
 Full STE:
 
 ```yaml
-# The kubelet calls /healthz every 10 seconds. After 3 failures it restarts the container.
+# The kubelet sends a GET request to /healthz at 10-second intervals. After 3 failures it restarts the container.
 livenessProbe:
   httpGet:
     path: /healthz
@@ -151,7 +151,7 @@ livenessProbe:
   failureThreshold: 3
 ```
 
-There is no 80% version because the STE one is already what a human would write. The comment went from restating the keys below it to saying the one thing the keys do not: what happens when it fails.
+There is no 80% version because the STE one is already what a human would write. The comment went from restating the keys below it to saying the one thing the keys do not: what happens when it fails. ("Every 10 seconds" would have been the natural phrasing. "Every" is not approved; the dictionary sends you to "interval".)
 
 ## Where full STE fights you
 
