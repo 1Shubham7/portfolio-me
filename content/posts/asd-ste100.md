@@ -176,3 +176,11 @@ And a model writing "in ASD-STE100" is approximating it. Compliance means every 
 ## The prompt I use
 
 The full version, for runbooks, procedures and anything I will read while something is broken:
+
+```
+Write the answer in ASD-STE100 Simplified Technical English.
+Sentences of at most 20 words. One instruction per sentence.
+Active voice, simple present tense. One word for one thing: do not vary terms for style.
+No hedges and no filler. Use my technical names (Kubernetes objects, commands, flags) as technical nouns.
+Do not drop a fact to make a sentence shorter; split the sentence instead.
+```
