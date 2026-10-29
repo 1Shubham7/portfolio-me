@@ -51,3 +51,5 @@ Karpathy's reasoning, from the post:
 Two things make this work and neither is magic.
 
 The first is that the models have read the standard, the forum threads about the standard, and decades of manuals written in it. "ASD-STE100" is a name that points at a large, consistent body of text with a very recognisable shape. Saying it is the same kind of instruction as "write this as a man page": you are not explaining a style, you are naming one the model already has.
+
+The second is what the rules forbid, because the list of things STE forbids is almost exactly the list of things LLM prose does by default:
