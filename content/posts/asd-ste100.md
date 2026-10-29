@@ -199,3 +199,5 @@ The last line is in both for the reason above: left to itself, a model under a l
 ## Ending notes
 
 The thing that stuck with me is that none of this is new. The question "how do you write so that nobody can misread you" was answered in the 1980s by people whose readers had a torque wrench in the other hand, and the answer was not a tone or a tip but a list: these words, these meanings, this many per sentence, one instruction at a time. The models have read that answer. All the prompt does is point at it.
+
+If you read LLM output all day, try the 80% line in your system prompt for a week and then take it out. The difference is in the second half of that experiment.
