@@ -22,3 +22,12 @@ The standard has two parts.
 The first is a dictionary of roughly 900 approved words. The thing that makes it different from a vocabulary list is that each approved word gets exactly one meaning and one part of speech. "Close" is approved as a verb: close a door, close a circuit breaker. The adjective "close", as in "close to the landing gear", is not approved; you write "near". "Fall" means to move down by gravity and nothing else, so pressure does not fall in STE, it decreases. "Test" is a noun only, so you do not test the pump, you do a test of the pump. Where English has five words for one idea, the dictionary keeps one: "start" is approved, and "begin", "commence" and "initiate" are listed as not approved with "start" as the replacement. On top of the dictionary you are allowed your own technical nouns and technical verbs, the names of the parts and actions in your field, which is how "kubelet" and "cordon" get into an STE sentence without being in a list written by the aerospace industry.
 
 The second part is a set of 53 writing rules. The ones that do most of the work:
+
+- Procedural sentences (instructions) have at most 20 words. Descriptive sentences have at most 25.
+- One instruction per sentence.
+- One topic per paragraph, and at most six sentences in it.
+- Active voice. In descriptive text, passive is allowed only when nobody knows who the agent is.
+- Only simple verb forms: infinitive, imperative, simple present, simple past, simple future. No "is being restarted", no "has been configured".
+- No "-ing" forms except inside technical nouns. "Logging" the noun is fine; "the kubelet is restarting the container" is not.
+- Noun clusters of at most three words. "Kubernetes node drain runbook step" is five nouns in a row and has to be broken up.
+- Do not leave out words to make a sentence shorter. Articles and verbs stay.
