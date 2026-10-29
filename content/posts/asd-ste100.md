@@ -15,11 +15,11 @@ Then at the start of this month Andrej Karpathy [posted on X](https://x.com/karp
 
 ## What is it?
 
-ASD-STE100 is Simplified Technical English, a controlled language. A controlled language is a subset of a natural language with fewer words and stricter grammar, built so that a reader who is not fluent, or who is tired, or who is halfway up a wing, cannot read a sentence two ways.
+ASD-STE100 is Simplified Technical English, a controlled language. A controlled language is a subset of a natural language with fewer words and stricter grammar, built so that a reader who is not fluent, or who is halfway up a wing, cannot read a sentence two ways.
 
 The standard has two parts.
 
-The first is a dictionary of roughly 900 approved words. The thing that makes it different from a vocabulary list is that each approved word gets exactly one meaning and one part of speech. "Close" is approved as a verb: close a door, close a circuit breaker. The adjective "close", as in "close to the landing gear", is not approved; you write "near". "Fall" means to move down by gravity and nothing else, so pressure does not fall in STE, it decreases. "Test" is a noun only, so you do not test the pump, you do a test of the pump. Where English has five words for one idea, the dictionary keeps one: "start" is approved, and "begin", "commence" and "initiate" are listed as not approved with "start" as the replacement. On top of the dictionary you are allowed your own technical nouns and technical verbs, the names of the parts and actions in your field, which is how "kubelet" and "cordon" get into an STE sentence without being in a list written by the aerospace industry.
+The first is a dictionary of roughly 900 approved words. The thing that makes it different from a vocabulary list is that each approved word gets exactly one meaning and one part of speech. "Close" is approved as a verb: close a door, close a circuit breaker. The adjective "close", as in "close to the landing gear", is not approved; you write "near". "Fall" means to move down by gravity and nothing else, so pressure does not fall in STE, it decreases. "Test" is a noun only, so you do not test the pump, you do a test of the pump. Where English has five words for one idea, the dictionary keeps one: "start" is approved, and "begin", "commence" and "initiate" are listed as not approved with "start" as the replacement. On top of the dictionary you are allowed your own technical nouns and technical verbs, the names of the parts and actions in your field, which is how "kubelet", "cordon" and "request" (the HTTP kind) get into an STE sentence without being in a list written by the aerospace industry.
 
 The second part is a set of 53 writing rules. The ones that do most of the work:
 
