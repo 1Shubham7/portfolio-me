@@ -76,3 +76,5 @@ The typical answer:
 Full STE:
 
 > A liveness probe checks if a container works. The kubelet runs the probe at a set interval. If the probe fails, the kubelet restarts the container.
+
+80% STE:
