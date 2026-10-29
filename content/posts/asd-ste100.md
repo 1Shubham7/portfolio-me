@@ -98,3 +98,8 @@ Full STE:
 > 5. Uncordon the node. New pods can start on the node again.
 
 80% STE:
+
+> 1. Cordon the node so nothing new is scheduled on it: `kubectl cordon <node>`.
+> 2. Drain it: `kubectl drain <node> --ignore-daemonsets --delete-emptydir-data`. The pods are evicted and come back on other nodes. Wait for the command to return.
+> 3. Do the maintenance.
+> 4. Uncordon the node: `kubectl uncordon <node>`.
