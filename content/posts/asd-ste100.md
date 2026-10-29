@@ -27,7 +27,7 @@ The second part is a set of 53 writing rules. The ones that do most of the work:
 - One instruction per sentence.
 - One topic per paragraph, and at most six sentences in it.
 - Active voice. In descriptive text, passive is allowed only when nobody knows who the agent is.
-- Only simple verb forms: infinitive, imperative, simple present, simple past, simple future. No "is being restarted", no "has been configured".
+- Only simple verb forms: infinitive, imperative, simple present, simple past, simple future, and the past participle as an adjective ("the installed unit"). No "is being restarted", no "has been configured".
 - No "-ing" forms except inside technical nouns. "Logging" the noun is fine; "the kubelet is restarting the container" is not.
 - Noun clusters of at most three words. "Kubernetes node drain runbook step" is five nouns in a row and has to be broken up.
 - Do not leave out words to make a sentence shorter. Articles and verbs stay.
