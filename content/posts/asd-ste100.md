@@ -41,3 +41,5 @@ The original users were aircraft mechanics. In the early 1980s the European airl
 AECMA merged into ASD (the Aerospace, Security and Defence Industries Association of Europe) in 2004, and the guide was renamed ASD-STE100 and turned into a specification. It was a paid document for a long time. Since Issue 6 in 2013 it has been free. The current issue is Issue 9, released on 15 January 2025, and with it ASD changed the subtitle from "specification" to "standard" and now describes it as an international standard for technical documentation. That is ASD's own label; it is not an ISO standard, and I would not call it one. Issue 9 added no new rules. It reworded 31 of the 53 and updated 555 dictionary entries, which tells you how settled the thing is after forty years.
 
 Getting a copy is a form on [asd-ste100.org](https://asd-ste100.org/) that asks who you are and what you will use it for, and the PDF follows. ASD's distribution log for the previous issue showed that most of the people requesting it were outside aerospace and defence.
+
+## Why does naming it in a prompt work?
