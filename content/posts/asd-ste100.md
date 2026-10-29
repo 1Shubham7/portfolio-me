@@ -53,3 +53,10 @@ Two things make this work and neither is magic.
 The first is that the models have read the standard, the forum threads about the standard, and decades of manuals written in it. "ASD-STE100" is a name that points at a large, consistent body of text with a very recognisable shape. Saying it is the same kind of instruction as "write this as a man page": you are not explaining a style, you are naming one the model already has.
 
 The second is what the rules forbid, because the list of things STE forbids is almost exactly the list of things LLM prose does by default:
+
+- Hedges. "Essentially", "generally speaking", "it's worth noting", "may opt to". There is no approved word for most of them and the one-meaning rule kills the rest.
+- Padding. "In order to" becomes "to". "In scenarios where it isn't" becomes "if it fails". The 20-word limit does this on its own.
+- Synonyms for variety. Models are trained on prose that rotates "container", "workload" and "the running process" to avoid repetition. STE uses one word for one thing, every time, which is what you want in a runbook.
+- Nominalisations. "Perform a restart of" becomes "restart". "Make a determination" becomes "decide".
+- Passive voice. "The container will be restarted by the kubelet" becomes "the kubelet restarts the container", and now the sentence says who does it.
+- Multi-clause sentences. One instruction per sentence means the "and then, provided that, unless" chains get broken into steps, and steps are what a reader at 3 a.m. can follow.
