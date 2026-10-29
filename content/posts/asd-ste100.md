@@ -115,3 +115,5 @@ The typical answer:
 Full STE:
 
 > At 14:02 UTC we deployed a new version of the API service. The new version had an incorrect connection pool configuration. The service opened many more database connections than before. The database was near its connection limit. Users got errors. The on-call engineer found the cause. We did a rollback of the deployment at 14:19 UTC. The error rate decreased to its usual level.
+
+80% STE:
