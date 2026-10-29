@@ -184,3 +184,5 @@ Active voice, simple present tense. One word for one thing: do not vary terms fo
 No hedges and no filler. Use my technical names (Kubernetes objects, commands, flags) as technical nouns.
 Do not drop a fact to make a sentence shorter; split the sentence instead.
 ```
+
+The 80% version, which is the one I reach for by default:
