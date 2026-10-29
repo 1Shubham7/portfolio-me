@@ -79,9 +79,9 @@ Full STE:
 
 80% STE:
 
-> A liveness probe checks whether a container is still working. The kubelet runs it on a fixed interval, and if it fails more than the threshold, the kubelet restarts the container. The pod stays where it is; only the container restarts.
+> A liveness probe checks whether a container is still working. The kubelet runs it on a fixed interval, and if it fails a set number of times in a row, the kubelet restarts the container. The pod stays where it is; only the container restarts.
 
-One sentence of 35 words became three of 10, 11 and 9. Two dictionary calls are visible in the full version. "Makes sure" is there because "check" is approved only as a noun, and "operates" is there because "work" and "run" are not approved as verbs at all. "Fails" is my own technical verb: the dictionary wants "if ... not" instead, but Kubernetes documents a probe as succeeding or failing and I am not going to rename that. The 80% version gets back "checks" and "working", a compound sentence, and one clarifying detail that full STE would make you spell out as a separate instruction. That last sentence is the one I would actually want in a doc.
+One sentence of 35 words became three of 10, 11 and 9. Two dictionary calls are visible in the full version. "Makes sure" is there because "check" is approved only as a noun, and "operates" is there because "work" and "run" are not approved as verbs at all. "Fails" and "restarts" are my own technical verbs: the dictionary wants "if ... not" and "start ... again" instead, but Kubernetes documents a probe as succeeding or failing and a container as restarting, and I am not going to rename either. The 80% version gets back "checks" and "working", a compound sentence, and one clarifying detail that full STE would make you spell out as a separate instruction. That last sentence is the one I would actually want in a doc.
 
 ### A runbook step: drain a node
 
@@ -114,7 +114,7 @@ The typical answer:
 
 Full STE:
 
-> At 14:02 UTC we deployed a new version of the API service. The new version had an incorrect connection pool configuration. The service made many more database connections than before. The database was near its connection limit. Some requests from users had errors. The on-call engineer found the cause. We did a rollback of the deployment at 14:19 UTC. The error rate decreased to its usual level.
+> At 14:02 UTC we deployed a new version of the API service. The new version had an incorrect connection pool configuration. The service made many more database connections than before. The database was near its connection limit. Some requests from users had errors. The on-call engineer found the cause. We did a rollback of the deployment at 14:19 UTC. The error rate decreased to its usual value.
 
 80% STE:
 
