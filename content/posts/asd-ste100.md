@@ -31,3 +31,5 @@ The second part is a set of 53 writing rules. The ones that do most of the work:
 - No "-ing" forms except inside technical nouns. "Logging" the noun is fine; "the kubelet is restarting the container" is not.
 - Noun clusters of at most three words. "Kubernetes node drain runbook step" is five nouns in a row and has to be broken up.
 - Do not leave out words to make a sentence shorter. Articles and verbs stay.
+
+Hold those in your head while reading an average LLM answer and you can see every rule it breaks in the first sentence.
