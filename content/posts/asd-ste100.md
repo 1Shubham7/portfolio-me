@@ -74,3 +74,5 @@ The typical answer:
 > A liveness probe is essentially a mechanism that Kubernetes leverages in order to ascertain whether a container is still functioning as expected, and in scenarios where it isn't, the kubelet may opt to restart it.
 
 Full STE:
+
+> A liveness probe checks if a container works. The kubelet runs the probe at a set interval. If the probe fails, the kubelet restarts the container.
