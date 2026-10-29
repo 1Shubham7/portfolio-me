@@ -195,3 +195,5 @@ Do not drop a fact to make a sentence shorter; split the sentence instead.
 ```
 
 The last line is in both for the reason above: left to itself, a model under a length rule shortens by deleting, and the thing it deletes is the detail you asked for.
+
+## Ending notes
