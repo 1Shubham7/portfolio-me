@@ -193,3 +193,5 @@ Keep the short sentences, active voice, one meaning per word, and no hedges or f
 Normal English vocabulary is fine; do not restrict yourself to the STE dictionary.
 Do not drop a fact to make a sentence shorter; split the sentence instead.
 ```
+
+The last line is in both for the reason above: left to itself, a model under a length rule shortens by deleting, and the thing it deletes is the detail you asked for.
