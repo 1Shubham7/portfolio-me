@@ -74,3 +74,5 @@ Nothing, until retention says so. By default a broker keeps a partition's segmen
 The alternative to deleting by age is compacting by key. With `cleanup.policy=compact` on a topic, a background cleaner rewrites old segments and keeps only the latest record for each key, so the topic becomes a changelog that always holds at least the last known value for every key. A record with a key and a null value is a tombstone: it says "delete this key" and is itself removed after `delete.retention.ms`. Compacted topics are how a consumer can rebuild a full table from Kafka without reading every update since the beginning of time, and they are what Kafka Streams uses to recover its own state after a crash. The two policies can be combined on one topic, in which case segments older than the retention limit are still deleted even though the topic is compacted.
 
 ## How is it different from a message queue?
+
+I will use RabbitMQ as the queue, since it is the one most people have run, with SQS as the hosted cousin. Most of what follows applies to ActiveMQ and the rest of the JMS family too.
