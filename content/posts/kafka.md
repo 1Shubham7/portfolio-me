@@ -130,3 +130,5 @@ The milestones since each extend the log idea rather than replace it. Kafka Stre
 One decision explains the whole post. The broker owns the data and the consumer owns its position. Everything that makes Kafka feel strange coming from a queue is a consequence: records outlive their readers, so replay is free; the broker does not track consumers, so adding a reader costs nothing; a partition is one file, so order is per partition and the key is how you choose it; disks are sequential, so it is fast. Everything a queue does better is the same decision seen from the other side: without per-message state on the broker there is no priority, no per-message routing, no per-message delete, and no clean request/reply.
 
 If you have inherited a cluster and want to see the model in one command, `kafka-consumer-groups.sh --describe` on a busy group shows it: the broker's log end, the group's committed offset, and the gap between them. That gap is the entire contract.
+
+Thanks for your time :)
