@@ -26,3 +26,5 @@ $ ls /var/lib/kafka/data/orders-0/
 00000000000001048576.log
 00000000000001048576.timeindex
 ```
+
+The file name is the offset of the first record in that segment. An offset is just a number: the position of a record in its partition, starting at zero and going up by one with each append. It is the only identity a record has. The 2011 paper is explicit that this was a choice. There are no message IDs, so there is no seek-heavy index mapping IDs to disk locations, and the offset of the next message is the current offset plus the current message's length.
