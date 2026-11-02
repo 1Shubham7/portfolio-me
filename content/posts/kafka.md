@@ -58,3 +58,5 @@ billing  orders  1          183990          183990          0
 ```
 
 That output (trimmed of the consumer ID and host columns) is the whole consumer-side model in two numbers. `LOG-END-OFFSET` is the broker's fact. `CURRENT-OFFSET` is the group's claim. Lag is the difference.
+
+## Why is ordering per partition, not per topic?
