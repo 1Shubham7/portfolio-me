@@ -35,3 +35,5 @@ A topic is a named set of partitions. `num.partitions` defaults to 1, so a topic
 kafka-topics.sh --bootstrap-server broker:9092 --create \
   --topic orders --partitions 12 --replication-factor 3
 ```
+
+Which partition a record lands in is decided by the producer, not the broker. If the record has a key, the producer hashes the key and takes it modulo the partition count, so every record with key `customer-42` goes to the same partition for as long as the partition count does not change. If there is no key the producer spreads records across partitions. That hash is the whole mechanism behind ordering, and I come back to it.
