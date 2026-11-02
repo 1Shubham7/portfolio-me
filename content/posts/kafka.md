@@ -63,7 +63,7 @@ That output (trimmed of the consumer ID and host columns) is the whole consumer-
 
 Because a partition is one file appended by one leader, and a topic is several of them with nothing coordinating between them. Records in partition 0 are in the order they were appended to partition 0. Records in partition 0 and partition 7 have no defined order relative to each other, and Kafka does not pretend otherwise. The paper says it in one sentence: messages from a single partition are delivered in order, with no guarantee across partitions.
 
-This is why the key matters. If every event about `customer-42` carries that key, every event about that customer is in one partition, in order, read by one consumer in the group. That is all the ordering most systems need. If you need a global order you need one partition, which means one leader and one consumer, and you have given up the parallelism that was the point.
+This is why the key matters. If every event about `customer-42` carries that key, every event about that customer is in one partition, in order, read by one consumer in the group. That is all the ordering most systems need. If you need a global order you need one partition, which means one leader and one consumer, and no parallelism on either side.
 
 Two consequences bite people. Adding partitions to a topic changes the modulo, so keys start hashing to different partitions, and the "all events for one key in one place" property no longer holds across the change. And a hot key is a hot partition: if one customer produces a tenth of all events, one partition carries a tenth of the topic and the consumer assigned to it does a tenth of the work alone.
 
