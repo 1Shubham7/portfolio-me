@@ -45,3 +45,5 @@ A consumer group is how reads are shared out. Every consumer joins with a `group
 ## What happens on a write, and on a read?
 
 A producer batches records per partition, compresses the batch if told to, and sends it to the leader of that partition. The leader appends the batch to the end of the active segment. It writes to the filesystem, which means the page cache; it does not `fsync` per record, and the docs are open about that: durability comes from replication, not from flushing. Followers fetch the new bytes, append them, and report their position. Once the ISR has caught up the leader advances the high watermark and the records become visible to consumers. If the producer asked for `acks=all`, that is when it hears back.
+
+A read is a fetch request: partition, offset, maximum bytes. The broker finds the segment, looks up the byte position in the index, and ships bytes from there. If nothing new has arrived, the request can wait (`fetch.max.wait.ms`) rather than return empty, which is how a pull model avoids a tight polling loop. The consumer gets a batch, hands records to the application, and remembers the next offset to ask for.
