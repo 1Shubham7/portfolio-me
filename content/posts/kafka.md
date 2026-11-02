@@ -60,3 +60,5 @@ billing  orders  1          183990          183990          0
 That output (trimmed of the consumer ID and host columns) is the whole consumer-side model in two numbers. `LOG-END-OFFSET` is the broker's fact. `CURRENT-OFFSET` is the group's claim. Lag is the difference.
 
 ## Why is ordering per partition, not per topic?
+
+Because a partition is one file appended by one leader, and a topic is several of them with nothing coordinating between them. Records in partition 0 are in the order they were appended to partition 0. Records in partition 0 and partition 7 have no defined order relative to each other, and Kafka does not pretend otherwise. The paper says it in one sentence: messages from a single partition are delivered in order, with no guarantee across partitions.
