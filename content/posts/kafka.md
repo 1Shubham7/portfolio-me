@@ -14,3 +14,5 @@ Kafka is usually introduced as a message queue that goes faster. That is the des
 All of those follow from one decision. Kafka is not a queue. It is a log: an append-only file, split across machines and copied for safety, that consumers read at their own pace while remembering their own position. Hold that one idea and most of the design falls out of it. This post is the model from the file up, a comparison with a real queue that tries to be fair to the queue, what people use it for, and the LinkedIn problem that made a log the right answer in the first place.
 
 ## What is it, actually?
+
+Start with a single partition, because that is the unit everything else is built on. On disk a partition is a directory of segment files. Each segment is a plain file of records appended in order, plus an index that maps offsets to byte positions. When a segment reaches a size limit (`log.segment.bytes`, 1 GiB by default) the broker rolls a new one and leaves the old one alone.
