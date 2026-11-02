@@ -28,3 +28,5 @@ $ ls /var/lib/kafka/data/orders-0/
 ```
 
 The file name is the offset of the first record in that segment. An offset is just a number: the position of a record in its partition, starting at zero and going up by one with each append. It is the only identity a record has. The 2011 paper is explicit that this was a choice. There are no message IDs, so there is no seek-heavy index mapping IDs to disk locations, and the offset of the next message is the current offset plus the current message's length.
+
+A topic is a named set of partitions. `num.partitions` defaults to 1, so a topic created without saying otherwise is a single log on a single broker. Give it twelve partitions and the records are spread across twelve independent logs, which can live on twelve brokers.
