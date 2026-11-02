@@ -102,3 +102,5 @@ Events between services. Service A writes `order.placed` to a topic; billing, fu
 Logs and metrics. The original use. Every host writes to a topic; collectors, dashboards, alerting and long-term storage read it. The paper's two categories were user activity events and operational metrics, and that is still a fair description of what flows through most clusters.
 
 Change data capture. [Debezium](https://debezium.io/) runs as a Kafka Connect connector, reads a database's own transaction log, and writes each row change into a topic. Downstream systems, a search index, a cache, another database, rebuild themselves from a compacted topic instead of polling the source. The log of a database feeding the log of Kafka is about as literal as the abstraction gets.
+
+Event sourcing. The topic is the record of what happened and the current state is derived from it. Compaction keeps the latest state per key reachable, and retention can be set to forever.
