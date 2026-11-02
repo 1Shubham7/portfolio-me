@@ -43,3 +43,5 @@ Replication is per partition too. Each partition has one leader and some followe
 A consumer group is how reads are shared out. Every consumer joins with a `group.id`. Within a group each partition is assigned to exactly one consumer, so a twelve-partition topic can be read by up to twelve consumers in parallel, and a thirteenth sits idle. Two groups with different IDs do not know about each other at all. Each gets every record.
 
 ## What happens on a write, and on a read?
+
+A producer batches records per partition, compresses the batch if told to, and sends it to the leader of that partition. The leader appends the batch to the end of the active segment. It writes to the filesystem, which means the page cache; it does not `fsync` per record, and the docs are open about that: durability comes from replication, not from flushing. Followers fetch the new bytes, append them, and report their position. Once the ISR has caught up the leader advances the high watermark and the records become visible to consumers. If the producer asked for `acks=all`, that is when it hears back.
