@@ -108,3 +108,5 @@ Event sourcing. The topic is the record of what happened and the current state i
 Stream processing. Kafka Streams is a library, shipped with Kafka since 0.10 in 2016, that reads topics, joins, aggregates and windows them, and writes topics, keeping its state in compacted topics so a restart recovers it. ksqlDB puts SQL on top of the same engine. Flink is a separate system that is often fed from Kafka and writes back into it. In all three the log is the input, the output, and the checkpoint.
 
 ## Where did it come from?
+
+LinkedIn, 2010. The team was Jay Kreps, Neha Narkhede and Jun Rao, and [the paper they presented at NetDB in June 2011](https://people.csail.mit.edu/matei/courses/2015/6.S897/readings/kafka.pdf) is still the clearest statement of the problem.
