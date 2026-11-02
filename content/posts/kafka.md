@@ -104,3 +104,5 @@ Logs and metrics. The original use. Every host writes to a topic; collectors, da
 Change data capture. [Debezium](https://debezium.io/) runs as a Kafka Connect connector, reads a database's own transaction log, and writes each row change into a topic. Downstream systems, a search index, a cache, another database, rebuild themselves from a compacted topic instead of polling the source. The log of a database feeding the log of Kafka is about as literal as the abstraction gets.
 
 Event sourcing. The topic is the record of what happened and the current state is derived from it. Compaction keeps the latest state per key reachable, and retention can be set to forever.
+
+Stream processing. Kafka Streams is a library, shipped with Kafka since 0.10 in 2016, that reads topics, joins, aggregates and windows them, and writes topics, keeping its state in compacted topics so a restart recovers it. ksqlDB puts SQL on top of the same engine. Flink is a separate system that is often fed from Kafka and writes back into it. In all three the log is the input, the output, and the checkpoint.
