@@ -80,3 +80,5 @@ I will use RabbitMQ as the queue, since it is the one most people have run, with
 A queue is a broker that owns the message. A producer publishes; the broker routes it to a queue; when a consumer is ready the broker pushes it (`basic.consume`); the consumer acknowledges; the acknowledgement tells the broker the message can be discarded. If the consumer rejects it or dies, the broker requeues it or dead-letters it. Delivery state lives on the broker and the message's life ends at the ack. SQS is the same shape with different words: a received message is hidden for a visibility timeout and deleted when the consumer says so. Every detail of that design is about one message going to one consumer once.
 
 Kafka inverts each of those. The broker does not push; the consumer pulls from an offset. The broker does not track delivery; the consumer commits its own position. Nothing is discarded on read; records stay until retention removes them. And the same record is read by every group that subscribes, not by whichever consumer got it first.
+
+The differences people notice in practice follow from those.
