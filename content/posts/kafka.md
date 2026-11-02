@@ -68,3 +68,5 @@ This is why the key matters. If every event about `customer-42` carries that key
 Two consequences bite people. Adding partitions to a topic changes the modulo, so keys start hashing to different partitions, and the "all events for one key in one place" property no longer holds across the change. And a hot key is a hot partition: if one customer produces a tenth of all events, one partition carries a tenth of the topic and the consumer assigned to it does a tenth of the work alone.
 
 ## What happens to old data?
+
+Nothing, until retention says so. By default a broker keeps a partition's segments for 168 hours (`log.retention.hours`) and has no size cap (`log.retention.bytes=-1`). Retention is enforced per segment: when a segment ages past the limit, the whole file is deleted. Whether anyone has read it is not part of the decision.
