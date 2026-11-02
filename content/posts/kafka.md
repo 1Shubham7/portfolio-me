@@ -8,3 +8,5 @@ weight: 2
 cover:
     image: "/blog/kafka/kafka.png"
 ---
+
+Kafka is usually introduced as a message queue that goes faster. That is the description I carried around for a long time, and it explains almost nothing. It does not explain why a consumer can read last Tuesday's records again, why two unrelated teams can read the same topic without stepping on each other, why ordering is only promised inside a partition, or why there is no "delete this message" call anywhere in the API.
