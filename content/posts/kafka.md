@@ -96,3 +96,5 @@ The differences people notice in practice follow from those.
 ## What do people use it for?
 
 The short answer is anything where more than one system wants the same stream of facts. A few shapes come up constantly.
+
+Events between services. Service A writes `order.placed` to a topic; billing, fulfilment, fraud and analytics each read it in their own group at their own pace. The decoupling is the point. A does not know how many readers there are, and adding one does not involve A's team. This is the use Cloudflare describes in [its 2022 post on its own clusters](https://blog.cloudflare.com/using-apache-kafka-to-process-1-trillion-messages/), running since 2014, and it is the most common one.
