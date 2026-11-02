@@ -125,7 +125,7 @@ The milestones since each extend the log idea rather than replace it. Kafka Stre
 
 ## Ending notes
 
-The difference between a queue and Kafka comes down to which side remembers. A queue broker remembers, per message, whether a consumer is done with it; that is the ack. A Kafka broker remembers nothing about its readers, and each consumer remembers one number per partition; that is the offset. Replay, cheap fan-out, order within a partition and the sequential disk all come from the broker not having to track anyone. Priorities, per-message routing, per-message delete and clean request/reply all need the broker to keep per-message state, and Kafka does not keep any.
+The difference between a queue and Kafka comes down to which side remembers. A queue broker remembers, per message, whether a consumer is done with it; that is the ack. A Kafka broker does not track delivery, and each consumer owns one number per partition; that is the offset. Replay, cheap fan-out, order within a partition and the sequential disk all come from the broker not having to track anyone. Priorities, per-message routing, per-message delete and clean request/reply all need the broker to keep per-message state, and Kafka does not keep any.
 
 The quickest way to see this on a cluster you did not build is `kafka-consumer-groups.sh --describe` on a busy group: the broker's log end, the group's committed offset, and the gap between them. That gap is the entire contract.
 
