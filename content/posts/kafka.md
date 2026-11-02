@@ -49,3 +49,10 @@ A producer batches records per partition, compresses the batch if told to, and s
 A read is a fetch request: partition, offset, maximum bytes. The broker finds the segment, looks up the byte position in the index, and ships bytes from there. If nothing new has arrived, the request can wait (`fetch.max.wait.ms`) rather than return empty, which is how a pull model avoids a tight polling loop. The consumer gets a batch, hands records to the application, and remembers the next offset to ask for.
 
 Notice who holds state. The broker keeps the records and knows the end of each log. It does not know who has read what. The consumer's position is one integer per partition, and committing an offset means writing that integer somewhere it will survive a restart; modern Kafka stores it in an internal topic called `__consumer_offsets`, which is itself a log. A consumer that crashes picks up from its last committed offset. One that wants to reprocess sets its offset back and reads again. Nothing on the broker objects, because nothing on the broker was tracking it.
+
+```
+$ kafka-consumer-groups.sh --bootstrap-server broker:9092 --describe --group billing
+GROUP    TOPIC   PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG
+billing  orders  0          184203          184211          8
+billing  orders  1          183990          183990          0
+```
