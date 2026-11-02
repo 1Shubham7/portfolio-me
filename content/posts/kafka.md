@@ -110,3 +110,5 @@ Stream processing. Kafka Streams is a library, shipped with Kafka since 0.10 in 
 ## Where did it come from?
 
 LinkedIn, 2010. The team was Jay Kreps, Neha Narkhede and Jun Rao, and [the paper they presented at NetDB in June 2011](https://people.csail.mit.edu/matei/courses/2015/6.S897/readings/kafka.pdf) is still the clearest statement of the problem.
+
+The problem was log data, in the broad sense: page views, searches, clicks, likes, plus CPU, latency and error metrics from every machine. For years that data was batch. Scrape the files off production hosts, load them into Hadoop, run reports. Then the product started depending on it in real time, for search relevance, recommendations, ad targeting, the newsfeed, and abuse detection. The volume was orders of magnitude larger than the "real" data in the databases, and the real-time systems and the batch systems needed the same feed.
