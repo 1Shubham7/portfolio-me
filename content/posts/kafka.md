@@ -56,3 +56,5 @@ GROUP    TOPIC   PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG
 billing  orders  0          184203          184211          8
 billing  orders  1          183990          183990          0
 ```
+
+That output (trimmed of the consumer ID and host columns) is the whole consumer-side model in two numbers. `LOG-END-OFFSET` is the broker's fact. `CURRENT-OFFSET` is the group's claim. Lag is the difference.
