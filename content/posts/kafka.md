@@ -82,3 +82,5 @@ A queue is a broker that owns the message. A producer publishes; the broker rout
 Kafka inverts each of those. The broker does not push; the consumer pulls from an offset. The broker does not track delivery; the consumer commits its own position. Nothing is discarded on read; records stay until retention removes them. And the same record is read by every group that subscribes, not by whichever consumer got it first.
 
 The differences people notice in practice follow from those.
+
+**Replay.** With a queue, a message you have acknowledged is gone. If the code that handled it had a bug, you fix the bug and the data is not there to run through it again. With Kafka you reset the group's offset to a timestamp or a number and read forward. The paper called this out in 2011 as a violation of the common contract of a queue and an essential feature anyway, and the examples it gave are the same ones people give today: reloading a warehouse after a fix, and recovering a consumer that only checkpoints occasionally.
