@@ -16,3 +16,13 @@ All of those follow from one decision. Kafka is not a queue. It is a log: an app
 ## What is it, actually?
 
 Start with a single partition, because that is the unit everything else is built on. On disk a partition is a directory of segment files. Each segment is a plain file of records appended in order, plus an index that maps offsets to byte positions. When a segment reaches a size limit (`log.segment.bytes`, 1 GiB by default) the broker rolls a new one and leaves the old one alone.
+
+```
+$ ls /var/lib/kafka/data/orders-0/
+00000000000000000000.index
+00000000000000000000.log
+00000000000000000000.timeindex
+00000000000001048576.index
+00000000000001048576.log
+00000000000001048576.timeindex
+```
