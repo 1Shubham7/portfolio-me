@@ -76,3 +76,5 @@ The alternative to deleting by age is compacting by key. With `cleanup.policy=co
 ## How is it different from a message queue?
 
 I will use RabbitMQ as the queue, since it is the one most people have run, with SQS as the hosted cousin. Most of what follows applies to ActiveMQ and the rest of the JMS family too.
+
+A queue is a broker that owns the message. A producer publishes; the broker routes it to a queue; when a consumer is ready the broker pushes it (`basic.consume`); the consumer acknowledges; the acknowledgement tells the broker the message can be discarded. If the consumer rejects it or dies, the broker requeues it or dead-letters it. Delivery state lives on the broker and the message's life ends at the ack. SQS is the same shape with different words: a received message is hidden for a visibility timeout and deleted when the consumer says so. Every detail of that design is about one message going to one consumer once.
