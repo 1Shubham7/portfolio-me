@@ -271,8 +271,8 @@ The order I would learn it in is the order above: KV with ESO on a kind cluster 
 
 ## Ending notes
 
-The difference between Sealed Secrets and OpenBao comes down to when the secret is decided. A SealedSecret is decided at commit time: whoever sealed it chose the value, and every pod that ever mounts it gets that value until someone commits another. OpenBao decides at request time: a pod shows up with a ServiceAccount token, a policy says yes or no, an audit line is written, and what comes back may be a credential that did not exist a second ago and will not exist in an hour. Authentication, authorization, audit and expiry all live in that moment, and none of them can live in a file.
+A SealedSecret is decided at commit time. Whoever sealed it chose the value, and every pod that ever mounts it gets that value until someone commits another. OpenBao decides at request time: a pod shows up with a ServiceAccount token, a policy says yes or no, an audit line is written, and what comes back may be a credential that did not exist a second ago and will not exist in an hour. Authentication, authorization, audit and expiry all live in that moment, and none of them can live in a file.
 
-If you want the shortest route to seeing it: `bao server -dev`, one KV secret, one policy with `data/` in the path, one Kubernetes role, and an ExternalSecret on a kind cluster. When the Secret appears in the namespace with no password anywhere in Git, the model is in your hands. The database engine is the same model with a shorter clock.
+The dev server in kind is enough to watch it happen. Put one value in KV, write the policy with `data/` in the path, bind one ServiceAccount to it, and apply the ExternalSecret. The Secret turns up in the namespace and the password is nowhere in Git. The database engine is the same loop with a shorter clock.
 
 Thanks for your time :)
