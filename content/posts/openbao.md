@@ -189,3 +189,5 @@ spec:
 ESO creates a Secret called `myapp-db` in `prod` with a `password` key, and the Deployment uses it like any other Secret. Git holds these two manifests and never the password. The `remoteRef.key` has no `data/` in it, because ESO adds the prefix itself for a v2 mount; the policy is the only place you write it by hand. To rotate, run `bao kv put` with the new value and ESO updates the Secret within `refreshInterval`. The pods still need a restart to pick it up, which is the same problem a changed ConfigMap has, and the same fixes apply.
 
 This is already better than a SealedSecret. One copy, a policy per reader, an audit line per read, rotation in one place. But the password itself is still a long-lived string that every pod shares.
+
+### The middle step: static roles
