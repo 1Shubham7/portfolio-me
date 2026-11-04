@@ -248,3 +248,9 @@ username           v-kubernetes-myapp-x7Kq...
 ```
 
 Run it twice and you get two different users. The policy for the application changes to this path:
+
+```hcl
+path "database/creds/myapp" {
+  capabilities = ["read"]
+}
+```
