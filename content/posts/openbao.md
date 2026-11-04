@@ -208,3 +208,12 @@ bao write -force database/rotate-root/app-pg
 ```
 
 The `rotate-root` line is the one to pause on. After it runs, only OpenBao knows `bao_admin`'s password, which is the point, and it is also why `bao_admin` should be a user created for OpenBao and not a shared admin account somebody else still logs in with. It needs `CREATEROLE` in Postgres, since it is going to create and alter roles on OpenBao's behalf.
+
+```bash
+bao write database/static-roles/app-static \
+  db_name=app-pg \
+  username=app \
+  rotation_period=24h
+
+bao read database/static-creds/app-static
+```
