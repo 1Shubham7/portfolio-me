@@ -93,3 +93,5 @@ Namespaces are the big one. A namespace is a partition inside one server with it
 Underneath are two pieces of storage work that Vault's open-source edition never did: transactional storage, so a multi-step write either fully happens or does not (merged for the Raft and PostgreSQL backends in late 2024), and paginated list operations, which shipped in 2.0. Neither is something you notice from a `bao kv get`. They are the kind of plumbing you want in place before carving one server into many tenants.
 
 CEL. OpenBao uses Common Expression Language, the same language Kubernetes validating admission policies use, in two engines: JWT/OIDC auth, where a CEL program inspects the token's claims and decides which policies to grant, and PKI, where a CEL program decides what certificate a request is allowed to receive. Vault has neither.
+
+Kubernetes ergonomics. 2.6, released in July 2026, added `bao login -method=kubernetes`, so a pod or a person with a ServiceAccount token logs in with one command instead of hand-building a `bao write auth/kubernetes/login` call, and the container images now run as the `openbao` user rather than root by default.
