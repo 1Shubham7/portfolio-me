@@ -99,22 +99,21 @@ What OpenBao does not have is Vault Enterprise's performance replication and dis
 
 ## What does storing a Postgres password look like?
 
-The same password three ways. First as a static value in KV delivered by ESO, which is Sealed Secrets with a server in the middle. Then as an existing database user whose password OpenBao rotates. Then as the thing Sealed Secrets cannot do, a credential that exists for an hour. Everything below runs against a dev server, which is the right place to learn the flow and the wrong place for anything else: `bao server -dev` keeps all data in memory, is already unsealed, listens on `127.0.0.1:8200` without TLS, prints a root token at startup and forgets everything when it exits.
+The same password three ways. First as a static value in KV delivered by ESO, which is Sealed Secrets with a server in the middle. Then as an existing database user whose password OpenBao rotates. Then as the thing Sealed Secrets cannot do, a credential that exists for an hour. Everything below runs against a dev server, in one of two places. The dev server is the right place to learn the flow and the wrong place for anything else: `bao server -dev` keeps all data in memory, is already unsealed, listens on `127.0.0.1:8200` without TLS, prints a root token at startup and forgets everything when it exits.
 
 ```bash
 bao server -dev
 export BAO_ADDR=http://127.0.0.1:8200
 ```
 
-A dev server on your laptop is enough for the KV, policy and database steps. The Kubernetes login and the ESO sync are not: OpenBao has to call the cluster's TokenReview API, and ESO has to reach OpenBao by a Service name. For those two steps I run the same dev server inside a kind cluster through the Helm chart, and type the `bao` commands from inside its pod.
+The KV walkthrough will not work against that laptop server, because its last two steps need a cluster. OpenBao has to call the cluster's TokenReview API to log the ServiceAccount in, and ESO has to reach OpenBao by a Service name and then reads the KV path from the server it logged into, so the value and the policy have to be on that same server. For the whole of the KV section, run the same dev server inside a kind cluster through the Helm chart, open a shell in its pod and type every `bao` command there, the KV put and the policy write included. The database engine steps need nothing from the cluster, only a Postgres the server can reach, so they work on the laptop against a local Postgres if you point `connection_url` at it instead of the Service name used below.
 
 ```bash
 helm install openbao openbao/openbao -n openbao --create-namespace \
   --set server.dev.enabled=true
-kubectl exec -ti -n openbao openbao-0 -- bao status
+kubectl exec -ti -n openbao openbao-0 -- sh
+bao status
 ```
-
-Any command below that is run on the laptop runs the same way in the pod with that `kubectl exec` prefix; `bao policy write myapp-db -` reads the policy from stdin, which saves copying files into the container.
 
 ### A static password in KV
 
@@ -125,24 +124,21 @@ bao secrets enable -path=secret kv-v2
 bao kv put secret/myapp/db username=app password='S0meStr0ngPass'
 ```
 
-Write a policy that can read only that path.
+Write a policy that can read only that path. `bao policy write` takes `-` to read the policy from stdin, which saves copying a file into the container.
 
-```hcl
+```bash
+bao policy write myapp-db - <<'EOF'
 path "secret/data/myapp/db" {
   capabilities = ["read"]
 }
-```
-
-```bash
-bao policy write myapp-db myapp-db.hcl
+EOF
 ```
 
 Notice the `data/`. KV v2 puts it in the real API path: `bao kv get secret/myapp/db` reads `secret/data/myapp/db` and hides that from you, but policies see the real path, and a policy written against `secret/myapp/db` grants nothing. The KV docs recommend `bao kv get -mount=secret myapp/db` for exactly this reason, and this is the gotcha that catches everyone the first time.
 
-Let the application's ServiceAccount log in. These two commands run inside the OpenBao pod, which is why the two environment variables resolve and why the config needs nothing but the API address: the chart binds `system:auth-delegator` to the server's ServiceAccount, and the server reads its reviewer token and CA certificate from its own mount. The role binds a ServiceAccount name and namespace to the policy, so only pods running as `myapp` in `prod` can read that one path.
+Let the application's ServiceAccount log in. Because the shell is inside the OpenBao pod, the two environment variables resolve, and the config needs nothing but the API address: the chart binds `system:auth-delegator` to the server's ServiceAccount, and the server reads its reviewer token and CA certificate from its own mount. The role binds a ServiceAccount name and namespace to the policy, so only pods running as `myapp` in `prod` can read that one path.
 
 ```bash
-kubectl exec -ti -n openbao openbao-0 -- sh
 bao auth enable kubernetes
 bao write auth/kubernetes/config \
   kubernetes_host="https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT"
@@ -154,7 +150,7 @@ bao write auth/kubernetes/role/myapp \
   ttl=1h
 ```
 
-Get it into the cluster with External Secrets Operator. Both manifests are safe to commit. The `SecretStore` is how ESO authenticates, and the `ExternalSecret` is the reference. On older ESO releases the apiVersion is `external-secrets.io/v1beta1`.
+Get it into the cluster with External Secrets Operator. Both manifests are safe to commit, and both are applied from outside the pod like any other manifest. The `SecretStore` is how ESO authenticates, and the `ExternalSecret` is the reference. On older ESO releases the apiVersion is `external-secrets.io/v1beta1`.
 
 ```yaml
 apiVersion: external-secrets.io/v1
@@ -252,10 +248,10 @@ lease_id           database/creds/myapp/...
 lease_duration     1h
 lease_renewable    true
 password           A1b-...
-username           v-kubernet-myapp-...
+username           v-root-myapp-...
 ```
 
-Run it twice and you get two different users. The policy for the application changes to this path:
+Run it twice and you get two different users. The `root` in the username is the display name of the token that asked, so a pod that logged in through the kubernetes auth method would get `v-kubernet-myapp-...` instead. The policy for the application changes to this path:
 
 ```hcl
 path "database/creds/myapp" {
