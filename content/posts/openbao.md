@@ -21,7 +21,7 @@ If you know HashiCorp Vault you know most of OpenBao, because it is Vault. On 10
 
 ## What problem does it solve?
 
-In most setups the same database password lives in several places at once: a `.env` on a laptop, a CI variable, a base64 Secret in Git that everyone agrees not to call encryption. It was set in 2024 and has not changed since, because changing it means finding every copy. Nobody can say who has read it, and nobody can take it back.
+In most setups the same database password lives in several places at once: a `.env` on a laptop, a CI variable, a base64 Secret in Git that everyone agrees not to call encryption. It was set in 2024 and has not changed since, because changing it means finding every copy, and nobody can say who has read it or take it back.
 
 OpenBao puts the secret in one place and wraps four things around the act of reading it. Authentication: the client proves who it is before it gets anything. Authorization: a policy says which paths that identity may touch, and policies are deny by default, so an identity with no policy can do nothing. Audit: every request and response is written to an audit device before the response goes out. And expiry: much of what OpenBao hands out comes with a lease, a point in time after which it stops being valid unless something renews it. The fourth is what makes it a different kind of tool rather than a nicer home for the same static password, and the Postgres example at the end is built around it.
 
