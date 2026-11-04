@@ -47,3 +47,5 @@ path "secret/data/payments/*" {
 ```
 
 Two policies are built in. `default` is attached to most tokens. `root` can do anything, and the docs tell you to revoke root tokens before production. Policies are attached to a token at login and cannot be changed on that token afterwards, but a policy's contents are read at request time, so editing one takes effect on the next request.
+
+**Tokens and leases.** A lease is OpenBao's promise about how long a thing stays valid. Every dynamic secret and every service token comes with one: a `lease_id`, a `lease_duration` in seconds, and a flag for whether it can be renewed. The client is expected to renew before the duration runs out. If it does not, OpenBao revokes the lease, and for a database credential that means the user is dropped. Revocation runs the other way too. A lease ID begins with the path the secret came from, so `bao lease revoke -prefix database/creds/myapp` kills every credential that role ever issued, and revoking a token revokes every lease created with it. That tree-shaped revocation is the incident-response feature: one command and a compromised application's entire footprint is gone.
