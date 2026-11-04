@@ -119,3 +119,9 @@ bao kv put secret/myapp/db username=app password='S0meStr0ngPass'
 ```
 
 Write a policy that can read only that path.
+
+```hcl
+path "secret/data/myapp/db" {
+  capabilities = ["read"]
+}
+```
