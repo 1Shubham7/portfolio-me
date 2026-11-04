@@ -85,3 +85,5 @@ ESO is the GitOps route from the previous section. There is no OpenBao-specific 
 On the server side, the official Helm chart (`helm repo add openbao https://openbao.github.io/openbao-helm`) runs OpenBao in dev, standalone or HA Raft mode (`server.ha.raft.enabled`) and installs the injector and CSI provider alongside. There is also an OpenBao Operator, an independent project under the KubeBao name rather than part of the OpenBao organisation, whose stated goal is to install and operate OpenBao clusters on Kubernetes. I mention it so you know it exists when you go looking, not as a recommendation.
 
 ## How is it different from Vault?
+
+Mostly in what it includes for free, and in a few places where the fork has gone its own way.
