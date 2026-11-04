@@ -223,3 +223,12 @@ The username stays `app`, the password changes every 24 hours, and the policy pa
 ### Dynamic credentials
 
 With a dynamic role OpenBao creates a Postgres user per request and deletes it when the TTL ends. No password lives anywhere permanently. The connection config is the same `app-pg` from above; the role says what a generated user looks like.
+
+```bash
+bao write database/roles/myapp \
+  db_name=app-pg \
+  creation_statements="CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
+    GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \"{{name}}\";" \
+  default_ttl=1h \
+  max_ttl=24h
+```
