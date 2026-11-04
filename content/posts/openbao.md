@@ -87,7 +87,7 @@ Mostly in what it includes for free, and in a few places where the fork has gone
 
 Namespaces are the big one. A namespace is a partition inside one server with its own auth methods, secrets engines and policies, so one OpenBao can serve many teams or many customers that cannot see each other. Vault has this only in the Enterprise tier. OpenBao shipped it in open source with the 2.3 beta in May 2025, and 2.6 added per-namespace sealing on top, so a tenant can seal its own slice without touching anyone else's. For an MSP that is the difference between one server and one per customer.
 
-Underneath are two pieces of storage work that Vault's open-source edition never did: transactional storage, so a multi-step write either fully happens or does not (merged for the Raft and PostgreSQL backends in late 2024), and paginated list operations, which shipped in 2.0. Neither is something you notice from a `bao kv get`. They are the kind of plumbing you want in place before carving one server into many tenants.
+Underneath are two pieces of storage work Vault's open-source edition never did: transactional storage, so a multi-step write either fully happens or does not (Raft and PostgreSQL backends, late 2024), and paginated list operations (2.0). Neither is something you notice from a `bao kv get`, and both are things you want in place before carving one server into tenants.
 
 OpenBao uses CEL, the Common Expression Language that Kubernetes validating admission policies are written in, in two engines: JWT/OIDC auth, where a CEL program inspects the token's claims and decides which policies to grant, and PKI, where a CEL program decides what certificate a request is allowed to receive. Vault has neither.
 
