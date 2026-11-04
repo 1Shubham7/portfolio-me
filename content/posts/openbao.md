@@ -89,3 +89,5 @@ On the server side, the official Helm chart (`helm repo add openbao https://open
 Mostly in what it includes for free, and in a few places where the fork has gone its own way.
 
 Namespaces are the big one. A namespace is a partition inside one server with its own auth methods, secrets engines and policies, so one OpenBao can serve many teams or many customers that cannot see each other. Vault has this only in the Enterprise tier. OpenBao shipped it in open source with the 2.3 beta in May 2025, and 2.6 added per-namespace sealing on top, so a tenant can seal its own slice without touching anyone else's. For an MSP that is the difference between one server and one per customer.
+
+Underneath are two pieces of storage work that Vault's open-source edition never did: transactional storage, so a multi-step write either fully happens or does not (merged for the Raft and PostgreSQL backends in late 2024), and paginated list operations, which shipped in 2.0. Neither is something you notice from a `bao kv get`. They are the kind of plumbing you want in place before carving one server into many tenants.
