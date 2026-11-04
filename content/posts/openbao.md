@@ -217,3 +217,5 @@ bao write database/static-roles/app-static \
 
 bao read database/static-creds/app-static
 ```
+
+The username stays `app`, the password changes every 24 hours, and the policy path becomes `database/static-creds/app-static`. Nothing about your schema, grants or table ownership changes. This is often the easiest upgrade from the KV version, and for a lot of applications it is also the last one you need.
