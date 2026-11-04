@@ -260,3 +260,5 @@ Consuming it is where the injector earns its place. A dynamic credential has to 
 Three things go wrong with dynamic credentials, and all of them are database problems rather than OpenBao problems.
 
 Table ownership. Generated users come and go, so they must not own anything. Run migrations as a fixed owner role and give generated users their access through `GRANT` or role membership, or the first `DROP ROLE` fails because the role still owns a table.
+
+Connection pools. A pooled connection opened an hour ago is still open after the user it authenticated as has been dropped, and the next query on it fails. The application or the pooler has to handle reconnecting, ideally on a schedule shorter than the TTL.
