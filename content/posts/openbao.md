@@ -117,3 +117,5 @@ Store it. On a dev server KV v2 is already mounted at `secret/`, so the `enable`
 bao secrets enable -path=secret kv-v2
 bao kv put secret/myapp/db username=app password='S0meStr0ngPass'
 ```
+
+Write a policy that can read only that path.
