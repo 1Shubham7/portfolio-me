@@ -112,3 +112,8 @@ export BAO_ADDR=http://127.0.0.1:8200
 ### A static password in KV
 
 Store it. On a dev server KV v2 is already mounted at `secret/`, so the `enable` line is only for a real server.
+
+```bash
+bao secrets enable -path=secret kv-v2
+bao kv put secret/myapp/db username=app password='S0meStr0ngPass'
+```
