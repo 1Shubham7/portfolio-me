@@ -9,3 +9,5 @@ cover:
     image: "/blog/openbao/openbao.png"
 ---
 
+
+The question I had when I started reading about OpenBao was not how it worked. It was where it went. I already had ConfigMaps for configuration and Sealed Secrets for anything sensitive, both in Git, both applied by the same GitOps pipeline as everything else. A third place to put a password needed a better reason than "Vault, but open source".
