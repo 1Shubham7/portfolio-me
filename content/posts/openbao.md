@@ -191,3 +191,5 @@ ESO creates a Secret called `myapp-db` in `prod` with a `password` key, and the 
 This is already better than a SealedSecret. One copy, a policy per reader, an audit line per read, rotation in one place. But the password itself is still a long-lived string that every pod shares.
 
 ### The middle step: static roles
+
+Before going fully dynamic, there is a version that keeps your existing `app` user and lets OpenBao own its password. The database engine's static roles map one OpenBao role to one existing database user and rotate that user's password on a period you choose.
