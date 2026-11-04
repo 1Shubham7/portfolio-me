@@ -133,3 +133,15 @@ bao policy write myapp-db myapp-db.hcl
 Notice the `data/`. KV v2 puts it in the real API path: `bao kv get secret/myapp/db` reads `secret/data/myapp/db` and hides that from you, but policies see the real path, and a policy written against `secret/myapp/db` grants nothing. The KV docs recommend `bao kv get -mount=secret myapp/db` for exactly this reason, and this is the gotcha that catches everyone the first time.
 
 Let the application's ServiceAccount log in. The role binds a ServiceAccount name and namespace to the policy, so only pods running as `myapp` in `prod` can read that one path.
+
+```bash
+bao auth enable kubernetes
+bao write auth/kubernetes/config \
+  kubernetes_host="https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT"
+
+bao write auth/kubernetes/role/myapp \
+  bound_service_account_names=myapp \
+  bound_service_account_namespaces=prod \
+  policies=myapp-db \
+  ttl=1h
+```
