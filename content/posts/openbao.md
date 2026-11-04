@@ -108,3 +108,5 @@ Two ways, with a third in between. The first is Sealed Secrets with a server in 
 bao server -dev
 export BAO_ADDR=http://127.0.0.1:8200
 ```
+
+### A static password in KV
