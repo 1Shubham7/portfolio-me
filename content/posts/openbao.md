@@ -65,3 +65,5 @@ One secret, many copies. Sealing keys are per cluster. If a fleet of a hundred c
 It only works for Kubernetes. A CI job, a VM, an Ansible run and an engineer's laptop cannot consume a SealedSecret.
 
 Git history is permanent. If a cluster's sealing key leaks, every SealedSecret ever committed for that cluster is readable, including the ones you rotated away from years ago.
+
+OpenBao's answer to all five is the same answer: the application does not receive a copy of the secret at deploy time. It asks at runtime, proves who it is, and OpenBao decides, logs it and responds. Rotation happens in one place. Reads are attributed to an identity. Clients outside Kubernetes use `approle` or OIDC. Git holds a reference, not a ciphertext. On top of that are the things a static file cannot do at all: issue a TLS certificate on demand, encrypt a payload without handing the application the key, revoke a credential everywhere in one command.
