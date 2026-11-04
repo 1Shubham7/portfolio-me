@@ -221,3 +221,5 @@ bao read database/static-creds/app-static
 The username stays `app`, the password changes every 24 hours, and the policy path becomes `database/static-creds/app-static`. Nothing about your schema, grants or table ownership changes. This is often the easiest upgrade from the KV version, and for a lot of applications it is also the last one you need.
 
 ### Dynamic credentials
+
+With a dynamic role OpenBao creates a Postgres user per request and deletes it when the TTL ends. No password lives anywhere permanently. The connection config is the same `app-pg` from above; the role says what a generated user looks like.
