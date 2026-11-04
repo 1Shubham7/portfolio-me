@@ -99,12 +99,22 @@ What OpenBao does not have is Vault Enterprise's performance replication and dis
 
 ## What does storing a Postgres password look like?
 
-Two ways, with a third in between. The first is Sealed Secrets with a server in the middle. The second is the thing Sealed Secrets cannot do. Everything below runs against a dev server, which is the right place to learn the flow and the wrong place for anything else: `bao server -dev` keeps all data in memory, is already unsealed, listens on `127.0.0.1:8200` without TLS, prints a root token at startup and forgets everything when it exits.
+The same password three ways. First as a static value in KV delivered by ESO, which is Sealed Secrets with a server in the middle. Then as an existing database user whose password OpenBao rotates. Then as the thing Sealed Secrets cannot do, a credential that exists for an hour. Everything below runs against a dev server, which is the right place to learn the flow and the wrong place for anything else: `bao server -dev` keeps all data in memory, is already unsealed, listens on `127.0.0.1:8200` without TLS, prints a root token at startup and forgets everything when it exits.
 
 ```bash
 bao server -dev
 export BAO_ADDR=http://127.0.0.1:8200
 ```
+
+A dev server on your laptop is enough for the KV, policy and database steps. The Kubernetes login and the ESO sync are not: OpenBao has to call the cluster's TokenReview API, and ESO has to reach OpenBao by a Service name. For those two steps I run the same dev server inside a kind cluster through the Helm chart, and type the `bao` commands from inside its pod.
+
+```bash
+helm install openbao openbao/openbao -n openbao --create-namespace \
+  --set server.dev.enabled=true
+kubectl exec -ti -n openbao openbao-0 -- bao status
+```
+
+Any command below that is run on the laptop runs the same way in the pod with that `kubectl exec` prefix; `bao policy write myapp-db -` reads the policy from stdin, which saves copying files into the container.
 
 ### A static password in KV
 
@@ -129,9 +139,10 @@ bao policy write myapp-db myapp-db.hcl
 
 Notice the `data/`. KV v2 puts it in the real API path: `bao kv get secret/myapp/db` reads `secret/data/myapp/db` and hides that from you, but policies see the real path, and a policy written against `secret/myapp/db` grants nothing. The KV docs recommend `bao kv get -mount=secret myapp/db` for exactly this reason, and this is the gotcha that catches everyone the first time.
 
-Let the application's ServiceAccount log in. The role binds a ServiceAccount name and namespace to the policy, so only pods running as `myapp` in `prod` can read that one path.
+Let the application's ServiceAccount log in. These two commands run inside the OpenBao pod, which is why the two environment variables resolve and why the config needs nothing but the API address: the chart binds `system:auth-delegator` to the server's ServiceAccount, and the server reads its reviewer token and CA certificate from its own mount. The role binds a ServiceAccount name and namespace to the policy, so only pods running as `myapp` in `prod` can read that one path.
 
 ```bash
+kubectl exec -ti -n openbao openbao-0 -- sh
 bao auth enable kubernetes
 bao write auth/kubernetes/config \
   kubernetes_host="https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT"
@@ -143,7 +154,7 @@ bao write auth/kubernetes/role/myapp \
   ttl=1h
 ```
 
-Get it into the cluster with External Secrets Operator. Two manifests, both safe to commit. The `SecretStore` is how ESO authenticates, and the `ExternalSecret` is the reference. On older ESO releases the apiVersion is `external-secrets.io/v1beta1`.
+Get it into the cluster with External Secrets Operator. Both manifests are safe to commit. The `SecretStore` is how ESO authenticates, and the `ExternalSecret` is the reference. On older ESO releases the apiVersion is `external-secrets.io/v1beta1`.
 
 ```yaml
 apiVersion: external-secrets.io/v1
@@ -183,13 +194,13 @@ spec:
         property: password
 ```
 
-ESO creates a Secret called `myapp-db` in `prod` with a `password` key, and the Deployment uses it like any other Secret. Git holds these two manifests and never the password. The `remoteRef.key` has no `data/` in it, because ESO adds the prefix itself for a v2 mount; the policy is the only place you write it by hand. To rotate, run `bao kv put` with the new value and ESO updates the Secret within `refreshInterval`. The pods still need a restart to pick it up, which is the same problem a changed ConfigMap has, and the same fixes apply.
+The `remoteRef.key` has no `data/` in it, because ESO adds the prefix itself for a v2 mount; the policy is the only place you write it by hand. After a rotation the pods still need a restart to pick up the new Secret, which is the same problem a changed ConfigMap has, and the same fixes apply.
 
 This is already better than a SealedSecret. One copy, a policy per reader, an audit line per read, rotation in one place. But the password itself is still a long-lived string that every pod shares.
 
 ### The middle step: static roles
 
-Before going fully dynamic, there is a version that keeps your existing `app` user and lets OpenBao own its password. The database engine's static roles map one OpenBao role to one existing database user and rotate that user's password on a period you choose.
+Before going fully dynamic, there is a version that keeps your existing `app` user and lets OpenBao own its password. The [database engine's](https://openbao.org/docs/secrets/databases/) static roles map one OpenBao role to one existing database user and rotate that user's password on a period you choose.
 
 ```bash
 bao secrets enable database
@@ -204,7 +215,7 @@ bao write database/config/app-pg \
 bao write -force database/rotate-root/app-pg
 ```
 
-The `rotate-root` line is the one to pause on. After it runs, only OpenBao knows `bao_admin`'s password, which is the point, and it is also why `bao_admin` should be a user created for OpenBao and not a shared admin account somebody else still logs in with. It needs `CREATEROLE` in Postgres, since it is going to create and alter roles on OpenBao's behalf.
+The `rotate-root` line is the one to pause on. After it runs, only OpenBao knows `bao_admin`'s password, which is the point, and it is also why `bao_admin` should be a user created for OpenBao and not a shared admin account somebody else still logs in with. It needs `CREATEROLE` in Postgres, since it is going to create and alter roles on OpenBao's behalf, and for the dynamic role further down it needs to be able to hand out membership in a privilege role, which on Postgres 16 and later means `GRANT app_readwrite TO bao_admin WITH ADMIN OPTION`.
 
 ```bash
 bao write database/static-roles/app-static \
@@ -219,13 +230,13 @@ The username stays `app`, the password changes every 24 hours, and the policy pa
 
 ### Dynamic credentials
 
-With a dynamic role OpenBao creates a Postgres user per request and deletes it when the TTL ends. No password lives anywhere permanently. The connection config is the same `app-pg` from above; the role says what a generated user looks like.
+With a dynamic role OpenBao creates a Postgres user per request and deletes it when the TTL ends. No password lives anywhere permanently. The connection config is the same `app-pg` from above; the role says what a generated user looks like. `app_readwrite` is a role you create once in Postgres, with the table grants on it, and every generated user gets its access by joining that role.
 
 ```bash
 bao write database/roles/myapp \
   db_name=app-pg \
   creation_statements="CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';
-    GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \"{{name}}\";" \
+    GRANT app_readwrite TO \"{{name}}\";" \
   default_ttl=1h \
   max_ttl=24h
 ```
@@ -241,7 +252,7 @@ lease_id           database/creds/myapp/...
 lease_duration     1h
 lease_renewable    true
 password           A1b-...
-username           v-kubernetes-myapp-x7Kq...
+username           v-kubernet-myapp-...
 ```
 
 Run it twice and you get two different users. The policy for the application changes to this path:
@@ -254,13 +265,7 @@ path "database/creds/myapp" {
 
 Consuming it is where the injector earns its place. A dynamic credential has to be renewed before its lease runs out and replaced when it hits `max_ttl`, and the agent sidecar does both, re-rendering the credentials file each time. Your application then has to re-read that file or reconnect when it changes. ESO can also do dynamic secrets, through its `VaultDynamicSecret` generator rather than a plain `ExternalSecret`, but what you get is still a Kubernetes Secret refreshed on an interval, which is a different thing from a sidecar holding and renewing a lease.
 
-Three things go wrong with dynamic credentials, and all of them are database problems rather than OpenBao problems.
-
-Table ownership. Generated users come and go, so they must not own anything. Run migrations as a fixed owner role and give generated users their access through `GRANT` or role membership, or the first `DROP ROLE` fails because the role still owns a table.
-
-Connection pools. A pooled connection opened an hour ago is still open after the user it authenticated as has been dropped, and the next query on it fails. The application or the pooler has to handle reconnecting, ideally on a schedule shorter than the TTL.
-
-The admin user. Everything above depends on `bao_admin` being able to create roles, and on nobody else rotating its password out from under OpenBao. Do not put it in a static role, either; rotating it there would break the connection config that uses it.
+What goes wrong with dynamic credentials is mostly the database, not OpenBao. Generated users come and go, so they must not own anything; the first `DROP ROLE` fails if the role still owns a table, which is why migrations run as a fixed owner role and the grants live on `app_readwrite` rather than on the generated user. A pooled connection opened an hour ago is still open after the user it authenticated as has been dropped, and the next query on it fails, so the application or the pooler has to reconnect, ideally on a schedule shorter than the TTL. And everything above depends on `bao_admin` being able to create roles and on nobody else rotating its password out from under OpenBao. Do not put it in a static role either; rotating it there would break the connection config that uses it.
 
 The order I would learn it in is the order above: KV with ESO on a kind cluster until the login, policy and sync all work end to end; then a static role for one existing user; then a dynamic role, once the ownership and pooling questions have answers.
 
