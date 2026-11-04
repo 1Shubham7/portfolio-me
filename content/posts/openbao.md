@@ -99,3 +99,5 @@ Kubernetes ergonomics. 2.6, released in July 2026, added `bao login -method=kube
 A slimmer core. [2.7](https://github.com/openbao/openbao/releases/tag/v2.7.0), released on 23 September 2026, took the cloud KMS seals (`awskms`, `azurekeyvault`, `gcpckms`, `ocikms`, plus `alicloudkms` and `pkcs11`) out of the binary; they are external plugins now, installed separately. LDAP, Kerberos and RADIUS auth, and the LDAP secrets engine, moved out to the `openbao-plugins` repository in the same release. If you auto-unseal with AWS KMS or log people in through LDAP, read the 2.7 notes before upgrading, because the seal is the first thing a server needs on startup.
 
 What is missing. Vault Enterprise's performance replication and disaster-recovery replication, the cross-cluster kind, are not in OpenBao. Raft replicates within a cluster, so a lost node is fine. A lost cluster, or a bad upgrade, is your backup's problem, which makes a scheduled Raft snapshot and a restore you have actually rehearsed part of the install, not something to add later.
+
+## What does storing a Postgres password look like?
