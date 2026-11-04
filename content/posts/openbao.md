@@ -125,3 +125,7 @@ path "secret/data/myapp/db" {
   capabilities = ["read"]
 }
 ```
+
+```bash
+bao policy write myapp-db myapp-db.hcl
+```
