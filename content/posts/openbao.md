@@ -73,3 +73,5 @@ They are not rivals, though, and you usually do not make applications call OpenB
 When you do not need it: a handful of static secrets on one or two clusters, with no auditor asking who read what, is a case Sealed Secrets handles fine, and adding OpenBao means operating a critical, highly available, unseal-managed service that every deploy depends on. The case starts when you need rotation, dynamic credentials, many clusters sharing a secret, consumers outside Kubernetes, or audit evidence. So the division of labour is: ConfigMap for plain configuration, Sealed Secrets for an encrypted static value in Git, OpenBao for secrets as a managed, audited, expiring service.
 
 ## How does it get into a pod?
+
+Three patterns, and they are not exclusive.
