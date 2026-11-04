@@ -11,7 +11,7 @@ cover:
 
 The question I had when I started reading about OpenBao was not how it worked. It was where it went. I already had ConfigMaps for configuration and Sealed Secrets for anything sensitive, both in Git, both applied by the same GitOps pipeline as everything else. A third place to put a password needed a better reason than "Vault, but open source".
 
-The reason, once I found it, fits in two sentences. Sealed Secrets is a secrets file: an encrypted static value in Git, decrypted once into a plain Kubernetes Secret. OpenBao is a secrets service: an application proves who it is at runtime, OpenBao decides whether to answer, writes the request to an audit log, and hands back something that expires. Everything else in this post hangs off that distinction, so I build up to it: what OpenBao is and why a fork exists at all, the concepts you need before the commands make sense, how it gets into a pod, where it has moved away from Vault, and a Postgres password stored both ways.
+The reason, once I found it, is a difference in kind. Sealed Secrets is a secrets file: an encrypted static value in Git, decrypted once into a plain Kubernetes Secret. OpenBao is a secrets service: an application proves who it is at runtime, OpenBao decides whether to answer, writes the request to an audit log, and hands back something that expires. Everything else hangs off that distinction, so I build up to it and finish with the same Postgres password stored each way.
 
 ## What is it, and why does it exist?
 
