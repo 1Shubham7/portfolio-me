@@ -39,3 +39,9 @@ Seven pieces. The first two are about the server itself; the rest are about what
 **Secrets engines.** Also plugins mounted at paths, and the part that varies most. KV is a plain key/value store; v2 keeps versions of each secret and is what a dev server mounts at `secret/`. PKI makes OpenBao a certificate authority that issues short-lived TLS certificates on request, which is how people do internal mTLS without a spreadsheet of expiry dates. Transit is encryption as a service: the application sends plaintext and gets ciphertext back, and the key never leaves the server. Database is the dynamic one. Given an admin connection to Postgres or MySQL, it creates a fresh database user per request with a TTL and drops the user when the lease ends.
 
 **Policies.** Path-based ACLs in HCL. Everything in OpenBao is a path, so a policy is a list of paths and the capabilities allowed on each: `create`, `read`, `update`, `delete`, `list`, plus `sudo` for root-protected paths and `deny`, which wins over everything else including `sudo`.
+
+```hcl
+path "secret/data/payments/*" {
+  capabilities = ["read"]
+}
+```
