@@ -236,3 +236,13 @@ bao write database/roles/myapp \
 ```bash
 bao read database/creds/myapp
 ```
+
+```
+Key                Value
+---                -----
+lease_id           database/creds/myapp/...
+lease_duration     1h
+lease_renewable    true
+password           A1b-...
+username           v-kubernetes-myapp-x7Kq...
+```
