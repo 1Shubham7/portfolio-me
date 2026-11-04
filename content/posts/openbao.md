@@ -57,3 +57,5 @@ Two policies are built in. `default` is attached to most tokens. `root` can do a
 Sealed Secrets answers one question well: how do I put a secret in Git without putting the secret in Git? You encrypt it with the cluster's public key, commit the SealedSecret, and the controller decrypts it into an ordinary Secret. At that point its job is finished. What you have is a plain, static Kubernetes Secret, and every gap below follows from that.
 
 The secret never changes. The Postgres password sealed in 2024 is still the Postgres password today. Rotating it means generating a new one, changing it in the database, re-sealing, committing, waiting for the sync and restarting the pods, in that order, with a window in the middle where the database and the pods disagree. In practice it does not happen.
+
+Anyone with `get secrets` in the namespace can read it. After unsealing it is base64 in etcd like any other Secret. There is no record of who read it and no way to take it back.
