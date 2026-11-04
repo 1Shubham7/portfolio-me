@@ -45,3 +45,5 @@ path "secret/data/payments/*" {
   capabilities = ["read"]
 }
 ```
+
+Two policies are built in. `default` is attached to most tokens. `root` can do anything, and the docs tell you to revoke root tokens before production. Policies are attached to a token at login and cannot be changed on that token afterwards, but a policy's contents are read at request time, so editing one takes effect on the next request.
