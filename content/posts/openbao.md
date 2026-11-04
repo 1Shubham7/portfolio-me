@@ -27,3 +27,5 @@ Picture where the secrets in a typical setup live. A `.env` on someone's laptop.
 OpenBao puts the secret in one place and wraps four things around the act of reading it. Authentication: the client proves who it is before it gets anything. Authorization: a policy says which paths that identity may touch, and policies are deny by default, so an identity with no policy can do nothing. Audit: every request and response is written to an audit device before the response goes out. And expiry: much of what OpenBao hands out comes with a lease, a point in time after which it stops being valid unless something renews it. The fourth is what makes it a different kind of tool rather than a nicer home for the same static password, and the Postgres example at the end is built around it.
 
 ## How does it work, from the seal up?
+
+Seven pieces. The first two are about the server itself; the rest are about what clients do with it.
