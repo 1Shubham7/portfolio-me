@@ -193,3 +193,16 @@ This is already better than a SealedSecret. One copy, a policy per reader, an au
 ### The middle step: static roles
 
 Before going fully dynamic, there is a version that keeps your existing `app` user and lets OpenBao own its password. The database engine's static roles map one OpenBao role to one existing database user and rotate that user's password on a period you choose.
+
+```bash
+bao secrets enable database
+
+bao write database/config/app-pg \
+  plugin_name=postgresql-database-plugin \
+  connection_url="postgresql://{{username}}:{{password}}@pg.prod.svc:5432/app?sslmode=require" \
+  allowed_roles="myapp,app-static" \
+  username="bao_admin" \
+  password="InitialAdminPass"
+
+bao write -force database/rotate-root/app-pg
+```
