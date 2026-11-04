@@ -103,3 +103,8 @@ What is missing. Vault Enterprise's performance replication and disaster-recover
 ## What does storing a Postgres password look like?
 
 Two ways, with a third in between. The first is Sealed Secrets with a server in the middle. The second is the thing Sealed Secrets cannot do. Everything below runs against a dev server, which is the right place to learn the flow and the wrong place for anything else: `bao server -dev` keeps all data in memory, is already unsealed, listens on `127.0.0.1:8200` without TLS, prints a root token at startup and forgets everything when it exits.
+
+```bash
+bao server -dev
+export BAO_ADDR=http://127.0.0.1:8200
+```
