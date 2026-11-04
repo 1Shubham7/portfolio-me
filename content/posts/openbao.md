@@ -75,3 +75,5 @@ When you do not need it: a handful of static secrets on one or two clusters, wit
 ## How does it get into a pod?
 
 Three patterns, and they are not exclusive.
+
+The agent sidecar injector is a mutating admission webhook. Annotate a pod with `openbao.org/agent-inject: "true"` and `openbao.org/role: myapp`, add one `openbao.org/agent-inject-secret-<name>` annotation per secret you want, and the webhook adds OpenBao Agent containers to the pod. The agent logs in with the pod's ServiceAccount token, fetches the secrets, renders them to files on a volume shared with your container, and keeps renewing the leases and re-rendering the files for as long as the pod lives. Nothing is stored outside OpenBao and nothing is written to a Kubernetes Secret. The cost is an extra container per pod and an application that reads its credentials from a file. It ships as the `openbao-k8s` project and is switched on with `injector.enabled` in the Helm chart.
