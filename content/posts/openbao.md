@@ -59,3 +59,5 @@ Sealed Secrets answers one question well: how do I put a secret in Git without p
 The secret never changes. The Postgres password sealed in 2024 is still the Postgres password today. Rotating it means generating a new one, changing it in the database, re-sealing, committing, waiting for the sync and restarting the pods, in that order, with a window in the middle where the database and the pods disagree. In practice it does not happen.
 
 Anyone with `get secrets` in the namespace can read it. After unsealing it is base64 in etcd like any other Secret. There is no record of who read it and no way to take it back.
+
+One secret, many copies. Sealing keys are per cluster. If a fleet of a hundred clusters needs the same cloud provider API token, that token is sealed a hundred times with a hundred keys, and rotating it is a hundred commits. (At Obmondo, where I work, a fleet is the shape I think about; the hundred is a round number for the example, not a count.)
