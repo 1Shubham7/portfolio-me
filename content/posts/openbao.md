@@ -232,3 +232,7 @@ bao write database/roles/myapp \
   default_ttl=1h \
   max_ttl=24h
 ```
+
+```bash
+bao read database/creds/myapp
+```
