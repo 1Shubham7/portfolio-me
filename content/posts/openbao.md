@@ -147,3 +147,41 @@ bao write auth/kubernetes/role/myapp \
 ```
 
 Get it into the cluster with External Secrets Operator. Two manifests, both safe to commit. The `SecretStore` is how ESO authenticates, and the `ExternalSecret` is the reference. On older ESO releases the apiVersion is `external-secrets.io/v1beta1`.
+
+```yaml
+apiVersion: external-secrets.io/v1
+kind: SecretStore
+metadata:
+  name: openbao
+  namespace: prod
+spec:
+  provider:
+    vault:
+      server: "http://openbao.openbao.svc:8200"
+      path: "secret"
+      version: "v2"
+      auth:
+        kubernetes:
+          mountPath: "kubernetes"
+          role: "myapp"
+          serviceAccountRef:
+            name: myapp
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: myapp-db
+  namespace: prod
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: openbao
+    kind: SecretStore
+  target:
+    name: myapp-db
+  data:
+    - secretKey: password
+      remoteRef:
+        key: myapp/db
+        property: password
+```
