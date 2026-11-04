@@ -268,3 +268,5 @@ The admin user. Everything above depends on `bao_admin` being able to create rol
 The order I would learn it in is the order above: KV with ESO on a kind cluster until the login, policy and sync all work end to end; then a static role for one existing user; then a dynamic role, once the ownership and pooling questions have answers.
 
 ## Ending notes
+
+The difference between Sealed Secrets and OpenBao comes down to when the secret is decided. A SealedSecret is decided at commit time: whoever sealed it chose the value, and every pod that ever mounts it gets that value until someone commits another. OpenBao decides at request time: a pod shows up with a ServiceAccount token, a policy says yes or no, an audit line is written, and what comes back may be a credential that did not exist a second ago and will not exist in an hour. Authentication, authorization, audit and expiry all live in that moment, and none of them can live in a file.
