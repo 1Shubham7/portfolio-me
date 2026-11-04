@@ -110,3 +110,5 @@ export BAO_ADDR=http://127.0.0.1:8200
 ```
 
 ### A static password in KV
+
+Store it. On a dev server KV v2 is already mounted at `secret/`, so the `enable` line is only for a real server.
