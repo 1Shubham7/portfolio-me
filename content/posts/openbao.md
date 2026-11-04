@@ -63,3 +63,5 @@ Anyone with `get secrets` in the namespace can read it. After unsealing it is ba
 One secret, many copies. Sealing keys are per cluster. If a fleet of a hundred clusters needs the same cloud provider API token, that token is sealed a hundred times with a hundred keys, and rotating it is a hundred commits. (At Obmondo, where I work, a fleet is the shape I think about; the hundred is a round number for the example, not a count.)
 
 It only works for Kubernetes. A CI job, a VM, an Ansible run and an engineer's laptop cannot consume a SealedSecret.
+
+Git history is permanent. If a cluster's sealing key leaks, every SealedSecret ever committed for that cluster is readable, including the ones you rotated away from years ago.
