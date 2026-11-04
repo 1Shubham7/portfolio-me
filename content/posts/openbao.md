@@ -53,3 +53,5 @@ Two policies are built in. `default` is attached to most tokens. `root` can do a
 **Audit devices.** A file, syslog or socket sink that receives a JSON line for every request and every response. String values are HMAC-SHA256'd with a salt before they are written, so the log shows that a secret was read and by which identity without containing the secret, and you can still check whether a given value appears by hashing it through `/sys/audit-hash`. One behaviour to know before you enable it: if no enabled audit device can write the record, OpenBao refuses the request. A full disk under your only audit device is an outage, so enable two.
 
 ## Why not ConfigMap plus Sealed Secrets?
+
+Sealed Secrets answers one question well: how do I put a secret in Git without putting the secret in Git? You encrypt it with the cluster's public key, commit the SealedSecret, and the controller decrypts it into an ordinary Secret. At that point its job is finished. What you have is a plain, static Kubernetes Secret, and every gap below follows from that.
