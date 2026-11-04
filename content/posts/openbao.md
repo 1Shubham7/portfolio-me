@@ -254,3 +254,5 @@ path "database/creds/myapp" {
   capabilities = ["read"]
 }
 ```
+
+Consuming it is where the injector earns its place. A dynamic credential has to be renewed before its lease runs out and replaced when it hits `max_ttl`, and the agent sidecar does both, re-rendering the credentials file each time. Your application then has to re-read that file or reconnect when it changes. ESO can also do dynamic secrets, through its `VaultDynamicSecret` generator rather than a plain `ExternalSecret`, but what you get is still a Kubernetes Secret refreshed on an interval, which is a different thing from a sidecar holding and renewing a lease.
