@@ -1,6 +1,6 @@
 ---
 title: "OpenBao Is a Secrets Service, Not a Secrets File: Where It Fits Next to Sealed Secrets, and Why It Forked From Vault"
-description: "What OpenBao is and how it works: the seal, auth methods, secrets engines, policies, leases and audit, the three ways it gets into a pod, the gaps Sealed Secrets leaves and the cases where Sealed Secrets is still enough, where OpenBao has moved away from Vault, and one Postgres password stored three ways: as a static value, as an existing user whose password OpenBao rotates, and as a credential that expires."
+description: "Why a secrets service is a different thing from an encrypted file in Git: OpenBao's seal, auth methods, policies, leases and audit, the three routes into a pod, what has changed since the Vault fork, and one Postgres password stored three ways."
 dateString: November 2026
 draft: false
 tags: ["OpenBao", "Vault", "Secrets Management", "Kubernetes", "Security", "DevOps", "SRE"]
