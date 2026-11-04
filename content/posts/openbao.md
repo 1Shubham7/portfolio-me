@@ -101,3 +101,5 @@ A slimmer core. [2.7](https://github.com/openbao/openbao/releases/tag/v2.7.0), r
 What is missing. Vault Enterprise's performance replication and disaster-recovery replication, the cross-cluster kind, are not in OpenBao. Raft replicates within a cluster, so a lost node is fine. A lost cluster, or a bad upgrade, is your backup's problem, which makes a scheduled Raft snapshot and a restore you have actually rehearsed part of the install, not something to add later.
 
 ## What does storing a Postgres password look like?
+
+Two ways, with a third in between. The first is Sealed Secrets with a server in the middle. The second is the thing Sealed Secrets cannot do. Everything below runs against a dev server, which is the right place to learn the flow and the wrong place for anything else: `bao server -dev` keeps all data in memory, is already unsealed, listens on `127.0.0.1:8200` without TLS, prints a root token at startup and forgets everything when it exits.
