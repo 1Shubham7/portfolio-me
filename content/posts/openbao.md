@@ -59,13 +59,13 @@ The secret never changes. The Postgres password sealed in 2024 is still the Post
 
 Anyone with `get secrets` in the namespace can read it. After unsealing it is base64 in etcd like any other Secret. There is no record of who read it and no way to take it back.
 
-One secret, many copies. Sealing keys are per cluster. If a fleet of a hundred clusters needs the same cloud provider API token, that token is sealed a hundred times with a hundred keys, and rotating it is a hundred commits. (At Obmondo, where I work, a fleet is the shape I think about; the hundred is a round number for the example, not a count.)
+Sealing keys are per cluster, so one secret becomes many copies. If a fleet of a hundred clusters needs the same Hetzner API token, that token is sealed a hundred times with a hundred keys, and rotating it is a hundred commits. (At Obmondo, where I work, a fleet is the shape I think about; the hundred is a round number for the example, not a count.)
 
 It only works for Kubernetes. A CI job, a VM, an Ansible run and an engineer's laptop cannot consume a SealedSecret.
 
-Git history is permanent. If a cluster's sealing key leaks, every SealedSecret ever committed for that cluster is readable, including the ones you rotated away from years ago.
+Git history is permanent. The controller rotates its key pair on a schedule and keeps the old keys so older SealedSecrets still decrypt, which means that if its private keys leak, every SealedSecret ever committed for that cluster is readable, including the ones you rotated away from years ago.
 
-OpenBao's answer to all five is the same answer: the application does not receive a copy of the secret at deploy time. It asks at runtime, proves who it is, and OpenBao decides, logs it and responds. Rotation happens in one place. Reads are attributed to an identity. Clients outside Kubernetes use `approle` or OIDC. Git holds a reference, not a ciphertext. On top of that are the things a static file cannot do at all: issue a TLS certificate on demand, encrypt a payload without handing the application the key, revoke a credential everywhere in one command.
+OpenBao's answer to all five is the same answer: the application does not receive a copy of the secret at deploy time. It asks at runtime, proves who it is, and OpenBao decides, logs it and responds. Rotation happens in one place, reads are attributed to an identity, clients outside Kubernetes log in with `approle` or OIDC, and Git holds a reference instead of a ciphertext. On top of that are the things a static file cannot do at all: issue a TLS certificate on demand, encrypt a payload without handing the application the key, revoke a credential everywhere in one command.
 
 They are not rivals, though, and you usually do not make applications call OpenBao directly. The common GitOps pattern puts External Secrets Operator in between. Git holds an ExternalSecret that names a path, `secret/payments/db` say, and nothing else. ESO logs into OpenBao, reads the path and writes a normal Kubernetes Secret, which the Deployment mounts exactly as it always did. Rotate the value in OpenBao and ESO refreshes the Secret on its next interval. Nothing in Git changes.
 
