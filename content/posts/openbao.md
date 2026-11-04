@@ -266,3 +266,5 @@ Connection pools. A pooled connection opened an hour ago is still open after the
 The admin user. Everything above depends on `bao_admin` being able to create roles, and on nobody else rotating its password out from under OpenBao. Do not put it in a static role, either; rotating it there would break the connection config that uses it.
 
 The order I would learn it in is the order above: KV with ESO on a kind cluster until the login, policy and sync all work end to end; then a static role for one existing user; then a dynamic role, once the ownership and pooling questions have answers.
+
+## Ending notes
