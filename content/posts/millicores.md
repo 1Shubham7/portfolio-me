@@ -98,3 +98,5 @@ $ ssh worker-1 nproc
 ```
 
 Nothing in that output says four cores. The 2:1 comes from the provider's spec sheet, and inside a VM even `lscpu` only shows whatever topology the hypervisor chose to present.
+
+## Ending notes
