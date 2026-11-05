@@ -100,3 +100,5 @@ $ ssh worker-1 nproc
 Nothing in that output says four cores. The 2:1 comes from the provider's spec sheet, and inside a VM even `lscpu` only shows whatever topology the hypervisor chose to present.
 
 ## Ending notes
+
+`250m` means: in every 100 ms, you may run for 25 ms in total, on any cores. The request decides your share of the node when it is crowded. The limit decides when you get frozen. They are set by two different kernel mechanisms, a weight and a quota, and neither of them is a piece of hardware with your name on it.
