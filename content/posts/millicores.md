@@ -60,3 +60,5 @@ The counter that shows this is `container_cpu_cfs_throttled_periods_total` from 
 ## A request is a weight, not a cap
 
 `requests.cpu: 250m` never throttles anything. It does two unrelated jobs.
+
+The first is placement. The scheduler only puts the pod on a node where the sum of requests, including this one, fits inside the node's allocatable CPU. That is accounting on paper; nothing on the node enforces it.
