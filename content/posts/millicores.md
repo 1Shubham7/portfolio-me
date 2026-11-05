@@ -58,3 +58,5 @@ That last case is the production gotcha. A Go service, a JVM with its thread poo
 The counter that shows this is `container_cpu_cfs_throttled_periods_total` from cAdvisor, the number of periods in which the container was throttled, next to `container_cpu_cfs_periods_total` for the total. The same two numbers are `nr_throttled` and `nr_periods` in the container's `cpu.stat`. High ratio, low CPU graph: this is why. Whether you should set CPU limits at all is an argument for another post; this one is only about what a limit does when you set it.
 
 ## A request is a weight, not a cap
+
+`requests.cpu: 250m` never throttles anything. It does two unrelated jobs.
