@@ -89,3 +89,10 @@ Kubernetes does not know or care about any of that. It counts whatever Linux rep
 "1 CPU" is not a fixed amount of work. 1000m on a 3.5 GHz EPYC does more than 1000m on a 2.2 GHz Xeon, and 1000m on a hyperthread whose sibling is busy does less than 1000m on one whose sibling is idle. Kubernetes measures time, and time is all it measures.
 
 Node capacity is in logical CPUs too. An 8-vCPU VM on a dedicated Hetzner plan shows `capacity.cpu: 8`, which is 8000m of schedulable time backed by roughly four physical cores. The two numbers that Kubernetes and Linux agree on are these:
+
+```bash
+$ kubectl get node worker-1 -o jsonpath='{.status.capacity.cpu}'
+8
+$ ssh worker-1 nproc
+8
+```
