@@ -35,3 +35,5 @@ So one millicore is one millisecond of CPU work per second. That is the whole de
 The last row is why it has to be time and not a core. You cannot fit two seconds of work into one second on one core, but two cores can do it between them. CPU time adds up across cores, and the kernel is free to add it up on whichever cores it likes.
 
 ## What a limit turns into
+
+The kernel does not check once a second. It checks in a smaller window called the CFS period, which the [CFS bandwidth control docs](https://docs.kernel.org/scheduler/sched-bwc.html) default to 100 ms. The kubelet uses the same number: in `pkg/kubelet/cm/helpers_linux.go` the period is a constant, `QuotaPeriod = 100000` microseconds, and the quota is `milliCPU * period / 1000`. It can be changed with `cpuCFSQuotaPeriod` behind the `CustomCPUCFSQuotaPeriod` feature gate, and almost nobody does.
