@@ -37,3 +37,5 @@ The last row is why it has to be time and not a core. You cannot fit two seconds
 ## What a limit turns into
 
 The kernel does not check once a second. It checks in a smaller window called the CFS period, which the [CFS bandwidth control docs](https://docs.kernel.org/scheduler/sched-bwc.html) default to 100 ms. The kubelet uses the same number: in `pkg/kubelet/cm/helpers_linux.go` the period is a constant, `QuotaPeriod = 100000` microseconds, and the quota is `milliCPU * period / 1000`. It can be changed with `cpuCFSQuotaPeriod` behind the `CustomCPUCFSQuotaPeriod` feature gate, and almost nobody does.
+
+So `limits.cpu: 250m` becomes `250 * 100000 / 1000 = 25000`, and on a cgroup v2 node you can read it back from inside the container:
