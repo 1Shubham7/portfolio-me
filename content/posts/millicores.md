@@ -62,3 +62,5 @@ The counter that shows this is `container_cpu_cfs_throttled_periods_total` from 
 `requests.cpu: 250m` never throttles anything. It does two unrelated jobs.
 
 The first is placement. The scheduler only puts the pod on a node where the sum of requests, including this one, fits inside the node's allocatable CPU. That is accounting on paper; nothing on the node enforces it.
+
+The second is a share of the node when the node is busy. The kubelet turns the request into cgroup v1 shares at 1024 per CPU, so 250m is 256 shares. Cgroup v2 has no shares, only `cpu.weight` in the range 1 to 10000, and the kubelet and runc map one to the other with `1 + (shares - 2) * 9999 / 262142`. For 250m that is 10:
