@@ -13,3 +13,5 @@ cover:
 I have written `cpu: 250m` into more Deployments than I can count, and until recently I could not have told you what it meant. Everyone says it is a quarter of a CPU. The docs talk about CPU time. A quarter of a CPU's time over what? A day? A second? Nobody writes down the denominator, so the number stays a thing you copy from the last manifest. This post is the explanation I wish I had read first: where the denominator is, and what the kubelet turns the number into.
 
 ## You cannot split a core, only its time
+
+A CPU core runs one thread at any instant. Your laptop looks like it is running three hundred things at once because the kernel switches between them every few milliseconds, which is fast enough that nothing seems to stop. So there is no such thing as giving a process half a core. The silicon does not divide. What divides is the core's time: how many of its milliseconds each thread gets before the kernel moves on to the next one.
