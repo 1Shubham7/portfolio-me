@@ -96,3 +96,5 @@ $ kubectl get node worker-1 -o jsonpath='{.status.capacity.cpu}'
 $ ssh worker-1 nproc
 8
 ```
+
+Nothing in that output says four cores. The 2:1 comes from the provider's spec sheet, and inside a VM even `lscpu` only shows whatever topology the hypervisor chose to present.
