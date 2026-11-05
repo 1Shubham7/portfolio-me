@@ -29,3 +29,5 @@ The confusing word is "time", because the unit is actually a rate, like km/h. On
 | `250m` | 250 ms of CPU time |
 | `1m` | 1 ms of CPU time |
 | `2` (`2000m`) | 2000 ms of CPU time, which needs two cores running in parallel |
+
+So one millicore is one millisecond of CPU work per second. That is the whole definition. The docs add that `0.1` and `100m` are the same value, that nothing finer than `1m` is allowed, and that the amount is absolute: `500m` asks for the same thing on a 2-core node and a 64-core node.
