@@ -56,3 +56,5 @@ The 25 ms is not tied to a core. It can be spent as 25 ms on core 3, or 10 ms on
 That last case is the production gotcha. A Go service, a JVM with its thread pools, a Node app with workers: four busy threads burn through a 25 ms bucket in about 6.25 ms of wall time, and then the whole container is frozen for the remaining 93.75 ms. Averaged over a second it used a quarter of a core, exactly what the limit said. The CPU graph looks calm. Meanwhile every request that arrived during the freeze waited up to 94 ms for nothing, and p99 latency is terrible.
 
 The counter that shows this is `container_cpu_cfs_throttled_periods_total` from cAdvisor, the number of periods in which the container was throttled, next to `container_cpu_cfs_periods_total` for the total. The same two numbers are `nr_throttled` and `nr_periods` in the container's `cpu.stat`. High ratio, low CPU graph: this is why. Whether you should set CPU limits at all is an argument for another post; this one is only about what a limit does when you set it.
+
+## A request is a weight, not a cap
