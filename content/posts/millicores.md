@@ -75,3 +75,5 @@ Weights only matter under contention. The cgroup v2 docs describe the controller
 Pod A requests 250m and pod B requests 750m, both on a one-core node and both busy. The weights are 10 and 30, so A gets about a quarter of the core and B about three quarters. B goes idle, A gets the whole core. Nothing was promised to A except "at least this much when there is a fight", and nothing was taken from it when there was not.
 
 ## Time on what, exactly?
+
+The phrase that started this for me was "one vCPU or hyperthread's worth of time", which raises the question of what Kubernetes counts as a CPU. The answer is a logical CPU, the smallest thing Linux can schedule a thread onto, and that is usually not a physical core.
