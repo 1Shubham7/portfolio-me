@@ -102,3 +102,5 @@ Nothing in that output says four cores. The 2:1 comes from the provider's spec s
 ## Ending notes
 
 `250m` means: in every 100 ms, you may run for 25 ms in total, on any cores. The request decides your share of the node when it is crowded. The limit decides when you get frozen. They are set by two different kernel mechanisms, a weight and a quota, and neither of them is a piece of hardware with your name on it.
+
+The two `cat` commands above are the quickest way to make it real. Open a shell in a pod that has a request and a limit, read `cpu.weight` and `cpu.max`, and do the arithmetic back to the millicores in the manifest. Once the numbers match, the YAML stops being magic.
