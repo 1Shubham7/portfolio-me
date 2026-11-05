@@ -79,3 +79,5 @@ Pod A requests 250m and pod B requests 750m, both on a one-core node and both bu
 The phrase that started this for me was "one vCPU or hyperthread's worth of time", which raises the question of what Kubernetes counts as a CPU. The answer is a logical CPU, the smallest thing Linux can schedule a thread onto, and that is usually not a physical core.
 
 A physical core is the silicon that executes instructions. With simultaneous multithreading, Intel's Hyper-Threading or AMD's SMT, one core presents itself to Linux as two CPUs. The core keeps two threads loaded and switches to the other whenever the first stalls, on a memory load say, so its execution units sit idle less often. A machine with 8 physical cores and SMT on shows 16 in `nproc`, and Linux schedules on all 16 as if they were separate.
+
+The catch is that the two siblings share one core. If both are flat out you do not get twice the work. The usual rough figure is something like 1.2 to 1.3 times a single thread, it depends heavily on the workload, and I have not measured it myself. Each hyperthread is a weaker thing than a whole core.
