@@ -21,3 +21,11 @@ One cashier at a shop is the picture that made it click for me. You cannot hand 
 ## The unit is CPU-seconds per second
 
 The confusing word is "time", because the unit is actually a rate, like km/h. One Kubernetes CPU is one second of CPU time for every second of wall-clock time. That is the missing denominator: it is always per second, and it is always a fraction of one core's seconds.
+
+| Value | Per 1 s of wall-clock time |
+| :-- | :-- |
+| `1` (`1000m`) | 1000 ms of CPU time, a whole core |
+| `500m` | 500 ms of CPU time |
+| `250m` | 250 ms of CPU time |
+| `1m` | 1 ms of CPU time |
+| `2` (`2000m`) | 2000 ms of CPU time, which needs two cores running in parallel |
