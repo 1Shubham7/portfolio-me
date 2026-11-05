@@ -46,3 +46,5 @@ $ kubectl exec -it api-7d4c9-x2k1p -- cat /sys/fs/cgroup/cpu.max
 ```
 
 Quota first, period second, both in microseconds. On cgroup v1 the same two numbers are `cpu.cfs_quota_us` and `cpu.cfs_period_us`. A container with no limit gets the kernel default of `max 100000`: the same period, nothing to run out of.
+
+The mechanism is a bucket. At the start of each 100 ms period the container gets 25 ms of CPU time. Its threads spend from that bucket as they run, and when it is empty they stop, all of them, until the next period starts and the bucket is refilled. The kernel docs say it plainly: throttled threads will not be able to run again until the next period when the quota is replenished. That is what a CPU limit is. Not a slower CPU, a CPU that is switched off for the rest of the window once you have used your share of it.
