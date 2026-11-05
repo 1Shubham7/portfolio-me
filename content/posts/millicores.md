@@ -44,3 +44,5 @@ So `limits.cpu: 250m` becomes `250 * 100000 / 1000 = 25000`, and on a cgroup v2 
 $ kubectl exec -it api-7d4c9-x2k1p -- cat /sys/fs/cgroup/cpu.max
 25000 100000
 ```
+
+Quota first, period second, both in microseconds. On cgroup v1 the same two numbers are `cpu.cfs_quota_us` and `cpu.cfs_period_us`. A container with no limit gets the kernel default of `max 100000`: the same period, nothing to run out of.
