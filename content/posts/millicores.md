@@ -69,3 +69,5 @@ The second is a share of the node when the node is busy. The kubelet turns the r
 $ kubectl exec -it api-7d4c9-x2k1p -- cat /sys/fs/cgroup/cpu.weight
 10
 ```
+
+Weights only matter under contention. The cgroup v2 docs describe the controller as work-conserving: only children that can use the resource right now take part in the split. On an idle node a pod with a 250m request and no limit can use the whole machine. When two pods want the same core, the kernel divides its time in proportion to their weights, and that is all it does.
