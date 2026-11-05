@@ -73,3 +73,5 @@ $ kubectl exec -it api-7d4c9-x2k1p -- cat /sys/fs/cgroup/cpu.weight
 Weights only matter under contention. The cgroup v2 docs describe the controller as work-conserving: only children that can use the resource right now take part in the split. On an idle node a pod with a 250m request and no limit can use the whole machine. When two pods want the same core, the kernel divides its time in proportion to their weights, and that is all it does.
 
 Pod A requests 250m and pod B requests 750m, both on a one-core node and both busy. The weights are 10 and 30, so A gets about a quarter of the core and B about three quarters. B goes idle, A gets the whole core. Nothing was promised to A except "at least this much when there is a fight", and nothing was taken from it when there was not.
+
+## Time on what, exactly?
