@@ -50,3 +50,5 @@ Quota first, period second, both in microseconds. On cgroup v1 the same two numb
 The mechanism is a bucket. At the start of each 100 ms period the container gets 25 ms of CPU time. Its threads spend from that bucket as they run, and when it is empty they stop, all of them, until the next period starts and the bucket is refilled. The kernel docs say it plainly: throttled threads will not be able to run again until the next period when the quota is replenished. That is what a CPU limit is. Not a slower CPU, a CPU that is switched off for the rest of the window once you have used your share of it.
 
 ## "On any cores" is the part that bites
+
+The 25 ms is not tied to a core. It can be spent as 25 ms on core 3, or 10 ms on core 0 and 15 ms on core 7, or four threads on four cores each running about 6.25 ms. The kernel hands quota out to each CPU's run queue in 5 ms slices (`kernel.sched_cfs_bandwidth_slice_us`), so the real picture is lumpier than that, but the total is still 25 ms per period however it is split.
