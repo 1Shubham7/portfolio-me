@@ -60,18 +60,20 @@ The counter that shows this is `container_cpu_cfs_throttled_periods_total` from 
 
 `requests.cpu: 250m` never throttles anything. It does two unrelated jobs.
 
-The first is placement. The scheduler only puts the pod on a node where the sum of requests, including this one, fits inside the node's allocatable CPU. That is accounting on paper; nothing on the node enforces it.
+The first is placement. The scheduler only puts the pod on a node where the sum of requests, including this one, fits inside the node's allocatable CPU. That is accounting on paper.
 
-The second is a share of the node when the node is busy. The kubelet turns the request into cgroup v1 shares at 1024 per CPU, so 250m is 256 shares. Cgroup v2 has no shares, only `cpu.weight` in the range 1 to 10000, and the kubelet and runc map one to the other with `1 + (shares - 2) * 9999 / 262142`. For 250m that is 10:
+The second is a share of the node when the node is busy. The kubelet turns the request into cgroup v1 shares at 1024 per CPU, so 250m is 256 shares. Cgroup v2 has no shares, only `cpu.weight` in the range 1 to 10000, so the shares get converted, and the number you see depends on who did the converting. The kubelet writes the pod's cgroup with the linear formula from KEP-2254, `1 + (shares - 2) * 9999 / 262142`, which makes 250m a weight of 10. The container cgroup inside it is written by the OCI runtime, and [runc 1.3.2 and crun 1.23 switched](https://kubernetes.io/blog/2026/01/30/new-cgroup-v1-to-v2-cpu-conversion-formula/) to a log-quadratic curve that puts 1024 shares back at the cgroup default of 100 instead of 39. On a node with one of those runtimes, 250m inside the container should read as 35; on an older runc it is 10, the same as the pod:
 
 ```bash
 $ kubectl exec -it api-7d4c9-x2k1p -- cat /sys/fs/cgroup/cpu.weight
-10
+35
 ```
 
-Weights only matter under contention. The cgroup v2 docs describe the controller as work-conserving: only children that can use the resource right now take part in the split. On an idle node a pod with a 250m request and no limit can use the whole machine. When two pods want the same core, the kernel divides its time in proportion to their weights, and that is all it does.
+The absolute number is not the point, and since the new curve maps several millicore values onto one weight you cannot reliably read it backwards anyway. What the kernel uses is the ratio.
 
-Pod A requests 250m and pod B requests 750m, both on a one-core node and both busy. The weights are 10 and 30, so A gets about a quarter of the core and B about three quarters. B goes idle, A gets the whole core. Nothing was promised to A except "at least this much when there is a fight", and nothing was taken from it when there was not.
+Weights only matter under contention. The cgroup v2 docs describe the controller as work-conserving: only children that can use the resource right now take part in the split. On an idle node a pod with a 250m request and no limit can use the whole machine. When two pods want the same core, the kernel divides its time in proportion to their weights.
+
+Pod A requests 250m and pod B requests 750m, both busy and both fighting over the same core. Their pod cgroups carry weights of 10 and 30, so A gets about a quarter of the core and B about three quarters. B goes idle, A gets the whole core.
 
 ## Time on what, exactly?
 
