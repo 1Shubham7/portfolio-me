@@ -110,3 +110,5 @@ When the root filesystem (`nodefs`) or the image filesystem (`imagefs`) crosses 
 The last place a descriptor hides is the log collector. Fluent Bit, Promtail and the rest tail by inode rather than by path, so rotation does not cost them the tail of the old file, and they keep a rotated file open until they have finished reading it. Under a burst that can make the collector the process `lsof +L1` points at. Why collectors work that way is in [the log collection post](https://1shubham7.blog/log-collection-and-labels/).
 
 ## Ending notes
+
+A file is an inode. A name is a link to it. `rm` drops the link, and the kernel frees the blocks only when the link count is zero and nobody has the inode open. `du` counts names and `df` counts blocks, which is why they disagree, and the fix is never to delete harder. Find the descriptor with `lsof +L1`, then make the process let go: reopen, restart, or truncate through `/proc/<pid>/fd`.
