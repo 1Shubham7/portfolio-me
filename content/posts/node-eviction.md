@@ -123,3 +123,5 @@ systemReserved:
 ```
 
 A hard threshold evicts the moment it is crossed, with a 0 s grace period. A soft one has to stay crossed for its grace period first, and then pods get up to `evictionMaxPodGracePeriod` to leave. `evictionMinimumReclaim` makes the kubelet keep going past the threshold so it is not back here ten seconds later. `evictionPressureTransitionPeriod` is how long the node must look healthy before the condition clears, 5m by default. The two reservations are what the daemons are promised, and they matter more than they look: Allocatable = Capacity - kubeReserved - systemReserved - evictionHard, and pods are scheduled against Allocatable, so the eviction headroom is carved out before any pod lands.
+
+The kubelet checks the signals every housekeeping interval, 10 s by default. When a threshold is crossed the node gets a condition, and the control plane turns it into a taint:
