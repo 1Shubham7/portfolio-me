@@ -67,3 +67,5 @@ If you cannot restart it, truncate the file through the descriptor:
 ```bash
 $ sudo truncate -s 0 /proc/4211/fd/3
 ```
+
+`: > /proc/4211/fd/3` does the same with a shell redirect. Opening the `/proc` symlink opens the inode behind it, and truncating that to zero frees the blocks on the spot. The process never notices and carries on appending. The one wrinkle is a writer that did not open the log with `O_APPEND`: its offset stays where it was, so the next write lands at the old position and the file gets a hole at the front, which costs no space but reads as a long run of zeros.
