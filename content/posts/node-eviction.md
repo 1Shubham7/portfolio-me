@@ -143,7 +143,7 @@ Under memory pressure the kubelet sorts every pod on the node by three keys and 
 2. Priority. Lower goes first.
 3. How far over the request. Bigger overshoot goes first.
 
-QoS is nowhere in that list, and it still comes out of it. A BestEffort pod has a request of zero, so any usage at all puts it in the first group. A Burstable pod over its request is in the same group. A Guaranteed pod cannot stay over its request, because request equals limit and the limit is enforced, so it sits in the safe group with every Burstable pod that is under its request. The docs say those pods will never be evicted because of another pod's consumption. They are only reached when the system daemons eat past `kubeReserved` and `systemReserved` and the node has nothing else left to take, and then it goes by priority.
+QoS is nowhere in that list, and it still comes out of it. A BestEffort pod has a request of zero, so any usage at all puts it in the first group. A Burstable pod over its request is in the same group. A Guaranteed pod cannot stay over its request, because request equals limit and the limit is enforced, so it sits in the safe group with every Burstable pod that is under its request. The docs promise that Guaranteed pods will never be evicted because of another pod's consumption, and the same holds for any pod under its request. They are only reached when the system daemons eat past `kubeReserved` and `systemReserved` and the node has nothing else left to take, and then it goes by priority.
 
 The node is under memory pressure and has four pods:
 
@@ -154,7 +154,7 @@ The node is under memory pressure and has four pods:
 | C | Burstable | 0 | 512Mi | 400Mi |
 | D | Guaranteed | 0 | 1Gi | 1Gi |
 
-Key one splits them: A and B are over their requests, C and D are not. Key two orders the first group: A has priority 0 and B has 1000, so A goes, then B if that was not enough. C and D are untouched unless the daemons are the problem. Now give A `priorityClassName: high-priority` at 1000000 and leave B at 0. B goes first, a Burstable pod before a BestEffort one. The rule of thumb survives only because most clusters never set a priority on anything.
+Key one splits them: A and B are over their requests, C and D are not. Key two orders the first group: A has priority 0 and B has 1000, so A goes, then B if that was not enough. C and D are untouched unless the daemons are the problem. Now give A `priorityClassName: high-priority` at 1000000 and leave B at 1000. B goes first, a Burstable pod before a BestEffort one. The rule of thumb survives only because so few pods ever get a priority.
 
 Afterwards B looks like this in `kubectl describe pod`, with the message assembled from the format strings in that same file:
 
