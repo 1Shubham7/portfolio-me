@@ -87,3 +87,10 @@ predict_linear(node_filesystem_avail_bytes{mountpoint="/"}[6h], 4 * 3600) < 0
 ## The other ways a disk is full
 
 When `lsof +L1` comes back empty, the same symptom has a few other causes, each with a one-line check.
+
+| Symptom | Cause | Check |
+| :-- | :-- | :-- |
+| "No space left on device" but `df -h` shows free space | Inode exhaustion: millions of tiny files (sessions, cache, a mail queue) | `df -i` |
+| Non-root processes fail at about 95% | ext4 reserves 5% of blocks for root by default | `tune2fs -l`, change it with `tune2fs -m` |
+| `du` of `/` does not match `df`, and nothing is deleted | Files were written into a directory before a filesystem was mounted over it, so the mount hides them | `mount --bind / /mnt/root`, then `du /mnt/root/<dir>` |
+| `rm` of one name frees nothing, and nothing has it open | A hard link: another name still points at the inode | `ls -li`, `find / -samefile <file>` |
