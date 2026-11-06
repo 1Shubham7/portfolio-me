@@ -139,3 +139,7 @@ Conditions:
 ## The ranking
 
 Under memory pressure the kubelet sorts every pod on the node by three keys and evicts from the top. `pkg/kubelet/eviction/helpers.go` does it in one line, `orderedBy(exceedMemoryRequests(stats), priority, memory(stats))`:
+
+1. Is usage above the request? Pods over their request go first.
+2. Priority. Lower goes first.
+3. How far over the request. Bigger overshoot goes first.
