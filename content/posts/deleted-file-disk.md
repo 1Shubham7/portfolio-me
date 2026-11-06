@@ -53,3 +53,5 @@ $ sudo find /proc/*/fd -ls 2>/dev/null | grep '(deleted)'
 ```
 
 Each entry in `/proc/<pid>/fd/` is a symlink to whatever the descriptor points at, and the kernel appends ` (deleted)` to the target when the name has been unlinked. That suffix is the whole trick behind both commands.
+
+## Making the process let go
