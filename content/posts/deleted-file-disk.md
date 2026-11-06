@@ -22,3 +22,5 @@ On a Linux filesystem the thing you think of as a file is two separate things. T
 $ ls -li /var/log/app.log
 1572893 -rw-r--r-- 1 app app 31457280000 Nov  5 09:12 /var/log/app.log
 ```
+
+`rm` calls `unlink()`, and the man page is exact about what that does. It removes the name and decrements the link count. If that was the last name and no process has the file open, the file is deleted and its space is made available. If any process still has it open, the file remains in existence until the last file descriptor referring to it is closed. Two counters have to reach zero: names, and open descriptors across every process on the machine. `rm` only touches the first.
