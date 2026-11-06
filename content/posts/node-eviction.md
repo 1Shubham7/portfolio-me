@@ -27,3 +27,5 @@ resources:
     memory: 512Mi
     ephemeral-storage: 2Gi
 ```
+
+A request is a number on paper. The scheduler places a pod on a node only if the requests already there plus this one fit in allocatable, and usage never enters that sum. At runtime the three requests do three different jobs. The CPU request becomes a cgroup weight, a share of the node when it is busy, which is what [the millicores post](/millicores/) covers. The memory request is enforced by nothing; the kernel does not know it exists. It is the number the kubelet compares usage against when it ranks pods for eviction, and the number behind the container's OOM score, and that is the whole reason it matters here. The ephemeral-storage request only affects scheduling.
