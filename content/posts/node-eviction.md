@@ -198,3 +198,5 @@ If the policy you want is not expressible that way, it lives outside the kubelet
 The kubelet does not read the QoS class when it evicts. It sorts by usage over request, then priority, then how far over, and all three come from the pod spec. The kernel OOM killer does read the class, through `oom_score_adj`, and it only gets involved when the kubelet is too slow or a container trips its own limit.
 
 So the checklist for a service that should die last is short. Memory request equal to limit, so it is Guaranteed and never in the first group. A PriorityClass with a real value, so it loses the tiebreak to nobody. And `kubeReserved` and `systemReserved` set honestly on the nodes, so the daemons never make the kubelet reach into the safe group at all.
+
+Thanks for your time :)
