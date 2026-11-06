@@ -168,3 +168,5 @@ Message:  The node was low on resource: memory. Threshold quantity: 100Mi, avail
 Disk pressure is the same shape with a different first move. The kubelet first reclaims what it owns, garbage-collecting dead pods and containers and then deleting unused images, and only then ranks pods: over their ephemeral-storage request first, then priority, then disk usage. [The deleted-file post](/deleted-file-disk/) has the part where a deleted-but-open log counts fully against `nodefs.available`.
 
 ## Evicted is not OOMKilled
+
+The kubelet looks every 10 s. A process that grabs a few gigabytes inside that window goes straight through the threshold, and the kernel OOM killer acts first. It picks by `oom_score_adj`, so this is the moment QoS decides, and it kills a process; the container restarts in place and the pod stays where it is, with `OOMKilled` and a restart count. A container over its own memory limit meets the same killer by a different route, its own cgroup's `memory.max`, whatever the node is doing.
