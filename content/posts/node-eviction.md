@@ -47,3 +47,5 @@ You cannot write `qosClass` in a manifest. Kubernetes derives it from the reques
 | Guaranteed | every container has CPU and memory requests and limits, and each request equals its limit |
 | Burstable | not Guaranteed, and at least one container has any CPU or memory request or limit |
 | BestEffort | no CPU or memory request or limit on any container |
+
+Two gotchas follow from the derivation. Setting only limits gives you Guaranteed, because the requests are copied from them. One sidecar with no limits drops the whole pod to Burstable.
