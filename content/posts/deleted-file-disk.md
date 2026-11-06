@@ -100,3 +100,5 @@ The last row is the rule from the start of the post seen from the other side. Th
 ## The same thing on a Kubernetes node
 
 Nothing above changes on a node. It just has more processes writing logs and a kubelet watching the disk.
+
+Container stdout and stderr land in files under `/var/log/pods`, and the kubelet rotates those itself, by `containerLogMaxSize` (default 10Mi) and `containerLogMaxFiles` (default 5) in its config. An app that writes its logs to a file inside the container is outside that. Nothing rotates the file, it grows in the container's writable layer, and the fix is to send it to stdout or give it a volume.
