@@ -137,3 +137,5 @@ Conditions:
 ```
 
 ## The ranking
+
+Under memory pressure the kubelet sorts every pod on the node by three keys and evicts from the top. `pkg/kubelet/eviction/helpers.go` does it in one line, `orderedBy(exceedMemoryRequests(stats), priority, memory(stats))`:
