@@ -77,3 +77,7 @@ The same symlink is the way back in when the file was deleted by mistake. As lon
 Almost every time, the file is a log and the real fault is rotation. logrotate renames the file, the app keeps writing to the renamed inode, and sooner or later someone deletes the "old" file that is secretly the live one. The clean rule is `create` plus a `postrotate` script that signals the app to reopen, so the app moves to the new name and the old inode is closed. For an app that cannot reopen, `copytruncate` copies the file and truncates the original in place, and the man page is honest that there is a small window between the copy and the truncate in which lines are lost. Both rules, and what else goes wrong with them, are in [the logrotate post](https://1shubham7.blog/logrotate/).
 
 The alert belongs on the filesystem, not on the gap. With node_exporter, `node_filesystem_avail_bytes / node_filesystem_size_bytes` is the ratio to watch (avail rather than free, because it already subtracts the root reserve from the table below), and `predict_linear` over a few hours turns "95% full" into "full in four hours", which is the version worth being paged for:
+
+```
+predict_linear(node_filesystem_avail_bytes{mountpoint="/"}[6h], 4 * 3600) < 0
+```
