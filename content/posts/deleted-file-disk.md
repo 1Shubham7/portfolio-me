@@ -46,3 +46,8 @@ app     4211  app   3w   REG  259,2 31457280000     0 1572893 /var/log/app.log (
 ```
 
 PID, descriptor number, the size still held, and the path it was opened under. `lsof -nP | grep '(deleted)'` gets you the same rows. On a minimal host without `lsof`, go straight to where `lsof` reads it from:
+
+```bash
+$ sudo find /proc/*/fd -ls 2>/dev/null | grep '(deleted)'
+ 38817  0 l-wx------  1 app  app  64 Nov  5 09:12 /proc/4211/fd/3 -> /var/log/app.log (deleted)
+```
