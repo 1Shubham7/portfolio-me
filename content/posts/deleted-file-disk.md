@@ -81,3 +81,5 @@ The alert belongs on the filesystem, not on the gap. With node_exporter, `node_f
 ```
 predict_linear(node_filesystem_avail_bytes{mountpoint="/"}[6h], 4 * 3600) < 0
 ```
+
+`node_filesystem_files_free` is the same idea for inodes. The `df` versus `du` gap is something you check by hand once the alert fires, not something to alert on.
