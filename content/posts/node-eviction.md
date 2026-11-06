@@ -181,3 +181,5 @@ The kubelet looks every 10 s. A process that grabs a few gigabytes inside that w
 Neither respects a PodDisruptionBudget. A PDB guards the Eviction API, which `kubectl drain`, the cluster autoscaler and the Descheduler go through and node-pressure eviction does not; [the PDB post](/pdb/) is about that boundary.
 
 ## What you can and cannot configure
+
+You configure when: thresholds, soft versus hard, grace periods, minimum reclaim, reservations, all per node. You do not configure who. The signal list is fixed, the ranking is hardcoded, and there is no setting for "evict pods with this label first" or "on disk pressure only take the log shippers". What you have is the inputs to the sort, and those are in the pod spec:
