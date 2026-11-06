@@ -39,3 +39,5 @@ The unit foot-gun is memory with a lowercase `m`. The docs are blunt about it: `
 The defaults that make everything below simplest: memory request equal to limit, so the pod never overshoots its request and the OOM point is a known number; a realistic CPU request with no limit or a generous one; and both numbers taken from observed usage, not from the last manifest you copied.
 
 ## QoS is derived, and it is not the eviction order
+
+You cannot write `qosClass` in a manifest. Kubernetes derives it from the requests and limits of every container, init containers included, and shows the result in `status.qosClass`.
