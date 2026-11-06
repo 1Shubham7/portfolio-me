@@ -49,3 +49,8 @@ You cannot write `qosClass` in a manifest. Kubernetes derives it from the reques
 | BestEffort | no CPU or memory request or limit on any container |
 
 Two gotchas follow from the derivation. Setting only limits gives you Guaranteed, because the requests are copied from them. One sidecar with no limits drops the whole pod to Burstable.
+
+```bash
+$ kubectl get pod api-7d4c9-x2k1p -o jsonpath='{.status.qosClass}'
+Burstable
+```
