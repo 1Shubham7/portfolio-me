@@ -15,3 +15,5 @@ The sequence is familiar to anyone who has run a Linux box for long enough. `df 
 I knew the sequence long before I knew the reason, and the reason is one sentence: `rm` removes a name, not a file. Everything else in this post follows from that.
 
 ## A file is an inode, a name is a link to it
+
+On a Linux filesystem the thing you think of as a file is two separate things. The inode holds the data blocks and the metadata: size, owner, permissions, timestamps, a link count, and the pointers (or extents) to where the data lives. The filename is not in there. Names live in directories, and a directory entry is nothing more than a name pointing at an inode number. `ls -li` shows both the number and, in the column after the permissions, the link count: how many names point at that inode.
