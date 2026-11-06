@@ -135,3 +135,5 @@ Conditions:
   Type             Status  ...  Reason                        Message
   MemoryPressure   True    ...  KubeletHasInsufficientMemory  kubelet has insufficient memory available
 ```
+
+## The ranking
