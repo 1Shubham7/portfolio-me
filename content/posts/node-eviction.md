@@ -79,3 +79,5 @@ description: "Payment and checkout services"
 ```
 
 `value` is any 32-bit integer up to 1,000,000,000. Above that is reserved for the two built-ins, `system-cluster-critical` at 2000000000 and `system-node-critical` at 2000001000. A pod names its class with `spec.priorityClassName: high-priority`, and a pod that names nothing gets 0 unless one class in the cluster has `globalDefault: true`. `preemptionPolicy: Never` gives a pod its place in the scheduling queue without letting it push anyone out, which is the right setting for batch work that should wait rather than kill.
+
+Priority is read by the scheduler and by the kubelet, and the two behave differently enough to keep apart:
