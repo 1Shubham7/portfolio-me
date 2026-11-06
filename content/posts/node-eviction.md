@@ -15,3 +15,15 @@ cover:
 The answer I carried around was "BestEffort, then Burstable, then Guaranteed". That is roughly what happens and not what the kubelet computes. The kubelet sorts by three keys, none of which is the QoS class, and the only inputs you own are the pod's `requests` and its `priorityClassName`. You cannot tell the kubelet who to pick. You can tell it when to start, and you can shape the inputs. This post is the short version of that.
 
 ## Everything starts with the resources block
+
+```yaml
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+    ephemeral-storage: 1Gi
+  limits:
+    cpu: "1"
+    memory: 512Mi
+    ephemeral-storage: 2Gi
+```
