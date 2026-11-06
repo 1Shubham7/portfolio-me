@@ -96,3 +96,5 @@ ResourceQuota is a namespace budget checked at admission. It rejects new objects
 ## What the kubelet watches, and when it starts
 
 CPU never triggers eviction. It is compressible: a contended node slows everyone down in proportion to their weights, and there is no CPU signal in the list. Memory, disk and PIDs are not compressible, and those have signals: `memory.available`, `nodefs.available`, `nodefs.inodesFree`, `imagefs.available`, `imagefs.inodesFree`, `containerfs.available`, `containerfs.inodesFree` and `pid.available`. The list is fixed.
+
+Thresholds live in the KubeletConfiguration, per node. The `evictionHard` block below is the Linux default; the rest are example values for the knobs around it:
