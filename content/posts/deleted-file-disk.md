@@ -61,3 +61,5 @@ In order of preference.
 Tell the process to reopen its log. Most daemons reopen on a signal; `SIGHUP` is the convention, and nginx uses `SIGUSR1`, with [its docs](https://nginx.org/en/docs/control.html) describing the master process re-opening every log file and then asking the workers to do the same. The old descriptor closes, the second counter reaches zero, and the blocks are freed. Nothing restarts.
 
 Restart it. Every descriptor closes with the process. Blunter, and fine when a restart is cheap.
+
+If you cannot restart it, truncate the file through the descriptor:
