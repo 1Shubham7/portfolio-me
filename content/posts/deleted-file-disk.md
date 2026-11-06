@@ -94,3 +94,5 @@ When `lsof +L1` comes back empty, the same symptom has a few other causes, each 
 | Non-root processes fail at about 95% | ext4 reserves 5% of blocks for root by default | `tune2fs -l`, change it with `tune2fs -m` |
 | `du` of `/` does not match `df`, and nothing is deleted | Files were written into a directory before a filesystem was mounted over it, so the mount hides them | `mount --bind / /mnt/root`, then `du /mnt/root/<dir>` |
 | `rm` of one name frees nothing, and nothing has it open | A hard link: another name still points at the inode | `ls -li`, `find / -samefile <file>` |
+
+The last row is the rule from the start of the post seen from the other side. The link count was 2, `rm` took it to 1, and an inode that still has a name is not deleted.
