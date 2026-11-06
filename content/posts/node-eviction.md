@@ -170,3 +170,10 @@ Disk pressure is the same shape with a different first move. The kubelet first r
 ## Evicted is not OOMKilled
 
 The kubelet looks every 10 s. A process that grabs a few gigabytes inside that window goes straight through the threshold, and the kernel OOM killer acts first. It picks by `oom_score_adj`, so this is the moment QoS decides, and it kills a process; the container restarts in place and the pod stays where it is, with `OOMKilled` and a restart count. A container over its own memory limit meets the same killer by a different route, its own cgroup's `memory.max`, whatever the node is doing.
+
+| | Evicted | OOMKilled |
+| :-- | :-- | :-- |
+| Who kills | kubelet | kernel |
+| Why | the node crossed an eviction signal | node OOM before the kubelet moved, or the container went over its own limit |
+| Picked by | usage over request, then priority, then overshoot | `oom_score_adj`, so QoS and the size of the request |
+| Result | pod `Failed`, reason `Evicted`, replaced elsewhere | container restarts in place, exit code 137 |
