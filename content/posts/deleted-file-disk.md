@@ -85,3 +85,5 @@ predict_linear(node_filesystem_avail_bytes{mountpoint="/"}[6h], 4 * 3600) < 0
 `node_filesystem_files_free` is the same idea for inodes. The `df` versus `du` gap is something you check by hand once the alert fires, not something to alert on.
 
 ## The other ways a disk is full
+
+When `lsof +L1` comes back empty, the same symptom has a few other causes, each with a one-line check.
