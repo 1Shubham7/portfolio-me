@@ -62,3 +62,5 @@ The class changes three things. Guaranteed pods with whole-number CPU requests c
 | Guaranteed | -997 |
 | Burstable | min(max(2, 1000 - 1000 × memoryRequest / nodeMemoryCapacity), 999) |
 | BestEffort | 1000 |
+
+A Burstable container requesting a tenth of the node scores about 900; one requesting half scores about 500. Bigger request, safer container. The code in `pkg/kubelet/qos/policy.go` also keeps every Burstable score above anything a Guaranteed container can reach, and gives any container in a `system-node-critical` pod the Guaranteed -997 regardless of class. That score is read by the kernel OOM killer, not by the kubelet, and those are two separate events. Hold that thought until the ranking.
