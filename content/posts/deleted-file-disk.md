@@ -32,3 +32,5 @@ This is deliberate. Decoupling names from data is what lets a package manager re
 ## Why df and du disagree
 
 They measure different things. `du` walks the directory tree, so it can only count files that have a name. `df` asks the filesystem itself, through `statfs`, and the filesystem answers from the free-block counters in its superblock, which know nothing about names. A deleted-but-open file has no name and still has blocks, so `du` cannot see it and `df` cannot miss it.
+
+That is the signature. `df` at 95% and `du` adding up to 60% with nothing else to explain the gap means something is holding a deleted file open, and the gap is roughly how much.
