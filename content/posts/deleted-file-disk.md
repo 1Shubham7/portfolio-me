@@ -63,3 +63,7 @@ Tell the process to reopen its log. Most daemons reopen on a signal; `SIGHUP` is
 Restart it. Every descriptor closes with the process. Blunter, and fine when a restart is cheap.
 
 If you cannot restart it, truncate the file through the descriptor:
+
+```bash
+$ sudo truncate -s 0 /proc/4211/fd/3
+```
