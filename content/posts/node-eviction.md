@@ -41,3 +41,9 @@ The defaults that make everything below simplest: memory request equal to limit,
 ## QoS is derived, and it is not the eviction order
 
 You cannot write `qosClass` in a manifest. Kubernetes derives it from the requests and limits of every container, init containers included, and shows the result in `status.qosClass`.
+
+| Class | Rule |
+| :-- | :-- |
+| Guaranteed | every container has CPU and memory requests and limits, and each request equals its limit |
+| Burstable | not Guaranteed, and at least one container has any CPU or memory request or limit |
+| BestEffort | no CPU or memory request or limit on any container |
