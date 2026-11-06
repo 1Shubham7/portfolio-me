@@ -38,3 +38,9 @@ That is the signature. `df` at 95% and `du` adding up to 60% with nothing else t
 ## Finding what is holding it
 
 `lsof` can list open files whose link count is below one, which is exactly the set of files that have been unlinked:
+
+```bash
+$ sudo lsof +L1
+COMMAND  PID USER  FD   TYPE DEVICE    SIZE/OFF NLINK    NODE NAME
+app     4211  app   3w   REG  259,2 31457280000     0 1572893 /var/log/app.log (deleted)
+```
