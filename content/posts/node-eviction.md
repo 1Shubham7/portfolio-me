@@ -88,3 +88,5 @@ Priority is read by the scheduler and by the kubelet, and the two behave differe
 | Trigger | a higher-priority pod is Pending and nothing fits | the node is low on memory, disk or PIDs |
 | Respects PDBs | best effort | no |
 | Grace period | the pod's own, 30 s by default | soft threshold: up to `evictionMaxPodGracePeriod`; hard threshold: 0 s |
+
+## Quota and LimitRange, since they come up in the same breath
