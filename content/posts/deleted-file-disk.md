@@ -9,3 +9,5 @@ cover:
     image: "/blog/deleted-file-disk/deleted-file-disk.png"
 ---
 
+
+The sequence is familiar to anyone who has run a Linux box for long enough. `df -h` says the root filesystem is at 95%. `du` finds a log file the size of a small database, you `rm` it, you run `df` again, and the number has not moved. Run `du` now and it adds up to 60%. The two tools disagree by a third of the disk, and the file you just deleted is nowhere.
