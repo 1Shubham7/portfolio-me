@@ -183,3 +183,10 @@ Neither respects a PodDisruptionBudget. A PDB guards the Eviction API, which `ku
 ## What you can and cannot configure
 
 You configure when: thresholds, soft versus hard, grace periods, minimum reclaim, reservations, all per node. You do not configure who. The signal list is fixed, the ranking is hardcoded, and there is no setting for "evict pods with this label first" or "on disk pressure only take the log shippers". What you have is the inputs to the sort, and those are in the pod spec:
+
+| Goal | Lever |
+| :-- | :-- |
+| Evicted last | high `priorityClassName`, memory request at real usage, ideally request = limit |
+| Evicted first | no requests (BestEffort), priority 0 |
+| Survive the kernel OOM killer | bigger memory request, or Guaranteed |
+| Avoid disk-pressure eviction | `ephemeral-storage` request and limit, logs to stdout rather than `emptyDir` |
