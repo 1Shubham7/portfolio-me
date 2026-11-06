@@ -44,3 +44,5 @@ $ sudo lsof +L1
 COMMAND  PID USER  FD   TYPE DEVICE    SIZE/OFF NLINK    NODE NAME
 app     4211  app   3w   REG  259,2 31457280000     0 1572893 /var/log/app.log (deleted)
 ```
+
+PID, descriptor number, the size still held, and the path it was opened under. `lsof -nP | grep '(deleted)'` gets you the same rows. On a minimal host without `lsof`, go straight to where `lsof` reads it from:
