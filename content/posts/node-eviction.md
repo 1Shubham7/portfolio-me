@@ -194,3 +194,5 @@ You configure when: thresholds, soft versus hard, grace periods, minimum reclaim
 If the policy you want is not expressible that way, it lives outside the kubelet: the Descheduler for utilisation or pod-age policies, or a controller of your own on the Eviction API. Both go through the API, so both respect PDBs, which the kubelet never will.
 
 ## Ending notes
+
+The kubelet does not read the QoS class when it evicts. It sorts by usage over request, then priority, then how far over, and all three come from the pod spec. The kernel OOM killer does read the class, through `oom_score_adj`, and it only gets involved when the kubelet is too slow or a container trips its own limit.
