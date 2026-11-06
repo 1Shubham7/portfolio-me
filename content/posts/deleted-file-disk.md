@@ -112,3 +112,5 @@ The last place a descriptor hides is the log collector. Fluent Bit, Promtail and
 ## Ending notes
 
 A file is an inode. A name is a link to it. `rm` drops the link, and the kernel frees the blocks only when the link count is zero and nobody has the inode open. `du` counts names and `df` counts blocks, which is why they disagree, and the fix is never to delete harder. Find the descriptor with `lsof +L1`, then make the process let go: reopen, restart, or truncate through `/proc/<pid>/fd`.
+
+The quickest way to see it for yourself is `ls -li` on any log, then `ls -l /proc/<pid>/fd` for the process writing it. Delete the file and look at the symlink again. The name is gone, the descriptor is still there marked `(deleted)`, and so is the space.
