@@ -179,3 +179,5 @@ The kubelet looks every 10 s. A process that grabs a few gigabytes inside that w
 | Result | pod `Failed`, reason `Evicted`, replaced elsewhere | container restarts in place, exit code 137 |
 
 Neither respects a PodDisruptionBudget. A PDB guards the Eviction API, which `kubectl drain`, the cluster autoscaler and the Descheduler go through and node-pressure eviction does not; [the PDB post](/pdb/) is about that boundary.
+
+## What you can and cannot configure
