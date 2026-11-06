@@ -156,3 +156,5 @@ The node is under memory pressure and has four pods:
 | D | Guaranteed | 0 | 1Gi | 1Gi |
 
 Key one splits them: A and B are over their requests, C and D are not. Key two orders the first group: A has priority 0 and B has 1000, so A goes, then B if that was not enough. C and D are untouched unless the daemons are the problem. Now give A `priorityClassName: high-priority` at 1000000 and leave B at 0. B goes first, a Burstable pod before a BestEffort one. The rule of thumb survives only because most clusters never set a priority on anything.
+
+Afterwards B looks like this in `kubectl describe pod`, with the message assembled from the format strings in that same file:
