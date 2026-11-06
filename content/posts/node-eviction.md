@@ -56,3 +56,9 @@ Burstable
 ```
 
 The class changes three things. Guaranteed pods with whole-number CPU requests can get exclusive cores under the CPU Manager's static policy. BestEffort pods are not scheduled onto a node carrying the `MemoryPressure` condition, because the control plane adds a toleration for that taint to every pod that is not BestEffort. And the kubelet writes `oom_score_adj` on every container from the class, which is the one place QoS decides who dies:
+
+| QoS | `oom_score_adj` |
+| :-- | :-- |
+| Guaranteed | -997 |
+| Burstable | min(max(2, 1000 - 1000 × memoryRequest / nodeMemoryCapacity), 999) |
+| BestEffort | 1000 |
