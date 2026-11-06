@@ -35,3 +35,5 @@ A limit is a ceiling, and the kernel enforces the three of them differently. CPU
 Three rules at the edges. A limit without a request copies the limit into the request. A request larger than its limit is rejected by the API server. And a node can be overcommitted on limits but never on requests, so memory pressure is what happens when the pods already there use more than they asked for, between them. A pod's effective request is the larger of the sum of its app containers and its biggest init container. Pod-level `spec.resources` (beta since 1.34) and in-place resize (stable since 1.35) exist too, if the cluster is new enough.
 
 The unit foot-gun is memory with a lowercase `m`. The docs are blunt about it: `400m` of memory is a request for 0.4 bytes. `Mi` and `Gi` are what you meant.
+
+The defaults that make everything below simplest: memory request equal to limit, so the pod never overshoots its request and the OOM point is a known number; a realistic CPU request with no limit or a generous one; and both numbers taken from observed usage, not from the last manifest you copied.
