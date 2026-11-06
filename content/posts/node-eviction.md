@@ -98,3 +98,26 @@ ResourceQuota is a namespace budget checked at admission. It rejects new objects
 CPU never triggers eviction. It is compressible: a contended node slows everyone down in proportion to their weights, and there is no CPU signal in the list. Memory, disk and PIDs are not compressible, and those have signals: `memory.available`, `nodefs.available`, `nodefs.inodesFree`, `imagefs.available`, `imagefs.inodesFree`, `containerfs.available`, `containerfs.inodesFree` and `pid.available`. The list is fixed.
 
 Thresholds live in the KubeletConfiguration, per node. The `evictionHard` block below is the Linux default; the rest are example values for the knobs around it:
+
+```yaml
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+evictionHard:
+  memory.available: "100Mi"
+  nodefs.available: "10%"
+  nodefs.inodesFree: "5%"
+  imagefs.available: "15%"
+  imagefs.inodesFree: "5%"
+evictionSoft:
+  memory.available: "500Mi"
+evictionSoftGracePeriod:
+  memory.available: "1m30s"
+evictionMaxPodGracePeriod: 60
+evictionMinimumReclaim:
+  memory.available: "500Mi"
+evictionPressureTransitionPeriod: 5m
+kubeReserved:
+  memory: 1Gi
+systemReserved:
+  memory: 1Gi
+```
