@@ -37,3 +37,5 @@ Three rules at the edges. A limit without a request copies the limit into the re
 The unit foot-gun is memory with a lowercase `m`. The docs are blunt about it: `400m` of memory is a request for 0.4 bytes. `Mi` and `Gi` are what you meant.
 
 The defaults that make everything below simplest: memory request equal to limit, so the pod never overshoots its request and the OOM point is a known number; a realistic CPU request with no limit or a generous one; and both numbers taken from observed usage, not from the last manifest you copied.
+
+## QoS is derived, and it is not the eviction order
