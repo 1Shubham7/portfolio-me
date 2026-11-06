@@ -51,3 +51,5 @@ PID, descriptor number, the size still held, and the path it was opened under. `
 $ sudo find /proc/*/fd -ls 2>/dev/null | grep '(deleted)'
  38817  0 l-wx------  1 app  app  64 Nov  5 09:12 /proc/4211/fd/3 -> /var/log/app.log (deleted)
 ```
+
+Each entry in `/proc/<pid>/fd/` is a symlink to whatever the descriptor points at, and the kernel appends ` (deleted)` to the target when the name has been unlinked. That suffix is the whole trick behind both commands.
