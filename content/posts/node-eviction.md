@@ -177,3 +177,5 @@ The kubelet looks every 10 s. A process that grabs a few gigabytes inside that w
 | Why | the node crossed an eviction signal | node OOM before the kubelet moved, or the container went over its own limit |
 | Picked by | usage over request, then priority, then overshoot | `oom_score_adj`, so QoS and the size of the request |
 | Result | pod `Failed`, reason `Evicted`, replaced elsewhere | container restarts in place, exit code 137 |
+
+Neither respects a PodDisruptionBudget. A PDB guards the Eviction API, which `kubectl drain`, the cluster autoscaler and the Descheduler go through and node-pressure eviction does not; [the PDB post](/pdb/) is about that boundary.
