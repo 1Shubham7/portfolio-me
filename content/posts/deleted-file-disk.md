@@ -30,3 +30,5 @@ So a process that opened the log before you deleted it still holds a working des
 This is deliberate. Decoupling names from data is what lets a package manager replace a running binary on disk while the old copy keeps running from its now-nameless inode, and it is how temporary files have always worked: open, unlink, keep using, and the kernel cleans up when the process exits. Windows takes the other route and locks files while they are open.
 
 ## Why df and du disagree
+
+They measure different things. `du` walks the directory tree, so it can only count files that have a name. `df` asks the filesystem itself, through `statfs`, and the filesystem answers from the free-block counters in its superblock, which know nothing about names. A deleted-but-open file has no name and still has blocks, so `du` cannot see it and `df` cannot miss it.
