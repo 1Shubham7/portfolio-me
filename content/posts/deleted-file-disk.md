@@ -26,3 +26,5 @@ $ ls -li /var/log/app.log
 `rm` calls `unlink()`, and the man page is exact about what that does. It removes the name and decrements the link count. If that was the last name and no process has the file open, the file is deleted and its space is made available. If any process still has it open, the file remains in existence until the last file descriptor referring to it is closed. Two counters have to reach zero: names, and open descriptors across every process on the machine. `rm` only touches the first.
 
 So a process that opened the log before you deleted it still holds a working descriptor to a perfectly good inode. It keeps appending, the inode keeps acquiring blocks, and the filesystem keeps counting them. The only thing that changed is that no path leads there any more.
+
+This is deliberate. Decoupling names from data is what lets a package manager replace a running binary on disk while the old copy keeps running from its now-nameless inode, and it is how temporary files have always worked: open, unlink, keep using, and the kernel cleans up when the process exits. Windows takes the other route and locks files while they are open.
