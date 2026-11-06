@@ -147,3 +147,10 @@ Under memory pressure the kubelet sorts every pod on the node by three keys and 
 QoS is nowhere in that list, and it still comes out of it. A BestEffort pod has a request of zero, so any usage at all puts it in the first group. A Burstable pod over its request is in the same group. A Guaranteed pod cannot stay over its request, because request equals limit and the limit is enforced, so it sits in the safe group with every Burstable pod that is under its request. The docs say those pods will never be evicted because of another pod's consumption. They are only reached when the system daemons eat past `kubeReserved` and `systemReserved` and the node has nothing else left to take, and then it goes by priority.
 
 The node is under memory pressure and has four pods:
+
+| Pod | QoS | Priority | Request | Usage |
+| :-- | :-- | :-- | :-- | :-- |
+| A | BestEffort | 0 | 0 | 300Mi |
+| B | Burstable | 1000 | 512Mi | 900Mi |
+| C | Burstable | 0 | 512Mi | 400Mi |
+| D | Guaranteed | 0 | 1Gi | 1Gi |
