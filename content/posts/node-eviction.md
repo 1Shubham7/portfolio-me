@@ -164,3 +164,5 @@ Status:   Failed
 Reason:   Evicted
 Message:  The node was low on resource: memory. Threshold quantity: 100Mi, available: 60Mi. Container app was using 900Mi, request is 512Mi, has larger consumption of memory.
 ```
+
+Disk pressure is the same shape with a different first move. The kubelet first reclaims what it owns, garbage-collecting dead pods and containers and then deleting unused images, and only then ranks pods: over their ephemeral-storage request first, then priority, then disk usage. [The deleted-file post](/deleted-file-disk/) has the part where a deleted-but-open log counts fully against `nodefs.available`.
