@@ -98,3 +98,5 @@ When `lsof +L1` comes back empty, the same symptom has a few other causes, each 
 The last row is the rule from the start of the post seen from the other side. The link count was 2, `rm` took it to 1, and an inode that still has a name is not deleted.
 
 ## The same thing on a Kubernetes node
+
+Nothing above changes on a node. It just has more processes writing logs and a kubelet watching the disk.
