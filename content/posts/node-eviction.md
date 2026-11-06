@@ -90,3 +90,5 @@ Priority is read by the scheduler and by the kubelet, and the two behave differe
 | Grace period | the pod's own, 30 s by default | soft threshold: up to `evictionMaxPodGracePeriod`; hard threshold: 0 s |
 
 ## Quota and LimitRange, since they come up in the same breath
+
+ResourceQuota is a namespace budget checked at admission. It rejects new objects and never touches a running pod. Once a quota names `requests.memory` or `limits.cpu`, every new pod in the namespace has to declare them or is refused, which is why quotas ship with a LimitRange that injects `default` and `defaultRequest`. The one quota feature that belongs in this post is the `PriorityClass` scope: `pods: "5"` scoped to `high-priority` caps how many pods a namespace may mark important, and the priority docs recommend exactly that against teams who would otherwise mark everything.
