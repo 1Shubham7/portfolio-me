@@ -13,3 +13,5 @@ cover:
 The sequence is familiar to anyone who has run a Linux box for long enough. `df -h` says the root filesystem is at 95%. `du` finds a log file the size of a small database, you `rm` it, you run `df` again, and the number has not moved. Run `du` now and it adds up to 60%. The two tools disagree by a third of the disk, and the file you just deleted is nowhere.
 
 I knew the sequence long before I knew the reason, and the reason is one sentence: `rm` removes a name, not a file. Everything else in this post follows from that.
+
+## A file is an inode, a name is a link to it
