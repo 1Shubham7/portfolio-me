@@ -73,3 +73,5 @@ $ sudo truncate -s 0 /proc/4211/fd/3
 The same symlink is the way back in when the file was deleted by mistake. As long as the process is alive, `cp /proc/4211/fd/3 /tmp/recovered` copies the data out. Kill the process first and it is gone for good.
 
 ## Stopping it happening again
+
+Almost every time, the file is a log and the real fault is rotation. logrotate renames the file, the app keeps writing to the renamed inode, and sooner or later someone deletes the "old" file that is secretly the live one. The clean rule is `create` plus a `postrotate` script that signals the app to reopen, so the app moves to the new name and the old inode is closed. For an app that cannot reopen, `copytruncate` copies the file and truncates the original in place, and the man page is honest that there is a small window between the copy and the truncate in which lines are lost. Both rules, and what else goes wrong with them, are in [the logrotate post](https://1shubham7.blog/logrotate/).
