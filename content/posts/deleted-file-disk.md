@@ -36,3 +36,5 @@ They measure different things. `du` walks the directory tree, so it can only cou
 That is the signature. `df` at 95% and `du` adding up to 60% with nothing else to explain the gap means something is holding a deleted file open, and the gap is roughly how much.
 
 ## Finding what is holding it
+
+`lsof` can list open files whose link count is below one, which is exactly the set of files that have been unlinked:
