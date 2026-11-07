@@ -9,3 +9,5 @@ cover:
     image: "/blog/pod-30-seconds/pod-30-seconds.png"
 ---
 
+
+`kubectl delete pod` returns, the pod sits in `Terminating`, and 30 seconds later it is gone. Not 3 seconds, not 12, always 30. A rolling deploy of ten replicas turns into a five-minute wait, and the number is far too round to be the application doing anything. It is a timeout. Something was asked to stop, did not hear, and was eventually shot.
