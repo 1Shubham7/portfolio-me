@@ -15,3 +15,5 @@ cover:
 I started reading about this for an interview, where it is a well-worn question, and found that the usual one-line answer, "PID 1 ignores SIGTERM", is close but not what Linux actually does. The real rule is more specific and explains more, including the case where your app is not even PID 1.
 
 ## What Kubernetes sends, and when
+
+The [pod lifecycle docs](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination) lay the sequence out. `kubectl delete` stamps the pod with a deletion time and the grace period, which is `spec.terminationGracePeriodSeconds` and defaults to 30. The kubelet sees the pod marked terminating and, if a container has a `preStop` hook, runs that first; the hook runs inside the same grace period, and if it is still going when the period ends it gets a one-off extension of 2 seconds. Then the kubelet asks the container runtime to send TERM to process 1 in each container. If anything is still running when the grace period expires, the runtime sends SIGKILL, the kubelet moves the pod to a terminal phase, and the object disappears from the API.
