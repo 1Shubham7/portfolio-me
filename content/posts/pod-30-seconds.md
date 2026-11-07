@@ -43,3 +43,5 @@ CMD sleep 1000
 FROM ubuntu
 CMD ["sh", "-c", "sleep 1000"]
 ```
+
+The first is the shell form, and the [Dockerfile reference](https://docs.docker.com/reference/dockerfile/#shell-and-exec-form) says it is wrapped in `/bin/sh -c`, which makes it identical to the second. In both, `sh` is PID 1 and `sleep` is its child. The docs are direct about the cost: the executable is not PID 1, does not receive Unix signals, and does not receive SIGTERM from `docker stop`, so stop is forced to send SIGKILL after its timeout.
