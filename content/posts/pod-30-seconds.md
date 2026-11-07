@@ -100,3 +100,5 @@ Put an init in front. [tini](https://github.com/krallin/tini) is the common one:
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["./my-app"]
 ```
+
+tini becomes PID 1, spawns the app, waits for signals and forwards them to its child, and reaps zombies while it waits. The `--` separates tini's own flags from the command; the README says you can sometimes skip it and might as well always include it. Because the app is no longer PID 1, the default actions work again, which the README lists as one of its reasons to exist: SIGTERM terminates a process that has no explicit handler. That is exactly what tini does and does not buy you. A Python app with no handler now dies immediately on SIGTERM instead of in 30 seconds, but it dies mid-request. Graceful is still the handler's job. `tini -g` signals the whole process group, for when the child is itself a shell with children. `docker run --init` bundles tini without touching the image; `kubectl` has no equivalent, so in a cluster it has to be in the image.
