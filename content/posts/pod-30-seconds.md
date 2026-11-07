@@ -49,3 +49,5 @@ The first is the shell form, and the [Dockerfile reference](https://docs.docker.
 Walk it through. SIGTERM goes to process 1, which is `sh`. A non-interactive shell has no handler for TERM, so as PID 1 the kernel never delivers it. Even if it did, `sh` is blocked in `wait()` on its child and does not forward signals; that is not something a shell does. `sleep` is not PID 1, so it would die instantly on SIGTERM, but nobody sends it one. Thirty seconds pass. SIGKILL from the ancestor namespace is forced onto `sh`, `sh` dies, the namespace's init is gone, and the kernel SIGKILLs `sleep` to clear the namespace. The sleep never stopped because it never heard anything; the shell never stopped because it could not.
 
 One wrinkle if you try this on a laptop: bash optimises a lone `-c` command into an `exec`, so `bash -c "sleep 1000"` can leave `sleep` as PID 1 and the trap does not show. The image's `/bin/sh` decides, so do not count on it either way.
+
+The check is cheap. PID 1's command line is in `/proc`:
