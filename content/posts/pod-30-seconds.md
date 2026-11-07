@@ -108,3 +108,5 @@ tini becomes PID 1, spawns the app, waits for signals and forwards them to its c
 `spec.terminationGracePeriodSeconds` is tunable per pod. Raise it when the app genuinely needs more than 30 seconds to drain. It does nothing for a process that never heard SIGTERM; it only moves the SIGKILL further out. Lowering it to make deploys faster is the same mistake from the other side: the app still does not shut down, it just gets killed sooner.
 
 `kubectl delete pod --grace-period=0 --force` is the escape hatch, and the docs put a caution on it for good reason. The API server removes the object immediately without waiting for the kubelet to confirm anything, so a replacement with the same name can be created while the old process is still running on the node. The docs' own wording is that the resource may continue to run on the cluster indefinitely. For a StatefulSet member holding a volume, that is two writers. It is the right command for a pod on a node that is already dead, and a bad habit everywhere else, because the 30 seconds it saves are 30 seconds of a bug you have not fixed.
+
+## Ending notes
