@@ -114,3 +114,5 @@ tini becomes PID 1, spawns the app, waits for signals and forwards them to its c
 Exactly 30 seconds means the grace period expired, which means SIGTERM landed on a process that could not act on it. There are two ways that happens: the process is PID 1 and has no handler, so the kernel never delivers the signal, or the process is a shell that neither handles nor forwards it and your app sits behind it, never signalled. SIGKILL from outside the namespace ends both, and takes everything in the namespace with it.
 
 `cat /proc/1/cmdline` in the running container tells you which one you have. Then exec form so the app is PID 1, a real handler so it shuts down instead of merely dying, and tini if you want zombies reaped and default signal behaviour restored for things you did not write. The grace period is for apps that are listening. It is not a substitute for listening.
+
+Thanks for your time :)
