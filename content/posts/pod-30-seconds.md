@@ -95,3 +95,8 @@ func main() {
 `signal.Notify` is the call that installs the handler, so it also satisfies the kernel's PID 1 rule. Every runtime has an equivalent, and the shape is always the same: register, wait, drain, exit.
 
 Put an init in front. [tini](https://github.com/krallin/tini) is the common one:
+
+```dockerfile
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["./my-app"]
+```
