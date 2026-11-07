@@ -38,3 +38,8 @@ The other way to lose SIGTERM is to have it land on a process that is not your a
 FROM ubuntu
 CMD sleep 1000
 ```
+
+```dockerfile
+FROM ubuntu
+CMD ["sh", "-c", "sleep 1000"]
+```
