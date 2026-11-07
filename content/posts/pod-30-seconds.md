@@ -21,3 +21,5 @@ The [pod lifecycle docs](https://kubernetes.io/docs/concepts/workloads/pods/pod-
 So the second signal is SIGKILL, not SIGINT, and it is the one that cannot be caught or ignored. A pod that takes exactly 30 seconds is a pod where SIGTERM achieved nothing and SIGKILL did all the work. The question is why SIGTERM achieved nothing, and there are two usual answers.
 
 ## PID 1 does not get the default action
+
+For an ordinary process, SIGTERM needs no code at all. The default action is to terminate, so a process that never mentions signals dies the moment one arrives. PID 1 is the exception, and `kill(2)` states it in one sentence: the only signals that can be sent to process ID 1 are those for which init has explicitly installed signal handlers. The man page adds that this is to make sure the system is not brought down by accident.
