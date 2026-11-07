@@ -29,3 +29,5 @@ Containers inherit the rule. The first process in a container is PID 1 of its ow
 Whether your app has a handler depends on the runtime more than on your code. The Go runtime installs its own: `runtime/sigtab_linux_generic.go` marks SIGTERM `_SigNotify + _SigKill`, `initsig` installs a handler for every signal not marked `_SigDefault`, and that handler exits the program with the status a shell expects. So a Go binary with no signal code still dies on SIGTERM as PID 1, just not gracefully. Python installs handlers only for SIGPIPE and SIGINT, per its [signal docs](https://docs.python.org/3/library/signal.html), so a Python service as PID 1 with no handler is the textbook 30-second pod. A C program that never calls `sigaction` is the same.
 
 PID 1 has a second job, which is why people reach for an init even when signals are fine. Orphaned processes are reparented to it, and something has to `wait()` on them when they exit, or they stay as zombies holding a PID each.
+
+## The shell-form trap
