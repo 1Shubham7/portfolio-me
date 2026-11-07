@@ -56,3 +56,5 @@ The check is cheap. PID 1's command line is in `/proc`:
 $ kubectl exec api-7d4c9-x2k1p -- cat /proc/1/cmdline | tr '\0' ' '
 sh -c sleep 1000
 ```
+
+If that prints a shell, or a wrapper script, rather than your binary, you have found the 30 seconds.
