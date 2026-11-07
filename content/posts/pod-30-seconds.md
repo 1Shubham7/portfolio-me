@@ -62,3 +62,5 @@ If that prints a shell, or a wrapper script, rather than your binary, you have f
 ## Three fixes, in order of how little they change
 
 Make the app PID 1. Use the exec form, `CMD ["./my-app"]`, so there is no shell in the way. If you need a startup script, end it with `exec "$@"` so the script's process is replaced by the app and keeps PID 1; the Docker docs say the same about `exec` in an entrypoint. This alone fixes the shell case, and if the app's runtime installs a SIGTERM handler for you, it fixes the whole symptom.
+
+Handle SIGTERM in the app. Being PID 1 only gets the signal delivered; draining connections and finishing in-flight work is still your code. In Go:
