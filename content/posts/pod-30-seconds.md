@@ -9,8 +9,7 @@ cover:
     image: "/blog/pod-30-seconds/pod-30-seconds.png"
 ---
 
-
-`kubectl delete pod` returns, the pod sits in `Terminating`, and 30 seconds later it is gone. Not 3 seconds, not 12, always 30. A rolling deploy of ten replicas turns into a five-minute wait, and the number is far too round to be the application doing anything. It is a timeout. Something was asked to stop, did not hear, and was eventually shot.
+`kubectl delete pod` returns, the pod sits in `Terminating`, and 30 seconds later it is gone. Not 3 seconds, not 12, always 30. Every pod in a rolling deploy pays the same 30, and the number is far too round to be the application doing anything. It is a timeout. Something was told to stop and did not hear.
 
 I started reading about this for an interview, where it is a well-worn question, and found that the usual one-line answer, "PID 1 ignores SIGTERM", is close but not what Linux actually does. The real rule is more specific and explains more, including the case where your app is not even PID 1.
 
@@ -59,7 +58,7 @@ sh -c sleep 1000
 
 If that prints a shell, or a wrapper script, rather than your binary, you have found the 30 seconds.
 
-## Three fixes, in order of how little they change
+## Three fixes, in the order I would try them
 
 Make the app PID 1. Use the exec form, `CMD ["./my-app"]`, so there is no shell in the way. If you need a startup script, end it with `exec "$@"` so the script's process is replaced by the app and keeps PID 1; the Docker docs say the same about `exec` in an entrypoint. This alone fixes the shell case, and if the app's runtime installs a SIGTERM handler for you, it fixes the whole symptom.
 
@@ -101,7 +100,7 @@ ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["./my-app"]
 ```
 
-tini becomes PID 1, spawns the app, waits for signals and forwards them to its child, and reaps zombies while it waits. The `--` separates tini's own flags from the command; the README says you can sometimes skip it and might as well always include it. Because the app is no longer PID 1, the default actions work again, which the README lists as one of its reasons to exist: SIGTERM terminates a process that has no explicit handler. That is exactly what tini does and does not buy you. A Python app with no handler now dies immediately on SIGTERM instead of in 30 seconds, but it dies mid-request. Graceful is still the handler's job. `tini -g` signals the whole process group, for when the child is itself a shell with children. `docker run --init` bundles tini without touching the image; `kubectl` has no equivalent, so in a cluster it has to be in the image.
+tini becomes PID 1, spawns the app, waits for signals and forwards them to its child, and reaps zombies while it waits. Reaping is PID 1's other job: orphans are reparented to it, and something has to `wait(2)` on them when they exit or they sit as zombies holding a PID each. The `--` separates tini's own flags from the command; the README says you can sometimes skip it and might as well always include it. Because the app is no longer PID 1, the default actions work again, which the README lists as one of its reasons to exist: SIGTERM terminates a process that has no explicit handler. That is exactly what tini does and does not buy you. A Python app with no handler now dies immediately on SIGTERM instead of in 30 seconds, but it dies mid-request. Graceful is still the handler's job. `tini -g` signals the whole process group, for when the child is itself a shell with children. Without it, in the `sh -c` case, tini signals only `sh`, which dies at once now that it is not PID 1; tini exits with it, and the kernel SIGKILLs whatever the shell was running. Fast, but the app still never heard TERM. `docker run --init` bundles tini without touching the image; `kubectl` has no equivalent, so in a cluster it has to be in the image.
 
 ## The knob that is not a fix
 
