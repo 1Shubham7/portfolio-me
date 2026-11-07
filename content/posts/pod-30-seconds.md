@@ -58,3 +58,5 @@ sh -c sleep 1000
 ```
 
 If that prints a shell, or a wrapper script, rather than your binary, you have found the 30 seconds.
+
+## Three fixes, in order of how little they change
