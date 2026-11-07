@@ -51,3 +51,8 @@ Walk it through. SIGTERM goes to process 1, which is `sh`. A non-interactive she
 One wrinkle if you try this on a laptop: bash optimises a lone `-c` command into an `exec`, so `bash -c "sleep 1000"` can leave `sleep` as PID 1 and the trap does not show. The image's `/bin/sh` decides, so do not count on it either way.
 
 The check is cheap. PID 1's command line is in `/proc`:
+
+```bash
+$ kubectl exec api-7d4c9-x2k1p -- cat /proc/1/cmdline | tr '\0' ' '
+sh -c sleep 1000
+```
