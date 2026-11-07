@@ -31,3 +31,5 @@ Whether your app has a handler depends on the runtime more than on your code. Th
 PID 1 has a second job, which is why people reach for an init even when signals are fine. Orphaned processes are reparented to it, and something has to `wait()` on them when they exit, or they stay as zombies holding a PID each.
 
 ## The shell-form trap
+
+The other way to lose SIGTERM is to have it land on a process that is not your app. These two Dockerfiles are the same container:
