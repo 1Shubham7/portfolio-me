@@ -47,7 +47,7 @@ You cannot write `qosClass` in a manifest. Kubernetes derives it from the reques
 | Burstable | not Guaranteed, and at least one container has any CPU or memory request or limit |
 | BestEffort | no CPU or memory request or limit on any container |
 
-Two gotchas follow from the derivation. Setting only limits gives you Guaranteed, because the requests are copied from them. One sidecar with no limits drops the whole pod to Burstable.
+Two gotchas follow from the derivation. Setting only limits, CPU and memory both, gives you Guaranteed, because the requests are copied from them. One sidecar with no limits drops the whole pod to Burstable.
 
 ```bash
 $ kubectl get pod api-7d4c9-x2k1p -o jsonpath='{.status.qosClass}'
@@ -62,7 +62,7 @@ The class changes three things. Guaranteed pods with whole-number CPU requests c
 | Burstable | min(max(2, 1000 - 1000 × memoryRequest / nodeMemoryCapacity), 999) |
 | BestEffort | 1000 |
 
-A Burstable container requesting a tenth of the node scores about 900; one requesting half scores about 500. Bigger request, safer container. That formula is the docs' version. The code in `pkg/kubelet/qos/policy.go` floors it at 3 rather than 2, so every Burstable score stays above anything a Guaranteed container can reach, and gives any container in a `system-node-critical` pod the Guaranteed -997 regardless of class. That score is read by the kernel OOM killer, not by the kubelet, and those are two separate events. Hold that thought until the ranking.
+A Burstable container requesting a tenth of the node scores about 900; one requesting half scores about 500. Bigger request, safer container. That formula is the docs' version. The code in `pkg/kubelet/qos/policy.go` floors it at 3 rather than 2, so a Burstable score cannot fall below what a Guaranteed container using the whole node reaches, and gives any container in a `system-node-critical` pod the Guaranteed -997 regardless of class. That score is read by the kernel OOM killer, not by the kubelet, and those are two separate events. Hold that thought until the ranking.
 
 ## PriorityClass is the tiebreaker, in two places
 
