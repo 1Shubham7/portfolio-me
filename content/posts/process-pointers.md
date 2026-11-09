@@ -45,3 +45,5 @@ Tasks: 717 total,   4 running, 713 sleeping,   0 stopped,   0 zombie
 MiB Mem :  31781.7 total,   3882.7 free,  11868.5 used,  16030.5 buff/cache
 MiB Swap:   2048.0 total,   2046.7 free,      1.2 used.  17273.4 avail Mem
 ```
+
+I wanted to know whether the `%Cpu(s)` line was one core or all of them. It is all of them. The summary is the aggregate over every logical CPU, so 95.8 idle means the machine as a whole is 95.8% idle, and a single thread pinning one core shows up here as one CPU's share of the total, not as a core at 100. Press `1` inside `top` and the line splits into `%Cpu0`, `%Cpu1` and so on, one per logical CPU. `lscpu` or `nproc` tells you how many lines to expect.
