@@ -59,3 +59,5 @@ provisioner: ebs.csi.aws.com
 volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Retain
 ```
+
+Put that together with the spread constraint above and a StatefulSet does something useful. Three replicas spread across three zones each get their own claim, so each gets its own EBS volume, created in its pod's zone. Lose a zone and you lose one replica and one disk; the other two keep serving. EBS replicated nothing across zones. The application did, and it has to be an application that does: Postgres with replicas spread across the zones, or Kafka with rack awareness set to the AZ so each partition's replicas land in different zones, which is [the Kafka post](/kafka/) in one line. The managed version of the same idea is RDS Multi-AZ, which the [RDS docs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZSingleStandby.html) describe as a synchronous standby in a different Availability Zone, with the honest footnote that synchronous replication raises write and commit latency.
