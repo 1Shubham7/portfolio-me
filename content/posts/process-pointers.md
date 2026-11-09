@@ -60,3 +60,5 @@ The eight fields, as `top(1)` defines them:
 | `hi` | time spent servicing hardware interrupts |
 | `si` | time spent servicing software interrupts |
 | `st` | time stolen from this VM by the hypervisor |
+
+Two of them deserve a second look. `ni` is user time from processes running at a positive nice value, carved out of `us`, so after you `renice` a batch job its CPU moves from one column to the other; it is 0.0 here because nothing niced was running. `st` is meaningless on bare metal and the first thing to check on a VM that feels slow: it is time the guest wanted to run and the hypervisor gave to someone else, which does not show in `us` or `sy` at all.
