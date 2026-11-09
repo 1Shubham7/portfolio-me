@@ -35,3 +35,5 @@ The interview version of the question goes: process A has a 500m quota and nice 
 So three knobs, three jobs. `cpu.max` caps the group. `cpu.weight` divides a contended CPU between groups. nice divides a group's share between its own tasks. None of them lets anything past the first.
 
 ## The %Cpu(s) line is every CPU added up
+
+This is the header from my machine, 32 GB and a day and a half of uptime:
