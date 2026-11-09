@@ -15,3 +15,5 @@ cover:
 ## nice is a CPU knob, and only a CPU knob
 
 The range is -20 to 19, and `sched(7)` is specific about what it covers: the nice value affects the scheduling of `SCHED_OTHER` and `SCHED_BATCH` processes, which is to say ordinary tasks under the fair scheduler. Real-time classes ignore it. Lower is more favourable. `nice -n 10 ./job` starts a process at nice 10, `renice -n 5 -p 4211` changes one that is already running, and the `NI` column in `ps -l` or `top` shows the current value.
+
+Going down is the privileged direction. Anyone can make their own process nicer; making it less nice needs either `CAP_SYS_NICE` or a permissive `RLIMIT_NICE`. `getrlimit(2)` gives the rule: the limit is a ceiling on how far the nice value can be raised in priority, calculated as `20 - rlim_cur`, so the useful range runs from 1 (allowing nice 19) to 40 (allowing nice -20). `ulimit -e` shows yours. That is also the cleanest example of the ulimit versus cgroup split: `ulimit` is a set of per-process limits, and cgroups are accounting and limits for a group of processes together.
