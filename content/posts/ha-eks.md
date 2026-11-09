@@ -11,3 +11,5 @@ cover:
 
 
 Ask me a month ago what a highly available EKS cluster looked like and I would have said: nodes in three Availability Zones, replicas spread across them, a load balancer in front. That is the right shape, and it is the easy half. I was working through the topic for an interview when the hard half arrived as a question I could not answer: if a node dies, why does its EBS volume go down with it? EBS is network storage. It is not inside the instance. So why does every discussion of HA treat a stateful pod as something that dies with its zone?
+
+The answer is that the volume does not die with its node, and it does die with its AZ, and the gap between those two sentences is the whole subject. "Highly available" is only ever a claim about failure domains: which things can disappear together, and what you have arranged to survive it. This post walks the EKS stack by failure domain, quickly for the parts that just reschedule and slowly for the storage, since that is where I was stuck.
