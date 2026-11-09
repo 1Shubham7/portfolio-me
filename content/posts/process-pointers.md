@@ -23,3 +23,5 @@ None of that touches memory. When a machine runs short, the order of events is r
 The confusion has a history, which made me feel a little better. The same man page notes that before Linux 2.6.36 the OOM score did factor in the nice value, along with runtime and CPU use. That changed in 2010. It has been a pure CPU knob for a long time.
 
 ## A quota is a ceiling, nice is a weight
+
+My next question was a sharper version of the same confusion. If a container's cgroup already says it gets half a core, what is nice even doing? The cgroup decided how much CPU the thing gets.
