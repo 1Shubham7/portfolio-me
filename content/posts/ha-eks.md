@@ -19,3 +19,5 @@ The answer is that the volume does not die with its node, and it does die with i
 You do not design this part. The [EKS resilience page](https://docs.aws.amazon.com/eks/latest/userguide/disaster-recovery-resiliency.html) says the control plane is at least two API server instances and three `etcd` instances across three Availability Zones in the region, that EKS replaces unhealthy instances across those zones, and that this is what backs the SLA on the API endpoint. There is no setting that puts it in one zone. Everything below is the data plane, and the data plane is yours.
 
 ## Nodes: three AZs, and room for one to be missing
+
+A node's AZ is decided by its subnet. Managed node groups and Karpenter NodeClasses both take a list of subnets, so give them subnets in three zones and nodes land in all three. Then size for the loss of one. If a zone is gone, the other two have to hold everything, which means either a third of your capacity idle or an autoscaler you trust to replace it fast enough. Neither is free, and choosing between them is the actual design decision.
