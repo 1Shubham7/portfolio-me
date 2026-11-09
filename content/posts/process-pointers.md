@@ -66,3 +66,5 @@ Two of them deserve a second look. `ni` is user time from processes running at a
 ## 717 tasks, 4 running, so what are the other 713 doing?
 
 That second line is where I was left. `Tasks: 717 total, 4 running, 713 sleeping`. Does 717 mean 717 processes are fighting for the CPU?
+
+No. Four were in state R, and `top(1)` says even those "should be more properly thought of as ready to run": R means on a CPU or in the run queue waiting for one. The other 713 were in S, interruptible sleep, blocked in a syscall waiting for a socket, a timer, a child, a keypress. They cost memory and a PID and nothing else. A machine with 717 tasks and a CPU that is 95.8% idle is not a contradiction; it is the normal case. Almost everything is asleep almost all of the time, and the scheduler only ever has to think about the handful that is not.
