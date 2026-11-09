@@ -37,3 +37,11 @@ So three knobs, three jobs. `cpu.max` caps the group. `cpu.weight` divides a con
 ## The %Cpu(s) line is every CPU added up
 
 This is the header from my machine, 32 GB and a day and a half of uptime:
+
+```
+top - 16:34:37 up 1 day, 11:43,  1 user,  load average: 2.00, 1.20, 0.84
+Tasks: 717 total,   4 running, 713 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  2.7 us,  1.3 sy,  0.0 ni, 95.8 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :  31781.7 total,   3882.7 free,  11868.5 used,  16030.5 buff/cache
+MiB Swap:   2048.0 total,   2046.7 free,      1.2 used.  17273.4 avail Mem
+```
