@@ -15,3 +15,5 @@ Ask me a month ago what a highly available EKS cluster looked like and I would h
 The answer is that the volume does not die with its node, and it does die with its AZ, and the gap between those two sentences is the whole subject. "Highly available" is only ever a claim about failure domains: which things can disappear together, and what you have arranged to survive it. This post walks the EKS stack by failure domain, quickly for the parts that just reschedule and slowly for the storage, since that is where I was stuck.
 
 ## The control plane is AWS's problem
+
+You do not design this part. The [EKS resilience page](https://docs.aws.amazon.com/eks/latest/userguide/disaster-recovery-resiliency.html) says the control plane is at least two API server instances and three `etcd` instances across three Availability Zones in the region, that EKS replaces unhealthy instances across those zones, and that this is what backs the SLA on the API endpoint. There is no setting that puts it in one zone. Everything below is the data plane, and the data plane is yours.
