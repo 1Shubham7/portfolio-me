@@ -27,3 +27,13 @@ EBS adds a catch. The [EKS data plane guidance](https://docs.aws.amazon.com/eks/
 ## Pods: spread them, then budget the disruptions
 
 Three replicas on three nodes in one AZ is one failure domain with extra steps. The fix is a topology spread constraint keyed on the zone label:
+
+```yaml
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app: api
+```
