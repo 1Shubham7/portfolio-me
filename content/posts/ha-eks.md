@@ -71,3 +71,5 @@ The catch is that this is NFSv4 over the network, not a block device. AWS's [per
 ## Traffic has to cross zones too
 
 An ALB requires at least two AZs enabled and, per the [ELB docs](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html), has cross-zone load balancing always on at the load balancer level, so a request arriving at the zone A node can reach a pod in zone B. An NLB has it disabled by default, meaning each load balancer node sends only to targets in its own zone; turn it on, or a zone with few healthy pods gets the same share of traffic as a full one. CoreDNS is an application like any other: replicas spread across zones and a PDB, or the CoreDNS autoscaling EKS ships.
+
+## Crossing a zone costs a cent each way
