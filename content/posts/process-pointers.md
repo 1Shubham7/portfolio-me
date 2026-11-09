@@ -33,3 +33,5 @@ What nice decides is the share a runnable task gets when it is competing with ot
 The interview version of the question goes: process A has a 500m quota and nice -10, process B has a 500m quota and nice +10, both CPU-bound on one core. Which is scheduled more favourably, and can either exceed its quota? Lower nice wins, and no. But the setup hides a catch that `sched(7)` states plainly: under group scheduling, a thread's nice value affects scheduling decisions only relative to other threads in the same task group. Two containers are two cgroups. What splits a busy CPU between cgroups is `cpu.weight`, the thing a Kubernetes CPU request turns into. nice inside container A says nothing to container B; it only reorders A's own threads among themselves.
 
 So three knobs, three jobs. `cpu.max` caps the group. `cpu.weight` divides a contended CPU between groups. nice divides a group's share between its own tasks. None of them lets anything past the first.
+
+## The %Cpu(s) line is every CPU added up
