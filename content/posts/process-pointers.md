@@ -21,3 +21,5 @@ Going down is the privileged direction. Anyone can make their own process nicer;
 None of that touches memory. When a machine runs short, the order of events is reclaim first, dropping page cache and swapping out if there is swap, and the OOM killer last, and the OOM killer does not read `NI`. It reads `/proc/<pid>/oom_score`, which `proc(5)` describes as a score based on the amount of memory the process uses, where a higher score makes the process more likely to be selected. `/proc/<pid>/oom_score_adj` is the knob on top of it, from -1000 to 1000, added to the score before the choice is made; -1000 makes the score always 0, so that task is never picked. Kubernetes writes that file from the pod's QoS class, which is the one place QoS decides who dies, and [the node-eviction post](/node-eviction/) has the table.
 
 The confusion has a history, which made me feel a little better. The same man page notes that before Linux 2.6.36 the OOM score did factor in the nice value, along with runtime and CPU use. That changed in 2010. It has been a pure CPU knob for a long time.
+
+## A quota is a ceiling, nice is a weight
