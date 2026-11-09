@@ -77,6 +77,8 @@ Everything above moves bytes between AZs, from replication streams to a pod in A
 
 ## Ending notes
 
-The sentence that answers my original question, and that I would now give in an interview, is: pick storage that matches your failure domains. Stateless pods reschedule anywhere and need nothing. Data on an EBS volume lives in one zone, so surviving that zone means replicating at some layer above it, whether the database's own replication across AZ-local disks or a managed Multi-AZ service. Data that several pods need as plain files can live on EFS and let the regional file system do the surviving. Everything else in the cluster is there to make sure something is left in the other two zones to pick up the work.
+The sentence that answers my original question, and that I would now give in an interview, is: pick storage that matches your failure domains. Stateless pods reschedule anywhere. An EBS volume lives in one zone, so surviving that zone means replicating above it, in the database or in a managed Multi-AZ service, and plain files that several pods share can sit on EFS and let the regional file system do the surviving. Everything else in the post is there to make sure something is left in the other two zones to pick up the work.
+
+Two commands show the failure domains on a cluster you did not build. `kubectl get nodes -L topology.kubernetes.io/zone` adds a column with each node's zone, so you can see whether "three AZs" is true or aspirational. `kubectl get sc -o custom-columns=NAME:.metadata.name,BINDING:.volumeBindingMode,RECLAIM:.reclaimPolicy` shows whether each StorageClass waits for the pod before picking a zone, and whether deleting a claim takes the disk with it.
 
 Thanks for your time :)
