@@ -77,3 +77,5 @@ An ALB requires at least two AZs enabled and, per the [ELB docs](https://docs.aw
 Everything above moves bytes between AZs, from replication streams to a pod in A calling a service whose pod happens to be in B. AWS bills inter-AZ traffic at [$0.01 per GB in each direction](https://aws.amazon.com/blogs/networking-and-content-delivery/exploring-data-transfer-costs-for-aws-network-load-balancers/), so each gigabyte crossing a zone boundary is two cents. HA is a tradeoff, and this is the line of the bill it shows up on.
 
 ## Ending notes
+
+The sentence that answers my original question, and that I would now give in an interview, is: pick storage that matches your failure domains. Stateless pods reschedule anywhere and need nothing. Data on an EBS volume lives in one zone, so surviving that zone means replicating at some layer above it, whether the database's own replication across AZ-local disks or a managed Multi-AZ service. Data that several pods need as plain files can live on EFS and let the regional file system do the surviving. Everything else in the cluster is there to make sure something is left in the other two zones to pick up the work.
