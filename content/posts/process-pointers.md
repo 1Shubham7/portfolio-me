@@ -64,3 +64,5 @@ The eight fields, as `top(1)` defines them:
 Two of them deserve a second look. `ni` is user time from processes running at a positive nice value, carved out of `us`, so after you `renice` a batch job its CPU moves from one column to the other; it is 0.0 here because nothing niced was running. `st` is meaningless on bare metal and the first thing to check on a VM that feels slow: it is time the guest wanted to run and the hypervisor gave to someone else, which does not show in `us` or `sy` at all.
 
 ## 717 tasks, 4 running, so what are the other 713 doing?
+
+That second line is where I was left. `Tasks: 717 total, 4 running, 713 sleeping`. Does 717 mean 717 processes are fighting for the CPU?
