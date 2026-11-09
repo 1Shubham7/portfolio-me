@@ -79,3 +79,5 @@ Everything above moves bytes between AZs, from replication streams to a pod in A
 ## Ending notes
 
 The sentence that answers my original question, and that I would now give in an interview, is: pick storage that matches your failure domains. Stateless pods reschedule anywhere and need nothing. Data on an EBS volume lives in one zone, so surviving that zone means replicating at some layer above it, whether the database's own replication across AZ-local disks or a managed Multi-AZ service. Data that several pods need as plain files can live on EFS and let the regional file system do the surviving. Everything else in the cluster is there to make sure something is left in the other two zones to pick up the work.
+
+Thanks for your time :)
