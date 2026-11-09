@@ -25,3 +25,5 @@ A node's AZ is decided by its subnet. Managed node groups and Karpenter NodeClas
 EBS adds a catch. The [EKS data plane guidance](https://docs.aws.amazon.com/eks/latest/best-practices/data-plane.html) puts it plainly: the scheduler will always place a pod that needs an EBS volume in the volume's zone, and if there is no node in that zone the pod cannot be scheduled. The Cluster Autoscaler's [AWS README](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md) draws the consequence: one Auto Scaling group spanning several AZs can scale up in the wrong one, so for EBS workloads you run either a single-AZ group or one group per AZ with `--balance-similar-node-groups`. Karpenter sidesteps this by reading the volume's zone from the claim and launching the node where the disk already is. It does not balance zones on its own, though; its docs leave that to the pod's spread constraints.
 
 ## Pods: spread them, then budget the disruptions
+
+Three replicas on three nodes in one AZ is one failure domain with extra steps. The fix is a topology spread constraint keyed on the zone label:
