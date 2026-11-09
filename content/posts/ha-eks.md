@@ -43,3 +43,5 @@ topologySpreadConstraints:
 Spreading covers the zone failing. A PodDisruptionBudget covers you failing the zone yourself. `minAvailable: 2` on a three-replica service means a node drain, a managed node group upgrade or an autoscaler scale-down cannot take a second replica until the first is back, because all of those go through the Eviction API and honour the budget. The [disruptions docs](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) are equally clear about what it does not do: involuntary disruptions cannot be prevented by PDBs, they only count against the budget. A PDB will not save you from an AZ outage. It will stop you draining a node in the surviving zones while one is down, which is the moment it earns its keep.
 
 ## Storage: where I got stuck
+
+The [EBS documentation](https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes.html) settles my question in two sentences. EBS volumes persist independently from the running life of an EC2 instance. The volume and instance must be in the same Availability Zone. My instinct was right, the disk is not in the node, and it was incomplete: the disk is in the zone.
