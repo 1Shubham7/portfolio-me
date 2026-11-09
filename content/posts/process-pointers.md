@@ -72,8 +72,8 @@ D is the letter hiding inside that 713 that you actually care about. It is unint
 
 ## Ending notes
 
-Every one of these was a knob doing less than I assumed. nice adjusts a weight among the tasks of one group, for CPU only; it does not lift a quota, does not speak across cgroups, and has not been read by the OOM killer since 2.6.36. `cpu.max` is the cap, `cpu.weight` is the share between groups, `oom_score_adj` is what decides who dies. The `%Cpu(s)` line is the whole machine until you press `1`. And a task count is a count of things that exist, not things that are running: the running ones are the R column, and the load average adds D.
+Every one of these was a knob doing less than I assumed. If this is interview prep for you too, the sentence that covers most of it is: nice is a CPU scheduling weight within a cgroup, nothing more. Everything above is the detail behind it.
 
-If this is interview prep for you too, the sentence that covers most of it is: nice is a CPU scheduling weight within a cgroup, nothing more. Everything above is the detail behind it.
+Three commands make it checkable on your own box. `cat /proc/$$/oom_score` and `cat /proc/$$/oom_score_adj` show what the OOM killer would actually read for your shell, and `renice` does not move either of them. `cat /sys/fs/cgroup/cpu.max` from inside a container shows the cap that nice cannot lift. And the `ps -eo stat=` line above tells you how many of your own tasks are asleep right now.
 
 Thanks for your time :)
