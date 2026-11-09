@@ -49,3 +49,13 @@ The [EBS documentation](https://docs.aws.amazon.com/ebs/latest/userguide/ebs-vol
 So when a node dies, the volume is still there. The pod reschedules, the volume detaches from the dead node and attaches to the new one, as long as the new one is in the same AZ. If the node vanished without a clean shutdown, the attach/detach controller waits six minutes before force-detaching, according to the [EBS CSI driver FAQ](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/docs/faq.md), so a stateful pod on a dead node is back in six-plus minutes. That delay is the controller choosing a slow recovery over a corrupted disk. When the whole zone dies, the volume is in it. Nothing is deleted, but there is nothing in that zone to attach it to, and the data is unreachable until the zone comes back.
 
 Deleting the pod does not touch the volume either. The pod is a consumer of a PersistentVolumeClaim; the claim is bound to a PersistentVolume; the EBS volume sits behind that. Delete the pod and both stay. Delete the claim and the StorageClass's `reclaimPolicy` decides: `Delete` is the default, `Retain` keeps the EBS volume for you to deal with by hand. The other StorageClass field that matters here is `volumeBindingMode`. The default, `Immediate`, provisions the volume the moment the claim is created, which the [StorageClass docs](https://kubernetes.io/docs/concepts/storage/storage-classes/) say happens without knowledge of the Pod's scheduling requirements and may result in unschedulable Pods: a disk in zone A and a pod that only fits in zone B. `WaitForFirstConsumer` waits until the pod is scheduled and creates the volume in whichever zone it landed, which is why the EBS CSI driver's own example StorageClass sets it:
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+```
