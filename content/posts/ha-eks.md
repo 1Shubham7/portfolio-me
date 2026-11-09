@@ -37,3 +37,5 @@ topologySpreadConstraints:
       matchLabels:
         app: api
 ```
+
+`maxSkew: 1` means no zone may hold more than one pod above the emptiest zone. `ScheduleAnyway` is the safer setting: `DoNotSchedule` leaves pods Pending when the spread cannot be met, and the EKS guidance says to use it only if you would rather have fewer pods than an uneven spread. During a zone outage, uneven is exactly what you want. The older way is pod anti-affinity on the same key, and the same guidance warns against making it `required`, since then a Deployment can never have more replicas than you have zones.
