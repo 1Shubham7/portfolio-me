@@ -75,3 +75,5 @@ An ALB requires at least two AZs enabled and, per the [ELB docs](https://docs.aw
 ## Crossing a zone costs a cent each way
 
 Everything above moves bytes between AZs, from replication streams to a pod in A calling a service whose pod happens to be in B. AWS bills inter-AZ traffic at [$0.01 per GB in each direction](https://aws.amazon.com/blogs/networking-and-content-delivery/exploring-data-transfer-costs-for-aws-network-load-balancers/), so each gigabyte crossing a zone boundary is two cents. HA is a tradeoff, and this is the line of the bill it shows up on.
+
+## Ending notes
