@@ -25,3 +25,5 @@ The confusion has a history, which made me feel a little better. The same man pa
 ## A quota is a ceiling, nice is a weight
 
 My next question was a sharper version of the same confusion. If a container's cgroup already says it gets half a core, what is nice even doing? The cgroup decided how much CPU the thing gets.
+
+`cpu.max` holding `50000 100000` means 50,000 microseconds of CPU time in every 100,000 microsecond period: half a core, and once the 50 ms is spent the group's threads stop until the next period starts. That is a cap on consumption, and [the millicores post](/millicores/) walks through how a Kubernetes limit becomes exactly that file. nice has no opinion about the cap. A process at nice -20 in a group that has exhausted its quota is throttled with everything else in the group, and nothing about its nice value refills the bucket.
