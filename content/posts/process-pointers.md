@@ -49,3 +49,14 @@ MiB Swap:   2048.0 total,   2046.7 free,      1.2 used.  17273.4 avail Mem
 I wanted to know whether the `%Cpu(s)` line was one core or all of them. It is all of them. The summary is the aggregate over every logical CPU, so 95.8 idle means the machine as a whole is 95.8% idle, and a single thread pinning one core shows up here as one CPU's share of the total, not as a core at 100. Press `1` inside `top` and the line splits into `%Cpu0`, `%Cpu1` and so on, one per logical CPU. `lscpu` or `nproc` tells you how many lines to expect.
 
 The eight fields, as `top(1)` defines them:
+
+| Field | Meaning |
+| :-- | :-- |
+| `us` | time running un-niced user processes |
+| `sy` | time running kernel processes |
+| `ni` | time running niced user processes |
+| `id` | time spent in the kernel idle handler |
+| `wa` | time waiting for I/O completion |
+| `hi` | time spent servicing hardware interrupts |
+| `si` | time spent servicing software interrupts |
+| `st` | time stolen from this VM by the hypervisor |
