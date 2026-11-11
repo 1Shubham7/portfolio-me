@@ -74,14 +74,16 @@ nodes:
 - role: worker
 ```
 
-Create the cluster, install the chart, pin a first pull to one worker, scale a Deployment, then read the mirror counter off the Spegel pod on the other worker.
+Create the cluster, install the chart and wait for the DaemonSet, pin a first pull to one worker and wait for it to finish, scale a Deployment, then read the mirror counter off the Spegel pod on the other worker. The two waits are not optional. `helm` returns before the Spegel pods have written `hosts.toml`, and a pull that happens before that goes straight to Docker Hub and never touches the mirror. And `kind-worker` has to finish its pull before `kind-worker2` starts asking, or the digests are not advertised yet and the lookup misses.
 
 ```bash
 kind create cluster --config kind.yaml
 helm upgrade --create-namespace --namespace spegel --install spegel \
   oci://ghcr.io/spegel-org/helm-charts/spegel
+kubectl rollout status -n spegel daemonset/spegel
 kubectl run first --image=nginx:1.27 \
   --overrides='{"spec":{"nodeName":"kind-worker"}}'
+kubectl wait --for=condition=Ready pod/first --timeout=120s
 kubectl create deployment web --image=nginx:1.27 --replicas=3
 POD=$(kubectl get pod -n spegel -l app.kubernetes.io/name=spegel \
   --field-selector spec.nodeName=kind-worker2 -o name)
@@ -89,7 +91,7 @@ kubectl port-forward -n spegel "$POD" 9090:9090 &
 curl -s localhost:9090/metrics | grep spegel_mirror_requests_total
 ```
 
-Any replica that lands on `kind-worker2` has to get its layers from `kind-worker`, and `spegel_mirror_requests_total` is the proof. It counts every request containerd sent to the mirror, labelled `cache="hit"` when a peer served it and `cache="miss"` when Spegel answered 404 and containerd went upstream. A hit count above zero for `registry="docker.io"` is the two-node walkthrough from the top, running on your laptop. The same port serves a debug page at `/debug/web/` that lists the peers this pod can see and the time of its last successful mirror request, and the chart has a ServiceMonitor switch if you want the counter in Prometheus. Do not expect the pod logs to tell you. With the chart's default `INFO` log level the per-request line is off, so a working pull leaves nothing in `kubectl logs`; install with `--set spegel.logLevel=DEBUG` and each request is logged with its path, status and latency.
+Any replica that lands on `kind-worker2` has to get its layers from `kind-worker`, and `spegel_mirror_requests_total` is the proof. It counts every request containerd sent to the mirror, labelled `cache="hit"` when a peer served it and `cache="miss"` when Spegel answered 404 and containerd went upstream. A hit count above zero for `registry="docker.io"` is the two-node walkthrough from the top, running on your laptop. The same port serves a debug page at `/debug/web/` that lists the peers this pod can see and the time of its last successful mirror request. Do not expect the pod logs to tell you. With the chart's default `INFO` log level the per-request line is off, so a working pull leaves nothing in `kubectl logs`; install with `--set spegel.logLevel=DEBUG` and each request is logged with its path, status and latency.
 
 ## Ending notes
 
