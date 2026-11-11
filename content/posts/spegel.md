@@ -90,3 +90,5 @@ kubectl logs -n spegel -l app.kubernetes.io/name=spegel -f
 ```
 
 Any replica that lands on `kind-worker2` gets its layers from `kind-worker`. That is the two-node walkthrough from the top, running on your laptop.
+
+## Ending notes
