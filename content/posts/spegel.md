@@ -92,3 +92,5 @@ kubectl logs -n spegel -l app.kubernetes.io/name=spegel -f
 Any replica that lands on `kind-worker2` gets its layers from `kind-worker`. That is the two-node walkthrough from the top, running on your laptop.
 
 ## Ending notes
+
+The sentence I was missing is: Spegel lets Node B copy the image from Node A instead of downloading it again from the internet, and if Node A does not have it either, nothing changes. Everything else follows. It is stateless because the image was already on Node A's disk in containerd's content store; it is transparent because containerd's own mirror config routes the request; it is safe because a miss is a 404 and containerd was always going to fall back.
