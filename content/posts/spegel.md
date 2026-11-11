@@ -23,3 +23,5 @@ If nobody has it, Node B's Spegel answers 404 and containerd moves on to Docker 
 ## How the nodes find each other
 
 Spegel, mirror in Swedish, was first developed at Xenit AB. Its creator, Philip Laine, was a core maintainer of Flux before it, according to [his FOSDEM 2025 speaker page](https://archive.fosdem.org/2025/schedule/speaker/philip_laine/). It ships as a Helm chart that installs a DaemonSet, one pod per node, and each pod plays two roles: a registry that other nodes can pull from, and the mirror that its own node's containerd talks to.
+
+The mirror half rides on containerd's hosts configuration. `config_path` points containerd at a directory, by convention `/etc/containerd/certs.d`, and inside it one `hosts.toml` per registry host says which mirrors to try before the real one. Spegel writes those files itself when it starts, for every registry unless you list specific ones in `mirroredRegistries`. It can do that because containerd reads the directory on the fly; the hosts docs say updates under it do not require restarting the daemon. Nothing in a workload changes. Pods keep saying `nginx:1.27`.
