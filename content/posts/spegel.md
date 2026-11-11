@@ -11,3 +11,5 @@ cover:
 
 
 I had read the one-line description of Spegel, a stateless cluster-local OCI registry mirror for Kubernetes, and nodded along, and then got stuck on the most basic question about it. Node A has already pulled `nginx:1.27`. Node B has not, and a pod for it has just been scheduled there. Node B is about to go to Docker Hub. What exactly does Spegel do in that moment? The whole tool is in the answer, so this post starts there and fills in the rest around it.
+
+## Two nodes, one image
