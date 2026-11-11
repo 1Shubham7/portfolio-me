@@ -31,3 +31,7 @@ The discovery half is libp2p and its Kademlia DHT, both direct dependencies in t
 ## Where the bytes actually live
 
 Spegel has no storage of its own. When Node A pulled nginx, containerd wrote the compressed layers into its content store, which keeps each blob as a file under `blobs/<algorithm>/<digest>`. The Helm chart's `containerdContentPath` defaults to the store root, so a layer on Node A is at:
+
+```
+/var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/<digest>
+```
