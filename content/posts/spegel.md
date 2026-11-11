@@ -47,15 +47,13 @@ Spegel only works with containerd. CRI-O and Docker Engine are out.
 
 `config_path` must be set in containerd's config, and setting it needs a containerd restart that Spegel cannot perform for you, so on self-managed nodes it belongs in the node image or bootstrap config. Spegel exits on startup if containerd is not configured correctly, which at least makes this one loud.
 
-`discard_unpacked_layers` must be `false`. [containerd's CRI config](https://github.com/containerd/containerd/blob/main/docs/cri/config.md) describes it as allowing GC to remove layers from the content store after successfully unpacking them to the snapshotter. Upstream it defaults to `false`, but Spegel's docs say some distributions enable it, and kind does. With it on, the compressed blobs Spegel would serve are gone, the unpacked snapshot is useless to a peer, and Spegel installs fine and does nothing. This is the quiet failure, and the first thing to check.
+`discard_unpacked_layers` must be `false`. [containerd's CRI config](https://github.com/containerd/containerd/blob/main/docs/cri/config.md) describes it as allowing GC to remove layers from the content store after successfully unpacking them to the snapshotter. Upstream it defaults to `false`, but Spegel's docs say some distributions enable it, and kind does. With it on, the compressed blobs Spegel would serve are gone, the unpacked snapshot is useless to a peer, and Spegel installs fine with no layers to serve. This is the quiet failure, and the first thing to check.
 
-A private image becomes a cluster-wide image. Once one node has pulled it with credentials, every other node can get its layers from Spegel without any, because credentials are not sent to a registry mirror. The FAQ says there is no good solution yet and that strict image-isolation requirements may rule Spegel out. On a multi-tenant cluster, decide this before installing.
+A private image becomes a cluster-wide image. Once one node has pulled it with credentials, every other node can get its layers from Spegel without any, because credentials are not sent to a registry mirror. The FAQ says a good solution does not exist, with or without Spegel, and that if you have these requirements Spegel may not be the choice for you. On a multi-tenant cluster, decide this before installing.
 
 Tags are resolved through peers by default (`resolveTags: true`). Once `latest` has resolved to a digest somewhere in the cluster it keeps resolving to that digest while the image is around, which can block an update you pushed upstream. [The tag resolution page](https://spegel.dev/docs/usage/resolving-tags/) gives the options: turn resolution off, or exclude `:latest$` with `registryFilters` and let the registry answer for that tag. Digests are never a problem.
 
 Check your distribution first. K3s and RKE2 embed Spegel as their [embedded registry mirror](https://docs.k3s.io/installation/registry-mirror), switched on with `--embedded-registry` on servers or the matching config-file key, and K3s does not share `latest` between nodes by default. The compatibility section of [Spegel's getting started guide](https://spegel.dev/docs/getting-started/) rates each flavour and lists the extra configuration it needs.
-
-For observability there are Prometheus metrics with an optional ServiceMonitor, and a debug web page in the pod.
 
 ## Try it on kind
 
