@@ -55,3 +55,5 @@ A private image becomes a cluster-wide image. Once one node has pulled it with c
 Tags are resolved through peers by default (`resolveTags: true`). Once `latest` has resolved to a digest somewhere in the cluster it keeps resolving to that digest while the image is around, which can block an update you pushed upstream. [The tag resolution page](https://spegel.dev/docs/usage/resolving-tags/) gives the options: turn resolution off, or exclude `:latest$` with `registryFilters` and let the registry answer for that tag. Digests are never a problem.
 
 Check your distribution first. K3s and RKE2 embed Spegel as their [embedded registry mirror](https://docs.k3s.io/installation/registry-mirror), switched on with `--embedded-registry` on servers or the matching config-file key, and K3s does not share `latest` between nodes by default. The compatibility section of [Spegel's getting started guide](https://spegel.dev/docs/getting-started/) rates each flavour and lists the extra configuration it needs.
+
+For observability there are Prometheus metrics with an optional ServiceMonitor, and a debug web page in the pod.
