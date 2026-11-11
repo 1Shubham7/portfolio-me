@@ -57,3 +57,5 @@ Tags are resolved through peers by default (`resolveTags: true`). Once `latest` 
 Check your distribution first. K3s and RKE2 embed Spegel as their [embedded registry mirror](https://docs.k3s.io/installation/registry-mirror), switched on with `--embedded-registry` on servers or the matching config-file key, and K3s does not share `latest` between nodes by default. The compatibility section of [Spegel's getting started guide](https://spegel.dev/docs/getting-started/) rates each flavour and lists the extra configuration it needs.
 
 For observability there are Prometheus metrics with an optional ServiceMonitor, and a debug web page in the pod.
+
+## Try it on kind
