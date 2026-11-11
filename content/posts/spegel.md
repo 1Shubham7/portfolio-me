@@ -45,3 +45,5 @@ Rebuild the whole cluster and the cache is empty, so the first pull of every ima
 ## Before you install it
 
 Spegel only works with containerd. CRI-O and Docker Engine are out.
+
+`config_path` must be set in containerd's config, and setting it needs a containerd restart that Spegel cannot perform for you, so on self-managed nodes it belongs in the node image or bootstrap config. Spegel exits on startup if containerd is not configured correctly, which at least makes this one loud.
