@@ -76,3 +76,5 @@ nodes:
 - role: worker
 - role: worker
 ```
+
+Create the cluster, install the chart, pin a first pull to one worker, then scale a Deployment and watch the Spegel pods while it comes up.
