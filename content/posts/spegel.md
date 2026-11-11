@@ -57,7 +57,7 @@ Check your distribution first. K3s and RKE2 embed Spegel as their [embedded regi
 
 ## Try it on kind
 
-kind needs both containerd settings patched in at creation. Newer kind images already set `config_path`; the discard setting is the one that matters here.
+kind v0.27.0 and later already set `config_path`, so that half of the patch below is harmless there and needed on older images. kind's base image turns `discard_unpacked_layers` on, so that line is the one that matters on every version.
 
 ```yaml
 kind: Cluster
@@ -74,7 +74,7 @@ nodes:
 - role: worker
 ```
 
-Create the cluster, install the chart, pin a first pull to one worker, then scale a Deployment and watch the Spegel pods while it comes up.
+Create the cluster, install the chart, pin a first pull to one worker, scale a Deployment, then read the mirror counter off the Spegel pod on the other worker.
 
 ```bash
 kind create cluster --config kind.yaml
@@ -83,10 +83,13 @@ helm upgrade --create-namespace --namespace spegel --install spegel \
 kubectl run first --image=nginx:1.27 \
   --overrides='{"spec":{"nodeName":"kind-worker"}}'
 kubectl create deployment web --image=nginx:1.27 --replicas=3
-kubectl logs -n spegel -l app.kubernetes.io/name=spegel -f
+POD=$(kubectl get pod -n spegel -l app.kubernetes.io/name=spegel \
+  --field-selector spec.nodeName=kind-worker2 -o name)
+kubectl port-forward -n spegel "$POD" 9090:9090 &
+curl -s localhost:9090/metrics | grep spegel_mirror_requests_total
 ```
 
-Any replica that lands on `kind-worker2` gets its layers from `kind-worker`. That is the two-node walkthrough from the top, running on your laptop.
+Any replica that lands on `kind-worker2` has to get its layers from `kind-worker`, and `spegel_mirror_requests_total` is the proof. It counts every request containerd sent to the mirror, labelled `cache="hit"` when a peer served it and `cache="miss"` when Spegel answered 404 and containerd went upstream. A hit count above zero for `registry="docker.io"` is the two-node walkthrough from the top, running on your laptop. The same port serves a debug page at `/debug/web/` that lists the peers this pod can see and the time of its last successful mirror request, and the chart has a ServiceMonitor switch if you want the counter in Prometheus. Do not expect the pod logs to tell you. With the chart's default `INFO` log level the per-request line is off, so a working pull leaves nothing in `kubectl logs`; install with `--set spegel.logLevel=DEBUG` and each request is logged with its path, status and latency.
 
 ## Ending notes
 
