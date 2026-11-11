@@ -59,3 +59,5 @@ Check your distribution first. K3s and RKE2 embed Spegel as their [embedded regi
 For observability there are Prometheus metrics with an optional ServiceMonitor, and a debug web page in the pod.
 
 ## Try it on kind
+
+kind needs both containerd settings patched in at creation. Newer kind images already set `config_path`; the discard setting is the one that matters here.
