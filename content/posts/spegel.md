@@ -35,3 +35,5 @@ Spegel has no storage of its own. When Node A pulled nginx, containerd wrote the
 ```
 /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/<digest>
 ```
+
+That file is there with or without Spegel. The Spegel pod mounts the containerd socket (`/run/containerd/containerd.sock` by default) and that content directory, uses the socket to learn which blobs the node has so it can advertise them, and reads the file when a peer asks. It is a window into containerd's cache, not a copy of it. There are no PVCs, and a Spegel pod restart loses nothing because the data was never Spegel's.
