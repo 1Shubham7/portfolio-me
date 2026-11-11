@@ -43,3 +43,5 @@ The flip side is that an image is shareable only for as long as containerd keeps
 Rebuild the whole cluster and the cache is empty, so the first pull of every image goes to the real registry again. This is why Spegel does not replace a persistent pull-through cache like Harbor or Zot, which have their own storage and survive a rebuild. The FAQ shows Zot as a secondary mirror via `additionalMirrorTargets`, so a miss in the cluster goes there before it goes to the internet. Dragonfly and Kraken are the heavier peer-to-peer alternatives, with their own components to run. Spegel covers a smaller problem with fewer moving parts.
 
 ## Before you install it
+
+Spegel only works with containerd. CRI-O and Docker Engine are out.
