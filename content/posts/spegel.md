@@ -47,3 +47,5 @@ Rebuild the whole cluster and the cache is empty, so the first pull of every ima
 Spegel only works with containerd. CRI-O and Docker Engine are out.
 
 `config_path` must be set in containerd's config, and setting it needs a containerd restart that Spegel cannot perform for you, so on self-managed nodes it belongs in the node image or bootstrap config. Spegel exits on startup if containerd is not configured correctly, which at least makes this one loud.
+
+`discard_unpacked_layers` must be `false`. [containerd's CRI config](https://github.com/containerd/containerd/blob/main/docs/cri/config.md) describes it as allowing GC to remove layers from the content store after successfully unpacking them to the snapshotter. Upstream it defaults to `false`, but Spegel's docs say some distributions enable it, and kind does. With it on, the compressed blobs Spegel would serve are gone, the unpacked snapshot is useless to a peer, and Spegel installs fine and does nothing. This is the quiet failure, and the first thing to check.
