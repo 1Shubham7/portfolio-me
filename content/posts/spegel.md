@@ -21,3 +21,5 @@ With Spegel, every node runs a Spegel pod, and containerd on every node has been
 If nobody has it, Node B's Spegel answers 404 and containerd moves on to Docker Hub, which is what it would have done anyway. [containerd's hosts docs](https://github.com/containerd/containerd/blob/main/docs/hosts.md) describe the rule: mirror hosts are tried in order, and the upstream `server` is used as a fallback once they are exhausted. The peer lookup gives up after 20 ms by default, so a miss costs a few milliseconds. The project's own FAQ calls it a best-effort cache, and the worst case is the status quo. It cannot make a pull worse.
 
 ## How the nodes find each other
+
+Spegel, mirror in Swedish, was first developed at Xenit AB. Its creator, Philip Laine, was a core maintainer of Flux before it, according to [his FOSDEM 2025 speaker page](https://archive.fosdem.org/2025/schedule/speaker/philip_laine/). It ships as a Helm chart that installs a DaemonSet, one pod per node, and each pod plays two roles: a registry that other nodes can pull from, and the mirror that its own node's containerd talks to.
