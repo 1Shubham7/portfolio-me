@@ -61,3 +61,18 @@ For observability there are Prometheus metrics with an optional ServiceMonitor, 
 ## Try it on kind
 
 kind needs both containerd settings patched in at creation. Newer kind images already set `config_path`; the discard setting is the one that matters here.
+
+```yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry]
+    config_path = "/etc/containerd/certs.d"
+  [plugins."io.containerd.grpc.v1.cri".containerd]
+    discard_unpacked_layers = false
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+```
