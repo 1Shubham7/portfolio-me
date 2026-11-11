@@ -88,3 +88,5 @@ kubectl run first --image=nginx:1.27 \
 kubectl create deployment web --image=nginx:1.27 --replicas=3
 kubectl logs -n spegel -l app.kubernetes.io/name=spegel -f
 ```
+
+Any replica that lands on `kind-worker2` gets its layers from `kind-worker`. That is the two-node walkthrough from the top, running on your laptop.
