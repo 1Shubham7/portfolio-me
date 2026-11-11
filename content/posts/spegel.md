@@ -29,3 +29,5 @@ The mirror half rides on containerd's hosts configuration. `config_path` points 
 The discovery half is libp2p and its Kademlia DHT, both direct dependencies in the project's `go.mod`. Each Spegel pod advertises the digests present on its node into the DHT, with a TTL of 10 minutes per the FAQ, and a lookup is by digest. That is why it is safe to take a layer from whichever node answers: layers are content-addressed, and containerd verifies the hash of what it receives, so a peer cannot hand it the wrong bytes without being caught.
 
 ## Where the bytes actually live
+
+Spegel has no storage of its own. When Node A pulled nginx, containerd wrote the compressed layers into its content store, which keeps each blob as a file under `blobs/<algorithm>/<digest>`. The Helm chart's `containerdContentPath` defaults to the store root, so a layer on Node A is at:
