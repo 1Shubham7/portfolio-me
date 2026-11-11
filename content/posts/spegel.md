@@ -78,3 +78,13 @@ nodes:
 ```
 
 Create the cluster, install the chart, pin a first pull to one worker, then scale a Deployment and watch the Spegel pods while it comes up.
+
+```bash
+kind create cluster --config kind.yaml
+helm upgrade --create-namespace --namespace spegel --install spegel \
+  oci://ghcr.io/spegel-org/helm-charts/spegel
+kubectl run first --image=nginx:1.27 \
+  --overrides='{"spec":{"nodeName":"kind-worker"}}'
+kubectl create deployment web --image=nginx:1.27 --replicas=3
+kubectl logs -n spegel -l app.kubernetes.io/name=spegel -f
+```
