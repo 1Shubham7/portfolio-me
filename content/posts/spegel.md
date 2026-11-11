@@ -93,8 +93,8 @@ Any replica that lands on `kind-worker2` has to get its layers from `kind-worker
 
 ## Ending notes
 
-The sentence I was missing is: Spegel lets Node B copy the image from Node A instead of downloading it again from the internet, and if Node A does not have it either, nothing changes. Everything else follows. It is stateless because the image was already on Node A's disk in containerd's content store; it is transparent because containerd's own mirror config routes the request; it is safe because a miss is a 404 and containerd was always going to fall back.
+The sentence I was missing is: Spegel lets Node B copy the image from Node A instead of downloading it again from the internet, and if Node A does not have it either, nothing changes. Everything else follows from two facts. The image was already on Node A's disk, in containerd's content store, which is why Spegel needs no storage. And containerd's own mirror config is what routes the request, which is why workloads do not change and a miss is just a 404 before the fallback containerd was always going to take.
 
-Two things to look at on a node after installing. `ls /etc/containerd/certs.d` shows the `hosts.toml` files Spegel wrote, which is the proof that containerd is asking it. And `grep discard_unpacked_layers /etc/containerd/config.toml` tells you whether there is anything for it to serve.
+Two things to look at on a node after installing. `cat /etc/containerd/certs.d/*/hosts.toml` shows what Spegel wrote, and the host line being the node's own IP on port 30020 is the proof that containerd is asking it. `grep discard_unpacked_layers /etc/containerd/config.toml` tells you whether there is anything for it to serve; no match means the default, which is `false`, and you are fine.
 
 Thanks for your time :)
