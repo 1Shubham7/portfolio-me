@@ -99,3 +99,5 @@ Reactive scaling is for spikes you did not see coming. A sale has a start time. 
 The drop afterwards is the cost control. The buffer is nodes you pay for while they run pods that do nothing, and that is defensible for a few hours around a spike you can name. Keep it small or proportional the rest of the year.
 
 ## The buffer fixes one layer
+
+Pods landing in seconds does not help if the thing that fails next is above or below them.
