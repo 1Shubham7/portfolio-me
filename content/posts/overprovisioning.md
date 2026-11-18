@@ -26,9 +26,14 @@ The chain is worth spelling out once, because every fix later in the post attack
 
 ## Pause pods as a reservation
 
-A placeholder is a pod that requests real CPU and memory and runs `registry.k8s.io/pause`, the binary Kubernetes already uses as the sandbox of every pod. Its [source](https://github.com/kubernetes/kubernetes/blob/master/build/pause/linux/pause.c) is short: install handlers for SIGTERM and SIGCHLD, then call `pause()` forever. It uses nothing. But the scheduler places pods by requests, not usage, a point [the node-eviction post](/node-eviction/) spends some time on, so the request is held as firmly as a busy pod would hold it. Put the placeholders under a PriorityClass with a negative value and they rank below every pod that names no class, since those sit at 0.
+A placeholder is a pod that requests real CPU and memory and runs `registry.k8s.io/pause`, the binary Kubernetes already uses as the sandbox of every pod. Its [source](https://github.com/kubernetes/kubernetes/blob/master/build/pause/linux/pause.c) is short: install handlers for SIGINT, SIGTERM and SIGCHLD, then call `pause()` forever. It uses nothing. But the scheduler places pods by requests, not usage, a point [the node-eviction post](/node-eviction/) spends some time on, so the request is held as firmly as a busy pod would hold it. Put the placeholders under a PriorityClass with a negative value and they rank below every pod that names no class, since those sit at 0.
 
 ```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: overprovisioning
+---
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
@@ -63,9 +68,9 @@ spec:
             memory: 2Gi
 ```
 
-Now the spike. The HPA creates app pods and the scheduler finds nowhere for them, so the [preemption logic](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/) runs: find a node where removing pods of lower priority than the pending pod would make it fit, evict them, and record the node in the pending pod's `nominatedNodeName`. The placeholders are the lowest-priority pods in the cluster, so they are always the victims. The app pods start on nodes that are already warm and, if the app has run there before, already have the image. The placeholder Deployment replaces its evicted replicas, those go `Pending`, and the autoscaler scales up for them; the [Cluster Autoscaler FAQ](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md) describes the pattern in exactly those two steps. The node boots, the placeholders land on it, and the buffer is back for the next wave. The boot still took its minutes. It happened behind pods nobody was waiting for.
+Now the spike. The HPA creates app pods and the scheduler finds nowhere for them, so the [preemption logic](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/) runs: find a node where removing pods of lower priority than the pending pod would make it fit, evict them, and record the node in the pending pod's `nominatedNodeName`. The placeholders are the lowest-priority pods in the cluster, so they are always the victims. The app pods start on nodes that are already warm and, if the app has run there before, already have the image. The placeholder Deployment replaces its evicted replicas, those go `Pending`, and the autoscaler scales up for them; the [Cluster Autoscaler FAQ](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md) describes the pattern in exactly those two steps. The node boots, the placeholders land on it, and the buffer is back for the next wave.
 
-To watch it, scale the app Deployment past what the cluster holds and run `kubectl get pods -w` across both namespaces: placeholders go `Terminating`, app pods go `Running` in the same second, replacement placeholders appear `Pending`, and a minute or more later `kubectl get nodes -w` shows the node they were waiting for.
+To watch it, scale the app Deployment past what the cluster holds and run `kubectl get pods -w -A`: placeholders go `Terminating`, app pods go `Running` within a few seconds, replacement placeholders appear `Pending`, and a minute or more later `kubectl get nodes -w` shows the node they were waiting for.
 
 ## The priority value that breaks it
 
