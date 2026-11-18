@@ -9,10 +9,9 @@ cover:
     image: "/blog/overprovisioning/overprovisioning.png"
 ---
 
-
 The sale opens and the traffic graph goes vertical. The HorizontalPodAutoscaler does its job inside its first loop; the [HPA docs](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) put the controller's sync period at 15 seconds by default, with no stabilisation window on the way up, so new replicas appear almost immediately. Then they sit in `Pending`. Every node is full, and the thing that fixes a full cluster is a cloud API call followed by a boot, a kubelet registering, an image pull and a `Ready` condition, which is minutes on a good day. Pods scale in seconds. Nodes scale in minutes. Customers shop in the difference.
 
-I read up on this for an interview question, "how would you handle a flash sale on Kubernetes", and the answer turned out to be simpler than I expected: buy the nodes before the sale, and keep them occupied with pods that do nothing until something real needs the space. The timeline below is illustrative, with a three-minute node for the sake of a number, but the shape is the whole argument.
+The answer turned out to be simpler than I expected when I started reading: buy the nodes before the sale, and keep them occupied with pods that do nothing until something real needs the space. The timeline below is illustrative, with a three-minute node for the sake of a number, but the shape is the whole argument.
 
 | | Without a buffer | With a buffer |
 | :-- | :-- | :-- |
@@ -73,18 +72,6 @@ To watch it, scale the app Deployment past what the cluster holds and run `kubec
 Cluster Autoscaler has a flag, `--expendable-pods-priority-cutoff`, and the FAQ defines it in one sentence: pods with priority below the cutoff are expendable. Expendable pods do not trigger scale-ups, no node is added to run them, and they do not block scale-downs either. The default is -10, and the FAQ adds that nothing changes for pods with priority greater than or equal to the cutoff. So a placeholder at -100 is preempted on the first wave, goes `Pending`, and stays there. No node is requested for it, the buffer never comes back, and the second wave meets the cluster you had before you started.
 
 The official examples do not agree with each other, which is why I wanted the flag's exact semantics. The Cluster Autoscaler FAQ's own overprovisioning example uses -10 and calls it the lowest priority that still triggers scaling. The [kubernetes.io task page](https://kubernetes.io/docs/tasks/administer-cluster/node-overprovisioning/) uses -1000 and is written for any node autoscaler. Pair that manifest with Cluster Autoscaler at default flags and your placeholders are expendable. The manifest above uses -1, which is also what the AWS walkthrough uses with Karpenter: safely above the cutoff, below every ordinary pod. Anything from -9 to -1 behaves the same; -10 works too, with no margin.
-
-## Grace period, shape, pool, zone, namespace
-
-The preemption docs say victims get their graceful termination period, that this opens a gap between the preemption and the pending pod actually being scheduled, and that the fix is to set the grace period of low-priority pods to zero or a small number. The pause binary handles SIGTERM and exits at once, so in practice the wait is short rather than the full 30 seconds [the 30-second pod post](/pod-30-seconds/) is about. `terminationGracePeriodSeconds: 0` takes it out of the path entirely, and the Cluster Autoscaler FAQ's example sets it.
-
-Shape matters more than count. Preemption is decided per node: the docs' test is whether the pending pod could be scheduled if every lower-priority pod on that node were removed. Five placeholders requesting 0.5 CPU each, spread across five nodes, free five half-cores, and a pod that requests 2 CPU fits in none of them. Size each placeholder like the largest pod the HPA will add, or larger, and prefer fewer big placeholders to many small ones. The kubernetes.io example spreads them with a preferred anti-affinity on hostname, and the same page notes that Karpenter treats preferred affinity rules as hard rules when deciding whether to launch nodes, so under Karpenter the replica count also becomes a minimum node count. Decide whether you want the placeholders spread or packed, rather than inheriting it.
-
-Pool matters as much. The placeholders need the same `nodeSelector`, affinity and tolerations as the workload they stand in for. Headroom on the general pool does nothing for a checkout service pinned to a tainted pool, and the money is spent either way.
-
-Zone matters for the reason it does for the app. Without a `topologySpreadConstraints` entry on `topology.kubernetes.io/zone`, all five placeholders can land in one AZ while the app spreads across three; the block in [the HA EKS post](/ha-eks/) is the one to copy.
-
-And give them their own namespace. Their requests count against the ResourceQuota of whichever namespace they live in, and a team discovering that a pod of nothing has eaten their CPU budget is a conversation you can skip.
 
 ## How much to hold
 
