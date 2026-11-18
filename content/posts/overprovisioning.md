@@ -109,3 +109,5 @@ Shrink the gap you are covering. A node image with the app image baked in, or a 
 Warm the things below the cluster. Database connection pools, cache capacity, third-party API rate limits and load balancer capacity all have ceilings that a perfectly scaled cluster drives straight into. The cluster scales, the database does not, and the sale still falls over.
 
 Then load test the ramp, not the plateau. Replay the expected climb with the buffer in place and see which ceiling is hit first.
+
+## What to watch
