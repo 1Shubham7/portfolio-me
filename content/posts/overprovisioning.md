@@ -119,3 +119,5 @@ Time spent `Pending` is the whole point, and the scheduler exposes it: `schedule
 The sentence I would give in an interview: overprovisioning reserves node capacity with low-priority pause pods, real pods preempt them the moment the HPA asks, the evicted placeholders go `Pending` and pull the next node up in the background, and for a scheduled sale the buffer itself is scaled up on a timer beforehand. Node provisioning time does not get shorter. It gets moved to where nobody is waiting on it.
 
 That is the trade. You pay for idle capacity to buy seconds of latency, and the price is worth paying around spikes you can predict and mostly not the rest of the time. Two things to check on a cluster that already has this: the PriorityClass value against the autoscaler's cutoff, and the placeholder requests against the app's.
+
+Thanks for your time :)
