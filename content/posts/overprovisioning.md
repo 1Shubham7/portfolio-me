@@ -107,3 +107,5 @@ Scale on something that leads. CPU utilisation is measured against requests and 
 Shrink the gap you are covering. A node image with the app image baked in, or a DaemonSet that pulls it on every node as it joins, takes the pull off the new node's critical path. On a cluster running [Spegel](/spegel/), the pull comes from a peer that already has it.
 
 Warm the things below the cluster. Database connection pools, cache capacity, third-party API rate limits and load balancer capacity all have ceilings that a perfectly scaled cluster drives straight into. The cluster scales, the database does not, and the sale still falls over.
+
+Then load test the ramp, not the plateau. Replay the expected climb with the buffer in place and see which ceiling is hit first.
