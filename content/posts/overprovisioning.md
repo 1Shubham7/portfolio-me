@@ -63,3 +63,5 @@ spec:
             cpu: "1"
             memory: 2Gi
 ```
+
+Now the spike. The HPA creates app pods and the scheduler finds nowhere for them, so the [preemption logic](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/) runs: find a node where removing pods of lower priority than the pending pod would make it fit, evict them, and record the node in the pending pod's `nominatedNodeName`. The placeholders are the lowest-priority pods in the cluster, so they are always the victims. The app pods start on nodes that are already warm and, if the app has run there before, already have the image. The placeholder Deployment replaces its evicted replicas, those go `Pending`, and the autoscaler scales up for them; the [Cluster Autoscaler FAQ](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md) describes the pattern in exactly those two steps. The node boots, the placeholders land on it, and the buffer is back for the next wave. The boot still took its minutes. It happened behind pods nobody was waiting for.
