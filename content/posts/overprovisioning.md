@@ -28,3 +28,38 @@ The chain is worth spelling out once, because every fix later in the post attack
 ## Pause pods as a reservation
 
 A placeholder is a pod that requests real CPU and memory and runs `registry.k8s.io/pause`, the binary Kubernetes already uses as the sandbox of every pod. Its [source](https://github.com/kubernetes/kubernetes/blob/master/build/pause/linux/pause.c) is short: install handlers for SIGTERM and SIGCHLD, then call `pause()` forever. It uses nothing. But the scheduler places pods by requests, not usage, a point [the node-eviction post](/node-eviction/) spends some time on, so the request is held as firmly as a busy pod would hold it. Put the placeholders under a PriorityClass with a negative value and they rank below every pod that names no class, since those sit at 0.
+
+```yaml
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: overprovisioning
+value: -1
+globalDefault: false
+description: "Placeholder capacity, preempted first"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overprovisioning
+  namespace: overprovisioning
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: overprovisioning
+  template:
+    metadata:
+      labels:
+        app: overprovisioning
+    spec:
+      priorityClassName: overprovisioning
+      terminationGracePeriodSeconds: 0
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:3.10
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2Gi
+```
