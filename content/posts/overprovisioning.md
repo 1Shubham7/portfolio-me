@@ -101,3 +101,5 @@ The drop afterwards is the cost control. The buffer is nodes you pay for while t
 ## The buffer fixes one layer
 
 Pods landing in seconds does not help if the thing that fails next is above or below them.
+
+Scale on something that leads. CPU utilisation is measured against requests and rises after the traffic is already there. Requests per second, or queue depth through a KEDA external metric, moves earlier, so the HPA asks for pods earlier and the buffer has a shorter ramp to cover. The HPA target is headroom too: 50% CPU instead of 80% is overprovisioning at the pod level, and so is a higher `minReplicas` in the sale window.
