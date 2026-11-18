@@ -103,3 +103,5 @@ The drop afterwards is the cost control. The buffer is nodes you pay for while t
 Pods landing in seconds does not help if the thing that fails next is above or below them.
 
 Scale on something that leads. CPU utilisation is measured against requests and rises after the traffic is already there. Requests per second, or queue depth through a KEDA external metric, moves earlier, so the HPA asks for pods earlier and the buffer has a shorter ramp to cover. The HPA target is headroom too: 50% CPU instead of 80% is overprovisioning at the pod level, and so is a higher `minReplicas` in the sale window.
+
+Shrink the gap you are covering. A node image with the app image baked in, or a DaemonSet that pulls it on every node as it joins, takes the pull off the new node's critical path. On a cluster running [Spegel](/spegel/), the pull comes from a peer that already has it.
