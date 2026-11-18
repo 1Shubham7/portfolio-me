@@ -69,3 +69,5 @@ Now the spike. The HPA creates app pods and the scheduler finds nowhere for them
 To watch it, scale the app Deployment past what the cluster holds and run `kubectl get pods -w` across both namespaces: placeholders go `Terminating`, app pods go `Running` in the same second, replacement placeholders appear `Pending`, and a minute or more later `kubectl get nodes -w` shows the node they were waiting for.
 
 ## The priority value that breaks it
+
+Cluster Autoscaler has a flag, `--expendable-pods-priority-cutoff`, and the FAQ defines it in one sentence: pods with priority below the cutoff are expendable. Expendable pods do not trigger scale-ups, no node is added to run them, and they do not block scale-downs either. The default is -10, and the FAQ adds that nothing changes for pods with priority greater than or equal to the cutoff. So a placeholder at -100 is preempted on the first wave, goes `Pending`, and stays there. No node is requested for it, the buffer never comes back, and the second wave meets the cluster you had before you started.
