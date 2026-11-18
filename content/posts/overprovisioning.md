@@ -83,3 +83,5 @@ Shape matters more than count. Preemption is decided per node: the docs' test is
 Pool matters as much. The placeholders need the same `nodeSelector`, affinity and tolerations as the workload they stand in for. Headroom on the general pool does nothing for a checkout service pinned to a tainted pool, and the money is spent either way.
 
 Zone matters for the reason it does for the app. Without a `topologySpreadConstraints` entry on `topology.kubernetes.io/zone`, all five placeholders can land in one AZ while the app spreads across three; the block in [the HA EKS post](/ha-eks/) is the one to copy.
+
+And give them their own namespace. Their requests count against the ResourceQuota of whichever namespace they live in, and a team discovering that a pod of nothing has eaten their CPU budget is a conversation you can skip.
