@@ -104,15 +104,11 @@ Scaling back down afterwards is what keeps this affordable. The five placeholder
 
 ## The buffer fixes one layer
 
-Pods landing in seconds does not help if the thing that fails next is above or below them.
+The buffer covers the ramp, so anything that shortens the ramp shrinks the buffer. CPU utilisation is measured against requests and rises after the traffic is already there; requests per second, or queue depth through a KEDA external metric, moves earlier, so the HPA asks for pods earlier and there is less climb left for the placeholders to absorb. The HPA target is headroom too: 50% CPU instead of 80% is overprovisioning at the pod level, and so is a higher `minReplicas` in the sale window.
 
-Scale on something that leads. CPU utilisation is measured against requests and rises after the traffic is already there. Requests per second, or queue depth through a KEDA external metric, moves earlier, so the HPA asks for pods earlier and the buffer has a shorter ramp to cover. The HPA target is headroom too: 50% CPU instead of 80% is overprovisioning at the pod level, and so is a higher `minReplicas` in the sale window.
+The image pull is the piece of node-ready time still in the path. With the buffer working, the first wave lands on nodes that have run the app before, but the second wave preempts placeholders on the node that just joined, and that node has never pulled the image. A node image with the app image baked in, or a DaemonSet that pulls it on every node as it joins, takes the pull off that path; on a cluster running [Spegel](/spegel/), the pull comes from a peer that already has it.
 
-Shrink the gap you are covering. A node image with the app image baked in, or a DaemonSet that pulls it on every node as it joins, takes the pull off the new node's critical path. On a cluster running [Spegel](/spegel/), the pull comes from a peer that already has it.
-
-Warm the things below the cluster. Database connection pools, cache capacity, third-party API rate limits and load balancer capacity all have ceilings that a perfectly scaled cluster drives straight into. The cluster scales, the database does not, and the sale still falls over.
-
-Then load test the ramp, not the plateau. Replay the expected climb with the buffer in place and see which ceiling is hit first.
+Everything below the cluster has the same problem one layer down, and no placeholder for it. If the HPA triples the checkout Deployment, there are three times as many connection pools open against a database whose `max_connections` did not move, three times the cache clients, three times the calls against a payment provider's rate limit, through a load balancer that was sized for last month. The cluster scales in seconds, the database does not, and the sale falls over on the layer that was never in the autoscaling chain. Those ceilings get raised by hand before the day, and the way to find which one is hit first is to load test the ramp rather than the plateau: replay the expected climb with the buffer in place and watch what goes red first.
 
 ## What to watch
 
