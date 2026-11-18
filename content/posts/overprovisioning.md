@@ -20,3 +20,5 @@ I read up on this for an interview question, "how would you handle a flash sale 
 | t+15 s | HPA adds pods, they go `Pending` | HPA adds pods, they preempt the placeholders and are `Running` |
 | t+15 s to t+3 min | a node is requested, boots, joins, pulls images; errors the whole time | the same node boot happens, for the evicted placeholders; nobody is waiting on it |
 | t+3 min | pods schedule, errors stop | placeholders land on the new node, buffer restored |
+
+## Pods scale in seconds, nodes in minutes
