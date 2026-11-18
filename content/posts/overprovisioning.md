@@ -100,7 +100,7 @@ A fixed replica count drifts as the cluster grows, so the Cluster Autoscaler FAQ
 
 Reactive scaling is for spikes you did not see coming. A sale has a start time. Bump the placeholder replicas before it and drop them after, with a CronJob that runs `kubectl scale`, or with the [KEDA cron scaler](https://keda.sh/docs/latest/scalers/cron/) on the placeholder Deployment: a `timezone`, a `start` and `end` cron expression, and a `desiredReplicas` to hold between them. When other triggers sit on the same ScaledObject, `desiredReplicas` acts as a floor, because the HPA takes the maximum across metrics. The same schedule applies to the app's own `minReplicas`: raise it for the window so the first wave is already absorbed.
 
-The drop afterwards is the cost control. The buffer is nodes you pay for while they run pods that do nothing, and that is defensible for a few hours around a spike you can name. Keep it small or proportional the rest of the year.
+Scaling back down afterwards is what keeps this affordable. The five placeholders in the manifest hold 5 CPU and 10Gi of nothing, on nodes billed whether or not anything runs on them; a sale-day buffer of 60 slots at the same shape holds 60 CPU and 120Gi. That is defensible for a few hours around a spike you can name, and not for the rest of the year, which is what the proportional sizing above is for.
 
 ## The buffer fixes one layer
 
