@@ -87,3 +87,5 @@ Zone matters for the reason it does for the app. Without a `topologySpreadConstr
 And give them their own namespace. Their requests count against the ResourceQuota of whichever namespace they live in, and a team discovering that a pod of nothing has eaten their CPU budget is a conversation you can skip.
 
 ## How much to hold
+
+The rule of thumb: the buffer should cover the ramp for as long as a node takes to arrive, so pods added per minute during the ramp, times node-ready time in minutes, in placeholder-shaped slots. If the HPA adds about 20 pods a minute and a node takes about 3 minutes to become `Ready`, that is roughly 60 pods of headroom. Less than that and pods go `Pending` partway through the ramp, just later than they would have. This is arithmetic, not a result from anywhere; treat it as a starting point. The HPA's `scaleUp` policies cap the first number and a load test tells you the real one. The second is on every node object: `metadata.creationTimestamp` against the `lastTransitionTime` of its `Ready` condition.
