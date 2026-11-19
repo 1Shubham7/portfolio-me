@@ -8,3 +8,5 @@ weight: 2
 cover:
     image: "/blog/argo-rollouts/argo-rollouts.png"
 ---
+
+I went looking for "ArgoCD rollouts" and the first thing I learned is that there is no such thing. The project is Argo Rollouts, a sibling of Argo CD in the same family, and the two do different jobs. Argo CD syncs what is in Git into the cluster and decides *what* runs. Argo Rollouts decides *how* a new version replaces the old one, and it does not care where the manifest came from: Argo CD, Flux, Helm, or `kubectl apply` all work.
