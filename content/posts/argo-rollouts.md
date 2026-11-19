@@ -65,3 +65,24 @@ With a traffic router the controller sets the weight on the router and the split
 ## Analysis is what makes it progressive
 
 Without analysis the steps above are a slow rolling update with a human watching Grafana. An AnalysisTemplate is a metric query plus a condition; a step or a background block names the template, and the controller creates an AnalysisRun that polls on an interval and compares each measurement against the condition.
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: success-rate
+spec:
+  metrics:
+  - name: success-rate
+    interval: 1m
+    count: 5
+    successCondition: result[0] >= 0.95
+    failureLimit: 1
+    provider:
+      prometheus:
+        address: http://prometheus.monitoring.svc:9090
+        query: |
+          sum(rate(http_requests_total{app="api",role="canary",code!~"5.."}[2m]))
+          /
+          sum(rate(http_requests_total{app="api",role="canary"}[2m]))
+```
