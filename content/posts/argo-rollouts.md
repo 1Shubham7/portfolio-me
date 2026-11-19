@@ -104,3 +104,5 @@ During a traffic-routed canary the stable ReplicaSet stays at full size. The tra
 Weights apply when a request is routed. A websocket or a streaming gRPC call that was opened against the canary stays on the canary at whatever weight the router moves to next, including zero after an abort, until the client reconnects. For a service that is mostly long-lived connections the percentage on the step is the share of new connections, not of traffic.
 
 And two versions of the app serve real requests at the same time, for as long as the steps take. Every schema change and every API contract in between has to work in both directions, and nothing in the Rollout can check that for you.
+
+## Adopting it without a rewrite
