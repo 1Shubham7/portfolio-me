@@ -52,7 +52,7 @@ spec:
       - pause: {}
 ```
 
-Read the steps top to bottom. Send 10% of traffic to the new ReplicaSet, hold for five minutes, run the `success-rate` analysis and stop here if it fails, go to 50%, then wait. A `pause` with no duration waits until someone runs `kubectl argo rollouts promote api`, or clicks the matching action in the Argo CD UI, so the last step is a manual gate. After the final step the new ReplicaSet becomes stable and gets 100%.
+Read the steps top to bottom. Send 10% of traffic to the new ReplicaSet, hold for five minutes, run the `success-rate` analysis and stop here if it fails, go to 50%, then wait. A `pause` with no duration waits until someone runs `kubectl argo rollouts promote api`, or clicks the matching action in the Argo CD UI, so the last step is a manual gate. After it the new ReplicaSet becomes stable and gets 100%.
 
 Blue-green is the other strategy and it is shorter to describe. `strategy.blueGreen` names an `activeService` and, optionally, a `previewService`. The controller brings the new ReplicaSet up to full size, points the preview Service at it so you can test it on a URL nobody else uses, and then switches the active Service's selector in one move. With `autoPromotionEnabled: false` that switch waits for a promote, and a `prePromotionAnalysis` block runs an analysis before it and refuses the switch if the analysis fails. Canary is for shifting a percentage in steps; blue-green is for a full copy and one flip.
 
