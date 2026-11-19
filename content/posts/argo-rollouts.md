@@ -114,3 +114,5 @@ The `kubectl argo rollouts` plugin is the day-to-day tool. `get rollout api --wa
 If you have looked at Flagger, the structural difference is that Flagger keeps your Deployment and creates a `<name>-primary` copy that takes the traffic, scaling the original to zero, while Rollouts replaces the Deployment with its own resource. Both do canary and analysis; which one fits depends on whether you would rather own a new CRD or a shadow Deployment.
 
 ## Ending notes
+
+A Rollout is a Deployment whose strategy can do arithmetic on traffic and ask Prometheus a question. The canary steps, the TraefikService weights and the AnalysisRun are the three pieces, and the controller's job is to move between them without a person at the keyboard for the whole of it.
