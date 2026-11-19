@@ -16,3 +16,38 @@ The gap it fills is the one a Deployment leaves. A Deployment has two strategies
 ## A Deployment with a strategy block
 
 A Rollout is a Deployment with `spec.strategy` replaced. The pod template, selector and replica count are the same, and the controller manages ReplicaSets the way a Deployment would: when `spec.template` changes it creates a new ReplicaSet and works through the steps you gave it, one at a time.
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: api
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: registry.example.com/api:1.4.0
+  strategy:
+    canary:
+      canaryService: api-canary
+      stableService: api-stable
+      trafficRouting:
+        traefik:
+          weightedTraefikServiceName: api-weighted
+      steps:
+      - setWeight: 10
+      - pause: {duration: 5m}
+      - analysis:
+          templates:
+          - templateName: success-rate
+      - setWeight: 50
+      - pause: {}
+```
