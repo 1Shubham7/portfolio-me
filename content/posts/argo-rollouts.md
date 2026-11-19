@@ -86,3 +86,5 @@ spec:
           /
           sum(rate(http_requests_total{app="api",role="canary"}[2m]))
 ```
+
+Five measurements a minute apart, and more than one below 95% fails the run. Prometheus is the common provider, and the [analysis docs](https://argo-rollouts.readthedocs.io/en/stable/features/analysis/) cover Datadog, New Relic, Kayenta, a plain web endpoint and a Kubernetes Job among the others. The `role="canary"` label in the query is not something your pods have by default. `canaryMetadata` and `stableMetadata` under the canary strategy add labels to the canary and stable pods, and the [ephemeral metadata page](https://argo-rollouts.readthedocs.io/en/stable/features/ephemeral-metadata/) exists for exactly this: `rollouts-pod-template-hash` changes on every revision, so a query keyed on it is wrong by the next deploy, while a `role` label is stable and when the canary is promoted its pods are relabelled in place to `stable`. Without something like it the analysis compares a blend of both versions against the threshold, and a broken canary at 10% weight hides inside the stable version's numbers.
