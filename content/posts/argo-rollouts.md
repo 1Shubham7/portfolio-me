@@ -92,3 +92,5 @@ Five measurements a minute apart, and more than one below 95% fails the run. Pro
 An analysis step blocks the rollout until the run finishes. A `canary.analysis` block runs in the background instead, alongside the steps, from the step named in `startingStep` onward, so the check keeps running while a `pause` counts down. Either way a failed run aborts the rollout: the docs say the canary weight is set back to zero, and the Rollout is marked Degraded. Inconclusive runs pause the rollout at its step rather than aborting it. A metric listed under `dryRun` is evaluated and reported in the AnalysisRun but cannot change the outcome, which is how to try a new query for a few deploys before you let it abort anything.
 
 ## Where it bites
+
+The weight field is the first GitOps problem. The Traefik page is explicit that its TraefikService example leaves `weight` out, because the controller sets it, and if Git also declares a value Argo CD sees the controller's change as drift and shows the resource OutOfSync on every step. Leave the field out of the manifest, or add an `ignoreDifferences` entry for it. Istio VirtualServices have the same issue.
