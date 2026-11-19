@@ -112,3 +112,5 @@ And two versions of the app serve real requests at the same time, for as long as
 The `kubectl argo rollouts` plugin is the day-to-day tool. `get rollout api --watch` draws the ReplicaSets, the current step and any AnalysisRuns and updates as they change, `promote` moves past a pause, `abort` sends traffic back to stable, `undo` goes to a previous revision, and `dashboard` starts the UI locally. Argo CD ships resume, abort and promote-full as resource actions on a Rollout, so a team that lives in that UI rarely needs the plugin.
 
 If you have looked at Flagger, the structural difference is that Flagger keeps your Deployment and creates a `<name>-primary` copy that takes the traffic, scaling the original to zero, while Rollouts replaces the Deployment with its own resource. Both do canary and analysis; which one fits depends on whether you would rather own a new CRD or a shadow Deployment.
+
+## Ending notes
