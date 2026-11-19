@@ -64,7 +64,7 @@ With a traffic router the controller sets the weight on the router and the split
 
 ## Analysis is what makes it progressive
 
-Without analysis the steps above are a slow rolling update with a human watching Grafana. An AnalysisTemplate is a metric query plus a condition; a step or a background block names the template, and the controller creates an AnalysisRun that polls on an interval and compares each measurement against the condition.
+Without analysis the steps above are a slow rolling update with a human watching Grafana. An AnalysisTemplate is a metric query plus a condition; a step or a background block names the template, and the controller creates an AnalysisRun that polls on an interval and checks each measurement against it.
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -87,9 +87,9 @@ spec:
           sum(rate(http_requests_total{app="api",role="canary"}[2m]))
 ```
 
-Five measurements a minute apart, and more than one below 95% fails the run. Prometheus is the common provider; the [analysis docs](https://argo-rollouts.readthedocs.io/en/stable/features/analysis/) also cover Datadog, New Relic, Kayenta, a plain web endpoint and a Kubernetes Job. The `role="canary"` label in the query is not something your pods have by default. `canaryMetadata` and `stableMetadata` under the canary strategy add labels to the canary and stable pods, and your scrape config has to copy that pod label onto the series (`podTargetLabels` on a PodMonitor, or a relabel from `__meta_kubernetes_pod_label_role`) before the query above returns anything. Key it on a label like `role` and not on `rollouts-pod-template-hash`, which changes every revision; the [ephemeral metadata page](https://argo-rollouts.readthedocs.io/en/stable/features/ephemeral-metadata/) notes the canary's pods are relabelled in place to `stable` on promotion, so the label follows the role. Without it the analysis scores a blend of both versions, and a broken canary at 10% hides inside stable's numbers.
+Five measurements a minute apart, and more than one below 95% fails the run. Prometheus is the common provider; the [analysis docs](https://argo-rollouts.readthedocs.io/en/stable/features/analysis/) list the others. Your pods do not have the `role="canary"` label by default. `canaryMetadata` and `stableMetadata` under the canary strategy add labels to each side's pods, and your scrape config has to copy that pod label onto the series (`podTargetLabels` on a PodMonitor, or a relabel from `__meta_kubernetes_pod_label_role`) before the query above returns anything. Key it on a label like `role`, not on `rollouts-pod-template-hash`, which changes every revision; on promotion the canary's pods are [relabelled in place](https://argo-rollouts.readthedocs.io/en/stable/features/ephemeral-metadata/) to `stable`, so the label follows the role. Without it the analysis scores a blend of both versions, and a broken canary at 10% hides inside stable's numbers.
 
-An analysis step blocks the rollout until the run finishes. A `canary.analysis` block runs in the background instead, from the step named in `startingStep` onward, so the check keeps going while a `pause` counts down. Either way a failed run aborts the rollout: the docs say the canary weight is set back to zero, and the Rollout is marked Degraded. Inconclusive runs pause the rollout at its step rather than aborting it. A metric listed under `dryRun` is evaluated and reported in the AnalysisRun but cannot change the outcome, which is how to try a new query for a few deploys before you let it abort anything.
+An analysis step blocks the rollout until the run finishes. A `canary.analysis` block runs in the background instead, from the step named in `startingStep` onward, so the check keeps going while a `pause` counts down. Either way a failed run aborts the rollout: canary weight back to zero, Rollout marked Degraded. Inconclusive runs pause at the step rather than aborting. A metric under `dryRun` is evaluated and reported but cannot change the outcome, which is how to try a new query for a few deploys before you let it abort anything.
 
 ## Where it bites
 
