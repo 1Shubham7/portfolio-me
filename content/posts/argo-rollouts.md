@@ -15,7 +15,7 @@ The gap it fills is the one a Deployment leaves. A Deployment has two strategies
 
 ## A Deployment with a strategy block
 
-A Rollout is a Deployment with `spec.strategy` replaced. The pod template, selector and replica count are the same, and the controller manages ReplicaSets the way a Deployment would: when `spec.template` changes it creates a new ReplicaSet and works through the steps you gave it, one at a time.
+A Rollout is a Deployment with `spec.strategy` replaced. The pod template, selector and replica count are the same, and the controller manages ReplicaSets the way a Deployment would: when `spec.template` changes it creates a new ReplicaSet and works through the steps you gave it.
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -52,9 +52,9 @@ spec:
       - pause: {}
 ```
 
-Read the steps top to bottom. Send 10% of traffic to the new ReplicaSet, hold for five minutes, run the `success-rate` analysis and stop here if it fails, go to 50%, then wait. A `pause` with no duration waits until someone runs `kubectl argo rollouts promote api`, or clicks the matching action in the Argo CD UI, so the last step is a manual gate. After it the new ReplicaSet becomes stable and gets 100%.
+Read the steps top to bottom. Send 10% of traffic to the new ReplicaSet, hold for five minutes, run the `success-rate` analysis and stop here if it fails, go to 50%, then wait. A `pause` with no duration waits until someone runs `kubectl argo rollouts promote api`, so the last step is a manual gate. After it the new ReplicaSet becomes stable and gets 100%.
 
-Blue-green is the other strategy and it is shorter to describe. `strategy.blueGreen` names an `activeService` and, optionally, a `previewService`. The controller brings the new ReplicaSet up to full size, points the preview Service at it so you can test it on a URL nobody else uses, and then switches the active Service's selector in one move. With `autoPromotionEnabled: false` that switch waits for a promote, and a `prePromotionAnalysis` block runs an analysis before it and refuses the switch if the analysis fails. Canary is for shifting a percentage in steps; blue-green is for a full copy and one flip.
+The other strategy, `strategy.blueGreen`, names an `activeService` and, optionally, a `previewService`. The controller brings the new ReplicaSet up to full size, points the preview Service at it so you can test it on a URL nobody else uses, and then switches the active Service's selector in one move. With `autoPromotionEnabled: false` that switch waits for a promote, and a `prePromotionAnalysis` block refuses it if the analysis fails.
 
 ## Replicas or weights
 
