@@ -74,7 +74,7 @@ metadata:
 spec:
   metrics:
   - name: success-rate
-    interval: 1m
+    interval: 60s
     count: 5
     successCondition: result[0] >= 0.95
     failureLimit: 1
@@ -87,9 +87,9 @@ spec:
           sum(rate(http_requests_total{app="api",role="canary"}[2m]))
 ```
 
-Five measurements a minute apart, and more than one below 95% fails the run. Prometheus is the common provider, and the [analysis docs](https://argo-rollouts.readthedocs.io/en/stable/features/analysis/) cover Datadog, New Relic, Kayenta, a plain web endpoint and a Kubernetes Job among the others. The `role="canary"` label in the query is not something your pods have by default. `canaryMetadata` and `stableMetadata` under the canary strategy add labels to the canary and stable pods, and the [ephemeral metadata page](https://argo-rollouts.readthedocs.io/en/stable/features/ephemeral-metadata/) exists for exactly this: `rollouts-pod-template-hash` changes on every revision, so a query keyed on it is wrong by the next deploy, while a `role` label is stable and when the canary is promoted its pods are relabelled in place to `stable`. Without something like it the analysis compares a blend of both versions against the threshold, and a broken canary at 10% weight hides inside the stable version's numbers.
+Five measurements a minute apart, and more than one below 95% fails the run. Prometheus is the common provider; the [analysis docs](https://argo-rollouts.readthedocs.io/en/stable/features/analysis/) also cover Datadog, New Relic, Kayenta, a plain web endpoint and a Kubernetes Job. The `role="canary"` label in the query is not something your pods have by default. `canaryMetadata` and `stableMetadata` under the canary strategy add labels to the canary and stable pods, and your scrape config has to copy that pod label onto the series (`podTargetLabels` on a PodMonitor, or a relabel from `__meta_kubernetes_pod_label_role`) before the query above returns anything. Key it on a label like `role` and not on `rollouts-pod-template-hash`, which changes every revision; the [ephemeral metadata page](https://argo-rollouts.readthedocs.io/en/stable/features/ephemeral-metadata/) notes the canary's pods are relabelled in place to `stable` on promotion, so the label follows the role. Without it the analysis scores a blend of both versions, and a broken canary at 10% hides inside stable's numbers.
 
-An analysis step blocks the rollout until the run finishes. A `canary.analysis` block runs in the background instead, alongside the steps, from the step named in `startingStep` onward, so the check keeps running while a `pause` counts down. Either way a failed run aborts the rollout: the docs say the canary weight is set back to zero, and the Rollout is marked Degraded. Inconclusive runs pause the rollout at its step rather than aborting it. A metric listed under `dryRun` is evaluated and reported in the AnalysisRun but cannot change the outcome, which is how to try a new query for a few deploys before you let it abort anything.
+An analysis step blocks the rollout until the run finishes. A `canary.analysis` block runs in the background instead, from the step named in `startingStep` onward, so the check keeps going while a `pause` counts down. Either way a failed run aborts the rollout: the docs say the canary weight is set back to zero, and the Rollout is marked Degraded. Inconclusive runs pause the rollout at its step rather than aborting it. A metric listed under `dryRun` is evaluated and reported in the AnalysisRun but cannot change the outcome, which is how to try a new query for a few deploys before you let it abort anything.
 
 ## Where it bites
 
