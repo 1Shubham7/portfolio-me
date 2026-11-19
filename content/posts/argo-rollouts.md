@@ -106,3 +106,5 @@ Weights apply when a request is routed. A websocket or a streaming gRPC call tha
 And two versions of the app serve real requests at the same time, for as long as the steps take. Every schema change and every API contract in between has to work in both directions, and nothing in the Rollout can check that for you.
 
 ## Adopting it without a rewrite
+
+`workloadRef` points a Rollout at an existing Deployment and uses its pod template, so you keep editing the Deployment and the Rollout runs the strategy. The [migration page](https://argo-rollouts.readthedocs.io/en/stable/migrating/) has the Rollout scale the Deployment down for you with `scaleDown: onsuccess` or `progressively`, and warns that you run twice the pods until that happens. The HPA keeps working with `scaleTargetRef.kind: Rollout` and `apiVersion: argoproj.io/v1alpha1`, because the Rollout exposes the same `/scale` subresource a Deployment does. `rollbackWindow.revisions: 3` is worth setting from the start: without it, re-applying an older manifest is just another spec change and runs every step and every analysis, and with it a return to one of the last three ReplicaSets skips the steps entirely.
