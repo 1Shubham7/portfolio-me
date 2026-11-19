@@ -51,3 +51,5 @@ spec:
       - setWeight: 50
       - pause: {}
 ```
+
+Read the steps top to bottom. Send 10% of traffic to the new ReplicaSet, hold for five minutes, run the `success-rate` analysis and stop here if it fails, go to 50%, then wait. A `pause` with no duration waits until someone runs `kubectl argo rollouts promote api`, or clicks the matching action in the Argo CD UI, so the last step is a manual gate. After the final step the new ReplicaSet becomes stable and gets 100%.
