@@ -113,8 +113,6 @@ The `kubectl argo rollouts` plugin is the day-to-day tool. `get rollout api --wa
 
 ## Ending notes
 
-A Rollout is a Deployment whose strategy can do arithmetic on traffic and ask Prometheus a question, and the controller's job is to move between the steps, the weights and the AnalysisRun without a person at the keyboard for the whole of it.
-
-Three things to check on an existing setup. `grep weight` on the TraefikService manifest in Git should find nothing; the controller owns that field. The analysis query with `role="canary"`, run in Prometheus during a rollout, should return a number and not an empty result, which is the proof that the pod label reached the series. And `kubectl get rollout api -o jsonpath='{.spec.strategy.canary.scaleDownDelaySeconds}'` should be empty or 30 or more; a small number there is someone making deploys look faster at the cost of 5xx after promotion.
+Three things to check on an existing setup. `grep -w weight` on the TraefikService manifest in Git should find nothing; `weighted:` does not match, a `weight:` under one of the services does, and the controller owns that field. The `success-rate` query, run in Prometheus during a rollout, should return a number and not an empty result; that is the proof that the pod label reached the series. And `kubectl get rollout api -o jsonpath='{.spec.strategy.canary.scaleDownDelaySeconds}'` should be empty or 30 or more; a small number there is someone making deploys look faster at the cost of 5xx after promotion.
 
 Thanks for your time :)
