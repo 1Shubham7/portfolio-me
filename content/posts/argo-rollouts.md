@@ -118,3 +118,5 @@ If you have looked at Flagger, the structural difference is that Flagger keeps y
 A Rollout is a Deployment whose strategy can do arithmetic on traffic and ask Prometheus a question. The canary steps, the TraefikService weights and the AnalysisRun are the three pieces, and the controller's job is to move between them without a person at the keyboard for the whole of it.
 
 The three things I would check on an existing setup: that the TraefikService in Git has no `weight` field, that the analysis query can actually tell canary pods from stable ones, and that `scaleDownDelaySeconds` was never lowered to make deploys look faster.
+
+Thanks for your time :)
