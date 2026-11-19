@@ -107,9 +107,9 @@ And two versions of the app serve real requests at the same time. Every schema c
 
 ## Adopting it without a rewrite
 
-`workloadRef` points a Rollout at an existing Deployment and uses its pod template, so you keep editing the Deployment and the Rollout runs the strategy. The [migration page](https://argo-rollouts.readthedocs.io/en/stable/migrating/) has the Rollout scale the Deployment down for you with `scaleDown: onsuccess` or `progressively`, and warns that you run twice the pods until that happens. The HPA keeps working with `scaleTargetRef.kind: Rollout` and `apiVersion: argoproj.io/v1alpha1`, because the Rollout exposes the same `/scale` subresource a Deployment does. `rollbackWindow.revisions: 3` is worth setting from the start: without it, re-applying an older manifest is just another spec change and runs every step and every analysis; with it a return to one of the last three ReplicaSets skips them.
+`workloadRef` points a Rollout at an existing Deployment and uses its pod template, so you keep editing the Deployment and the Rollout runs the strategy. The [migration page](https://argo-rollouts.readthedocs.io/en/stable/migrating/) has the Rollout scale the Deployment down with `scaleDown: onsuccess` or `progressively`, and warns that you run twice the pods until that happens. The HPA keeps working with `scaleTargetRef.kind: Rollout` and `apiVersion: argoproj.io/v1alpha1`, because the Rollout exposes the same `/scale` subresource a Deployment does. Set `rollbackWindow.revisions: 3` from the start: without it, re-applying an older manifest is another spec change and runs every step and every analysis; with it a return to one of the last three ReplicaSets skips them.
 
-The `kubectl argo rollouts` plugin is the day-to-day tool. `get rollout api --watch` draws the ReplicaSets, the current step and any AnalysisRuns and updates as they change, `promote` moves past a pause, `abort` sends traffic back to stable, and `undo` goes to a previous revision.
+The `kubectl argo rollouts` plugin is the day-to-day tool. `get rollout api --watch` draws the ReplicaSets, the current step and any AnalysisRuns, `promote` moves past a pause, `abort` sends traffic back to stable, and `undo` goes to a previous revision.
 
 ## Ending notes
 
