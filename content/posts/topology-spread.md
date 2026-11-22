@@ -14,3 +14,5 @@ cover:
 Pod topology spread constraints are how you tell the scheduler that the count has a shape, and this is the short version of them.
 
 ## Domains, skew, and one worked pod
+
+A constraint names a node label as its `topologyKey`. Every node sharing a value for that label is one domain: `topology.kubernetes.io/zone` gives a domain per zone, `kubernetes.io/hostname` one per node, and any label you set yourself works the same way, a rack label on bare metal or `karpenter.sh/capacity-type` so that not every replica sits on spot. The `labelSelector` says which pods to count, normally the workload's own labels. For each candidate node the scheduler counts matching pods in that node's domain, finds the domain with the fewest, and the difference is the skew. `maxSkew` is the most skew a placement may create.
