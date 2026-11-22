@@ -93,3 +93,5 @@ kubectl get pods -l app=web -o json | jq -r '.items[].spec.nodeName' \
 ```
 
 If the numbers are off by more than `maxSkew`, the constraint was never satisfied, a node is missing the label, or something moved after scheduling and nobody asked the scheduler again.
+
+Thanks for your time :)
