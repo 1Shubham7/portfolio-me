@@ -75,3 +75,5 @@ The constraint is checked when the pod is scheduled and never again. Drain a nod
 A hard zone rule and a zonal disk can deadlock. With `volumeBindingMode: Immediate` the PVC is provisioned, in some zone, before the pod is scheduled; if the spread rule then wants the pod elsewhere, the pod is Pending for good. `WaitForFirstConsumer` on the StorageClass delays provisioning until the pod has a node, so the disk is created where the spread decided. For a StatefulSet that first placement is permanent, because the volume pins the pod to its zone on every restart after that.
 
 Last, you already have a weak version of all this. The scheduler ships soft defaults, `maxSkew: 3` by hostname and `maxSkew: 5` by zone, both `ScheduleAnyway`, for pods that define no constraints and belong to a Service, ReplicaSet, StatefulSet or ReplicationController. That is a preference weighed against resource scores, not a rule, which is why the situation in the title is likely rather than impossible.
+
+## Spread or anti-affinity
