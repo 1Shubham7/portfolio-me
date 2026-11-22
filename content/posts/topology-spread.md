@@ -22,3 +22,38 @@ The exact check is in the [scheduler's filter](https://github.com/kubernetes/kub
 Two details of that arithmetic come back later. The plus one exists only when the incoming pod's own labels match the `labelSelector`; the filter sets it to 1 on a match and 0 otherwise. Get the selector wrong and the same cluster computes 2 - 1 = 1 in every zone, every zone passes, and the constraint does nothing while looking fine. And the global minimum is taken over eligible domains only. `nodeAffinityPolicy` defaults to `Honor`, so nodes your `nodeAffinity` excludes are not domains; `nodeTaintsPolicy` defaults to `Ignore`, so nodes carrying taints you do not tolerate still are. A zone whose nodes all carry such a taint holds zero of your pods, becomes the global minimum, and caps every other zone at `maxSkew` pods. That is a Pending pod that makes no sense until you look at the taints.
 
 ## One Deployment, two constraints
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: web
+          matchLabelKeys:
+            - pod-template-hash
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: web
+      containers:
+        - name: web
+          image: nginx
+```
