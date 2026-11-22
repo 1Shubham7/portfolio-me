@@ -57,3 +57,5 @@ spec:
         - name: web
           image: nginx
 ```
+
+Zone is the hard rule and hostname the soft one, and the mix is deliberate. Constraints are ANDed, so the scheduler needs one node that satisfies all of them, and the [docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/) walk through two hard constraints on a small cluster where the zone rule permits only zone B, the hostname rule permits only a node in zone A, and the pod sits Pending. Hard zone plus soft hostname asks for what you actually mean: never let one zone get more than one pod ahead of the emptiest, and spread across nodes inside the zone when it fits. Six replicas on three zones land 2/2/2, and across nodes within each zone where it can.
