@@ -91,3 +91,5 @@ kubectl get pods -l app=web -o json | jq -r '.items[].spec.nodeName' \
   | xargs -I{} kubectl get node {} -o jsonpath='{.metadata.labels.topology\.kubernetes\.io/zone}{"\n"}' \
   | sort | uniq -c
 ```
+
+If the numbers are off by more than `maxSkew`, the constraint was never satisfied, a node is missing the label, or something moved after scheduling and nobody asked the scheduler again.
