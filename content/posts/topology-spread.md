@@ -85,3 +85,9 @@ Pod anti-affinity is binary. `requiredDuringSchedulingIgnoredDuringExecution` on
 The block I would start from is the one above: a hard zone rule at `maxSkew: 1`, a soft hostname rule, `matchLabelKeys: [pod-template-hash]`, and a PodDisruptionBudget next to it. Spread decides where pods land. The PDB decides how many may be taken away at once by a drain or an upgrade, which spread knows nothing about; [the PDB post](/pdb/) covers that half. Either without the other leaves a gap.
 
 To see what the spread actually is, count pods per zone:
+
+```bash
+kubectl get pods -l app=web -o json | jq -r '.items[].spec.nodeName' \
+  | xargs -I{} kubectl get node {} -o jsonpath='{.metadata.labels.topology\.kubernetes\.io/zone}{"\n"}' \
+  | sort | uniq -c
+```
