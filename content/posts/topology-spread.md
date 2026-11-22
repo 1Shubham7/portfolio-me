@@ -77,3 +77,5 @@ A hard zone rule and a zonal disk can deadlock. With `volumeBindingMode: Immedia
 Last, you already have a weak version of all this. The scheduler ships soft defaults, `maxSkew: 3` by hostname and `maxSkew: 5` by zone, both `ScheduleAnyway`, for pods that define no constraints and belong to a Service, ReplicaSet, StatefulSet or ReplicationController. That is a preference weighed against resource scores, not a rule, which is why the situation in the title is likely rather than impossible.
 
 ## Spread or anti-affinity
+
+Pod anti-affinity is binary. `requiredDuringSchedulingIgnoredDuringExecution` on the zone key means one pod per zone, so three zones cap you at three replicas and the fourth is Pending forever; the `preferred` form stops guaranteeing anything. Spread constraints have a dial. Nine replicas across three zones with `maxSkew: 1` is 3/3/3, and losing a zone leaves two thirds running. Keep anti-affinity for the rule it is good at, which is "these two things never share a node". For keeping replicas of one thing apart, use spread.
