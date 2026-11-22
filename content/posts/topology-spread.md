@@ -12,3 +12,5 @@ cover:
 `replicas: 3` is a count, not a placement. The Deployment controller makes sure three pods exist. Where they run is the scheduler's business, and a scheduler with no instructions scores nodes on resources and a few soft preferences and puts the pods wherever that comes out, which on a quiet cluster with one roomy node can be the same node three times. Lose that node and the replica count bought you nothing. One level up it is the same story: three nodes in one zone is one zone.
 
 Pod topology spread constraints are how you tell the scheduler that the count has a shape, and this is the short version of them.
+
+## Domains, skew, and one worked pod
