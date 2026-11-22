@@ -81,3 +81,5 @@ Last, you already have a weak version of all this. The scheduler ships soft defa
 Pod anti-affinity is binary. `requiredDuringSchedulingIgnoredDuringExecution` on the zone key means one pod per zone, so three zones cap you at three replicas and the fourth is Pending forever; the `preferred` form stops guaranteeing anything. Spread constraints have a dial. Nine replicas across three zones with `maxSkew: 1` is 3/3/3, and losing a zone leaves two thirds running. Keep anti-affinity for the rule it is good at, which is "these two things never share a node". For keeping replicas of one thing apart, use spread.
 
 ## Ending notes
+
+The block I would start from is the one above: a hard zone rule at `maxSkew: 1`, a soft hostname rule, `matchLabelKeys: [pod-template-hash]`, and a PodDisruptionBudget next to it. Spread decides where pods land. The PDB decides how many may be taken away at once by a drain or an upgrade, which spread knows nothing about; [the PDB post](/pdb/) covers that half. Either without the other leaves a gap.
