@@ -39,3 +39,5 @@ kube-proxy works at layer 4. It makes one decision per connection, on the first 
 Two things follow. HTTP keep-alive and gRPC over HTTP/2 give you affinity by accident, because the client reuses one connection for many requests. That is also why gRPC balances badly behind a plain ClusterIP: every request rides the one connection to the one pod, and nothing on the Service changes that, because the Service never sees a second connection. gRPC needs client-side balancing or an L7 proxy, not affinity.
 
 The demo has to respect this. A 3-replica Deployment that echoes its hostname looks sticky even with `sessionAffinity: None` if the client reuses its connection. A loop of separate `curl` runs opens a fresh connection each time; a keep-alive client needs `Connection: close` on every request. Then `None` prints three hostnames and `ClientIP` prints one.
+
+## Under the hood
