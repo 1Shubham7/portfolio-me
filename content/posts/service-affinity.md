@@ -78,3 +78,5 @@ The scheduler once had a `ServiceAffinity` plugin that placed pods on nodes shar
 Use it for the cases it was built for: a legacy app that holds sessions in memory and cannot be changed soon, WebSocket-style traffic that benefits from client locality, a per-client cache that is expensive to warm. Set the timeout to the session length, not the maximum. And before any of that, check whether the traffic reaches the ClusterIP at all; behind Traefik it does not, and the cookie is the answer there.
 
 The better fix is still to take the state out of the pod, into Redis or a database, and let the Service balance however it likes. `ClientIP` affinity is a per-node, per-address, best-effort memory with a sliding window. It is good at exactly that and nothing more.
+
+Thanks for your time :)
