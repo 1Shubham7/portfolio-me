@@ -33,3 +33,5 @@ spec:
 There are two values, `None`, the default, and `ClientIP`. [The API reference](https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/) says `timeoutSeconds` must be greater than 0 and at most 86400, one day, defaults to 10800, three hours, and is only accepted with `ClientIP`. The setting is per Service, not per port, so every port in the list shares it. And nothing in it is specific to TCP; the match is on the source address, so UDP gets the same treatment.
 
 ## It pins new connections, nothing else
+
+kube-proxy works at layer 4. It makes one decision per connection, on the first packet, and conntrack carries that decision for every packet after it. An established TCP connection already stays on one pod, with or without affinity. All `ClientIP` adds is a memory across connections: when the same source address opens a new one, send it where the last one went.
