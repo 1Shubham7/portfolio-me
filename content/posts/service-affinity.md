@@ -74,3 +74,5 @@ The pod's endpoint leaves the EndpointSlice, kube-proxy deletes that endpoint's 
 The scheduler once had a `ServiceAffinity` plugin that placed pods on nodes sharing a label; [KEP-785](https://github.com/kubernetes/enhancements/tree/master/keps/sig-scheduling/785-scheduler-component-config-api) removed it from the `v1beta2` config API in 1.22 in favour of `NodeAffinity`, and [topology spread](/topology-spread/) is what you reach for now. `trafficDistribution: PreferSameZone` (the older `PreferClose` is a deprecated alias) and `internalTrafficPolicy: Local` steer traffic to endpoints in the same zone or on the same node as the caller. Those are affinities to a place. `sessionAffinity` is the only one keyed on who is calling.
 
 ## Ending notes
+
+Use it for the cases it was built for: a legacy app that holds sessions in memory and cannot be changed soon, WebSocket-style traffic that benefits from client locality, a per-client cache that is expensive to warm. Set the timeout to the session length, not the maximum. And before any of that, check whether the traffic reaches the ClusterIP at all; behind Traefik it does not, and the cookie is the answer there.
