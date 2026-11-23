@@ -8,3 +8,5 @@ weight: 2
 cover:
     image: "/blog/service-affinity/service-affinity.png"
 ---
+
+A Service with three endpoints hands each new connection to one of them, and with kube-proxy in iptables mode the pick is random. That is fine until the app keeps something in the pod: a login session in memory, a cache warmed for one customer. The client's second request lands on a pod that has never heard of it. Kubernetes has exactly one knob for this on the Service itself, `sessionAffinity: ClientIP`, and it is both simpler and narrower than the name suggests. This post is about what it pins, how kube-proxy does it, and where it does nothing at all.
