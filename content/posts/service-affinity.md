@@ -52,3 +52,5 @@ cat /proc/net/xt_recent/KUBE-SEP-*
 ```
 
 IPVS mode sets the persistent flag on the virtual server with the same timeout; `ipvsadm -Ln` shows it as `persistent 10800` next to the scheduler name. The nftables backend keeps a per-endpoint set of addresses with a timeout, checked in the service chain and updated in the endpoint chain. Cilium's kube-proxy replacement [honours the field too](https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/), with the same three-hour default refreshed by each request, though for in-cluster traffic through its socket load balancer it keys on the client's network namespace cookie rather than its IP.
+
+## When the client IP is not the client
