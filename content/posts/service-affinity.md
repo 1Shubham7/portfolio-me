@@ -68,3 +68,5 @@ Headless Services (`clusterIP: None`) are skipped entirely; the docs say kube-pr
 ## When the pinned pod goes away
 
 The pod's endpoint leaves the EndpointSlice, kube-proxy deletes that endpoint's chain and its `recent` list with it, and the client's next new connection falls through to the random pick and is pinned wherever it lands. Connections that are already open are conntrack's business, not the affinity table's, and keep flowing until they close or the pod stops answering, which is why graceful shutdown and `preStop` still matter; [the 30-second pod post](/pod-30-seconds/) covers that side. Affinity makes a client likely to return to the same pod. It never promises it.
+
+## Not the other affinities
